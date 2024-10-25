@@ -1196,7 +1196,7 @@ BlueArchiveCharacter = {
                         models.models.main.Avatar.UpperBody.Body.SubGun:setPos()
                         models.models.main.Avatar.UpperBody.Body.SubGun:setRot()
                         models.models.main.Avatar.UpperBody.Body.SubGun:setScale(1.5, 1.5, 1.5)
-                        models.models.main.Avatar.UpperBody.Body.SubGun:setParentType()
+                        models.models.main.Avatar.UpperBody.Body.SubGun:setParentType("None")
                         models.models.main.Avatar.UpperBody.Body.SubGun:moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
                         models.models.main.Avatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setVisible(false)
                     elseif tick == 1 then
