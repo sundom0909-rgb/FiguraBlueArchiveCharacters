@@ -4486,12 +4486,12 @@
 							"channel": "rotation",
 							"data_points": [
 								{
-									"x": 88.23729,
-									"y": 66.92038,
-									"z": 32.91975
+									"x": 76.90875,
+									"y": 47.73453,
+									"z": 20.52716
 								}
 							],
-							"uuid": "aa8a50dd-e52f-d7d4-f5de-708ab9bbb071",
+							"uuid": "aaa952da-d5db-efe8-cbd1-8e774d1a374a",
 							"time": 7.45,
 							"color": -1,
 							"interpolation": "catmullrom",
@@ -4828,15 +4828,55 @@
 							"channel": "position",
 							"data_points": [
 								{
-									"x": -7.25,
-									"y": 8,
-									"z": -0.5
+									"x": -6.5,
+									"y": 9,
+									"z": -1
 								}
 							],
-							"uuid": "b0950f4e-b129-5a73-27a7-7235040eceee",
+							"uuid": "1b3aa79d-9570-7465-73fa-27ae348307bd",
 							"time": 7.45,
 							"color": -1,
 							"interpolation": "catmullrom",
+							"bezier_linked": true,
+							"bezier_left_time": [-0.1, -0.1, -0.1],
+							"bezier_left_value": [0, 0, 0],
+							"bezier_right_time": [0.1, 0.1, 0.1],
+							"bezier_right_value": [0, 0, 0]
+						},
+						{
+							"channel": "scale",
+							"data_points": [
+								{
+									"x": "1",
+									"y": "1",
+									"z": "1"
+								}
+							],
+							"uuid": "b04ba3f3-fc36-d9ba-8c5c-b997495fb65e",
+							"time": 7.15,
+							"color": -1,
+							"uniform": true,
+							"interpolation": "linear",
+							"bezier_linked": true,
+							"bezier_left_time": [-0.1, -0.1, -0.1],
+							"bezier_left_value": [0, 0, 0],
+							"bezier_right_time": [0.1, 0.1, 0.1],
+							"bezier_right_value": [0, 0, 0]
+						},
+						{
+							"channel": "scale",
+							"data_points": [
+								{
+									"x": "0.8",
+									"y": "0.8",
+									"z": "0.8"
+								}
+							],
+							"uuid": "b0f7d7d5-a188-fcef-002d-6322d4d4808d",
+							"time": 7.45,
+							"color": -1,
+							"uniform": true,
+							"interpolation": "linear",
 							"bezier_linked": true,
 							"bezier_left_time": [-0.1, -0.1, -0.1],
 							"bezier_left_value": [0, 0, 0],

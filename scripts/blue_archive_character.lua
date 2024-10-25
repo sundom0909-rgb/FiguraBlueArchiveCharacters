@@ -1151,12 +1151,12 @@ BlueArchiveCharacter = {
                     ---カメラの位置
                     ---BBアニメーション上での値をそのまま入力する。
                     ---@type Vector3
-                    pos = vectors.vec3(),
+                    pos = vectors.vec3(17, 12, 7),
 
                     ---カメラの向き
                     ---BBアニメーション上での値をそのまま入力する。
                     ---@type Vector3
-                    rot = vectors.vec3()
+                    rot = vectors.vec3(0, 30, -10)
                 },
 
                 ---Exスキルアニメーション終了時
@@ -1164,12 +1164,12 @@ BlueArchiveCharacter = {
                     ---カメラの位置
                     ---BBアニメーション上での値をそのまま入力する。
                     ---@type Vector3
-                    pos = vectors.vec3(),
+                    pos = vectors.vec3(-1, 10, -235),
 
                     ---カメラの向き
                     ---BBアニメーション上での値をそのまま入力する。
                     ---@type Vector3
-                    rot = vectors.vec3()
+                    rot = vectors.vec3(-5, 30, 15)
                 }
             },
 
@@ -1189,15 +1189,6 @@ BlueArchiveCharacter = {
                 ---@type fun(tick: integer)
                 ---@param tick integer アニメーションの現在位置を示す。単位はティック。
                 animationTick = function(tick)
-                    --Exスキルアニメーションを任意のティックで停止させるスニペット。デバッグ用。
-                    --"<>"内を適切な値で置換すること。
-                    --[[
-                    if tick == <tick_int> then
-                        for _, animation in ipairs(BlueArchiveCharacter.EX_SKILL[<ex_skill_index>].animations) do
-                            animations["models."..animation]["ex_skill_"..<ex_skill_index>]:pause()
-                        end
-                    end
-                    ]]
                     if tick == 0 then
                         models.models.main.Avatar.UpperBody.Body.Gun:setPos()
                         models.models.main.Avatar.UpperBody.Body.Gun:setRot()
@@ -1206,6 +1197,7 @@ BlueArchiveCharacter = {
                         models.models.main.Avatar.UpperBody.Body.SubGun:setRot()
                         models.models.main.Avatar.UpperBody.Body.SubGun:setScale(1.5, 1.5, 1.5)
                         models.models.main.Avatar.UpperBody.Body.SubGun:moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
+                        models.models.main.Avatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setVisible(false)
                     end
                 end,
 
@@ -1213,6 +1205,7 @@ BlueArchiveCharacter = {
                 ---@type fun(forcedStop: boolean)
                 ---@param forcedStop boolean アニメーションが途中終了した場合は"true"、アニメーションが最後まで再生されて終了した場合は"false"が代入される。
                 postAnimation = function(forcedStop)
+                    models.models.main.Avatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setVisible(true)
                     if models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun ~= nil then
                         models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:moveTo(models.models.main.Avatar.UpperBody.Body)
                     end
