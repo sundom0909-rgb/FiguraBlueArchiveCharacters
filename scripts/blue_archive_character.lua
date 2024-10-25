@@ -1716,8 +1716,10 @@ BlueArchiveCharacter = {
                 if parts == "CHEST_PLATE" then
                     if Armor.ArmorVisible[2] then
                         models.models.main.Avatar.UpperBody.Body.Hairs.BackHair:setPos(0, 0, 1)
+                        models.models.main.Avatar.UpperBody.Body.CBattleB:setVisible(false)
                     else
                         models.models.main.Avatar.UpperBody.Body.Hairs.BackHair:setPos()
+                        models.models.main.Avatar.UpperBody.Body.CBattleB:setVisible(true)
                     end
                 elseif parts == "LEGGINGS" then
                     models.models.main.Avatar.UpperBody.Body.Skirt:setVisible(Costume.CurrentCostume <= 2 and not Armor.ArmorVisible[3])
