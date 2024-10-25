@@ -1821,13 +1821,18 @@ BlueArchiveCharacter = {
         ---@param dummyAvatar ModelPart ダミーアバターのルート
         ---@param costume integer ダミーアバターのコスチュームのインデックス
         onPhase1 = function (dummyAvatar, costume)
-            if costume <= 2 then
+            if costume ~= 3 then
                 dummyAvatar.UpperBody.Body.Skirt:setRot(25, 0, 0)
                 dummyAvatar.UpperBody.Body.Shield:setPos(4.5, -2.5, 0)
                 dummyAvatar.UpperBody.Body.Shield:setRot(70, 90, 0)
                 dummyAvatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setRot(-55, 0, 0)
                 if costume == 1 then
                     dummyAvatar.UpperBody.Body.Hairs.BackHair:setRot(-35, 0, 0)
+                elseif costume == 4 then
+                    dummyAvatar.Head.CBattleH.HairTail:setRot(12, 0, 0)
+                    dummyAvatar.UpperBody.Body.SubGun:setPos(-1, 17.5, -1.9)
+                    dummyAvatar.UpperBody.Body.SubGun:setRot(-30, 90, 0)
+                    dummyAvatar.UpperBody.Body.SubGun:setScale()
                 end
             else
                 for _, modelPart in ipairs({dummyAvatar.Head.CSwimsuitH.HairTails.HairTailLeft.HairLeftBottom, dummyAvatar.Head.CSwimsuitH.HairTails.HairTailRight.HairRightBottom}) do
@@ -1840,12 +1845,14 @@ BlueArchiveCharacter = {
         ---@param dummyAvatar ModelPart ダミーアバターのルート
         ---@param costume integer ダミーアバターのコスチュームのインデックス
         onPhase2 = function (dummyAvatar, costume)
-            if costume <= 2 then
+            if costume ~= 3  then
                 dummyAvatar.UpperBody.Body.Shield:setPos()
                 dummyAvatar.UpperBody.Body.Shield:setRot(0, 90, 0)
                 dummyAvatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setRot()
                 if costume == 1 then
                     dummyAvatar.UpperBody.Body.Hairs.BackHair:setRot(-9.6599, -3.2113, -12.0868)
+                elseif costume == 4 then
+                    dummyAvatar.Head.CBattleH.HairTail:setRot(-20, 0, 0)
                 end
             else
                 dummyAvatar.Head.CSwimsuitH.HairTails.HairTailLeft.HairLeftBottom:setRot(-15, 0, 30)
