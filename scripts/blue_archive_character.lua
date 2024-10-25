@@ -1221,6 +1221,13 @@ BlueArchiveCharacter = {
                         models.models.main.Avatar.Head.EyeShine:setVisible(false)
                     elseif tick == 70 or tick == 82 then
                         sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.zombie.hurt"), ModelUtils.getModelWorldPos(models.models.ex_skill_4.Zombie), 1, 1)
+                        if tick == 70 then
+                            local anchorPos = ModelUtils.getModelWorldPos(models.models.ex_skill_4.Zombie.ZUpperBody.ZBody.ExSkill4ParticleAnchor1)
+                            local bodyYaw = player:getBodyYaw()
+                            for _ = 1, 50 do
+                                particles:newParticle(CompatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1 + 90, math.random() * 0.6 - 0.3, math.random() * 0.6 - 0.3, math.random() * 0.4, 0, 1, 0)):setColor(1, 0.877, 0.436):setLifetime(4)
+                            end
+                        end
                     elseif tick == 75 then
                         FaceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED2", 4, true)
                     elseif tick == 79 then
@@ -1261,16 +1268,16 @@ BlueArchiveCharacter = {
                         FaceParts:setEmotion("NORMAL", "NORMAL", "CLOSED2", 11, true)
                     elseif tick == 124 then
                         FaceParts:setEmotion("NORMAL", "NORMAL", "CLOSED2", 25, true)
-                    elseif tick == 125 then
-
                     elseif tick == 149 then
                         FaceParts:setEmotion("NORMAL", "NORMAL", "CLOSED2", 39, true)
+                    elseif tick == 150 then
+                        models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.MuzzleFlash:setColor(client:hasShaderPack() and vectors.vec3(1, 0.85, 0.5) or vectors.vec3(1, 1, 1))
                     elseif tick == 152 then
                         sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.generic.explode"), ModelUtils.getModelWorldPos(models.models.main.Avatar.Head), 1, 0.5)
                     elseif tick == 157 then
                         local anchorPos = ModelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.MuzzleFlash)
                         for _ = 1, 50 do
-                            particles:newParticle(CompatibilityUtils:checkParticle("minecraft:lava"), anchorPos):setVelocity(math.random() * 0.25 - 0.125, math.random() * 0.1, math.random() * 0.25 - 0.125):setScale(1):setColor(1, 0.877, 0.436):setLifetime(30)
+                            particles:newParticle(CompatibilityUtils:checkParticle("minecraft:lava"), anchorPos):setVelocity(math.random() * 0.25 - 0.125, math.random() * 0.1, math.random() * 0.25 - 0.125):setColor(1, 0.877, 0.436):setLifetime(30)
                         end
                     end
                     if tick == 70 or tick == 82 or tick == 86 or tick == 95 or tick == 98 then
@@ -3469,6 +3476,12 @@ events.ENTITY_INIT:register(function ()
     end
     models.models.ex_skill_3.Firework:setPrimaryTexture("RESOURCE", "minecraft:textures/item/firework_rocket.png")
     models.models.ex_skill_4.Zombie:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/zombie/zombie.png")
+    for _, modelPart in ipairs({models.models.ex_skill_4.Zombie.ZHead.ZHelmet, models.models.ex_skill_4.Zombie.ZUpperBody.ZBody.ZChestPlateB, models.models.ex_skill_4.Zombie.ZUpperBody.ZArms.ZRightArm.ZChestPlateRA, models.models.ex_skill_4.Zombie.ZUpperBody.ZArms.ZLeftArm.ZChestPlateLA, models.models.ex_skill_4.Zombie.ZLowerBody.ZLegs.ZRightLeg.ZBootsRL, models.models.ex_skill_4.Zombie.ZLowerBody.ZLegs.ZLeftLeg.ZBootsLL}) do
+        modelPart:setPrimaryTexture("RESOURCE", "minecraft:textures/models/armor/iron_layer_1.png")
+    end
+    for _, modelPart in ipairs({models.models.ex_skill_4.Zombie.ZUpperBody.ZBody.ZLeggingsB,models.models.ex_skill_4.Zombie.ZLowerBody.ZLegs.ZRightLeg.ZLeggingsRL, models.models.ex_skill_4.Zombie.ZLowerBody.ZLegs.ZLeftLeg.ZLeggingsLL}) do
+        modelPart:setPrimaryTexture("RESOURCE", "minecraft:textures/models/armor/iron_layer_2.png")
+    end
     models.models.ex_skill_4.Creeper:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/creeper/creeper.png")
 end)
 
