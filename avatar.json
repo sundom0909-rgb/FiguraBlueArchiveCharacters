@@ -178,6 +178,16 @@
 		"models.models.ex_skill_4.Creeper": {
 			"visible": false
 		},
+		"models.models.ex_skill_4.EyeShine": {
+			"visible": false,
+			"moveTo": "models.models.main.Avatar.Head",
+			"primaryRenderType": "EMISSIVE_SOLID"
+		},
+		"models.models.ex_skill_4.MuzzleFlash": {
+			"visible": false,
+			"moveTo": "models.models.gun.Gun",
+			"primaryRenderType": "EMISSIVE_SOLID"
+		},
 		"models.models.ex_skill_3.Gui": {
 			"visible": false
 		},

@@ -75,7 +75,8 @@ BlueArchiveCharacter = {
             ANGRY = {7, 0},
             CLOSED2 = {0, 1},
             INVERTED = {1, 1},
-            ANGRY_INVERTED = {2, 1}
+            ANGRY_INVERTED = {2, 1},
+            NARROW = {4, 1},
         },
 
         ---左目
@@ -87,7 +88,9 @@ BlueArchiveCharacter = {
             ANGRY = {7, 0},
             ANGRY_CENTER = {8, 0},
             ANGRY_INVERTED = {2, 1},
-            CLOSED2 = {-1, 1}
+            CLOSED2 = {-1, 1},
+            NARROW = {4, 1},
+            INVERTED = {5, 1},
         },
 
         ---口
@@ -1137,7 +1140,7 @@ BlueArchiveCharacter = {
 
             ---Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
             ---@type ModelPart[]
-			models = {models.models.ex_skill_4.Zombie, models.models.ex_skill_4.Creeper},
+			models = {models.models.ex_skill_4.Zombie, models.models.ex_skill_4.Creeper, models.models.main.Avatar.UpperBody.Body.Gun.MuzzleFlash},
 
             ---Exスキルアニメーションが含まれるモデルファイル名
             ---アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
@@ -1175,14 +1178,10 @@ BlueArchiveCharacter = {
 
             ---コールバック関数
             callbacks = {
-                ---Exスキルアニメーション開始前のトランジション開始前に実行されるコールバック関数（任意）
-                ---@type fun()
-                preTransition = function()
-                end,
-
                 ---Exスキルアニメーション開始前のトランジション終了後に実行されるコールバック関数（任意）
                 ---@type fun()
                 preAnimation = function()
+                    FaceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED2", 18, true)
                 end,
 
                 ---Exスキルアニメーション再生中のみ実行されるティック関数
@@ -1198,6 +1197,92 @@ BlueArchiveCharacter = {
                         models.models.main.Avatar.UpperBody.Body.SubGun:setScale(1.5, 1.5, 1.5)
                         models.models.main.Avatar.UpperBody.Body.SubGun:moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
                         models.models.main.Avatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setVisible(false)
+                    elseif tick == 1 then
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.zombie.ambient"), ModelUtils.getModelWorldPos(models.models.main.Avatar), 0.5, 1)
+                        local anchorPos = ModelUtils.getModelWorldPos(models.models.main.Avatar)
+                        for _ = 1, 50 do
+                            particles:newParticle(CompatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), anchorPos:copy():add(math.random() * 5 - 2.5, 0.5, math.random() * 5 - 2.5)):scale(5):setVelocity(0, 0.01, 0):setLifetime(60)
+                        end
+                    elseif tick == 18 then
+                        FaceParts:setEmotion("NARROW", "NARROW", "CLOSED2", 22, true)
+                    elseif tick == 40 then
+                        FaceParts:setEmotion("NORMAL", "NORMAL", "CLOSED2", 19, true)
+                    elseif tick == 50 then
+                        models.models.main.Avatar.Head.EyeShine:setVisible(true)
+                    elseif tick == 52 and host:isHost() then
+                        renderer:setPostEffect("phosphor")
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), ModelUtils.getModelWorldPos(models.models.main.Avatar), 1, 0.5)
+                    elseif tick == 59 then
+                        FaceParts:setEmotion("NORMAL", "NORMAL", "CLOSED2", 16, true)
+                        if host:isHost() then
+                            renderer:setPostEffect()
+                        end
+                    elseif tick == 66 then
+                        models.models.main.Avatar.Head.EyeShine:setVisible(false)
+                    elseif tick == 70 or tick == 82 then
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.zombie.hurt"), ModelUtils.getModelWorldPos(models.models.ex_skill_4.Zombie), 1, 1)
+                    elseif tick == 75 then
+                        FaceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED2", 4, true)
+                    elseif tick == 79 then
+                        FaceParts:setEmotion("NORMAL", "NORMAL", "CLOSED2", 11, true)
+                    elseif tick == 86 then
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.zombie.death"), ModelUtils.getModelWorldPos(models.models.ex_skill_4.Zombie), 1, 1)
+                    elseif tick == 90 then
+                        FaceParts:setEmotion("NORMAL", "INVERTED", "CLOSED2", 31, true)
+                    elseif tick == 95 or tick == 98 then
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.creeper.hurt"), ModelUtils.getModelWorldPos(models.models.ex_skill_4.Creeper), 1, 1)
+                    elseif tick == 117 then
+                        local anchorPos = ModelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.MuzzleAnchor)
+                        local dirVector = ModelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.ExSkill4Anchor3):sub(anchorPos):normalize()
+                        local normalVector = ModelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.ExSkill4Anchor4):sub(anchorPos):normalize()
+                        for i = 0, 4 do
+                            for j = 0, 11 do
+                                local offsetLength = i / 4
+                                particles:newParticle(CompatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setVelocity(dirVector:copy():scale(math.cos(offsetLength * math.pi / 2) * 0.5):add(vectors.rotateAroundAxis(j * 30, normalVector:copy():scale(offsetLength * 0.45), dirVector))):setScale(5):setColor(1, 0.877, 0.436):setLifetime(8)
+                                if i == 0 then
+                                    break
+                                end
+                            end
+                        end
+                        for _ = 1, 10 do
+                            particles:newParticle(CompatibilityUtils:checkParticle("minecraft:large_smoke"), anchorPos:copy():add(math.random() * 0.5 - 0.25, math.random() * 0.5 - 0.25, math.random() * 0.5 - 0.25))
+                        end
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.firework_rocket.large_blast"),  anchorPos, 1, 0.75)
+                        local anchorPos2 = ModelUtils.getModelWorldPos(models.models.ex_skill_4.Creeper)
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.creeper.death"), anchorPos2, 1, 1)
+                        particles:newParticle(CompatibilityUtils:checkParticle("minecraft:explosion_emitter"), anchorPos2)
+                        for _ = 1, 30 do
+                            local offset = vectors.vec3(math.random() - 0.5, math.random() - 0.5, math.random() - 0.5)
+                            particles:newParticle(CompatibilityUtils:checkParticle("minecraft:poof"), anchorPos2:copy():add(offset.x * 2, offset.y * 2 + 0.5, offset.z * 2)):setVelocity(offset:copy():scale(0.5))
+                        end
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.generic.explode"), anchorPos2, 1, 1)
+                        models.models.ex_skill_4.Creeper:setVisible(false)
+                    elseif tick == 121 then
+                        FaceParts:setEmotion("NORMAL", "NORMAL", "CLOSED2", 11, true)
+                    elseif tick == 124 then
+                        FaceParts:setEmotion("NORMAL", "NORMAL", "CLOSED2", 25, true)
+                    elseif tick == 125 then
+
+                    elseif tick == 149 then
+                        FaceParts:setEmotion("NORMAL", "NORMAL", "CLOSED2", 39, true)
+                    elseif tick == 152 then
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.generic.explode"), ModelUtils.getModelWorldPos(models.models.main.Avatar.Head), 1, 0.5)
+                    elseif tick == 157 then
+                        local anchorPos = ModelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.MuzzleFlash)
+                        for _ = 1, 50 do
+                            particles:newParticle(CompatibilityUtils:checkParticle("minecraft:lava"), anchorPos):setVelocity(math.random() * 0.25 - 0.125, math.random() * 0.1, math.random() * 0.25 - 0.125):setScale(1):setColor(1, 0.877, 0.436):setLifetime(30)
+                        end
+                    end
+                    if tick == 70 or tick == 82 or tick == 86 or tick == 95 or tick == 98 then
+                        --ピストル発砲
+                        local anchorPos = ModelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SubGun.MuzzleAnchor2)
+                        local velocityVector = ModelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SubGun.ExSkill4Anchor1):sub(anchorPos):normalize():scale(0.5)
+                        local offsetVector = ModelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SubGun.ExSkill4Anchor2):sub(anchorPos):normalize():scale(0.25)
+                        for i = 0, 5 do
+                            particles:newParticle(CompatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setVelocity(velocityVector:copy():add(vectors.rotateAroundAxis(i * 60, offsetVector, velocityVector))):setScale(1.5):setColor(1, 0.877, 0.436):setLifetime(2)
+                            particles:newParticle(CompatibilityUtils:checkParticle("minecraft:smoke"), anchorPos:copy():add(math.random() * 0.1 - 0.05, math.random() * 0.1 - 0.05, math.random() * 0.1 - 0.05))
+                        end
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.firework_rocket.blast"), anchorPos, 1, 0.5)
                     end
                 end,
 
@@ -1222,6 +1307,12 @@ BlueArchiveCharacter = {
                     models.models.main.Avatar.UpperBody.Body.SubGun:setPos(-1, 17.5, -1.9)
                     models.models.main.Avatar.UpperBody.Body.SubGun:setRot(-30, 90, 0)
                     models.models.main.Avatar.UpperBody.Body.SubGun:setScale()
+                    if forcedStop then
+                        models.models.main.Avatar.Head.EyeShine:setVisible(false)
+                        if host:isHost() then
+                            renderer:setPostEffect()
+                        end
+                    end
                 end,
 
                 ---Exスキルアニメーション終了後のトランジション終了後に実行されるコールバック関数（任意）
