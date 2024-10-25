@@ -1039,6 +1039,7 @@ BlueArchiveCharacter = {
                             local particleOffset = vectors.vec3(math.random() - 0.5, math.random() * 0.5, math.random() - 0.5)
                             particles:newParticle(CompatibilityUtils:checkParticle("minecraft:poof"), anchorPos:copy():add(particleOffset)):setScale(10):setVelocity(particleOffset:mul(1, 0.5, 1):scale(2)):setColor(vectors.vec3(0.45, 0.35, 0.35):scale(math.random() * 0.2 - 0.1 + 1)):setGravity(math.random() * -0.1):setLifetime(120)
                         end
+                        models.models.ex_skill_3.Explosion:setColor(client:hasShaderPack() and vectors.vec3(1, 0.85, 0.5) or vectors.vec3(1, 1, 1))
                         models.models.ex_skill_3.Firework:setVisible(false)
                         models.models.ex_skill_3.Explosion:setVisible(true)
                     elseif tick == 126 then
