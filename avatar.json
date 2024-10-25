@@ -16,7 +16,9 @@
 		"textures.for_modeling.ravager",
 		"textures.for_modeling.pillager",
 		"textures.for_modeling.vindicator",
-		"textures.for_modeling.firework_rocket"
+		"textures.for_modeling.firework_rocket",
+		"textures.for_modeling.zombie",
+		"textures.for_modeling.creeper"
 	],
 	"autoScripts": [
 		"scripts/index.lua"
@@ -169,6 +171,12 @@
 		"models.models.ex_skill_3.Explosion": {
 			"visible": false,
 			"primaryRenderType": "EMISSIVE_SOLID"
+		},
+		"models.models.ex_skill_4.Zombie": {
+			"visible": false
+		},
+		"models.models.ex_skill_4.Creeper": {
+			"visible": false
 		},
 		"models.models.ex_skill_3.Gui": {
 			"visible": false
