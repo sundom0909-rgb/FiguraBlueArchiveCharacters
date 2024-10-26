@@ -12,7 +12,13 @@
 		"textures.for_modeling.trim",
 		"textures.for_modeling.trim_leggings",
 		"textures.for_modeling.water_still",
-		"textures.for_modeling.water_flow"
+		"textures.for_modeling.water_flow",
+		"textures.for_modeling.ravager",
+		"textures.for_modeling.pillager",
+		"textures.for_modeling.vindicator",
+		"textures.for_modeling.firework_rocket",
+		"textures.for_modeling.zombie",
+		"textures.for_modeling.creeper"
 	],
 	"autoScripts": [
 		"scripts/index.lua"
@@ -140,6 +146,10 @@
 		"models.models.gun.Gun": {
 			"moveTo": "models.models.main.Avatar.UpperBody.Body"
 		},
+		"models.models.gun.SubGun": {
+			"moveTo": "models.models.main.Avatar.UpperBody.Body",
+			"visible": false
+		},
 		"models.models.ex_skill_1.ShineEffect": {
 			"moveTo": "models.models.gun.Gun.Barrel",
 			"primaryRenderType": "EMISSIVE_SOLID",
@@ -150,6 +160,35 @@
 			"visible": false
 		},
 		"models.models.ex_skill_2.Waves": {
+			"visible": false
+		},
+		"models.models.ex_skill_3.Illagers": {
+			"visible": false
+		},
+		"models.models.ex_skill_3.Firework": {
+			"visible": false
+		},
+		"models.models.ex_skill_3.Explosion": {
+			"visible": false,
+			"primaryRenderType": "EMISSIVE_SOLID"
+		},
+		"models.models.ex_skill_4.Zombie": {
+			"visible": false
+		},
+		"models.models.ex_skill_4.Creeper": {
+			"visible": false
+		},
+		"models.models.ex_skill_4.EyeShine": {
+			"visible": false,
+			"moveTo": "models.models.main.Avatar.Head",
+			"primaryRenderType": "EMISSIVE_SOLID"
+		},
+		"models.models.ex_skill_4.MuzzleFlash": {
+			"visible": false,
+			"moveTo": "models.models.gun.Gun",
+			"primaryRenderType": "EMISSIVE_SOLID"
+		},
+		"models.models.ex_skill_3.Gui": {
 			"visible": false
 		},
 		"models.models.costume_masked.CMaskedH": {
@@ -189,6 +228,14 @@
 		},
 		"models.models.costume_swimsuit.CSwimsuitLL": {
 			"moveTo": "models.models.main.Avatar.LowerBody.Legs.LeftLeg",
+			"visible": false
+		},
+		"models.models.costume_battle.CBattleH": {
+			"moveTo": "models.models.main.Avatar.Head",
+			"visible": false
+		},
+		"models.models.costume_battle.CBattleB": {
+			"moveTo": "models.models.main.Avatar.UpperBody.Body",
 			"visible": false
 		},
 		"models.models.ex_skill_frame.Particles": {

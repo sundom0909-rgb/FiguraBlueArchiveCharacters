@@ -75,7 +75,8 @@ BlueArchiveCharacter = {
             ANGRY = {7, 0},
             CLOSED2 = {0, 1},
             INVERTED = {1, 1},
-            SERIOUS_ANGRY = {2, 1}
+            ANGRY_INVERTED = {2, 1},
+            NARROW = {4, 1},
         },
 
         ---左目
@@ -86,8 +87,10 @@ BlueArchiveCharacter = {
             CLOSED = {5, 0},
             ANGRY = {7, 0},
             ANGRY_CENTER = {8, 0},
+            ANGRY_INVERTED = {2, 1},
             CLOSED2 = {-1, 1},
-            SERIOUS_ANGRY = {2, 1}
+            NARROW = {4, 1},
+            INVERTED = {5, 1},
         },
 
         ---口
@@ -95,7 +98,10 @@ BlueArchiveCharacter = {
             CLOSED2 = {1, 0},
             W = {2, 0},
             YAWN = {3, 0},
-            OPENED = {0, 0}
+            OPENED = {0, 0},
+            OUT_OF_BREATH = {0, 1},
+            TEETH = {1, 1},
+            SAD = {2, 1}
         },
 
         ---表情のセット（省略可）
@@ -134,16 +140,14 @@ BlueArchiveCharacter = {
                     local isLeftHanded = player:isLeftHanded()
                     if (player:getHeldItem(true).id == "minecraft:shield" and not isLeftHanded) or (player:getHeldItem().id == "minecraft:shield" and isLeftHanded) then
                         return {right = 1, left = 4}
-                    end
-                    if BlueArchiveCharacter.COSTUME.costumes[3].IsAFK then
+                    elseif BlueArchiveCharacter.COSTUME.costumes[3].IsAFK then
                         return {right = 0, left = 0}
                     end
                 elseif right == 2 and left == 1 then
                     local isLeftHanded = player:isLeftHanded()
                     if (player:getHeldItem().id == "minecraft:shield" and not isLeftHanded) or (player:getHeldItem(true).id == "minecraft:shield" and isLeftHanded) then
                         return {right = 4, left = 1}
-                    end
-                    if BlueArchiveCharacter.COSTUME.costumes[3].IsAFK then
+                    elseif BlueArchiveCharacter.COSTUME.costumes[3].IsAFK then
                         return {right = 0, left = 0}
                     end
                 end
@@ -163,6 +167,8 @@ BlueArchiveCharacter = {
                         local isLeftHanded = player:isLeftHanded()
                         if ((player:getHeldItem().id == "minecraft:shield" and not isLeftHanded) or (player:getHeldItem(true).id == "minecraft:shield" and isLeftHanded)) and Arms.ArmState.right == 2 then
                             Arms:setArmState(4, nil)
+                        elseif BlueArchiveCharacter.COSTUME.costumes[4].HasSubGun then
+                            Arms:setArmState(1, 1)
                         end
                     end, "right_arm_tick")
                     events.RENDER:register(function ()
@@ -208,6 +214,8 @@ BlueArchiveCharacter = {
                         local isLeftHanded = player:isLeftHanded()
                         if ((player:getHeldItem().id == "minecraft:shield" and isLeftHanded) or (player:getHeldItem(true).id == "minecraft:shield" and not isLeftHanded)) and Arms.ArmState.left == 2 then
                             Arms:setArmState(nil, 4)
+                        elseif BlueArchiveCharacter.COSTUME.costumes[4].HasSubGun then
+                            Arms:setArmState(1, 1)
                         end
                     end, "left_arm_tick")
                     events.RENDER:register(function ()
@@ -626,7 +634,7 @@ BlueArchiveCharacter = {
                 ---@param tick integer アニメーションの現在位置を示す。単位はティック。
                 animationTick = function(tick)
                     if tick == 0 then
-                        models.models.main.Avatar.UpperBody.Body.Gun:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.Gun, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom, models.models.main.Avatar.UpperBody.Body)
                         models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setPos()
                         models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setRot()
                         models.models.main.Avatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setVisible(false)
@@ -663,7 +671,7 @@ BlueArchiveCharacter = {
                             end
                         end
                     elseif tick == 53 then
-                        models.models.main.Avatar.UpperBody.Body.Shield:moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.Shield, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom, models.models.main.Avatar.UpperBody.Body)
                         FaceParts:setEmotion("ANGRY", "ANGRY_CENTER", "CLOSED2", 19, true)
                     elseif tick == 55 then
                         local bodyYaw = player:getBodyYaw()
@@ -727,7 +735,7 @@ BlueArchiveCharacter = {
                 ---@param forcedStop boolean アニメーションが途中終了した場合は"true"、アニメーションが最後まで再生されて終了した場合は"false"が代入される。
                 postAnimation = function(forcedStop)
                     if models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun ~= nil then
-                        models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:moveTo( models.models.main.Avatar.UpperBody.Body)
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
                     end
                     if player:isLeftHanded() then
                         models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(BlueArchiveCharacter.GUN.put.pos.left))
@@ -737,7 +745,7 @@ BlueArchiveCharacter = {
                         models.models.main.Avatar.UpperBody.Body.Gun:setRot(BlueArchiveCharacter.GUN.put.rot.right)
                     end
                     if models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Shield ~= nil then
-                        models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Shield:moveTo(models.models.main.Avatar.UpperBody.Body)
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Shield, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
                     end
                     if ExSkill.AnimationCount >= 0 then
                         models.models.main.Avatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setVisible(true)
@@ -904,6 +912,413 @@ BlueArchiveCharacter = {
                     end
                 end
             }
+		},
+
+        {
+            ---Exスキルの名前
+            name = {
+                ---英語
+                ---日本語名を翻訳したものにする。
+                ---@type string
+                en_us = "Hardened defensive posture",
+
+                ---日本語
+                ---実際のスキルの名前と同じにする。
+                ---@type string
+                ja_jp = "防御姿勢強化"
+            },
+
+            ---Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
+            ---@type ModelPart[]
+			models = {models.models.ex_skill_3.Illagers},
+
+            ---Exスキルアニメーションが含まれるモデルファイル名
+            ---アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
+            ---@type string[]
+			animations = {"main", "gun", "costume_battle", "ex_skill_3"},
+
+            ---Exスキルアニメーションでのカメラワークのデータ
+            camera = {
+                ---Exスキルアニメーション開始時
+                start = {
+                    ---カメラの位置
+                    ---BBアニメーション上での値をそのまま入力する。
+                    ---@type Vector3
+                    pos = vectors.vec3(96.8, 40.4, -27),
+
+                    ---カメラの向き
+                    ---BBアニメーション上での値をそのまま入力する。
+                    ---@type Vector3
+                    rot = vectors.vec3(0, -123, 0)
+                },
+
+                ---Exスキルアニメーション終了時
+                fin = {
+                    ---カメラの位置
+                    ---BBアニメーション上での値をそのまま入力する。
+                    ---@type Vector3
+                    pos = vectors.vec3(-9, 14.9, -30),
+
+                    ---カメラの向き
+                    ---BBアニメーション上での値をそのまま入力する。
+                    ---@type Vector3
+                    rot = vectors.vec3(-10, -155, -10)
+                }
+            },
+
+            ---コールバック関数
+            callbacks = {
+                ---Exスキルアニメーション開始前のトランジション終了後に実行されるコールバック関数（任意）
+                ---@type fun()
+                preAnimation = function()
+                    FaceParts:setEmotion("ANGRY", "ANGRY", "OUT_OF_BREATH", 20, true)
+                end,
+
+                ---Exスキルアニメーション再生中のみ実行されるティック関数
+                ---@type fun(tick: integer)
+                ---@param tick integer アニメーションの現在位置を示す。単位はティック。
+                animationTick = function(tick)
+                    if tick == 0 then
+                        models.models.main.Avatar.UpperBody.Body.Gun:setPos()
+                        models.models.main.Avatar.UpperBody.Body.Gun:setRot()
+                        models.models.main.Avatar.UpperBody.Body.Gun:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.Gun, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom, models.models.main.Avatar.UpperBody.Body)
+                    elseif tick == 1 then
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), ModelUtils.getModelWorldPos(models.models.main.Avatar), 0.5, 0.5)
+                    elseif tick == 13 then
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:block.chest.locked"), ModelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Shield), 0.5, 2)
+                    elseif tick == 14 then
+                        models.models.main.Avatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setVisible(false)
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.Shield, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom, models.models.main.Avatar.UpperBody.Body)
+                    elseif tick == 19 then
+                        local anchorPos = ModelUtils.getModelWorldPos(models.models.main.Avatar):add(0, 0.25, 0)
+                        local bodyYaw = player:getBodyYaw()
+                        for _ = 1, 10 do
+                            local offset = vectors.vec3(math.random() * 1 - 0.5, 0, math.random() * 1 - 0.5)
+                            particles:newParticle(CompatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), anchorPos:copy():add(offset)):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, -0.1, 0, offset.z * -0.1, 0, 1, 0)):setLifetime(20)
+                        end
+                    elseif tick == 20 then
+                        FaceParts:setEmotion("ANGRY", "ANGRY", "CLOSED2", 68, true)
+                    elseif tick == 21 then
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:block.anvil.place"), ModelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Shield), 0.15, 2)
+                    elseif tick == 23 and host:isHost() then
+                        renderer:setPostEffect("phosphor")
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), ModelUtils.getModelWorldPos(models.models.main.CameraAnchor), 0.15, 0.5)
+                    elseif tick == 36 then
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.vindicator.ambient"), ModelUtils.getModelWorldPos(models.models.ex_skill_3.Illagers.Vindicator1), 1, 1)
+                    elseif tick == 38 and host:isHost() then
+                        renderer:setPostEffect()
+                    elseif tick == 42 then
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.ravager.roar"), ModelUtils.getModelWorldPos(models.models.ex_skill_3.Illagers.Ravager), 1, 1)
+                    elseif tick == 46 then
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.pillager.ambient"), ModelUtils.getModelWorldPos(models.models.ex_skill_3.Illagers.Pillager2), 1, 1)
+                    elseif tick == 49 then
+                        models.models.ex_skill_3.Firework:setVisible(true)
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:item.crossbow.shoot"), ModelUtils.getModelWorldPos(models.models.ex_skill_3.Illagers.Ravager.Pillager1), 1, 1)
+                        BlueArchiveCharacter.EX_SKILL[3].firework_sound = sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.firework_rocket.launch"), ModelUtils.getModelWorldPos(models.models.ex_skill_3.Firework), 1, 0.5)
+                    elseif tick == 88 then
+                        FaceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "TEETH", 21, true)
+                    elseif tick == 97 and host:isHost() then
+                        models.models.ex_skill_3.Gui:setScale(client:getScaledWindowSize():augmented(1))
+                        models.models.ex_skill_3.Gui:setVisible(true)
+                    elseif tick == 99 and host:isHost() then
+                        models.models.ex_skill_3.Gui.Filter:setUVPixels(1, 0)
+                    elseif tick == 100 then
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:block.anvil.place"), player:getPos(), 0.15, 2)
+                        BlueArchiveCharacter.EX_SKILL[3].grindstone_sound = sounds:playSound(CompatibilityUtils:checkSound("minecraft:block.grindstone.use"), player:getPos(), 1, 1.25)
+                    elseif tick == 102 and host:isHost() then
+                        models.models.ex_skill_3.Gui:setVisible(false)
+                    elseif tick == 109 then
+                        BlueArchiveCharacter.EX_SKILL[3].grindstone_sound:stop()
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:block.anvil.place"), player:getPos(), 0.5, 0.75)
+                        particles:newParticle(CompatibilityUtils:checkParticle("minecraft:sweep_attack"), ModelUtils.getModelWorldPos(models.models.ex_skill_3.Firework.ExSkill3ParticleAnchor2):add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0.75, 0, -0.4, 0, 1, 0))):setColor(1, 0.98, 0.69)
+                        FaceParts:setEmotion("ANGRY_INVERTED", "ANGRY", "OUT_OF_BREATH", 17, true)
+                    elseif tick == 122 then
+                        local anchorPos = ModelUtils.getModelWorldPos(models.models.ex_skill_3.Firework)
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.generic.explode"), anchorPos, 1, 0.75)
+                        for _ = 1, 100 do
+                            local particleOffset = vectors.vec3(math.random() - 0.5, math.random() * 0.5, math.random() - 0.5)
+                            particles:newParticle(CompatibilityUtils:checkParticle("minecraft:poof"), anchorPos:copy():add(particleOffset)):setScale(10):setVelocity(particleOffset:mul(1, 0.5, 1):scale(2)):setColor(vectors.vec3(0.45, 0.35, 0.35):scale(math.random() * 0.2 - 0.1 + 1)):setGravity(math.random() * -0.1):setLifetime(120)
+                        end
+                        models.models.ex_skill_3.Explosion:setColor(client:hasShaderPack() and vectors.vec3(1, 0.85, 0.5) or vectors.vec3(1, 1, 1))
+                        models.models.ex_skill_3.Firework:setVisible(false)
+                        models.models.ex_skill_3.Explosion:setVisible(true)
+                    elseif tick == 126 then
+                        FaceParts:setEmotion("ANGRY_INVERTED", "ANGRY", "W", 14, true)
+                    elseif tick == 131 then
+                        models.models.ex_skill_3.Explosion:setVisible(false)
+                    elseif tick == 138 then
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), player:getPos(), 0.5, 0.75)
+                    elseif tick == 140 then
+                        FaceParts:setEmotion("ANGRY", "ANGRY", "W", 48, true)
+                    end
+                    if tick >= 49 and tick <= 109 then
+                        BlueArchiveCharacter.EX_SKILL[3].firework_sound:setPos(ModelUtils.getModelWorldPos(models.models.ex_skill_3.Firework))
+                        local anchor2Pos = ModelUtils.getModelWorldPos(models.models.ex_skill_3.Firework.ExSkill3ParticleAnchor2)
+                        local anchorPos = anchor2Pos:copy()
+                        if host:isHost() and tick < 100 then
+                            anchorPos:add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0, 0, -1.5, 0, 1, 0))
+                        elseif tick >= 100 then
+                            local bodyYaw = player:getBodyYaw()
+                            anchorPos:add(vectors.rotateAroundAxis(bodyYaw * -1, 0, 0, 0.3, 0, 1, 0))
+                            for _ = 0, 3 do
+                                particles:newParticle(CompatibilityUtils:checkParticle("minecraft:electric_spark"), anchor2Pos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 0.2 - 0.1, math.random() * 0.2 - 0.1, 0.05, 0, 1, 0)):setColor(1, 0.804, 0.357):setLifetime(2)
+                            end
+                        end
+                        local axisVector = anchor2Pos:copy():sub(ModelUtils.getModelWorldPos(models.models.ex_skill_3.Firework.ExSkill3ParticleAnchor1))
+                        for i = 0, 3 do
+                            local offset = vectors.rotateAroundAxis(i * 90 + tick * 20, 0, 0.1, 0, axisVector)
+                            particles:newParticle(CompatibilityUtils:checkParticle("minecraft:cloud"), anchorPos:copy():add(offset)):setScale(0.5):setVelocity(offset:scale(0.5)):setGravity(0):setColor(0.5, 0.5, 0.5):setLifetime(4)
+                        end
+                    end
+                    if tick >= 49 and tick < 122 then
+                        local anchorPos = ModelUtils.getModelWorldPos(models.models.ex_skill_3.Firework.ExSkill3ParticleAnchor1)
+                        if host:isHost() and tick < 100 then
+                            anchorPos:add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0, 0, -1.5, 0, 1, 0))
+                        end
+                        particles:newParticle(CompatibilityUtils:checkParticle("minecraft:firework"), anchorPos):setColor(1, 0.804, 0.357)
+                    end
+                end,
+
+                ---Exスキルアニメーション終了後のトランジション開始前に実行されるコールバック関数（任意）
+                ---@type fun(forcedStop: boolean)
+                ---@param forcedStop boolean アニメーションが途中終了した場合は"true"、アニメーションが最後まで再生されて終了した場合は"false"が代入される。
+                postAnimation = function(forcedStop)
+                    if models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun ~= nil then
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
+                    end
+                    if player:isLeftHanded() then
+                        models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(BlueArchiveCharacter.GUN.put.pos.left))
+                        models.models.main.Avatar.UpperBody.Body.Gun:setRot(BlueArchiveCharacter.GUN.put.rot.left)
+                    else
+                        models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(BlueArchiveCharacter.GUN.put.pos.right))
+                        models.models.main.Avatar.UpperBody.Body.Gun:setRot(BlueArchiveCharacter.GUN.put.rot.right)
+                    end
+                    if models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Shield ~= nil then
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Shield, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
+                    end
+                    models.models.main.Avatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setVisible(true)
+                    BlueArchiveCharacter.EX_SKILL[3].firework_sound = nil
+                    BlueArchiveCharacter.EX_SKILL[3].grindstone_sound = nil
+                    if forcedStop then
+                        for _, modelPart in ipairs({models.models.ex_skill_3.Firework, models.models.ex_skill_3.Explosion}) do
+                            modelPart:setVisible(false)
+                        end
+                        models.models.ex_skill_3.Gui.Filter:setUVPixels()
+                        if host:isHost() then
+                            renderer:setPostEffect()
+                            models.models.ex_skill_3.Gui:setVisible(false)
+                        end
+                    end
+                end
+            },
+
+            ---花火の音のインスタンス
+            firework_sound = nil,
+
+            ---砥石の音のインスタンス
+            grindstone_sound = nil
+        },
+
+        {
+            ---Exスキルの名前
+            name = {
+                ---英語
+                ---日本語名を翻訳したものにする。
+                ---@type string
+                en_us = "Concentrated breakthrough",
+
+                ---日本語
+                ---実際のスキルの名前と同じにする。
+                ---@type string
+                ja_jp = "集中突破"
+            },
+
+            ---Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
+            ---@type ModelPart[]
+			models = {models.models.ex_skill_4.Zombie, models.models.ex_skill_4.Creeper, models.models.main.Avatar.UpperBody.Body.Gun.MuzzleFlash},
+
+            ---Exスキルアニメーションが含まれるモデルファイル名
+            ---アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
+            ---@type string[]
+			animations = {"main", "gun", "costume_battle", "ex_skill_4"},
+
+            ---Exスキルアニメーションでのカメラワークのデータ
+            camera = {
+                ---Exスキルアニメーション開始時
+                start = {
+                    ---カメラの位置
+                    ---BBアニメーション上での値をそのまま入力する。
+                    ---@type Vector3
+                    pos = vectors.vec3(17, 12, 7),
+
+                    ---カメラの向き
+                    ---BBアニメーション上での値をそのまま入力する。
+                    ---@type Vector3
+                    rot = vectors.vec3(0, 30, -10)
+                },
+
+                ---Exスキルアニメーション終了時
+                fin = {
+                    ---カメラの位置
+                    ---BBアニメーション上での値をそのまま入力する。
+                    ---@type Vector3
+                    pos = vectors.vec3(-1, 10, -235),
+
+                    ---カメラの向き
+                    ---BBアニメーション上での値をそのまま入力する。
+                    ---@type Vector3
+                    rot = vectors.vec3(-5, 30, 15)
+                }
+            },
+
+            ---コールバック関数
+            callbacks = {
+                ---Exスキルアニメーション開始前のトランジション終了後に実行されるコールバック関数（任意）
+                ---@type fun()
+                preAnimation = function()
+                    FaceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED2", 18, true)
+                end,
+
+                ---Exスキルアニメーション再生中のみ実行されるティック関数
+                ---@type fun(tick: integer)
+                ---@param tick integer アニメーションの現在位置を示す。単位はティック。
+                animationTick = function(tick)
+                    if tick == 0 then
+                        models.models.main.Avatar.UpperBody.Body.Gun:setPos()
+                        models.models.main.Avatar.UpperBody.Body.Gun:setRot()
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.Gun, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom, models.models.main.Avatar.UpperBody.Body)
+                        models.models.main.Avatar.UpperBody.Body.SubGun:setPos()
+                        models.models.main.Avatar.UpperBody.Body.SubGun:setRot()
+                        models.models.main.Avatar.UpperBody.Body.SubGun:setScale(1.5, 1.5, 1.5)
+                        models.models.main.Avatar.UpperBody.Body.SubGun:setParentType("None")
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.SubGun, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom, models.models.main.Avatar.UpperBody.Body)
+                        models.models.main.Avatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setVisible(false)
+                    elseif tick == 1 then
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.zombie.ambient"), ModelUtils.getModelWorldPos(models.models.main.Avatar), 0.5, 1)
+                        local anchorPos = ModelUtils.getModelWorldPos(models.models.main.Avatar)
+                        for _ = 1, 50 do
+                            particles:newParticle(CompatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), anchorPos:copy():add(math.random() * 5 - 2.5, 0.5, math.random() * 5 - 2.5)):scale(5):setVelocity(0, 0.01, 0):setLifetime(60)
+                        end
+                    elseif tick == 18 then
+                        FaceParts:setEmotion("NARROW", "NARROW", "CLOSED2", 22, true)
+                    elseif tick == 40 then
+                        FaceParts:setEmotion("NORMAL", "NORMAL", "CLOSED2", 19, true)
+                    elseif tick == 50 then
+                        models.models.main.Avatar.Head.EyeShine:setVisible(true)
+                    elseif tick == 52 and host:isHost() then
+                        renderer:setPostEffect("phosphor")
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), ModelUtils.getModelWorldPos(models.models.main.Avatar), 1, 0.5)
+                    elseif tick == 59 then
+                        FaceParts:setEmotion("NORMAL", "NORMAL", "CLOSED2", 16, true)
+                        if host:isHost() then
+                            renderer:setPostEffect()
+                        end
+                    elseif tick == 66 then
+                        models.models.main.Avatar.Head.EyeShine:setVisible(false)
+                    elseif tick == 70 or tick == 82 then
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.zombie.hurt"), ModelUtils.getModelWorldPos(models.models.ex_skill_4.Zombie), 1, 1)
+                        if tick == 70 then
+                            local anchorPos = ModelUtils.getModelWorldPos(models.models.ex_skill_4.Zombie.ZUpperBody.ZBody.ExSkill4ParticleAnchor1)
+                            local bodyYaw = player:getBodyYaw()
+                            for _ = 1, 50 do
+                                particles:newParticle(CompatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1 + 90, math.random() * 0.6 - 0.3, math.random() * 0.6 - 0.3, math.random() * 0.4, 0, 1, 0)):setColor(1, 0.877, 0.436):setLifetime(4)
+                            end
+                        end
+                    elseif tick == 75 then
+                        FaceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED2", 4, true)
+                    elseif tick == 79 then
+                        FaceParts:setEmotion("NORMAL", "NORMAL", "CLOSED2", 11, true)
+                    elseif tick == 86 then
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.zombie.death"), ModelUtils.getModelWorldPos(models.models.ex_skill_4.Zombie), 1, 1)
+                    elseif tick == 90 then
+                        FaceParts:setEmotion("NORMAL", "INVERTED", "CLOSED2", 31, true)
+                    elseif tick == 95 or tick == 98 then
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.creeper.hurt"), ModelUtils.getModelWorldPos(models.models.ex_skill_4.Creeper), 1, 1)
+                    elseif tick == 117 then
+                        local anchorPos = ModelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.MuzzleAnchor)
+                        local dirVector = ModelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.ExSkill4Anchor3):sub(anchorPos):normalize()
+                        local normalVector = ModelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.ExSkill4Anchor4):sub(anchorPos):normalize()
+                        for i = 0, 4 do
+                            for j = 0, 11 do
+                                local offsetLength = i / 4
+                                particles:newParticle(CompatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setVelocity(dirVector:copy():scale(math.cos(offsetLength * math.pi / 2) * 0.5):add(vectors.rotateAroundAxis(j * 30, normalVector:copy():scale(offsetLength * 0.45), dirVector))):setScale(5):setColor(1, 0.877, 0.436):setLifetime(8)
+                                if i == 0 then
+                                    break
+                                end
+                            end
+                        end
+                        for _ = 1, 10 do
+                            particles:newParticle(CompatibilityUtils:checkParticle("minecraft:large_smoke"), anchorPos:copy():add(math.random() * 0.5 - 0.25, math.random() * 0.5 - 0.25, math.random() * 0.5 - 0.25))
+                        end
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.firework_rocket.large_blast"),  anchorPos, 1, 0.75)
+                        local anchorPos2 = ModelUtils.getModelWorldPos(models.models.ex_skill_4.Creeper)
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.creeper.death"), anchorPos2, 1, 1)
+                        particles:newParticle(CompatibilityUtils:checkParticle("minecraft:explosion_emitter"), anchorPos2)
+                        for _ = 1, 30 do
+                            local offset = vectors.vec3(math.random() - 0.5, math.random() - 0.5, math.random() - 0.5)
+                            particles:newParticle(CompatibilityUtils:checkParticle("minecraft:poof"), anchorPos2:copy():add(offset.x * 2, offset.y * 2 + 0.5, offset.z * 2)):setVelocity(offset:copy():scale(0.5))
+                        end
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.generic.explode"), anchorPos2, 1, 1)
+                        models.models.ex_skill_4.Creeper:setVisible(false)
+                    elseif tick == 121 then
+                        FaceParts:setEmotion("NORMAL", "NORMAL", "CLOSED2", 11, true)
+                    elseif tick == 124 then
+                        FaceParts:setEmotion("NORMAL", "NORMAL", "CLOSED2", 25, true)
+                    elseif tick == 149 then
+                        FaceParts:setEmotion("NORMAL", "NORMAL", "CLOSED2", 39, true)
+                    elseif tick == 150 then
+                        models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.MuzzleFlash:setColor(client:hasShaderPack() and vectors.vec3(1, 0.85, 0.5) or vectors.vec3(1, 1, 1))
+                    elseif tick == 152 then
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.generic.explode"), ModelUtils.getModelWorldPos(models.models.main.Avatar.Head), 1, 0.5)
+                    elseif tick == 157 then
+                        local anchorPos = ModelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.MuzzleFlash)
+                        for _ = 1, 50 do
+                            particles:newParticle(CompatibilityUtils:checkParticle("minecraft:lava"), anchorPos):setVelocity(math.random() * 0.25 - 0.125, math.random() * 0.1, math.random() * 0.25 - 0.125):setColor(1, 0.877, 0.436):setLifetime(30)
+                        end
+                    end
+                    if tick == 70 or tick == 82 or tick == 86 or tick == 95 or tick == 98 then
+                        --ピストル発砲
+                        local anchorPos = ModelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SubGun.MuzzleAnchor2)
+                        local velocityVector = ModelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SubGun.ExSkill4Anchor1):sub(anchorPos):normalize():scale(0.5)
+                        local offsetVector = ModelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SubGun.ExSkill4Anchor2):sub(anchorPos):normalize():scale(0.25)
+                        for i = 0, 5 do
+                            particles:newParticle(CompatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setVelocity(velocityVector:copy():add(vectors.rotateAroundAxis(i * 60, offsetVector, velocityVector))):setScale(1.5):setColor(1, 0.877, 0.436):setLifetime(2)
+                            particles:newParticle(CompatibilityUtils:checkParticle("minecraft:smoke"), anchorPos:copy():add(math.random() * 0.1 - 0.05, math.random() * 0.1 - 0.05, math.random() * 0.1 - 0.05))
+                        end
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.firework_rocket.blast"), anchorPos, 1, 0.5)
+                    end
+                end,
+
+                ---Exスキルアニメーション終了後のトランジション開始前に実行されるコールバック関数（任意）
+                ---@type fun(forcedStop: boolean)
+                ---@param forcedStop boolean アニメーションが途中終了した場合は"true"、アニメーションが最後まで再生されて終了した場合は"false"が代入される。
+                postAnimation = function(forcedStop)
+                    models.models.main.Avatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setVisible(true)
+                    if models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun ~= nil then
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
+                    end
+                    if models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SubGun ~= nil then
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SubGun, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
+                    end
+                    if player:isLeftHanded() then
+                        models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(BlueArchiveCharacter.GUN.put.pos.left))
+                        models.models.main.Avatar.UpperBody.Body.Gun:setRot(BlueArchiveCharacter.GUN.put.rot.left)
+                    else
+                        models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(BlueArchiveCharacter.GUN.put.pos.right))
+                        models.models.main.Avatar.UpperBody.Body.Gun:setRot(BlueArchiveCharacter.GUN.put.rot.right)
+                    end
+                    models.models.main.Avatar.UpperBody.Body.SubGun:setPos(-1, 17.5, -1.9)
+                    models.models.main.Avatar.UpperBody.Body.SubGun:setRot(-30, 90, 0)
+                    models.models.main.Avatar.UpperBody.Body.SubGun:setScale()
+                    if forcedStop then
+                        models.models.main.Avatar.Head.EyeShine:setVisible(false)
+                        if host:isHost() then
+                            renderer:setPostEffect()
+                        end
+                    end
+                end
+            }
 		}
 	},
 
@@ -1033,6 +1448,38 @@ BlueArchiveCharacter = {
                 ---AFK中かどうか
                 ---@type boolean
                 IsAFK = false
+            },
+            {
+                ---コスチュームの内部名
+                ---@type string
+                name = "battle",
+
+                ---コスチュームの表示名
+                display_name = {
+                    ---英語
+                    ---@type string
+                    en_us = "Battle",
+
+                    ---日本語
+                    ---@type string
+                    ja_jp = "臨戦"
+                },
+
+                ---この衣装での生徒の配置タイプ
+                ---@type BlueArchiveCharacter.FormationType
+                formationType = "STRIKER",
+
+                ---コスチュームに対応するExスキルのインデックス番号
+                ---@type integer
+                exSkill = 3,
+
+                ---コスチュームに対応するサブExスキルのインデックス番号（任意）
+                ---@type integer
+                subExSkill = 4,
+
+                ---サブハンドガンを持っているかどうか
+                ---@type boolean
+                HasSubGun = false
             }
         },
 
@@ -1174,6 +1621,65 @@ BlueArchiveCharacter = {
                             BlueArchiveCharacter.COSTUME.costumes[3].WhaleFloatEnabledPrev = false
                         end
                     end, "whale_float_tick_2")
+                elseif costumeId == 4 then
+                    --臨戦
+                    Costume.setCostumeTextureOffset(2)
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer}) do
+                        modelPart:setUVPixels(0, 16)
+                    end
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.CBattleH, models.models.main.Avatar.UpperBody.Body.CBattleB, models.models.main.Avatar.UpperBody.Body.SubGun}) do
+                        modelPart:setVisible(true)
+                    end
+                    for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.Hairs, models.models.main.Avatar.UpperBody.Body.IDCard, models.models.main.Avatar.UpperBody.Body.Tie}) do
+                        modelPart:setVisible(false)
+                    end
+                    events.TICK:register(function ()
+                        BlueArchiveCharacter.COSTUME.costumes[4].HasSubGun = false
+                        if Gun.CurrentGunPosition ~= "NONE" then
+                            local isLeftHanded = player:isLeftHanded()
+                            local heldItem = player:getHeldItem(Gun.CurrentGunPosition == "RIGHT" ~= isLeftHanded)
+                            for _, gunItem in ipairs(Gun.GUN_ITEMS) do
+                                if gunItem == heldItem.id then
+                                    BlueArchiveCharacter.COSTUME.costumes[4].HasSubGun = true
+                                    break
+                                end
+                            end
+                        end
+                        if BlueArchiveCharacter.COSTUME.costumes[4].HasSubGun then
+                            models.models.main.Avatar.UpperBody.Body.SubGun:setScale(1.5, 1.5, 1.5)
+                            models.models.main.Avatar.UpperBody.Body.SubGun:setParentType("Item")
+                        elseif ExSkill.AnimationCount == -1 then
+                            models.models.main.Avatar.UpperBody.Body.SubGun:setPos(-1, 17.5, -1.9)
+                            models.models.main.Avatar.UpperBody.Body.SubGun:setRot(-30, 90, 0)
+                            models.models.main.Avatar.UpperBody.Body.SubGun:setScale()
+                            models.models.main.Avatar.UpperBody.Body.SubGun:setParentType("None")
+                        end
+                    end, "costume_battle_tick")
+                    events.ITEM_RENDER:register(function (_, mode)
+                        if BlueArchiveCharacter.COSTUME.costumes[4].HasSubGun then
+                            if Gun.CurrentGunPosition == "RIGHT" then
+                                if mode == "FIRST_PERSON_LEFT_HAND" then
+                                    models.models.main.Avatar.UpperBody.Body.SubGun:setPos(-1, 0.5, -2.5)
+                                    models.models.main.Avatar.UpperBody.Body.SubGun:setRot()
+                                    return models.models.main.Avatar.UpperBody.Body.SubGun
+                                elseif mode == "THIRD_PERSON_LEFT_HAND" then
+                                    models.models.main.Avatar.UpperBody.Body.SubGun:setPos(0, -2, -1)
+                                    models.models.main.Avatar.UpperBody.Body.SubGun:setRot()
+                                    return models.models.main.Avatar.UpperBody.Body.SubGun
+                                end
+                            elseif Gun.CurrentGunPosition == "LEFT" then
+                                if mode == "FIRST_PERSON_RIGHT_HAND" then
+                                    models.models.main.Avatar.UpperBody.Body.SubGun:setPos(-1, 0.5, -1)
+                                    models.models.main.Avatar.UpperBody.Body.SubGun:setRot()
+                                    return models.models.main.Avatar.UpperBody.Body.SubGun
+                                elseif mode == "THIRD_PERSON_RIGHT_HAND" then
+                                    models.models.main.Avatar.UpperBody.Body.SubGun:setPos(0, -2, -1)
+                                    models.models.main.Avatar.UpperBody.Body.SubGun:setRot()
+                                    return models.models.main.Avatar.UpperBody.Body.SubGun
+                                end
+                            end
+                        end
+                    end, "costume_battle_item_render")
                 end
             end,
 
@@ -1182,16 +1688,23 @@ BlueArchiveCharacter = {
             ---@type fun()
             reset = function()
                 Costume.setCostumeTextureOffset(0)
+                for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer}) do
+                    modelPart:setUVPixels()
+                end
                 models.models.main.Avatar.Head.HatLayer:setUVPixels()
                 BlueArchiveCharacter.resetExSkill2Feature()
-                for _, modelPart in ipairs({models.models.main.Avatar.Head.CMaskedH, models.models.main.Avatar.Head.CSwimsuitH, models.models.main.Avatar.UpperBody.Body.CSwimsuitB, models.models.main.Avatar.UpperBody.Arms.RightArm.CSwimsuitRA, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.CSwimsuitRAB, models.models.main.Avatar.UpperBody.Arms.LeftArm.CSwimsuitLA, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.CSwimsuitLAB, models.models.main.Avatar.LowerBody.Legs.RightLeg.CSwimsuitRL, models.models.main.Avatar.LowerBody.Legs.LeftLeg.CSwimsuitLL}) do
+                for _, modelPart in ipairs({models.models.main.Avatar.Head.CMaskedH, models.models.main.Avatar.Head.CSwimsuitH, models.models.main.Avatar.UpperBody.Body.CSwimsuitB, models.models.main.Avatar.UpperBody.Arms.RightArm.CSwimsuitRA, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.CSwimsuitRAB, models.models.main.Avatar.UpperBody.Arms.LeftArm.CSwimsuitLA, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.CSwimsuitLAB, models.models.main.Avatar.LowerBody.Legs.RightLeg.CSwimsuitRL, models.models.main.Avatar.LowerBody.Legs.LeftLeg.CSwimsuitLL, models.models.main.Avatar.Head.CBattleH, models.models.main.Avatar.UpperBody.Body.CBattleB, models.models.main.Avatar.UpperBody.Body.SubGun}) do
                     modelPart:setVisible(false)
                 end
                 for _, modelPart in ipairs({models.models.main.Avatar.Head.HairEnds, models.models.main.Avatar.UpperBody.Body.Hairs, models.models.main.Avatar.UpperBody.Body.IDCard, models.models.main.Avatar.UpperBody.Body.Tie, models.models.main.Avatar.UpperBody.Body.Skirt, models.models.main.Avatar.UpperBody.Body.Shield}) do
                     modelPart:setVisible(true)
                 end
-                events.TICK:remove("whale_float_tick_2")
+                for _, eventName in ipairs({"whale_float_tick_2", "costume_battle_tick"}) do
+                    events.TICK:remove(eventName)
+                end
+                events.ITEM_RENDER:remove("costume_battle_item_render")
                 BlueArchiveCharacter.stopWhaleFloat()
+                BlueArchiveCharacter.COSTUME.costumes[4].HasSubGun = false
             end,
 
             ---防具が変更された（防具が見える/見えない）時に実行されるコールバック関数
@@ -1201,8 +1714,10 @@ BlueArchiveCharacter = {
                 if parts == "CHEST_PLATE" then
                     if Armor.ArmorVisible[2] then
                         models.models.main.Avatar.UpperBody.Body.Hairs.BackHair:setPos(0, 0, 1)
+                        models.models.main.Avatar.UpperBody.Body.CBattleB:setVisible(false)
                     else
                         models.models.main.Avatar.UpperBody.Body.Hairs.BackHair:setPos()
+                        models.models.main.Avatar.UpperBody.Body.CBattleB:setVisible(true)
                     end
                 elseif parts == "LEGGINGS" then
                     models.models.main.Avatar.UpperBody.Body.Skirt:setVisible(Costume.CurrentCostume <= 2 and not Armor.ArmorVisible[3])
@@ -1230,8 +1745,7 @@ BlueArchiveCharacter = {
                     elseif type == "QUESTION" then
                         FaceParts:setEmotion("CLOSED2", "CLOSED2", "YAWN", duration, true)
                     elseif type == "SWEAT" then
-                        FaceParts:setEmotion("SERIOUS_ANGRY", "SERIOUS_ANGRY", "CLOSED2", duration, true)
-                        models.models.main.Avatar.Head.FaceParts.Face:setUVPixels(6, 0)
+                        FaceParts:setEmotion("CLOSED2", "CLOSED2", "SAD", duration, true)
                     end
                 end
             end,
@@ -1305,13 +1819,18 @@ BlueArchiveCharacter = {
         ---@param dummyAvatar ModelPart ダミーアバターのルート
         ---@param costume integer ダミーアバターのコスチュームのインデックス
         onPhase1 = function (dummyAvatar, costume)
-            if costume <= 2 then
+            if costume ~= 3 then
                 dummyAvatar.UpperBody.Body.Skirt:setRot(25, 0, 0)
                 dummyAvatar.UpperBody.Body.Shield:setPos(4.5, -2.5, 0)
                 dummyAvatar.UpperBody.Body.Shield:setRot(70, 90, 0)
                 dummyAvatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setRot(-55, 0, 0)
                 if costume == 1 then
                     dummyAvatar.UpperBody.Body.Hairs.BackHair:setRot(-35, 0, 0)
+                elseif costume == 4 then
+                    dummyAvatar.Head.CBattleH.HairTail:setRot(12, 0, 0)
+                    dummyAvatar.UpperBody.Body.SubGun:setPos(-1, 17.5, -1.9)
+                    dummyAvatar.UpperBody.Body.SubGun:setRot(-30, 90, 0)
+                    dummyAvatar.UpperBody.Body.SubGun:setScale()
                 end
             else
                 for _, modelPart in ipairs({dummyAvatar.Head.CSwimsuitH.HairTails.HairTailLeft.HairLeftBottom, dummyAvatar.Head.CSwimsuitH.HairTails.HairTailRight.HairRightBottom}) do
@@ -1324,12 +1843,14 @@ BlueArchiveCharacter = {
         ---@param dummyAvatar ModelPart ダミーアバターのルート
         ---@param costume integer ダミーアバターのコスチュームのインデックス
         onPhase2 = function (dummyAvatar, costume)
-            if costume <= 2 then
+            if costume ~= 3  then
                 dummyAvatar.UpperBody.Body.Shield:setPos()
                 dummyAvatar.UpperBody.Body.Shield:setRot(0, 90, 0)
                 dummyAvatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setRot()
                 if costume == 1 then
                     dummyAvatar.UpperBody.Body.Hairs.BackHair:setRot(-9.6599, -3.2113, -12.0868)
+                elseif costume == 4 then
+                    dummyAvatar.Head.CBattleH.HairTail:setRot(-20, 0, 0)
                 end
             else
                 dummyAvatar.Head.CSwimsuitH.HairTails.HairTailLeft.HairLeftBottom:setRot(-15, 0, 30)
@@ -2614,15 +3135,167 @@ BlueArchiveCharacter = {
                         max = 80
                     }
                 }
-            }
-        }
+            },
 
-        --[[
+            {
+                ---この物理演算データを適用させるモデルパーツ
+                ---@type ModelPart | ModelPart[]
+                modelPart = models.models.main.Avatar.Head.CBattleH.HairTail,
+
+                ---x軸回転における物理演算データ（省略可）
+                x = {
+                    ---体が垂直方向である時（通常時）の物理演算データ（省略可）
+                    vertical = {
+                        ---このモデルパーツ、回転軸の絶対的な回転の最小値（度）
+                        ---@type number
+                        min = -170,
+
+                        ---このモデルパーツ、回転軸の中立の回転位置（度）
+                        ---@type number
+                        neutral = 0,
+
+                        ---このモデルパーツ、回転軸の絶対的な回転の最大値（度）
+                        ---@type number
+                        max = 30,
+
+                        ---スニーク時にこのモデルパーツの回転に加えられるオフセット値（省略可）
+                        ---@type number
+                        sneakOffset = -20,
+
+                        ---頭の縦方向の回転と共にこのモデルパーツの回転に加えられる値の倍率（省略可）
+                        ---@type number
+                        headRotMultiplayer = -1,
+
+                        ---頭を基準とした、前後方向移動によるモデルパーツの回転データ（省略可）
+                        headX = {
+                            ---この回転事象がモデルパーツに与える回転の倍率
+                            ---@type number
+                            multiplayer = -80,
+
+                            ---この回転事象がモデルパーツに与える回転の最小値
+                            ---@type number
+                            min = -90,
+
+                            ---この回転事象がモデルパーツに与える回転の最大値
+                            ---@type number
+                            max = 10
+                        },
+
+                        ---頭の回転によるによるモデルパーツの回転データ（省略可）
+                        headRot = {
+                            ---この回転事象がモデルパーツに与える回転の倍率
+                            ---@type number
+                            multiplayer = 0.05,
+
+                            ---この回転事象がモデルパーツに与える回転の最小値
+                            ---@type number
+                            min = -90,
+
+                            ---この回転事象がモデルパーツに与える回転の最大値
+                            ---@type number
+                            max = 0
+                        },
+
+                        ---体を基準とした、上下方向移動によるモデルパーツの回転データ（省略可）
+                        bodyY = {
+                            ---この回転事象がモデルパーツに与える回転の倍率
+                            ---@type number
+                            multiplayer = 80,
+
+                            ---この回転事象がモデルパーツに与える回転の最小値
+                            ---@type number
+                            min = -170,
+
+                            ---この回転事象がモデルパーツに与える回転の最大値
+                            ---@type number
+                            max = 0
+                        }
+                    },
+
+                    ---体が水平方向である時（水泳時、エリトラ飛行時）の物理演算データ（省略可）
+                    horizontal = {
+                        ---このモデルパーツ、回転軸の絶対的な回転の最小値（度）
+                        ---@type number
+                        min = -135,
+
+                        ---このモデルパーツ、回転軸の中立の回転位置（度）
+                        ---@type number
+                        neutral = -30,
+
+                        ---このモデルパーツ、回転軸の絶対的な回転の最大値（度）
+                        ---@type number
+                        max = -30,
+
+                        ---頭を基準とした、前後方向移動によるモデルパーツの回転データ（省略可）
+                        headX = {
+                            ---この回転事象がモデルパーツに与える回転の倍率
+                            ---@type number
+                            multiplayer = -80,
+
+                            ---この回転事象がモデルパーツに与える回転の最小値
+                            ---@type number
+                            min = -45,
+
+                            ---この回転事象がモデルパーツに与える回転の最大値
+                            ---@type number
+                            max = -30
+                        }
+                    }
+                }
+            },
+
+            {
+                ---この物理演算データを適用させるモデルパーツ
+                ---@type ModelPart | ModelPart[]
+                modelPart = models.models.main.Avatar.Head.CBattleH.HairTail.HairTailZPivot,
+
+                ---x軸回転における物理演算データ（省略可）
+                z = {
+                    ---体が垂直方向である時（通常時）の物理演算データ（省略可）
+                    vertical = {
+                        ---このモデルパーツ、回転軸の絶対的な回転の最小値（度）
+                        ---@type number
+                        min = -80,
+
+                        ---このモデルパーツ、回転軸の中立の回転位置（度）
+                        ---@type number
+                        neutral = 0,
+
+                        ---このモデルパーツ、回転軸の絶対的な回転の最大値（度）
+                        ---@type number
+                        max = 80,
+
+                        ---頭を基準とした、左右方向移動によるモデルパーツの回転データ（省略可）
+                        headZ = {
+                            ---この回転事象がモデルパーツに与える回転の倍率
+                            ---@type number
+                            multiplayer = -80,
+
+                            ---この回転事象がモデルパーツに与える回転の最小値
+                            ---@type number
+                            min = -80,
+
+                            ---この回転事象がモデルパーツに与える回転の最大値
+                            ---@type number
+                            max = 80
+                        }
+                    }
+                }
+            }
+        },
+
         ---物理演算処理後に実行されるコールバック関数（省略可）。ここでモデルパーツの向きを上書きできる。
         ---@param modelPart ModelPart 物理演算が処理されたモデルパーツ
         callback = function (modelPart)
+            if modelPart == models.models.main.Avatar.Head.CBattleH.HairTail then
+                local modelRot = modelPart:getRot()
+                local headRotY = math.deg(math.asin(player:getLookDir().y))
+                if headRotY < 0 then
+                    modelRot.x = math.min(modelRot.x, 30)
+                end
+                modelPart:setRot(modelRot)
+            end
         end
-        ]]
     },
 
     --その他定数・変数
@@ -2799,6 +3472,25 @@ events.ENTITY_INIT:register(function ()
         modelPart:setPrimaryTexture("RESOURCE", "textures/block/water_still.png")
     end
     models.models.ex_skill_2.Waves.Wave2:setPrimaryTexture("RESOURCE", "textures/block/water_flow.png")
+    models.models.ex_skill_3.Illagers.Ravager:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/illager/ravager.png")
+
+    for index, modelPart in ipairs({models.models.ex_skill_3.Illagers.Ravager.Pillager1, models.models.ex_skill_3.Illagers.Pillager2}) do
+        modelPart:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/illager/pillager.png")
+        modelPart["P"..index.."RightArm"]:newItem("pillager_"..index.."_crossbow"):setItem(CompatibilityUtils:checkItem("minecraft:crossbow")):setPos(0, -15, -2.5):setRot(0, 0, -135)
+    end
+    for i = 1, 2 do
+        models.models.ex_skill_3.Illagers["Vindicator"..i]:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/illager/vindicator.png")
+        models.models.ex_skill_3.Illagers["Vindicator"..i]["V"..i.."RightArm"]:newItem("vindicator_"..i.."_iron_axe"):setItem(CompatibilityUtils:checkItem("minecraft:iron_axe")):setPos(1, -9, -5):setRot(-90, -45, -90)
+    end
+    models.models.ex_skill_3.Firework:setPrimaryTexture("RESOURCE", "minecraft:textures/item/firework_rocket.png")
+    models.models.ex_skill_4.Zombie:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/zombie/zombie.png")
+    for _, modelPart in ipairs({models.models.ex_skill_4.Zombie.ZHead.ZHelmet, models.models.ex_skill_4.Zombie.ZUpperBody.ZBody.ZChestPlateB, models.models.ex_skill_4.Zombie.ZUpperBody.ZArms.ZRightArm.ZChestPlateRA, models.models.ex_skill_4.Zombie.ZUpperBody.ZArms.ZLeftArm.ZChestPlateLA, models.models.ex_skill_4.Zombie.ZLowerBody.ZLegs.ZRightLeg.ZBootsRL, models.models.ex_skill_4.Zombie.ZLowerBody.ZLegs.ZLeftLeg.ZBootsLL}) do
+        modelPart:setPrimaryTexture("RESOURCE", "minecraft:textures/models/armor/iron_layer_1.png")
+    end
+    for _, modelPart in ipairs({models.models.ex_skill_4.Zombie.ZUpperBody.ZBody.ZLeggingsB,models.models.ex_skill_4.Zombie.ZLowerBody.ZLegs.ZRightLeg.ZLeggingsRL, models.models.ex_skill_4.Zombie.ZLowerBody.ZLegs.ZLeftLeg.ZLeggingsLL}) do
+        modelPart:setPrimaryTexture("RESOURCE", "minecraft:textures/models/armor/iron_layer_2.png")
+    end
+    models.models.ex_skill_4.Creeper:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/creeper/creeper.png")
 end)
 
 return BlueArchiveCharacter
