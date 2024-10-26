@@ -927,6 +927,7 @@ BlueArchiveCharacter = {
                         models.models.ex_skill_2.Gui.UI.ClearEffect.Background:setScale(windowsSize.x, windowsSize.y, 1)
                         models.models.ex_skill_2.Gui.UI:setVisible(true)
                     end
+                    Gun:setGunPosition("NONE")
                     models.models.main.Avatar.UpperBody.Body.Gun:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
                     models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setPos()
                     models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setRot()
