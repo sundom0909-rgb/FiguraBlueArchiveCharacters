@@ -912,6 +912,7 @@ BlueArchiveCharacter = {
                         models.models.ex_skill_2.Gui.UI.MidoriHeadUI:setPos(windowsSize.x * -1 + 88, 0, 0)
                         models.models.ex_skill_2.Gui.UI.MidoriHeadUI:setOffsetPivot(windowsSize.x * -1 + 88, 0, 0)
                     end
+                    Gun:setGunPosition("NONE")
                     models.models.main.Avatar.UpperBody.Body.Gun:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm)
                     models.models.main.Avatar.UpperBody.Arms.RightArm.Gun:setPos()
                     models.models.main.Avatar.UpperBody.Arms.RightArm.Gun:setRot()
