@@ -1482,7 +1482,11 @@ BlueArchiveCharacter = {
 
                 ---コスチュームに対応するExスキルのインデックス番号
                 ---@type integer
-                exSkill = 4,
+                exSkill = 3,
+
+                ---コスチュームに対応するサブExスキルのインデックス番号（任意）
+                ---@type integer
+                subExSkill = 4,
 
                 ---サブハンドガンを持っているかどうか
                 ---@type boolean
