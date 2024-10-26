@@ -3346,7 +3346,7 @@ events.ENTITY_INIT:register(function ()
             BlueArchiveCharacter.MissileCooldown = math.max(BlueArchiveCharacter.MissileCooldown - 1, 0)
         end)
 
-        KeyManager:register("missile_launch", "key.keyboard.g", function ()
+        KeyManager:register("missile_launch", "key.keyboard.v", function ()
             if BlueArchiveCharacter.MissileLaunchAllowed then
                 if BlueArchiveCharacter.MissileCooldown == 0 then
                     pings.lauchMissiles()
