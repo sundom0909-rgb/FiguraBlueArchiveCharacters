@@ -913,7 +913,7 @@ BlueArchiveCharacter = {
                         models.models.ex_skill_2.Gui.UI.MidoriHeadUI:setOffsetPivot(windowsSize.x * -1 + 88, 0, 0)
                     end
                     Gun:setGunPosition("NONE")
-                    models.models.main.Avatar.UpperBody.Body.Gun:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm)
+                    ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.Gun, models.models.main.Avatar.UpperBody.Arms.RightArm, models.models.main.Avatar.UpperBody.Body)
                     models.models.main.Avatar.UpperBody.Arms.RightArm.Gun:setPos()
                     models.models.main.Avatar.UpperBody.Arms.RightArm.Gun:setRot()
                     models.models.main.Avatar.UpperBody.Arms.RightArm.Gun:setVisible(true)
@@ -1153,7 +1153,7 @@ BlueArchiveCharacter = {
                             end
                         end, "ex_skill_2_transition_filter_render")
                     elseif tick == 151 then
-                        models.models.main.Avatar.UpperBody.Arms.RightArm.Gun:moveTo(models.models.main.Avatar.UpperBody.Body)
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.Gun, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.RightArm)
                         models.models.ex_skill_2.Wall.SpecialItemGroup:moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
                         FaceParts:setEmotion("NORMAL", "NORMAL_CENTER", "TRIANGLE", 3, true)
                         if host:isHost() then
@@ -1226,7 +1226,7 @@ BlueArchiveCharacter = {
                     models.models.ex_skill_2.Midori.MidoriHead.MidoriFaceParts.Eyes.EyeRight:setUVPixels()
                     if models.models.main.Avatar.UpperBody.Arms.RightArm.Gun ~= nil then
                         models.models.main.Avatar.UpperBody.Arms.RightArm.Gun:setVisible(false)
-                        models.models.main.Avatar.UpperBody.Arms.RightArm.Gun:moveTo(models.models.main.Avatar.UpperBody.Body)
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.Gun, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.RightArm)
                     elseif models.models.main.Avatar.UpperBody.Body.Gun ~= nil then
                         models.models.main.Avatar.UpperBody.Body.Gun:setVisible(false)
                     end
