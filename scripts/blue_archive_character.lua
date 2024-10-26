@@ -634,7 +634,7 @@ BlueArchiveCharacter = {
                 ---@param tick integer アニメーションの現在位置を示す。単位はティック。
                 animationTick = function(tick)
                     if tick == 0 then
-                        models.models.main.Avatar.UpperBody.Body.Gun:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.Gun, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom, models.models.main.Avatar.UpperBody.Body)
                         models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setPos()
                         models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setRot()
                         models.models.main.Avatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setVisible(false)
@@ -671,7 +671,7 @@ BlueArchiveCharacter = {
                             end
                         end
                     elseif tick == 53 then
-                        models.models.main.Avatar.UpperBody.Body.Shield:moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.Shield, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom, models.models.main.Avatar.UpperBody.Body)
                         FaceParts:setEmotion("ANGRY", "ANGRY_CENTER", "CLOSED2", 19, true)
                     elseif tick == 55 then
                         local bodyYaw = player:getBodyYaw()
@@ -735,7 +735,7 @@ BlueArchiveCharacter = {
                 ---@param forcedStop boolean アニメーションが途中終了した場合は"true"、アニメーションが最後まで再生されて終了した場合は"false"が代入される。
                 postAnimation = function(forcedStop)
                     if models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun ~= nil then
-                        models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:moveTo( models.models.main.Avatar.UpperBody.Body)
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
                     end
                     if player:isLeftHanded() then
                         models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(BlueArchiveCharacter.GUN.put.pos.left))
@@ -745,7 +745,7 @@ BlueArchiveCharacter = {
                         models.models.main.Avatar.UpperBody.Body.Gun:setRot(BlueArchiveCharacter.GUN.put.rot.right)
                     end
                     if models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Shield ~= nil then
-                        models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Shield:moveTo(models.models.main.Avatar.UpperBody.Body)
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Shield, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
                     end
                     if ExSkill.AnimationCount >= 0 then
                         models.models.main.Avatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setVisible(true)
@@ -982,13 +982,14 @@ BlueArchiveCharacter = {
                         models.models.main.Avatar.UpperBody.Body.Gun:setPos()
                         models.models.main.Avatar.UpperBody.Body.Gun:setRot()
                         models.models.main.Avatar.UpperBody.Body.Gun:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.Gun, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom, models.models.main.Avatar.UpperBody.Body)
                     elseif tick == 1 then
                         sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), ModelUtils.getModelWorldPos(models.models.main.Avatar), 0.5, 0.5)
                     elseif tick == 13 then
                         sounds:playSound(CompatibilityUtils:checkSound("minecraft:block.chest.locked"), ModelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Shield), 0.5, 2)
                     elseif tick == 14 then
                         models.models.main.Avatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setVisible(false)
-                        models.models.main.Avatar.UpperBody.Body.Shield:moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.Shield, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom, models.models.main.Avatar.UpperBody.Body)
                     elseif tick == 19 then
                         local anchorPos = ModelUtils.getModelWorldPos(models.models.main.Avatar):add(0, 0.25, 0)
                         local bodyYaw = player:getBodyYaw()
@@ -1084,7 +1085,7 @@ BlueArchiveCharacter = {
                 ---@param forcedStop boolean アニメーションが途中終了した場合は"true"、アニメーションが最後まで再生されて終了した場合は"false"が代入される。
                 postAnimation = function(forcedStop)
                     if models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun ~= nil then
-                        models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:moveTo(models.models.main.Avatar.UpperBody.Body)
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
                     end
                     if player:isLeftHanded() then
                         models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(BlueArchiveCharacter.GUN.put.pos.left))
@@ -1094,7 +1095,7 @@ BlueArchiveCharacter = {
                         models.models.main.Avatar.UpperBody.Body.Gun:setRot(BlueArchiveCharacter.GUN.put.rot.right)
                     end
                     if models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Shield ~= nil then
-                        models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Shield:moveTo(models.models.main.Avatar.UpperBody.Body)
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Shield, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
                     end
                     models.models.main.Avatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setVisible(true)
                     BlueArchiveCharacter.EX_SKILL[3].firework_sound = nil
@@ -1109,12 +1110,6 @@ BlueArchiveCharacter = {
                             models.models.ex_skill_3.Gui:setVisible(false)
                         end
                     end
-                end,
-
-                ---Exスキルアニメーション終了後のトランジション終了後に実行されるコールバック関数（任意）
-                ---@type fun(forcedStop: boolean)
-                ---@param forcedStop boolean アニメーションが途中終了した場合は"true"、アニメーションが最後まで再生されて終了した場合は"false"が代入される。
-                postTransition = function(forcedStop)
                 end
             },
 
@@ -1192,12 +1187,12 @@ BlueArchiveCharacter = {
                     if tick == 0 then
                         models.models.main.Avatar.UpperBody.Body.Gun:setPos()
                         models.models.main.Avatar.UpperBody.Body.Gun:setRot()
-                        models.models.main.Avatar.UpperBody.Body.Gun:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.Gun, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom, models.models.main.Avatar.UpperBody.Body)
                         models.models.main.Avatar.UpperBody.Body.SubGun:setPos()
                         models.models.main.Avatar.UpperBody.Body.SubGun:setRot()
                         models.models.main.Avatar.UpperBody.Body.SubGun:setScale(1.5, 1.5, 1.5)
                         models.models.main.Avatar.UpperBody.Body.SubGun:setParentType("None")
-                        models.models.main.Avatar.UpperBody.Body.SubGun:moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.SubGun, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom, models.models.main.Avatar.UpperBody.Body)
                         models.models.main.Avatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setVisible(false)
                     elseif tick == 1 then
                         sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.zombie.ambient"), ModelUtils.getModelWorldPos(models.models.main.Avatar), 0.5, 1)
@@ -1301,10 +1296,10 @@ BlueArchiveCharacter = {
                 postAnimation = function(forcedStop)
                     models.models.main.Avatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setVisible(true)
                     if models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun ~= nil then
-                        models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:moveTo(models.models.main.Avatar.UpperBody.Body)
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
                     end
                     if models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SubGun ~= nil then
-                        models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SubGun:moveTo(models.models.main.Avatar.UpperBody.Body)
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SubGun, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
                     end
                     if player:isLeftHanded() then
                         models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(BlueArchiveCharacter.GUN.put.pos.left))
@@ -1322,12 +1317,6 @@ BlueArchiveCharacter = {
                             renderer:setPostEffect()
                         end
                     end
-                end,
-
-                ---Exスキルアニメーション終了後のトランジション終了後に実行されるコールバック関数（任意）
-                ---@type fun(forcedStop: boolean)
-                ---@param forcedStop boolean アニメーションが途中終了した場合は"true"、アニメーションが最後まで再生されて終了した場合は"false"が代入される。
-                postTransition = function(forcedStop)
                 end
             }
 		}
