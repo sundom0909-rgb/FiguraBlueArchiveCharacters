@@ -981,7 +981,6 @@ BlueArchiveCharacter = {
                     if tick == 0 then
                         models.models.main.Avatar.UpperBody.Body.Gun:setPos()
                         models.models.main.Avatar.UpperBody.Body.Gun:setRot()
-                        models.models.main.Avatar.UpperBody.Body.Gun:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
                         ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.Gun, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom, models.models.main.Avatar.UpperBody.Body)
                     elseif tick == 1 then
                         sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), ModelUtils.getModelWorldPos(models.models.main.Avatar), 0.5, 0.5)
