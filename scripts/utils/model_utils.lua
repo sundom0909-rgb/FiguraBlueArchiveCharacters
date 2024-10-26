@@ -8,7 +8,8 @@ ModelUtils = {
         return vectors.vec3(modelMatrix[4][1], modelMatrix[4][2], modelMatrix[4][3])
     end,
 
-    ---モデルパーツをディープコピーする。非表示のモデルパーツはコピーしない。
+    ---モデルパーツをディープコピーする。
+    ---非表示のモデルパーツはコピーしない。
     ---@param modelPart ModelPart コピーするモデルパーツ
     ---@param name? string コピーしたモデルパーツの名前。省略した際はコピー元と同じ名前になる。
     ---@param forcedCopy? boolean 非表示のモデルも強制的にコピーする。
@@ -25,6 +26,19 @@ ModelUtils = {
                 end
             end
             return copy
+        end
+    end,
+
+    ---モデルパーツを別の親に移動させる。
+    ---組み込みmoveTo()で何故かモデルパーツが残ってしまう問題に対処済み。
+    ---@param target ModelPart 移動させる対象のモデルパーツ
+    ---@param destination ModelPart 移動先の親
+    ---@param originalParent ModelPart 移動元の親
+    moveTo = function (target, destination, originalParent)
+        target:moveTo(destination)
+        local modelName = target:getName()
+        if originalParent[modelName] ~= nil then
+            originalParent:removeChild(target)
         end
     end
 }
