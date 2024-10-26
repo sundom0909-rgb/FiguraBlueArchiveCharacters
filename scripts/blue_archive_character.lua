@@ -655,7 +655,7 @@ BlueArchiveCharacter = {
                         models.models.ex_skill_1.Momoi.MomoiHead.MomoiFaceParts.Mouth:setUVPixels(48, 0)
                     elseif tick == 64 then
                         models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.GameConsole1:setVisible(false)
-                        models.models.main.Avatar.UpperBody.Body.Gun:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm)
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.Gun, models.models.main.Avatar.UpperBody.Arms.RightArm, models.models.main.Avatar.UpperBody.Body)
                         models.models.main.Avatar.UpperBody.Arms.RightArm.Gun:setPos()
                         models.models.main.Avatar.UpperBody.Arms.RightArm.Gun:setRot()
                         models.models.main.Avatar.UpperBody.Arms.RightArm.Gun:setVisible(true)
@@ -696,7 +696,7 @@ BlueArchiveCharacter = {
                     end
                     if models.models.main.Avatar.UpperBody.Arms.RightArm.Gun ~= nil then
                         models.models.main.Avatar.UpperBody.Arms.RightArm.Gun:setVisible(false)
-                        models.models.main.Avatar.UpperBody.Arms.RightArm.Gun:moveTo(models.models.main.Avatar.UpperBody.Body)
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.Gun, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.RightArm)
                     end
                     if forcedStop then
                         for i = 1, 8 do
@@ -928,7 +928,7 @@ BlueArchiveCharacter = {
                         models.models.ex_skill_2.Gui.UI:setVisible(true)
                     end
                     Gun:setGunPosition("NONE")
-                    models.models.main.Avatar.UpperBody.Body.Gun:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
+                    ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.Gun, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom, models.models.main.Avatar.UpperBody.Body)
                     models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setPos()
                     models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setRot()
                     models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setVisible(true)
@@ -1191,7 +1191,7 @@ BlueArchiveCharacter = {
                     elseif tick == 148 and host:isHost() then
                         ExSkill2TransitionEffectsManager:play()
                     elseif tick == 154 then
-                        models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
                     elseif tick == 155 then
                         FaceParts:setEmotion("INVERTED", "NORMAL", "NORMAL", 2, true)
                         if host:isHost() then
@@ -1282,10 +1282,10 @@ BlueArchiveCharacter = {
                 postAnimation = function(forcedStop)
                     if models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun ~= nil then
                         models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setVisible(false)
-                        models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:moveTo(models.models.main.Avatar.UpperBody.Body)
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
                     elseif models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Gun ~= nil then
                         models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Gun:setVisible(false)
-                        models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Gun:moveTo(models.models.main.Avatar.UpperBody.Body)
+                        ModelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Gun, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
                     end
                     for _, modelPart in ipairs({models.models.ex_skill_2.Momoi.MomoiHead.MomoiFaceParts.Eyes.EyeLeft, models.models.ex_skill_2.Momoi.MomoiHead.MomoiFaceParts.Eyes.EyeRight, models.models.ex_skill_2.Momoi.MomoiHead.MomoiFaceParts.Mouth}) do
                         modelPart:setUVPixels()
