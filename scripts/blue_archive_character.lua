@@ -824,6 +824,31 @@ BlueArchiveCharacter = {
                 ---コスチュームに対応するExスキルのインデックス番号
                 ---@type integer
                 exSkill = 2
+            },
+
+            {
+                ---コスチュームの内部名
+                ---@type string
+                name = "idol",
+
+                ---コスチュームの表示名
+                display_name = {
+                    ---英語
+                    ---@type string
+                    en_us = "Idol",
+
+                    ---日本語
+                    ---@type string
+                    ja_jp = "アイドル"
+                },
+
+                ---この衣装での生徒の配置タイプ
+                ---@type BlueArchiveCharacter.FormationType
+                formationType = "STRIKER",
+
+                ---コスチュームに対応するExスキルのインデックス番号
+                ---@type integer
+                exSkill = 1
             }
         },
 
@@ -834,14 +859,12 @@ BlueArchiveCharacter = {
             ---@type fun(costumeId: integer)
             ---@param costumeId integer 新たな衣装のインデックス番号
             change = function(costumeId)
-                for _, modelPart in ipairs({models.models.main.Avatar.Head.Ears}) do
-                    modelPart:setVisible(true)
-                end
+                models.models.main.Avatar.Head.Ears:setVisible(true)
                 for _, modelPart in ipairs({models.models.main.Avatar.Head.Veil, models.models.main.Avatar.UpperBody.Body.VeilBody}) do
                     modelPart:setVisible(false)
                 end
-                for _, modelPart in ipairs({models.models.main.Avatar.Head.Accessory}) do
-                    modelPart:setPos(0, -1, 0)
+                if costumeId <= 3 then
+                    models.models.main.Avatar.Head.Accessory:setPos(0, -1, 0)
                 end
                 if costumeId == 3 then
                     Costume.setCostumeTextureOffset(1)
@@ -849,6 +872,18 @@ BlueArchiveCharacter = {
                         modelPart:setVisible(true)
                     end
                     for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.TrinityLogo, models.models.main.Avatar.UpperBody.Body.FrontHair, models.models.main.Avatar.UpperBody.Body.Robe, models.models.main.Avatar.UpperBody.Body.BackRibbon}) do
+                        modelPart:setVisible(false)
+                    end
+                elseif costumeId == 4 then
+                    Costume.setCostumeTextureOffset(2)
+                    models.models.main.Avatar.Head.Ears.RightEarPivot:setRot(-45, -10, 0)
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer}) do
+                        modelPart:setUVPixels(0, 16)
+                    end
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.CIdolH, models.models.main.Avatar.UpperBody.Body.CIdolB, models.models.main.Avatar.LowerBody.Legs.RightLeg.RightLegBottom.CIdolRLB, models.models.main.Avatar.LowerBody.Legs.LeftLeg.LeftLegBottom.CIdolLLB}) do
+                        modelPart:setVisible(true)
+                    end
+                    for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.TrinityLogo, models.models.main.Avatar.UpperBody.Body.FrontHair, models.models.main.Avatar.UpperBody.Body.Robe, models.models.main.Avatar.UpperBody.Body.BackRibbon, models.models.main.Avatar.Head.Accessory}) do
                         modelPart:setVisible(false)
                     end
                 end
@@ -859,18 +894,20 @@ BlueArchiveCharacter = {
             ---@type fun()
             reset = function()
                 Costume.setCostumeTextureOffset(0)
-                for _, modelPart in ipairs({models.models.main.Avatar.Head.Ears, models.models.main.Avatar.Head.CTracksuitH, models.models.main.Avatar.UpperBody.Body.CTracksuitB}) do
+                for _, modelPart in ipairs({models.models.main.Avatar.Head.Ears, models.models.main.Avatar.Head.CTracksuitH, models.models.main.Avatar.UpperBody.Body.CTracksuitB, models.models.main.Avatar.Head.CIdolH, models.models.main.Avatar.UpperBody.Body.CIdolB, models.models.main.Avatar.LowerBody.Legs.RightLeg.RightLegBottom.CIdolRLB, models.models.main.Avatar.LowerBody.Legs.LeftLeg.LeftLegBottom.CIdolLLB}) do
                     modelPart:setVisible(false)
                 end
-                for _, modelPart in ipairs({models.models.main.Avatar.Head.Veil, models.models.main.Avatar.UpperBody.Body.VeilBody, models.models.main.Avatar.UpperBody.Body.TrinityLogo, models.models.main.Avatar.UpperBody.Body.FrontHair}) do
+                for _, modelPart in ipairs({models.models.main.Avatar.Head.Veil, models.models.main.Avatar.UpperBody.Body.VeilBody, models.models.main.Avatar.UpperBody.Body.TrinityLogo, models.models.main.Avatar.UpperBody.Body.FrontHair, models.models.main.Avatar.Head.Accessory}) do
                     modelPart:setVisible(true)
                 end
                 for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.Robe, models.models.main.Avatar.UpperBody.Body.BackRibbon}) do
                     modelPart:setVisible(not Armor.ArmorVisible[3])
                 end
-                for _, modelPart in ipairs({models.models.main.Avatar.Head.Accessory}) do
-                    modelPart:setPos()
+                for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer}) do
+                    modelPart:setUVPixels()
                 end
+                models.models.main.Avatar.Head.Accessory:setPos()
+                models.models.main.Avatar.Head.Ears.RightEarPivot:setRot()
             end,
 
             ---防具が変更された（防具が見える/見えない）時に実行されるコールバック関数
@@ -2857,5 +2894,10 @@ events.TICK:register(function ()
     shouldHideLegsPrev = shouldHideLegs
     legAdjustedPrev = shouldAdjustLegs
 end)
+
+for i = 1, 2 do
+    models.models.main.Avatar.Head.CIdolH.Hat["Feather"..i]:setPrimaryTexture("RESOURCE", "minecraft:textures/item/feather.png")
+    models.models.main.Avatar.Head.CIdolH.Hat["Feather"..i]:setColor(0.65, 0.65, 0.65)
+end
 
 return BlueArchiveCharacter

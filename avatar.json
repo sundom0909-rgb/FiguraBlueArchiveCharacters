@@ -10,7 +10,8 @@
 		"textures.for_modeling.leather_layer_2",
 		"textures.for_modeling.leather_layer_2_overlay",
 		"textures.for_modeling.trim",
-		"textures.for_modeling.trim_leggings"
+		"textures.for_modeling.trim_leggings",
+		"textures.for_modeling.feather"
 	],
 	"autoScripts": [
 		"scripts/index.lua"
@@ -170,6 +171,22 @@
 		},
 		"models.models.costume_tracksuit.CTracksuitB": {
 			"moveTo": "models.models.main.Avatar.UpperBody.Body",
+			"visible": false
+		},
+		"models.models.costume_idol.CIdolH": {
+			"moveTo": "models.models.main.Avatar.Head",
+			"visible": false
+		},
+		"models.models.costume_idol.CIdolB": {
+			"moveTo": "models.models.main.Avatar.UpperBody.Body",
+			"visible": false
+		},
+		"models.models.costume_idol.CIdolRLB": {
+			"moveTo": "models.models.main.Avatar.LowerBody.Legs.RightLeg.RightLegBottom",
+			"visible": false
+		},
+		"models.models.costume_idol.CIdolLLB": {
+			"moveTo": "models.models.main.Avatar.LowerBody.Legs.LeftLeg.LeftLegBottom",
 			"visible": false
 		},
 		"models.models.ex_skill_frame.Particles": {
