@@ -1185,11 +1185,11 @@
 			"locked": false,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
-			"from": [-2.75, 22.5, -2.003],
-			"to": [-2, 23.25, -2.003],
+			"from": [-2.25, 22.75, -2.003],
+			"to": [-1.5, 23.5, -2.003],
 			"autouv": 0,
 			"color": 0,
-			"origin": [-2.75, 23.25, 3.25],
+			"origin": [-2.25, 23.5, 3.25],
 			"faces": {
 				"north": {
 					"uv": [15, 6, 19, 10],
@@ -1226,12 +1226,12 @@
 			"locked": false,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
-			"from": [-2.75, 23.0625, -2.002],
-			"to": [-2, 24, -2.002],
+			"from": [-2.25, 23.3125, -2.002],
+			"to": [-1.5, 24.25, -2.002],
 			"autouv": 0,
 			"color": 0,
 			"rotation": [0, 0, 30],
-			"origin": [-2.375, 22.875, -2],
+			"origin": [-1.875, 23.125, -2],
 			"faces": {
 				"north": {
 					"uv": [19, 6, 23, 11],
@@ -1268,12 +1268,12 @@
 			"locked": false,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
-			"from": [-2.75, 23.0625, -2.002],
-			"to": [-2, 24, -2.002],
+			"from": [-2.25, 23.3125, -2.002],
+			"to": [-1.5, 24.25, -2.002],
 			"autouv": 0,
 			"color": 0,
 			"rotation": [0, 0, 120],
-			"origin": [-2.375, 22.875, -2],
+			"origin": [-1.875, 23.125, -2],
 			"faces": {
 				"north": {
 					"uv": [19, 6, 23, 11],
@@ -1310,12 +1310,12 @@
 			"locked": false,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
-			"from": [-2.75, 23.0625, -2.002],
-			"to": [-2, 24, -2.002],
+			"from": [-2.25, 23.3125, -2.002],
+			"to": [-1.5, 24.25, -2.002],
 			"autouv": 0,
 			"color": 0,
 			"rotation": [0, 0, -150],
-			"origin": [-2.375, 22.875, -2],
+			"origin": [-1.875, 23.125, -2],
 			"faces": {
 				"north": {
 					"uv": [19, 6, 23, 11],
@@ -1352,12 +1352,12 @@
 			"locked": false,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
-			"from": [-2.75, 23.0625, -2.002],
-			"to": [-2, 24, -2.002],
+			"from": [-2.25, 23.3125, -2.002],
+			"to": [-1.5, 24.25, -2.002],
 			"autouv": 0,
 			"color": 0,
 			"rotation": [0, 0, -60],
-			"origin": [-2.375, 22.875, -2],
+			"origin": [-1.875, 23.125, -2],
 			"faces": {
 				"north": {
 					"uv": [19, 6, 23, 11],
@@ -1394,11 +1394,11 @@
 			"locked": false,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
-			"from": [-3.25, 20.5, -2.001],
-			"to": [-2.25, 22.5, -2.001],
+			"from": [-2.75, 20.75, -2.001],
+			"to": [-1.75, 22.75, -2.001],
 			"autouv": 0,
 			"color": 0,
-			"origin": [0, 24, 0],
+			"origin": [-2.25, 22.75, -2.001],
 			"faces": {
 				"north": {
 					"uv": [26, 0, 30, 8],
@@ -2027,7 +2027,7 @@
 					"uuid": "cdab52c9-c65e-264f-0cc5-61c5d0b21952",
 					"export": true,
 					"mirror_uv": false,
-					"isOpen": false,
+					"isOpen": true,
 					"locked": false,
 					"visibility": true,
 					"autouv": 0,
@@ -2048,7 +2048,7 @@
 								"a32e8f76-cadb-7bae-a3a1-7155e47092b4",
 								{
 									"name": "HairLeftBottom",
-									"origin": [-2, 23.5, 2.5],
+									"origin": [-1.5, 23.5, 2.5],
 									"color": 0,
 									"uuid": "5c5be983-1a1a-0ae0-5de5-fb2f76d4dd3d",
 									"export": true,
@@ -2060,7 +2060,7 @@
 									"children": [
 										{
 											"name": "HairLeftBottomZ",
-											"origin": [-2, 23.5, 2.5],
+											"origin": [-1.5, 23.5, 2.5],
 											"color": 0,
 											"uuid": "5bb28399-03df-07c4-56f0-8fc0424dba69",
 											"export": true,
@@ -2096,7 +2096,7 @@
 								"5cbfc8b6-0d9f-d186-1590-b62d3ed2c530",
 								{
 									"name": "HairRightBottom",
-									"origin": [2, 23.5, 2.5],
+									"origin": [1.5, 23.5, 2.5],
 									"color": 0,
 									"uuid": "40c15a0f-d6ac-0cf7-1087-7b30ce0bbff1",
 									"export": true,
@@ -2108,7 +2108,7 @@
 									"children": [
 										{
 											"name": "HairRightBottomZ",
-											"origin": [2, 23.5, 2.5],
+											"origin": [1.5, 23.5, 2.5],
 											"color": 0,
 											"uuid": "84ae29cb-6cd5-be4e-315e-93105347603b",
 											"export": true,
@@ -2151,7 +2151,6 @@
 						{
 							"name": "HatVeil",
 							"origin": [5, 33, 1.25],
-							"rotation": [0, 0, 15],
 							"color": 0,
 							"uuid": "096b8f99-10cd-3288-a4f6-5b2635c44efb",
 							"export": true,
@@ -2161,10 +2160,25 @@
 							"visibility": true,
 							"autouv": 0,
 							"children": [
-								"1fd38ead-ec77-ba88-dda7-90166e8d35aa",
-								"c111259f-cca7-bef6-28b5-961a88b88ba5",
-								"321856fc-70d1-fafe-efb4-01a4785cb354",
-								"7a2bf31f-6b5a-4747-dc56-a869b9277658"
+								{
+									"name": "HatVeilInner",
+									"origin": [5, 33, 1.25],
+									"rotation": [0, 0, 15],
+									"color": 0,
+									"uuid": "1d65ddf4-6860-180e-5ff4-6d7faa0ca67c",
+									"export": true,
+									"mirror_uv": false,
+									"isOpen": true,
+									"locked": false,
+									"visibility": true,
+									"autouv": 0,
+									"children": [
+										"1fd38ead-ec77-ba88-dda7-90166e8d35aa",
+										"c111259f-cca7-bef6-28b5-961a88b88ba5",
+										"321856fc-70d1-fafe-efb4-01a4785cb354",
+										"7a2bf31f-6b5a-4747-dc56-a869b9277658"
+									]
+								}
 							]
 						}
 					]
@@ -2178,7 +2192,7 @@
 			"uuid": "100df580-b7d5-f732-e3b5-b1818fae4dc3",
 			"export": true,
 			"mirror_uv": false,
-			"isOpen": false,
+			"isOpen": true,
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
@@ -2208,7 +2222,7 @@
 				},
 				{
 					"name": "NeckRibbon",
-					"origin": [0, 24, 0],
+					"origin": [0.5, 24.25, 0],
 					"color": 0,
 					"uuid": "812bacd3-66b0-d8bb-2c4c-59ac086bbd80",
 					"export": true,
@@ -2223,7 +2237,33 @@
 						"002578f8-0c01-9a07-49ec-29ec45da30af",
 						"a373fa76-6bcb-c92d-0f62-b0ad32d8e83d",
 						"c4af36d4-ea08-53ef-9580-e4b91387c449",
-						"6d59a1b8-9afc-613c-0d68-4a27a7ec7a4f"
+						{
+							"name": "NeckRibbonBottom",
+							"origin": [-2.25, 22.75, -2.001],
+							"color": 0,
+							"uuid": "05a9b6e2-502f-8c6d-42d1-5fc1fe46c3df",
+							"export": true,
+							"mirror_uv": false,
+							"isOpen": true,
+							"locked": false,
+							"visibility": true,
+							"autouv": 0,
+							"children": [
+								{
+									"name": "NeckRibbonBottomZPivot",
+									"origin": [-2.25, 22.75, -2.001],
+									"color": 0,
+									"uuid": "2ac3f06d-6db1-9cd3-e4b9-898213169e12",
+									"export": true,
+									"mirror_uv": false,
+									"isOpen": false,
+									"locked": false,
+									"visibility": true,
+									"autouv": 0,
+									"children": ["6d59a1b8-9afc-613c-0d68-4a27a7ec7a4f"]
+								}
+							]
+						}
 					]
 				}
 			]
@@ -2324,7 +2364,7 @@
 			"saved": true,
 			"uuid": "b7b211be-0478-44f1-555d-4ea220b09c2e",
 			"relative_path": "../../textures/costume_idol.png",
-			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAABsCAYAAAAsTjELAAAAAXNSR0IArs4c6QAABXtJREFUeF7tWE1oXUUUPpe2MaSmgWKxuG83oQZFdKG2YhUJGpWKwSwUQRf+tYgIZiEVXUgFf2ltkW7clIriT5NKEX/QoC5UlFi6UEuLFEKUUhrzEuQ17ZUzeB7zTs99c859977cp/M2c+/MuTPfd853zsybBITf31N7U+w+v3AeVqxe4Szue+VT+OjQh8mXe7a5sZue+CDB9tj0j+59cOhq9+7/aAz7NvRPQX3pghu+dONTF9lKODR94kRIgMBTiwSevDWB/vXrYebnabjiyiHo3fBw0xqcBBKon1uCnlUrmwgUScJE4KGhP+G6u4fh1IkZmJ+dhXU3PgsEkFokgcCx/emH79LPP/sCtt5yMwyu/bYRgdIJLBzZnaJ0/CgM7dgDx3/7JZnceb2TzMgL3ziAPMxXXXOt68f25V270qfHx127Y7S3QWDm1GnYuPXFQmSUSGBJ934O9G5+7KIFfQ+Tp/0WwRPB+onXU8qBQglwDxIh6ue54L/vm14A8rDU4hwUjUoSWD28Pbln5DYno/cnP3HeRqCuXbrgqg3JqDQCvoQQEL6T930pYR/Piwf2Hob9E/th5sxxeO7Bl+DgG8NNOp/4fk0jQo9s63HTFikfnC+YAxJwIoIEnn/7GTg7exZeG3/LEagtLELPJb0OaH3dKIyN3d9Q6dFjRwtJXF/2CdV87nXfCHUvEeESQpn4BLDSbBrc5CJ68veTUKvVyiUgVR8OnohgS2P4jGRqv77aVFYxB4gA2pQSAb/qZIH1+33gCBrfcQ561mz/Rdpk5kBW+SQCFK0sqUn7RpHAaa5GDvAKo30n+dCE/kHQz5uyItSIAAGQ5MJzg0fH9zaVYR6hsiLSVIW0Xud2vELhOydVWgSko7PvYanqSETL8nAob4JJTEnLPcirV1keDhLIMvh66qummr5UPwcre1Y1md+weUvhG1MIMB/PBIAEWgEMjVuB5LWPBPJ6rqjv/tsRCHmpEknMq00WaKkKhQi2Gi+KfLAMSuUUgVWlpKoIhLy1nCU1EkA5xQi0UQ2ihLpCQpoIhyqVZo48Nol2I6PJcUOT9oE8i0vfWB3R/QS0npMilXW8sHpRi0GyC1Yh+khb67V27YD2v40EuCdjBIzaihKKEjJKRn0vlNezlU5irbM6upFZz0I+iaL/6Oe5BDCfhSpHQCsL/0hh+aZsOan3AeuZqFN/dCKBVnLqREmNEYgRsJQ0wTZKKEooSsjoAevhr/SjxJHJibR/YADm5+agG9vknQMH0oE1/TD31zx0Y2suo0bFlW7uCKCMhkfuTLqxzYzA6L1j6eLiIvT19TW8yN/ffe/gskewJQFEnkUC+w9/fKjaBFp5GCNU6QjccftdaSsPV54AAuQS8uXUFRLi+ueEKiEh8nSoYCNYrW1oLhwvinywinDQtHBWvwZ8kTYqAiFvLWdCRwIohxiBNpIiSqgrJKSJcKhSaebIY6PanC6/bK2b+4/TZxobECau359ncekbqyNEAj4wfEbg+MPn3fvedHmz/dHHU78fn4sgZCag9RwHTEQkMv6Ydv68dsEqRBMjAQ0wrV1ewPw7NQHtZqW1iwT+9YA6AlppaO1iBKwR0Gpbaxcj8L+MgDbs1t1UO69kl3mUkI4J0pGi1bGCz9EO0CynqAhIC/OjhGTTEQLteKUK36o3siqAFXPACsxS5y22Vhxkb46ABZTFNhLQesDiVYutdv3c/wfoQwsoi23HCFiOyxbbSEDrAYssLLba9QvJActiZR/scu0DRIDfA0n3QqUToPsefoHFvay5UmkVGVyHj7e6GJPwSPbuNMpv4nChdgGHZEaEpBs9CQ/Nx+2bCHQCOCfmR8b3MNlxR3L7hDrK9rg2IlnAs4j/AzlSNcnlrZZ4AAAAAElFTkSuQmCC"
+			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAABsCAYAAAAsTjELAAAAAXNSR0IArs4c6QAABX9JREFUeF7tWF2IVVUUXgd1GkbHAWlIfNeXwQYj6iG1yCSGGgujwXkognqoTIkImoco6iEU+sVJCV98EaPoxxlFRIsayoeKwsSHUpQYGMYQcZw7Q1xHj6yN67Lvcp+z1zr3nDvn5r4v+5x91t77+9b61tr77ggcv//GdsfYfW3mGixYvMBYbPngGHx78Jvoh+HN5ttDr3wdYXv65O/mvaf3HvNu/+gb9q3sHIPq3HXzecmq126xdeGQ9DknQgIEnlok8OrGCDqXL4eJP0/Cirt7oX3lC3VrcBJIoHp1DtoWLawjkCcJFYHne/+F+5/sg/FzEzA9OQnd694EAkgtkkDg2P7x2y/xd8e/hw2PPAw9y07UIlA4gZkju2KUjh2F3u3DcPbMX9HoWw8YyfS/+7MByMO85t77TD+27+/YEb8+NGTa7QPtNQIT4xdh1Yb3cpFR5AJLurdzoH39y7csaHuYPG23CJ4IVs99HFMO5EqAe5AIUT/PBZvU8IkrQB52tTgHRaOUBDAqT/U/amT01ehR420Eatq566bakIwKI2BLaHHfNiMp8r4tJezjefHs7kOwd2QvTFw6C28/txMOfNJXp/ORX5fWIvTi5jYzbZ7ywfm8OeACTkSQwDv73oDLk5fho6HPDIHKzCy03dFugFa7B2Bw8JmaSk+dPpVL4tqyj6jmc6/bRqh7FxGMmC0hlIlNACvN6p7VJqLn/zkPlUqlWAKu6sPBExFs6Rs+I5nK3x/WlVXMASKANoVEwK46SWDtfhs4gsZ3nIOeJdt/njaJOZBWPu1SmiQ1176RJ3Caq5YDvMJI30k+NKF9ELTzpqgI1SJgb1xc5zw3eHRsb1MZpjE0b1ERqatCUq9zO16h8J2TKiwCrqOz7WFX1XERLcrDvrzxJjFVHe5BXr2K8rCXQJLBT2M/1tX0uepVWNi2qM587foHc9+YfID590QASCANoO+7FkhW+0Agq+fyGvf/joDPS6VIYl5tkkC7qpCPYNr3vMh7y6CrnCKwspRUEQGft+azpAYCKKcQgQaqQZBQS0hIEmFfpZLMkcUmkm5kNDluaK59IMvirjFaR7Q+AannXJFKOl5ovSjF4LLzViEaJK31UrtGQNtjAwHuyRABpbaChIKElJIR3wtl9Wypk1jqrKZuZNqzkE0i7z/6WS4B1Geh0hGQysI+UmjGFC0n8T6gPRM1649OIJAmp2aU1BCBEAFNSXPYBgkFCQUJKT2gPfwVfpQ4MjoSd3Z1wfTUFLRiG32+f3/ctbQTpq5MQyu26jKqVFzh5oYAyqivf1PUim1iBAaeHoxnZ2eho6Oj5kX+/sWXB+Y9gqkEEHkSCew/dPhguQmkeRgjVOoIPP7YE3Gah0tPAAFyCdlyagkJcf1zQqWQEHnaV7ARrNTWNxd+z4u8t4pw0LRwUr8EfJ42IgI+b81nQgcCKIcQgQaSIkioJSQkibCvUknmyGIj2pzuunOZmfvCxUu1DQgT1+7PsrhrjNYRTgI2MHxG4PjD5117PjV5s+2lrbHdj895EFITkHqOAyYiLjL2N+n8We28VYgmRgISYFK7rID5ODEB6WYltQsEbnpAHAGpNKR2IQLaCEi1LbULEbgtIyANu3Y3lc7rsks8SriOCa4jRdqxgs/RCNAkp4gIuBbmRwmXTVMINOKVMowVb2RlAOvMAS0wTZ3X2GpxkL06AhpQGttAQOoBjVc1ttL1M/8foIEaUBrbphHQHJc1toGA1AMaWWhspevnkgOaxYo+2GXaB4gAvwdy3QsVToDue/gFFvey5EolLTK4Dv+edjHmwuOyN6dRfhOHCzUK2CczIuS60XPhofm4fR2BZgDnxOzI2B4mO+5Ibh9RR9Eel0YkCXgS8RvTuS/JxPC/iQAAAABJRU5ErkJggg=="
 		},
 		{
 			"path": "C:\\Users\\gakut\\AppData\\Roaming\\ModrinthApp\\profiles\\Fabricバニラ\\figura\\avatars\\ブルーアーカイブ\\ベースアバター\\textures\\for_modeling\\feather.png",
