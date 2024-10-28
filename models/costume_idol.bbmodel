@@ -1394,14 +1394,14 @@
 			"locked": false,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
-			"from": [-2.75, 20.75, -2.001],
+			"from": [-2.75, 19.25, -2.001],
 			"to": [-1.75, 22.75, -2.001],
 			"autouv": 0,
 			"color": 0,
 			"origin": [-2.25, 22.75, -2.001],
 			"faces": {
 				"north": {
-					"uv": [26, 0, 30, 8],
+					"uv": [27, 0, 31, 14],
 					"texture": 0
 				},
 				"east": {
@@ -2199,7 +2199,7 @@
 			"children": [
 				{
 					"name": "Skirt",
-					"origin": [0, 24, 0],
+					"origin": [0, 15, 0],
 					"color": 0,
 					"uuid": "39bf2ba3-17d9-beac-f946-517d0f9919a0",
 					"export": true,
@@ -2256,7 +2256,7 @@
 									"uuid": "2ac3f06d-6db1-9cd3-e4b9-898213169e12",
 									"export": true,
 									"mirror_uv": false,
-									"isOpen": false,
+									"isOpen": true,
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
@@ -2364,7 +2364,7 @@
 			"saved": true,
 			"uuid": "b7b211be-0478-44f1-555d-4ea220b09c2e",
 			"relative_path": "../../textures/costume_idol.png",
-			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAABsCAYAAAAsTjELAAAAAXNSR0IArs4c6QAABX9JREFUeF7tWF2IVVUUXgd1GkbHAWlIfNeXwQYj6iG1yCSGGgujwXkognqoTIkImoco6iEU+sVJCV98EaPoxxlFRIsayoeKwsSHUpQYGMYQcZw7Q1xHj6yN67Lvcp+z1zr3nDvn5r4v+5x91t77+9b61tr77ggcv//GdsfYfW3mGixYvMBYbPngGHx78Jvoh+HN5ttDr3wdYXv65O/mvaf3HvNu/+gb9q3sHIPq3HXzecmq126xdeGQ9DknQgIEnlok8OrGCDqXL4eJP0/Cirt7oX3lC3VrcBJIoHp1DtoWLawjkCcJFYHne/+F+5/sg/FzEzA9OQnd694EAkgtkkDg2P7x2y/xd8e/hw2PPAw9y07UIlA4gZkju2KUjh2F3u3DcPbMX9HoWw8YyfS/+7MByMO85t77TD+27+/YEb8+NGTa7QPtNQIT4xdh1Yb3cpFR5AJLurdzoH39y7csaHuYPG23CJ4IVs99HFMO5EqAe5AIUT/PBZvU8IkrQB52tTgHRaOUBDAqT/U/amT01ehR420Eatq566bakIwKI2BLaHHfNiMp8r4tJezjefHs7kOwd2QvTFw6C28/txMOfNJXp/ORX5fWIvTi5jYzbZ7ywfm8OeACTkSQwDv73oDLk5fho6HPDIHKzCy03dFugFa7B2Bw8JmaSk+dPpVL4tqyj6jmc6/bRqh7FxGMmC0hlIlNACvN6p7VJqLn/zkPlUqlWAKu6sPBExFs6Rs+I5nK3x/WlVXMASKANoVEwK46SWDtfhs4gsZ3nIOeJdt/njaJOZBWPu1SmiQ1176RJ3Caq5YDvMJI30k+NKF9ELTzpqgI1SJgb1xc5zw3eHRsb1MZpjE0b1ERqatCUq9zO16h8J2TKiwCrqOz7WFX1XERLcrDvrzxJjFVHe5BXr2K8rCXQJLBT2M/1tX0uepVWNi2qM587foHc9+YfID590QASCANoO+7FkhW+0Agq+fyGvf/joDPS6VIYl5tkkC7qpCPYNr3vMh7y6CrnCKwspRUEQGft+azpAYCKKcQgQaqQZBQS0hIEmFfpZLMkcUmkm5kNDluaK59IMvirjFaR7Q+AannXJFKOl5ovSjF4LLzViEaJK31UrtGQNtjAwHuyRABpbaChIKElJIR3wtl9Wypk1jqrKZuZNqzkE0i7z/6WS4B1Geh0hGQysI+UmjGFC0n8T6gPRM1649OIJAmp2aU1BCBEAFNSXPYBgkFCQUJKT2gPfwVfpQ4MjoSd3Z1wfTUFLRiG32+f3/ctbQTpq5MQyu26jKqVFzh5oYAyqivf1PUim1iBAaeHoxnZ2eho6Oj5kX+/sWXB+Y9gqkEEHkSCew/dPhguQmkeRgjVOoIPP7YE3Gah0tPAAFyCdlyagkJcf1zQqWQEHnaV7ARrNTWNxd+z4u8t4pw0LRwUr8EfJ42IgI+b81nQgcCKIcQgQaSIkioJSQkibCvUknmyGIj2pzuunOZmfvCxUu1DQgT1+7PsrhrjNYRTgI2MHxG4PjD5117PjV5s+2lrbHdj895EFITkHqOAyYiLjL2N+n8We28VYgmRgISYFK7rID5ODEB6WYltQsEbnpAHAGpNKR2IQLaCEi1LbULEbgtIyANu3Y3lc7rsks8SriOCa4jRdqxgs/RCNAkp4gIuBbmRwmXTVMINOKVMowVb2RlAOvMAS0wTZ3X2GpxkL06AhpQGttAQOoBjVc1ttL1M/8foIEaUBrbphHQHJc1toGA1AMaWWhspevnkgOaxYo+2GXaB4gAvwdy3QsVToDue/gFFvey5EolLTK4Dv+edjHmwuOyN6dRfhOHCzUK2CczIuS60XPhofm4fR2BZgDnxOzI2B4mO+5Ibh9RR9Eel0YkCXgS8RvTuS/JxPC/iQAAAABJRU5ErkJggg=="
+			"source": "data:image/png;base64,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"
 		},
 		{
 			"path": "C:\\Users\\gakut\\AppData\\Roaming\\ModrinthApp\\profiles\\Fabricバニラ\\figura\\avatars\\ブルーアーカイブ\\ベースアバター\\textures\\for_modeling\\feather.png",
