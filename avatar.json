@@ -165,6 +165,13 @@
 		"models.models.ex_skill_2.Gui.AnxiousFrame": {
 			"visible": false
 		},
+		"models.models.ex_skill_3.Gui": {
+			"visible": false
+		},
+		"models.models.ex_skill_3.BTrinityLogo": {
+			"moveTo": "models.models.main.Avatar.UpperBody.Body",
+			"visible": false
+		},
 		"models.models.costume_tracksuit.CTracksuitH": {
 			"moveTo": "models.models.main.Avatar.Head",
 			"visible": false

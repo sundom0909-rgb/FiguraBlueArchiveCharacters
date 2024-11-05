@@ -76,7 +76,8 @@ BlueArchiveCharacter = {
             NARROW2 = {0, 1},
             CLOSED2 = {1, 1},
             INVERTED = {2, 1},
-            TEAR = {4, 1}
+            TEAR = {4, 1},
+            UNEQUAL = {5, 1}
         },
 
         ---左目
@@ -89,7 +90,8 @@ BlueArchiveCharacter = {
             NARROW2 = {-1, 1},
             CLOSED2 = {0, 1},
             INVERTED = {2, 1},
-            TEAR = {3, 1}
+            TEAR = {3, 1},
+            UNEQUAL = {4, 1}
         },
 
         ---口
@@ -100,7 +102,9 @@ BlueArchiveCharacter = {
             ANXIOUS = {2, 1},
             TRIANGLE = {3, 1},
             TRIANGLE2 = {0, 2},
-            TIRED = {1, 2}
+            TIRED = {1, 2},
+            OPENED2 = {0, 3},
+            SMALL = {1, 3}
         }
 
         ---表情のセット（省略可）
@@ -710,6 +714,229 @@ BlueArchiveCharacter = {
                     end
                 end
             }
+		},
+
+		{
+            ---Exスキルの名前
+            name = {
+                ---英語
+                ---日本語名を翻訳したものにする。
+                ---@type string
+                en_us = "Overflowing heart",
+
+                ---日本語
+                ---実際のスキルの名前と同じにする。
+                ---@type string
+                ja_jp = "溢れるハート"
+            },
+
+            ---Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
+            ---@type ModelPart[]
+			models = {models.models.ex_skill_3.Gui},
+
+            ---Exスキルアニメーションが含まれるモデルファイル名
+            ---アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
+            ---@type string[]
+			animations = {"main", "ex_skill_3"},
+
+            ---Exスキルアニメーションでのカメラワークのデータ
+            camera = {
+                ---Exスキルアニメーション開始時
+                start = {
+                    ---カメラの位置
+                    ---BBアニメーション上での値をそのまま入力する。
+                    ---@type Vector3
+                    pos = vectors.vec3(),
+
+                    ---カメラの向き
+                    ---BBアニメーション上での値をそのまま入力する。
+                    ---@type Vector3
+                    rot = vectors.vec3()
+                },
+
+                ---Exスキルアニメーション終了時
+                fin = {
+                    ---カメラの位置
+                    ---BBアニメーション上での値をそのまま入力する。
+                    ---@type Vector3
+                    pos = vectors.vec3(),
+
+                    ---カメラの向き
+                    ---BBアニメーション上での値をそのまま入力する。
+                    ---@type Vector3
+                    rot = vectors.vec3()
+                }
+            },
+
+            ---コールバック関数
+            callbacks = {
+                ---Exスキルアニメーション開始前のトランジション終了後に実行されるコールバック関数（任意）
+                ---@type fun()
+                preAnimation = function()
+                    Costume.setCostumeTextureOffset(3)
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer}) do
+                        modelPart:setUVPixels()
+                    end
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.CIdolH, models.models.main.Avatar.UpperBody.Body.CIdolB, models.models.main.Avatar.LowerBody.Legs.RightLeg.RightLegBottom.CIdolRLB, models.models.main.Avatar.LowerBody.Legs.LeftLeg.LeftLegBottom.CIdolLLB, models.models.main.Avatar.Head.CTracksuitH.HairbandFront, models.models.main.Avatar.Head.CTracksuitH.Hairband, models.models.main.Avatar.Head.CTracksuitH.HairBandRibbon, models.models.main.Avatar.UpperBody.Body.CTracksuitB.TrinityLogo, models.models.main.Avatar.UpperBody.Body.CTracksuitB.Fastener, models.models.main.Avatar.UpperBody.Body.CTracksuitB.Bag}) do
+                        modelPart:setVisible(false)
+                    end
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.CTracksuitH, models.models.main.Avatar.UpperBody.Body.CTracksuitB, models.models.main.Avatar.UpperBody.Body.BTrinityLogo}) do
+                        modelPart:setVisible(true)
+                    end
+                    models.models.main.Avatar.Head.Ears.RightEarPivot:setRot()
+                    if not BlueArchiveCharacter.EX_SKILL[3].init then
+                        models.models.main.Avatar.UpperBody.Body.BTrinityLogo:setColor(0.357, 0.365, 0.475)
+                        if host:isHost() then
+                            --モデルのコピー
+                            models.models.main.Avatar.Head.FaceParts.Mouth:setVisible(true)
+                            for i = 1, 4 do
+                                models.models.ex_skill_3.Gui.Scrollable["Pose"..i]:addChild(ModelUtils:copyModel(models.models.main.Avatar))
+                            end
+                            models.models.main.Avatar.Head.FaceParts.Mouth:setVisible(false)
+                            --ポーズの作成
+                            models.models.ex_skill_3.Gui.Scrollable.Pose1.Avatar:setRot(-2.7199, 19.8217, -7.9753)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose1.Avatar.Head:setRot(2.664, -14.7669, -10.3453)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose1.Avatar.Head.Ears.RightEarPivot:setRot(0, 0, -15)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose1.Avatar.Head.Ears.LeftEarPivot:setRot(0, 0, -15)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose1.Avatar.Head.CTracksuitH.HairTail:setRot(-22.5, 0, 20)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose1.Avatar.UpperBody.Body.CTracksuitB.FrontHair:setRot(15, 0, 0)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose1.Avatar.UpperBody.Arms.RightArm:setRot(0, 0, 22.5)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose1.Avatar.UpperBody.Arms.LeftArm:setRot(0, 90, -110)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose1.Avatar.LowerBody.Legs.RightLeg:setRot(52.0721, 46.6851, 28.5204)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose1.Avatar.LowerBody.Legs.RightLeg.RightLegBottom:setRot(-60, 0, 0)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose1.Avatar.LowerBody.Legs.LeftLeg:setRot(0, 0, 15)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose1.Avatar.Head.FaceParts.Eyes.EyeLeft:setUVPixels(BlueArchiveCharacter.FACE_PARTS.RightEye.CLOSED[1] * 6, BlueArchiveCharacter.FACE_PARTS.RightEye.CLOSED[2] * 6)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose1.Avatar.Head.FaceParts.Mouth:setUVPixels(BlueArchiveCharacter.FACE_PARTS.Mouth.OPENED2[1] * 16, BlueArchiveCharacter.FACE_PARTS.Mouth.OPENED2[2] * 8)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose2.Avatar:setRot(-0.9096, -19.9801, 2.6602)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose2.Avatar.Head:setRot(-2.7199, 19.8217, -7.9753)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose2.Avatar.Head.CTracksuitH.HairTail:setRot(0, 0, 5)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose2.Avatar.UpperBody.Body.CTracksuitB.FrontHair:setRot(22.5, 0, 0)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose2.Avatar.UpperBody.Arms.RightArm:setRot(32.5, 67.5, 0)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose2.Avatar.UpperBody.Arms.RightArm.RightArmBottom:setRot(70, 0, 0)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose2.Avatar.UpperBody.Arms.LeftArm:setRot(103.7833, -8.4773, 119.2288)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose2.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom:setRot(10, 0, 0)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose2.Avatar.LowerBody.Legs.RightLeg:setRot(0, 12.5, 0)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose2.Avatar.LowerBody.Legs.LeftLeg:setRot(0, 0, -10)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose2.Avatar.Head.FaceParts.Mouth:setUVPixels(BlueArchiveCharacter.FACE_PARTS.Mouth.SMILE[1] * 16, BlueArchiveCharacter.FACE_PARTS.Mouth.SMILE[2] * 8)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose3.Avatar:setRot(-98.9287, -27.6048, -13.6459)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose3.Avatar.Head:setRot(85, 0, 0)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose3.Avatar.Head.Ears.RightEarPivot:setRot(-30, 0, -10)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose3.Avatar.Head.Ears.LeftEarPivot:setRot(-30, 0, 10)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose3.Avatar.Head.CTracksuitH.HairTail:setRot(-87.5, -22.5, 0)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose3.Avatar.UpperBody.Body.CTracksuitB.FrontHair:setPos(0, 3, 2)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose3.Avatar.UpperBody.Body.CTracksuitB.FrontHair:setRot(90, 0, 0)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose3.Avatar.UpperBody.Arms.RightArm:setRot(-180, 0, -7.5)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose3.Avatar.UpperBody.Arms.LeftArm:setRot(-180, 0, 7.5)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose3.Avatar.LowerBody.Legs.RightLeg:setRot(-39.8593, 2.2494, 7.1566)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose3.Avatar.LowerBody.Legs.RightLeg.RightLegBottom:setRot(-40, 0, 0)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose3.Avatar.LowerBody.Legs.LeftLeg:setRot(-4.7697, -1.5018, -17.4374)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose3.Avatar.LowerBody.Legs.LeftLeg.LeftLegBottom:setRot(-25, 0, 0)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose3.Avatar.Head.FaceParts.Eyes.EyeLeft:setUVPixels(BlueArchiveCharacter.FACE_PARTS.RightEye.UNEQUAL[1] * 6, BlueArchiveCharacter.FACE_PARTS.RightEye.UNEQUAL[2] * 6)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose3.Avatar.Head.FaceParts.Eyes.EyeRight:setUVPixels(BlueArchiveCharacter.FACE_PARTS.LeftEye.UNEQUAL[1] * 6, BlueArchiveCharacter.FACE_PARTS.LeftEye.UNEQUAL[2] * 6)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose3.Avatar.Head.FaceParts.Mouth:setUVPixels(BlueArchiveCharacter.FACE_PARTS.Mouth.TRIANGLE[1] * 16, BlueArchiveCharacter.FACE_PARTS.Mouth.TRIANGLE[2] * 8)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose4.Avatar:setRot(-30, 30, 0)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose4.Avatar.Head:setRot(9.8511, 1.7279, -9.8511)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose4.Avatar.Head.Ears.RightEarPivot:setRot(-40, 0, -10)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose4.Avatar.Head.Ears.LeftEarPivot:setRot(-40, 0, 10)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose4.Avatar.Head.CTracksuitH.HairTail:setRot(-5, 0, 15)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose4.Avatar.UpperBody.Body.CTracksuitB.FrontHair:setRot(25, 0, 0)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose4.Avatar.UpperBody.Arms.RightArm:setRot(62.5, 65, 0)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose4.Avatar.UpperBody.Arms.RightArm.RightArmBottom:setRot(47.5, 0, 0)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose4.Avatar.UpperBody.Arms.LeftArm:setRot(28.8384, -8.6474, 15.2727)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose4.Avatar.LowerBody.Legs.RightLeg:setRot(60, 0, 0)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose4.Avatar.LowerBody.Legs.RightLeg.RightLegBottom:setRot(-37.5, 0, 0)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose4.Avatar.LowerBody.Legs.LeftLeg:setRot(60, 0, 0)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose4.Avatar.LowerBody.Legs.LeftLeg.LeftLegBottom:setRot(-37.5, 0, 0)
+                            models.models.ex_skill_3.Gui.Scrollable.Pose4.Avatar.Head.FaceParts.Mouth:setUVPixels(BlueArchiveCharacter.FACE_PARTS.Mouth.SMALL[1] * 16, BlueArchiveCharacter.FACE_PARTS.Mouth.SMALL[2] * 8)
+                            --白い縁取りと影の作成
+                            local outlineTexture = textures:newTexture("ex_skill_3_character_outline", 1, 1)
+                            outlineTexture:fill(0, 0, 1, 1, 1, 1, 1)
+                            for i = 1, 4 do
+                                local outlineaAvatar = models.models.ex_skill_3.Gui.Scrollable["Pose"..i].Avatar:copy("OutlineAvatar")
+                                outlineaAvatar:setPrimaryRenderType("EMISSIVE_SOLID")
+                                outlineaAvatar:setPrimaryTexture("CUSTOM", outlineTexture)
+                                ---@diagnostic disable-next-line: discard-returns
+                                models.models.ex_skill_3.Gui.Scrollable["Pose"..i]:newPart("Outline")
+                                models.models.ex_skill_3.Gui.Scrollable["Pose"..i].Outline:setPos(0, 0, 50)
+                                models.models.ex_skill_3.Gui.Scrollable["Pose"..i].Outline:setScale(1.2, 1.2, 0)
+                                models.models.ex_skill_3.Gui.Scrollable["Pose"..i].Outline:addChild(outlineaAvatar)
+                                local shaderAvatar = models.models.ex_skill_3.Gui.Scrollable["Pose"..i].Outline.OutlineAvatar:copy("ShaderAvatar")
+                                shaderAvatar:setPos(-1, -1, 0)
+                                shaderAvatar:setColor(0.478, 0.631, 0.98)
+                                ---@diagnostic disable-next-line: discard-returns
+                                models.models.ex_skill_3.Gui.Scrollable["Pose"..i]:newPart("Shader")
+                                models.models.ex_skill_3.Gui.Scrollable["Pose"..i].Shader:setPos(i <= 2 and 2 or -0.25, -0.25, 51)
+                                models.models.ex_skill_3.Gui.Scrollable["Pose"..i].Shader:setScale(1.2, 1.2, 0)
+                                models.models.ex_skill_3.Gui.Scrollable["Pose"..i].Shader:addChild(shaderAvatar)
+                            end
+                            --波型背景の作成
+                            local windowSize = client:getScaledWindowSize()
+                            models.models.ex_skill_3.Gui.Scrollable.WaveBackground.UpperWave:setPos(0, 0, 600)
+                            models.models.ex_skill_3.Gui.Scrollable.WaveBackground.LowerWave:setPos(0, windowSize.y * -1 + 30, 600)
+                            for i = 0, (windowSize.y + 157) / 92 + 1 do
+                                local upperWave = models.models.ex_skill_3.Gui.Scrollable.WaveBackground.UpperWave.UpperWave1:copy("UpperWave"..(i + 2))
+                                upperWave:setPos((i + 1) * -92, 0, 0)
+                                models.models.ex_skill_3.Gui.Scrollable.WaveBackground.UpperWave:addChild(upperWave)
+                                local lowerWave = models.models.ex_skill_3.Gui.Scrollable.WaveBackground.LowerWave.LowerWave1:copy("LowerWave"..(i + 2))
+                                lowerWave:setPos((i + 1) * -92, 0, 0)
+                                models.models.ex_skill_3.Gui.Scrollable.WaveBackground.LowerWave:addChild(lowerWave)
+                            end
+                            models.models.ex_skill_3.Gui.Background.UpperLine:setPos(0, 0, 601)
+                            models.models.ex_skill_3.Gui.Background.UpperLine:setScale(windowSize.x, 1, 1)
+                            models.models.ex_skill_3.Gui.Background.LowerLine:setPos(0, windowSize.y * -1 + 48, 601)
+                            models.models.ex_skill_3.Gui.Background.LowerLine:setScale(windowSize.x, 1, 1)
+                            ---背景の円とキラキラを作成
+                            models.models.ex_skill_3.Gui.Scrollable2:setPos(0, 0, 602)
+                            for i = 2, 10 do
+                                models.models.ex_skill_3.Gui.Scrollable2:addChild(models.models.ex_skill_3.Gui.Scrollable2.Circle1:copy("Circle"..i))
+                            end
+                            for i = 2, 20 do
+                                models.models.ex_skill_3.Gui.Scrollable2:addChild(models.models.ex_skill_3.Gui.Scrollable2.Shine1:copy("Shine"..i))
+                            end
+                            ---グラデーション背景作成
+                            models.models.ex_skill_3.Gui.Background.GradientBackground:setPos(0, 0, 603)
+                            models.models.ex_skill_3.Gui.Background.GradientBackground:setColor(0.463, 0.875, 0.996)
+                            local panelSize = math.min(windowSize.x, windowSize.y) / math.sqrt(2) * 2
+                            models.models.ex_skill_3.Gui.Background.GradientBackground.GradientBackground1:setPos(-150, 182, 0)
+                            models.models.ex_skill_3.Gui.Background.GradientBackground.GradientBackground1:setScale(1, panelSize, 1)
+                            for i = 0, (windowSize.x + windowSize.y) / math.sqrt(2) / 150 - 2 do
+                                local model = models.models.ex_skill_3.Gui.Background.GradientBackground.GradientBackground1:copy("GradientBackground"..(i + 2))
+                                model:setPos((i + 2) * -150, (i + 2) * 150 + 32, 0)
+                                model:setScale(1, panelSize, 1)
+                                models.models.ex_skill_3.Gui.Background.GradientBackground:addChild(model)
+                            end
+                            --縞背景の作成
+                            models.models.ex_skill_3.Gui.Background.StripeBackground:setPos(0, 0, 604)
+                            panelSize = math.min(windowSize.x, windowSize.y) / math.sqrt(2) + 3
+                            models.models.ex_skill_3.Gui.Background.StripeBackground.StripeBackground1:setPos(0, 6, 0)
+                            models.models.ex_skill_3.Gui.Background.StripeBackground.StripeBackground1:setScale(1, panelSize, 1)
+                            for i = 0, (windowSize.x + windowSize.y) / (6 * math.sqrt(2)) do
+                                local model = models.models.ex_skill_3.Gui.Background.StripeBackground.StripeBackground1:copy("StripeBackground"..(i + 2))
+                                model:setPos((i + 1) * -6, 6 * (i + 2), 0)
+                                model:setScale(1, panelSize, 1)
+                                models.models.ex_skill_3.Gui.Background.StripeBackground:addChild(model)
+                            end
+                        end
+                        --models.models.ex_skill_3.Gui:setParentType("World")
+                        BlueArchiveCharacter.EX_SKILL[3].init = true
+                    end
+                    if host:isHost() then
+                        --背景の円とキラキラを配置
+                        local windowSize = client:getScaledWindowSize()
+                        for i = 1, 10 do
+                            models.models.ex_skill_3.Gui.Scrollable2["Circle"..i]:setPos((math.random() * (windowSize.x + 100 * math.sqrt(2)) - 100 * math.sqrt(2)) * -1, math.random() * (windowSize.y + 100 * math.sqrt(2)) * -1, 0)
+                            models.models.ex_skill_3.Gui.Scrollable2["Circle"..i]:setScale(vectors.vec3(1, 1, 1):scale(math.random() * 0.1 + 0.95))
+                        end
+                        for i = 1, 20 do
+                            models.models.ex_skill_3.Gui.Scrollable2["Shine"..i]:setPos((math.random() * (windowSize.x + 100 * math.sqrt(2)) - 100 * math.sqrt(2)) * -1, math.random() * (windowSize.y + 100 * math.sqrt(2)) * -1, 0)
+                        end
+                    end
+                end
+            },
+
+            ---Exスキルの初期化処理が行われたかどうか
+            ---@type boolean
+            init = false
 		}
 	},
 
@@ -848,7 +1075,7 @@ BlueArchiveCharacter = {
 
                 ---コスチュームに対応するExスキルのインデックス番号
                 ---@type integer
-                exSkill = 1
+                exSkill = 3
             }
         },
 
