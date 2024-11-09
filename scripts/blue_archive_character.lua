@@ -1578,16 +1578,26 @@ BlueArchiveCharacter = {
         ---@param costume integer ダミーアバターのコスチュームのインデックス
         onPhase1 = function (dummyAvatar, costume)
             if costume == 1 then
-                dummyAvatar.Head.Veil.VeilEar.RightVeilEarPivot:setRot(-30, 0, 0)
-                dummyAvatar.Head.Veil.VeilEar.LeftVeilEarPivot:setRot(-30, 0, 0)
-            else
-                dummyAvatar.Head.Ears.RightEarPivot:setRot(-30, 0, 0)
+                for _, modelPart in ipairs({dummyAvatar.Head.Veil.VeilEar.RightVeilEarPivot, dummyAvatar.Head.Veil.VeilEar.LeftVeilEarPivot}) do
+                    modelPart:setRot(-30, 0, 0)
+                end
+            elseif costume == 4 then
+                dummyAvatar.Head.Ears.RightEarPivot:setRot(-45, -10, 0)
                 dummyAvatar.Head.Ears.LeftEarPivot:setRot(-30, 0, 0)
+            else
+                for _, modelPart in ipairs({dummyAvatar.Head.Ears.RightEarPivot, dummyAvatar.Head.Ears.LeftEarPivot}) do
+                    modelPart:setRot(-30, 0, 0)
+                end
             end
             if costume == 3 then
                 dummyAvatar.Head.CTracksuitH.HairTail:setRot(17.5, 0, 0)
                 dummyAvatar.UpperBody.Body.CTracksuitB.Bag:setPos(3, 2, 0)
                 dummyAvatar.UpperBody.Body.CTracksuitB.Bag:setRot(0, 0, -25)
+            elseif costume == 4 then
+                dummyAvatar.UpperBody.Body.CIdolB.Skirt:setRot(50, 0, 0)
+                for _, modelPart in ipairs({dummyAvatar.Head.CIdolH.HairTails.HairTailRight.HairRightBottom, dummyAvatar.Head.CIdolH.HairTails.HairTailLeft.HairLeftBottom}) do
+                    modelPart:setRot(30, 0, 0)
+                end
             else
                 dummyAvatar.LowerBody:setVisible(false)
                 dummyAvatar.UpperBody.Body.Robe:setScale(1.5, 0.35, 2)
@@ -1602,6 +1612,11 @@ BlueArchiveCharacter = {
                 dummyAvatar.Head.CTracksuitH.HairTail:setRot(-5, 0, -17.5)
                 dummyAvatar.UpperBody.Body.CTracksuitB.Bag:setPos()
                 dummyAvatar.UpperBody.Body.CTracksuitB.Bag:setRot()
+            elseif costume == 4 then
+                dummyAvatar.UpperBody.Body.CIdolB.Skirt:setRot(30, 0, 0)
+                for _, modelPart in ipairs({dummyAvatar.Head.CIdolH.HairTails.HairTailRight.HairRightBottom, dummyAvatar.Head.CIdolH.HairTails.HairTailLeft.HairLeftBottom}) do
+                    modelPart:setRot(-20, 0, 0)
+                end
             else
                 dummyAvatar.LowerBody:setVisible(true)
                 dummyAvatar.UpperBody.Body.Robe:setRot(30, 0, 0)
