@@ -9944,26 +9944,7 @@
 							"data_points": [
 								{
 									"x": 0,
-									"y": 0,
-									"z": 0.5
-								}
-							],
-							"uuid": "d88dbe27-4600-e90b-e7e9-ce2c445072ab",
-							"time": 3.45,
-							"color": -1,
-							"interpolation": "catmullrom",
-							"bezier_linked": true,
-							"bezier_left_time": [-0.1, -0.1, -0.1],
-							"bezier_left_value": [0, 0, 0],
-							"bezier_right_time": [0.1, 0.1, 0.1],
-							"bezier_right_value": [0, 0, 0]
-						},
-						{
-							"channel": "position",
-							"data_points": [
-								{
-									"x": 0,
-									"y": 0,
+									"y": "32",
 									"z": 0.5
 								}
 							],
@@ -9982,7 +9963,7 @@
 							"data_points": [
 								{
 									"x": 0,
-									"y": 0,
+									"y": "32",
 									"z": "0"
 								}
 							],
@@ -10001,7 +9982,7 @@
 							"data_points": [
 								{
 									"x": 0,
-									"y": 0,
+									"y": "32",
 									"z": "0.5"
 								}
 							],
@@ -10020,7 +10001,7 @@
 							"data_points": [
 								{
 									"x": 0,
-									"y": 0,
+									"y": "32",
 									"z": "0"
 								}
 							],
@@ -10039,7 +10020,7 @@
 							"data_points": [
 								{
 									"x": 0,
-									"y": 0,
+									"y": "32",
 									"z": 0
 								}
 							],
@@ -10058,7 +10039,7 @@
 							"data_points": [
 								{
 									"x": -0.5,
-									"y": 0,
+									"y": "32",
 									"z": 2
 								}
 							],
@@ -10077,7 +10058,7 @@
 							"data_points": [
 								{
 									"x": "0",
-									"y": 0,
+									"y": "32",
 									"z": 1
 								}
 							],
@@ -10096,7 +10077,7 @@
 							"data_points": [
 								{
 									"x": -5.03,
-									"y": 0,
+									"y": "32",
 									"z": 0.76
 								}
 							],
@@ -10115,7 +10096,7 @@
 							"data_points": [
 								{
 									"x": -2.68,
-									"y": 0,
+									"y": "32",
 									"z": -1.62
 								}
 							],
@@ -10134,7 +10115,7 @@
 							"data_points": [
 								{
 									"x": -2.54,
-									"y": 0,
+									"y": "32",
 									"z": 2.3
 								}
 							],
@@ -10153,7 +10134,7 @@
 							"data_points": [
 								{
 									"x": -0.41,
-									"y": 0,
+									"y": "32",
 									"z": 0.45
 								}
 							],
@@ -10172,7 +10153,7 @@
 							"data_points": [
 								{
 									"x": 0,
-									"y": 0,
+									"y": "32",
 									"z": 1
 								}
 							],
@@ -10191,7 +10172,7 @@
 							"data_points": [
 								{
 									"x": 0,
-									"y": 0,
+									"y": "32",
 									"z": "0"
 								}
 							],
@@ -10210,7 +10191,7 @@
 							"data_points": [
 								{
 									"x": 0,
-									"y": -1,
+									"y": "31",
 									"z": 0.38
 								}
 							],
@@ -10229,7 +10210,7 @@
 							"data_points": [
 								{
 									"x": 0,
-									"y": 1,
+									"y": "33",
 									"z": 0
 								}
 							],
@@ -10241,6 +10222,44 @@
 							"bezier_left_time": [-0.1, -1.10333, -0.1],
 							"bezier_left_value": [0, 0, 0],
 							"bezier_right_time": [0.1, 1.10333, 0.1],
+							"bezier_right_value": [0, 0, 0]
+						},
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": 0,
+									"y": 0,
+									"z": 0.5
+								}
+							],
+							"uuid": "d88dbe27-4600-e90b-e7e9-ce2c445072ab",
+							"time": 3.45,
+							"color": -1,
+							"interpolation": "bezier",
+							"bezier_linked": true,
+							"bezier_left_time": [-0.1, -0.1, -0.1],
+							"bezier_left_value": [0, 0, 0],
+							"bezier_right_time": [0.1, 0.1, 0.1],
+							"bezier_right_value": [0, 0, 0]
+						},
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": 0,
+									"y": "32",
+									"z": "0.5"
+								}
+							],
+							"uuid": "ab10cdae-444d-b1c9-ab56-470c47267f7f",
+							"time": 3.9,
+							"color": -1,
+							"interpolation": "bezier",
+							"bezier_linked": true,
+							"bezier_left_time": [-0.1, -0.34666, -0.1],
+							"bezier_left_value": [0, 0, 0],
+							"bezier_right_time": [0.1, 0.34666, 0.1],
 							"bezier_right_value": [0, 0, 0]
 						}
 					]

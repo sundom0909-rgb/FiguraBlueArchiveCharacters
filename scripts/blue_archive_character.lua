@@ -786,6 +786,9 @@ BlueArchiveCharacter = {
                     models.models.main.Avatar.Head.Ears.RightEarPivot:setRot()
                     if not BlueArchiveCharacter.EX_SKILL[3].init then
                         models.models.main.Avatar.UpperBody.Body.BTrinityLogo:setColor(0.357, 0.365, 0.475)
+                        for _, modelPart in ipairs({models.models.ex_skill_3.Stage.StageFloor, models.models.ex_skill_3.Stage.StageStair1, models.models.ex_skill_3.Stage.StageStair2, models.models.ex_skill_3.Stage.StageStair3, models.models.ex_skill_3.Stage.StageStair4}) do
+                            modelPart:setPrimaryTexture("RESOURCE", "minecraft:textures/block/gray_concrete.png")
+                        end
                         if host:isHost() then
                             --モデルのコピー
                             models.models.main.Avatar.Head.FaceParts.Mouth:setVisible(true)
@@ -972,6 +975,12 @@ BlueArchiveCharacter = {
                             models.models.ex_skill_3.Gui.Transition:setPos(transitionCenter:copy():add(models.models.ex_skill_3.TransitionAnchor:getAnimPos():scale(rearTransitionSize)))
                         end, "ex_skill_3_render")
                     end
+                    for _, modelPart in ipairs({models.models.ex_skill_3.Stage.StageEmissives, models.models.ex_skill_3.Stage.SpotLights.SpotLight1.SpotLight1Core.SpotLightEmissive}) do
+                        modelPart:setColor(0, 0, 0)
+                    end
+                    for i = 2, 3 do
+                        models.models.ex_skill_3.Stage.SpotLights["SpotLight"..i]["SpotLight"..i.."Core"].SpotLightEmissive:setColor(0.729, 1, 0.996)
+                    end
                 end,
 
                 ---Exスキルアニメーション再生中のみ実行されるティック関数
@@ -998,6 +1007,10 @@ BlueArchiveCharacter = {
                             modelPart:setVisible(true)
                         end
                         models.models.main.Avatar.Head.Ears.RightEarPivot:setRot(-45, -10, 0)
+                        models.models.ex_skill_3.Stage:setVisible(true)
+                    end
+                    for i = 1, 12 do
+                        models.models.ex_skill_3.Stage.StageEmissives:setUVPixels(tick * -1, 0)
                     end
                 end,
 
@@ -1005,6 +1018,7 @@ BlueArchiveCharacter = {
                 ---@type fun(forcedStop: boolean)
                 ---@param forcedStop boolean アニメーションが途中終了した場合は"true"、アニメーションが最後まで再生されて終了した場合は"false"が代入される。
                 postAnimation = function(forcedStop)
+                    models.models.ex_skill_3.Stage:setVisible(false)
                     if host:isHost() then
                         events.RENDER:remove("ex_skill_3_render")
                         for _, modelPart in ipairs({models.models.ex_skill_3.Gui.Scrollable, models.models.ex_skill_3.Gui.Scrollable2, models.models.ex_skill_3.Gui.Background}) do

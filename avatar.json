@@ -11,7 +11,8 @@
 		"textures.for_modeling.leather_layer_2_overlay",
 		"textures.for_modeling.trim",
 		"textures.for_modeling.trim_leggings",
-		"textures.for_modeling.feather"
+		"textures.for_modeling.feather",
+		"textures.for_modeling.gray_concrete"
 	],
 	"autoScripts": [
 		"scripts/index.lua"
@@ -170,6 +171,21 @@
 		},
 		"models.models.ex_skill_3.Gui.Transition": {
 			"visible": false
+		},
+		"models.models.ex_skill_3.Stage": {
+			"visible": false
+		},
+		"models.models.ex_skill_3.Stage.StageEmissives": {
+			"primaryRenderType": "EMISSIVE_SOLID"
+		},
+		"models.models.ex_skill_3.Stage.SpotLights.SpotLight1.SpotLight1Core.SpotLightEmissive": {
+			"primaryRenderType": "EMISSIVE_SOLID"
+		},
+		"models.models.ex_skill_3.Stage.SpotLights.SpotLight2.SpotLight2Core.SpotLightEmissive": {
+			"primaryRenderType": "EMISSIVE_SOLID"
+		},
+		"models.models.ex_skill_3.Stage.SpotLights.SpotLight3.SpotLight3Core.SpotLightEmissive": {
+			"primaryRenderType": "EMISSIVE_SOLID"
 		},
 		"models.models.ex_skill_3.BTrinityLogo": {
 			"moveTo": "models.models.main.Avatar.UpperBody.Body",
