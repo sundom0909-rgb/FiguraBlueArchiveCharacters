@@ -973,6 +973,7 @@ BlueArchiveCharacter = {
                         events.RENDER:register(function ()
                             models.models.ex_skill_3.Gui.Scrollable:setPos(models.models.ex_skill_3.ScrollableAnchor:getAnimPos():scale(characterScale))
                             models.models.ex_skill_3.Gui.Transition:setPos(transitionCenter:copy():add(models.models.ex_skill_3.TransitionAnchor:getAnimPos():scale(rearTransitionSize)))
+                            models.models.ex_skill_3.Gui.WhiteScreen:setOpacity(models.models.ex_skill_3.Gui.WhiteScreen.GOpacity:getAnimScale().x)
                         end, "ex_skill_3_render")
                     end
                     for _, modelPart in ipairs({models.models.ex_skill_3.Stage.StageEmissives, models.models.ex_skill_3.Stage.SpotLights.SpotLight1.SpotLight1Core.SpotLightEmissive}) do
@@ -1001,6 +1002,19 @@ BlueArchiveCharacter = {
                         end
                     elseif tick == 61 then
                         FaceParts:setEmotion("CLOSED2", "CLOSED2", "STRAIGHT", 36, true)
+                    elseif tick == 66 and host:isHost() then
+                        local windowSize = client:getWindowSize()
+                        models.models.ex_skill_3.Gui.WhiteScreen:setScale(windowSize.x, windowSize.y, 1)
+                        models.models.ex_skill_3.Camera.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(40))
+                        events.RENDER:register(function (delta, context)
+                            models.models.ex_skill_3.Camera:setVisible(context == "RENDER")
+                            local backgroundPos = vectors.rotateAroundAxis(player:getBodyYaw(delta) + 180, renderer:getCameraOffsetPivot():copy():add(0, 1.62, 0):add(client:getCameraDir():copy():scale(1.75)), 0, 1, 0):scale(16 / 0.9375)
+                            models.models.ex_skill_3.Camera:setOffsetPivot(backgroundPos)
+                            models.models.ex_skill_3.Camera.Background:setPos(backgroundPos)
+                            local opacity = models.models.ex_skill_3.Camera.COpacity:getAnimScale().x
+                            models.models.ex_skill_3.Camera.Background:setOpacity(opacity)
+                            models.models.main.Avatar:setColor(vectors.vec3(1, 1, 1):scale(1 - opacity))
+                        end, "ex_skill_3_background_render")
                     elseif tick == 69 then
                         Costume.setCostumeTextureOffset(2)
                         for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer}) do
@@ -1014,6 +1028,10 @@ BlueArchiveCharacter = {
                         end
                         models.models.main.Avatar.Head.Ears.RightEarPivot:setRot(-45, -10, 0)
                         models.models.ex_skill_3.Stage:setVisible(true)
+                    elseif tick == 81 and host:isHost() then
+                        events.RENDER:remove("ex_skill_3_background_render")
+                        models.models.ex_skill_3.Camera:setVisible(false)
+                        models.models.main.Avatar:setColor(1, 1, 1)
                     elseif tick == 97 then
                         FaceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", 3, true)
                     elseif tick == 100 then
@@ -1036,6 +1054,9 @@ BlueArchiveCharacter = {
 
                     for _ = 1, 12 do
                         models.models.ex_skill_3.Stage.StageEmissives:setUVPixels(tick * -1, 0)
+                    end
+                    if tick >= 69 and tick < 81 then
+                        models.models.ex_skill_3.Camera.Background:setUVPixels((tick - 69) * -10, 0)
                     end
                 end,
 
@@ -1063,7 +1084,11 @@ BlueArchiveCharacter = {
                         end
                         models.models.main.Avatar.Head.Ears.RightEarPivot:setRot(-45, -10, 0)
                         if host:isHost() then
-                            models.models.ex_skill_3.Gui.Transition:setVisible(false)
+                            events.RENDER:remove("ex_skill_3_background_render")
+                            for _, modelPart in ipairs({models.models.ex_skill_3.Gui.Transition, models.models.ex_skill_3.Gui.WhiteScreen, models.models.ex_skill_3.Camera}) do
+                                modelPart:setVisible(false)
+                            end
+                            models.models.main.Avatar:setColor(1, 1, 1)
                         end
                     end
                 end
