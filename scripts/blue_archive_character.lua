@@ -887,6 +887,10 @@ BlueArchiveCharacter = {
                             --縞背景の作成
                             models.models.ex_skill_3.Gui.Background.StripeBackground:setPos(0, 0, 604)
                             models.models.ex_skill_3.Gui.Background.StripeBackground.StripeBackground1:setPos(0, 6, 0)
+                            --トランジションの円棒の作成
+                            for i = 2, 20 do
+                                models.models.ex_skill_3.Gui.Transition.CirclePillars:addChild(models.models.ex_skill_3.Gui.Transition.CirclePillars.Pillar1:copy("Pillar"..i))
+                            end
                         end
                         --models.models.ex_skill_3.Gui:setParentType("World")
                         BlueArchiveCharacter.EX_SKILL[3].init = true
@@ -946,8 +950,26 @@ BlueArchiveCharacter = {
                             model:setPos((i - 1) * -6, 6 * (i - 1), 0)
                             model:setScale(1, stripePanelSize, 1)
                         end
+                        --トランジションの配置
+                        local transitionCenter = vectors.vec3(windowSize.x / 2 * -1, windowSize.y / 2 * -1, -200 * characterScale)
+                        local rearTransitionSize = (windowSize.x + windowSize.y) / math.sqrt(2)
+                        models.models.ex_skill_3.Gui.Transition.Background:setScale(rearTransitionSize, rearTransitionSize, 1)
+                        --トランジションの円棒の配置
+                        local colorPalette = {vectors.vec3(0.482, 0.91, 1), vectors.vec3(0.749, 1, 0.996), vectors.vec3(1, 1, 0.663)}
+                        for i = 1, 20 do
+                            models.models.ex_skill_3.Gui.Transition.CirclePillars["Pillar"..i]:setPos((math.random() * 2 - 1) * (rearTransitionSize / 2), (math.random() * 2 - 1) * (rearTransitionSize / 2 * 1.2), 0)
+                            local pillarScaleFactor = math.random() * 0.75 + 0.25
+                            models.models.ex_skill_3.Gui.Transition.CirclePillars["Pillar"..i]:setScale(vectors.vec3(4, 4, 4):scale(pillarScaleFactor))
+                            local pillarHeight = -160 * pillarScaleFactor + 220
+                            models.models.ex_skill_3.Gui.Transition.CirclePillars["Pillar"..i].CenterCircle:setScale(1, pillarHeight, 1)
+                            models.models.ex_skill_3.Gui.Transition.CirclePillars["Pillar"..i].UpperCircle:setPos(0, pillarHeight / 2 - 1, 0)
+                            models.models.ex_skill_3.Gui.Transition.CirclePillars["Pillar"..i].LowerCircle:setPos(0, pillarHeight / 2 * -1 + 1, 0)
+                            models.models.ex_skill_3.Gui.Transition.CirclePillars["Pillar"..i]:setColor(colorPalette[math.floor(math.random() * 3) + 1])
+                        end
+                        --レンダーイベント
                         events.RENDER:register(function ()
                             models.models.ex_skill_3.Gui.Scrollable:setPos(models.models.ex_skill_3.ScrollableAnchor:getAnimPos():scale(characterScale))
+                            models.models.ex_skill_3.Gui.Transition:setPos(transitionCenter:copy():add(models.models.ex_skill_3.TransitionAnchor:getAnimPos():scale(rearTransitionSize)))
                         end, "ex_skill_3_render")
                     end
                 end,
@@ -956,8 +978,14 @@ BlueArchiveCharacter = {
                 ---@type fun(tick: integer)
                 ---@param tick integer アニメーションの現在位置を示す。単位はティック。
                 animationTick = function(tick)
-                    if tick == 52 and host:isHost() then
-                        events.RENDER:remove("ex_skill_3_render")
+                    if tick == 50 and host:isHost() then
+                        models.models.ex_skill_3.Gui.Transition:setVisible(true)
+                    elseif tick == 53 and host:isHost() then
+                        for _, modelPart in ipairs({models.models.ex_skill_3.Gui.Scrollable, models.models.ex_skill_3.Gui.Scrollable2, models.models.ex_skill_3.Gui.Background}) do
+                            modelPart:setVisible(false)
+                        end
+                    elseif tick == 56 and host:isHost() then
+                        models.models.ex_skill_3.Gui.Transition:setVisible(false)
                     end
                 end,
 
@@ -965,9 +993,15 @@ BlueArchiveCharacter = {
                 ---@type fun(forcedStop: boolean)
                 ---@param forcedStop boolean アニメーションが途中終了した場合は"true"、アニメーションが最後まで再生されて終了した場合は"false"が代入される。
                 postAnimation = function(forcedStop)
+                    if host:isHost() then
+                        events.RENDER:remove("ex_skill_3_render")
+                        for _, modelPart in ipairs({models.models.ex_skill_3.Gui.Scrollable, models.models.ex_skill_3.Gui.Scrollable2, models.models.ex_skill_3.Gui.Background}) do
+                            modelPart:setVisible(true)
+                        end
+                    end
                     if forcedStop then
                         if host:isHost() then
-                            events.RENDER:remove("ex_skill_3_render")
+                            models.models.ex_skill_3.Gui.Transition:setVisible(false)
                         end
                     end
                 end

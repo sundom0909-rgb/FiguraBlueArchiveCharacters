@@ -168,6 +168,9 @@
 		"models.models.ex_skill_3.Gui": {
 			"visible": false
 		},
+		"models.models.ex_skill_3.Gui.Transition": {
+			"visible": false
+		},
 		"models.models.ex_skill_3.BTrinityLogo": {
 			"moveTo": "models.models.main.Avatar.UpperBody.Body",
 			"visible": false
