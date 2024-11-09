@@ -617,6 +617,17 @@ BlueArchiveCharacter = {
 
             ---コールバック関数
             callbacks = {
+                ---Exスキルアニメーション開始前のトランジション終了後に実行されるコールバック関数（任意）
+                ---@type fun()
+                preAnimation = function()
+                    if not BlueArchiveCharacter.EX_SKILL[2].init then
+                        if host:isHost() then
+                            models.models.ex_skill_2.Gui.AnxiousFrame:setColor(0.282, 0.29, 0.725)
+                        end
+                        BlueArchiveCharacter.EX_SKILL[2].init = true
+                    end
+                end,
+
                 ---Exスキルアニメーション再生中のみ実行されるティック関数
                 ---@type fun(tick: integer)
                 ---@param tick integer アニメーションの現在位置を示す。単位はティック。
@@ -713,7 +724,11 @@ BlueArchiveCharacter = {
                         end
                     end
                 end
-            }
+            },
+
+            ---Exスキルの初期化処理が行われたかどうか
+            ---@type boolean
+            init = false
 		},
 
 		{
@@ -894,8 +909,9 @@ BlueArchiveCharacter = {
                             for i = 2, 20 do
                                 models.models.ex_skill_3.Gui.Transition.CirclePillars:addChild(models.models.ex_skill_3.Gui.Transition.CirclePillars.Pillar1:copy("Pillar"..i))
                             end
+                            models.models.ex_skill_3.Gui.Frame:setColor(1, 0.875, 1)
+                            models.models.ex_skill_3.Gui.Frame:setOpacity(0.75)
                         end
-                        --models.models.ex_skill_3.Gui:setParentType("World")
                         BlueArchiveCharacter.EX_SKILL[3].init = true
                     end
                     if host:isHost() then
@@ -976,9 +992,11 @@ BlueArchiveCharacter = {
                             models.models.ex_skill_3.Gui.WhiteScreen:setOpacity(models.models.ex_skill_3.Gui.WhiteScreen.GOpacity:getAnimScale().x)
                         end, "ex_skill_3_render")
                     end
-                    for _, modelPart in ipairs({models.models.ex_skill_3.Stage.StageEmissives, models.models.ex_skill_3.Stage.SpotLights.SpotLight1.SpotLight1Core.SpotLightEmissive}) do
-                        modelPart:setColor(0, 0, 0)
-                    end
+                    events.RENDER:register(function ()
+                        local strength = models.models.ex_skill_3.Stage.StageEmissiveStrength:getAnimScale().x
+                        models.models.ex_skill_3.Stage.StageEmissives:setColor(vectors.vec3(1, 1, 1):scale(strength))
+                        models.models.ex_skill_3.Stage.SpotLights.SpotLight1.SpotLight1Core.SpotLightEmissive:setColor(vectors.vec3(1, 0.875, 1):scale(strength))
+                    end, "ex_skill_3_render_global")
                     for i = 2, 3 do
                         models.models.ex_skill_3.Stage.SpotLights["SpotLight"..i]["SpotLight"..i.."Core"].SpotLightEmissive:setColor(0.729, 1, 0.996)
                     end
@@ -1004,6 +1022,7 @@ BlueArchiveCharacter = {
                         FaceParts:setEmotion("CLOSED2", "CLOSED2", "STRAIGHT", 36, true)
                     elseif tick == 66 and host:isHost() then
                         local windowSize = client:getWindowSize()
+                        models.models.ex_skill_3.Gui.WhiteScreen:setVisible(true)
                         models.models.ex_skill_3.Gui.WhiteScreen:setScale(windowSize.x, windowSize.y, 1)
                         models.models.ex_skill_3.Camera.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(40))
                         events.RENDER:register(function (delta, context)
@@ -1030,7 +1049,9 @@ BlueArchiveCharacter = {
                         models.models.ex_skill_3.Stage:setVisible(true)
                     elseif tick == 81 and host:isHost() then
                         events.RENDER:remove("ex_skill_3_background_render")
-                        models.models.ex_skill_3.Camera:setVisible(false)
+                        for _, modelPart in ipairs({models.models.ex_skill_3.Gui.WhiteScreen, models.models.ex_skill_3.Camera}) do
+                            modelPart:setVisible(false)
+                        end
                         models.models.main.Avatar:setColor(1, 1, 1)
                     elseif tick == 97 then
                         FaceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", 3, true)
@@ -1048,8 +1069,16 @@ BlueArchiveCharacter = {
                         FaceParts:setEmotion("INVERTED", "NORMAL", "OPENED2", 22, true)
                     elseif tick == 171 then
                         FaceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 4, true)
+                    elseif tick == 172 and host:isHost() then
+                        models.models.ex_skill_3.Gui.WhiteScreen:setVisible(true)
                     elseif tick == 175 then
                         FaceParts:setEmotion("NORMAL", "NORMAL", "OPENED2", 38, true)
+                    elseif tick == 176 and host:isHost() then
+                        local windowSize = client:getScaledWindowSize()
+                        models.models.ex_skill_3.Gui.Frame:setScale(windowSize.x, windowSize.y, 1)
+                        models.models.ex_skill_3.Gui.Frame:setVisible(true)
+                    elseif tick == 178 and host:isHost() then
+                        models.models.ex_skill_3.Gui.WhiteScreen:setVisible(false)
                     end
 
                     for _ = 1, 12 do
@@ -1064,12 +1093,14 @@ BlueArchiveCharacter = {
                 ---@type fun(forcedStop: boolean)
                 ---@param forcedStop boolean アニメーションが途中終了した場合は"true"、アニメーションが最後まで再生されて終了した場合は"false"が代入される。
                 postAnimation = function(forcedStop)
+                    events.RENDER:remove("ex_skill_3_render_global")
                     models.models.ex_skill_3.Stage:setVisible(false)
                     if host:isHost() then
                         events.RENDER:remove("ex_skill_3_render")
                         for _, modelPart in ipairs({models.models.ex_skill_3.Gui.Scrollable, models.models.ex_skill_3.Gui.Scrollable2, models.models.ex_skill_3.Gui.Background}) do
                             modelPart:setVisible(true)
                         end
+                        models.models.ex_skill_3.Gui.Frame:setVisible(false)
                     end
                     if forcedStop then
                         Costume.setCostumeTextureOffset(2)
