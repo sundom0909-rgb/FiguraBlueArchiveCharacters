@@ -737,7 +737,7 @@ BlueArchiveCharacter = {
             ---Exスキルアニメーションが含まれるモデルファイル名
             ---アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
             ---@type string[]
-			animations = {"main", "ex_skill_3"},
+			animations = {"main", "costume_tracksuit", "costume_idol", "ex_skill_3"},
 
             ---Exスキルアニメーションでのカメラワークのデータ
             camera = {
@@ -986,6 +986,18 @@ BlueArchiveCharacter = {
                         end
                     elseif tick == 56 and host:isHost() then
                         models.models.ex_skill_3.Gui.Transition:setVisible(false)
+                    elseif tick == 69 then
+                        Costume.setCostumeTextureOffset(2)
+                        for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer}) do
+                            modelPart:setUVPixels(0, 16)
+                        end
+                        for _, modelPart in ipairs({models.models.main.Avatar.Head.CTracksuitH, models.models.main.Avatar.UpperBody.Body.CTracksuitB, models.models.main.Avatar.UpperBody.Body.BTrinityLogo}) do
+                            modelPart:setVisible(false)
+                        end
+                        for _, modelPart in ipairs({models.models.main.Avatar.Head.CIdolH, models.models.main.Avatar.UpperBody.Body.CIdolB, models.models.main.Avatar.LowerBody.Legs.RightLeg.RightLegBottom.CIdolRLB, models.models.main.Avatar.LowerBody.Legs.LeftLeg.LeftLegBottom.CIdolLLB, models.models.main.Avatar.Head.CTracksuitH.HairbandFront, models.models.main.Avatar.Head.CTracksuitH.Hairband, models.models.main.Avatar.Head.CTracksuitH.HairBandRibbon, models.models.main.Avatar.UpperBody.Body.CTracksuitB.TrinityLogo, models.models.main.Avatar.UpperBody.Body.CTracksuitB.Fastener, models.models.main.Avatar.UpperBody.Body.CTracksuitB.Bag}) do
+                            modelPart:setVisible(true)
+                        end
+                        models.models.main.Avatar.Head.Ears.RightEarPivot:setRot(-45, -10, 0)
                     end
                 end,
 
@@ -1000,6 +1012,17 @@ BlueArchiveCharacter = {
                         end
                     end
                     if forcedStop then
+                        Costume.setCostumeTextureOffset(2)
+                        for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer}) do
+                            modelPart:setUVPixels(0, 16)
+                        end
+                        for _, modelPart in ipairs({models.models.main.Avatar.Head.CTracksuitH, models.models.main.Avatar.UpperBody.Body.CTracksuitB, models.models.main.Avatar.UpperBody.Body.BTrinityLogo}) do
+                            modelPart:setVisible(false)
+                        end
+                        for _, modelPart in ipairs({models.models.main.Avatar.Head.CIdolH, models.models.main.Avatar.UpperBody.Body.CIdolB, models.models.main.Avatar.LowerBody.Legs.RightLeg.RightLegBottom.CIdolRLB, models.models.main.Avatar.LowerBody.Legs.LeftLeg.LeftLegBottom.CIdolLLB, models.models.main.Avatar.Head.CTracksuitH.HairbandFront, models.models.main.Avatar.Head.CTracksuitH.Hairband, models.models.main.Avatar.Head.CTracksuitH.HairBandRibbon, models.models.main.Avatar.UpperBody.Body.CTracksuitB.TrinityLogo, models.models.main.Avatar.UpperBody.Body.CTracksuitB.Fastener, models.models.main.Avatar.UpperBody.Body.CTracksuitB.Bag}) do
+                            modelPart:setVisible(true)
+                        end
+                        models.models.main.Avatar.Head.Ears.RightEarPivot:setRot(-45, -10, 0)
                         if host:isHost() then
                             models.models.ex_skill_3.Gui.Transition:setVisible(false)
                         end
