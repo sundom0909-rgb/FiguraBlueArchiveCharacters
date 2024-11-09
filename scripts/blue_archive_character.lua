@@ -804,6 +804,16 @@ BlueArchiveCharacter = {
                         for _, modelPart in ipairs({models.models.ex_skill_3.Stage.StageFloor, models.models.ex_skill_3.Stage.StageStair1, models.models.ex_skill_3.Stage.StageStair2, models.models.ex_skill_3.Stage.StageStair3, models.models.ex_skill_3.Stage.StageStair4}) do
                             modelPart:setPrimaryTexture("RESOURCE", "minecraft:textures/block/gray_concrete.png")
                         end
+                        --ペンライトの作成
+                        local penLightColors = {vectors.vec3(1, 0.855, 0.584), vectors.vec3(0.698, 1, 0.97), vectors.vec3(0.81, 1, 0.698)}
+                        for i = 1, 100 do
+                            local model = models.models.ex_skill_3.Stage.PenLights["PenLight"..i]
+                            if model == nil then
+                                model = ModelUtils:copyModel(models.models.ex_skill_3.Stage.PenLights.PenLight1, "PenLight"..i, true)
+                                models.models.ex_skill_3.Stage.PenLights:addChild(model)
+                            end
+                            model.PenLightEmissive:setColor(penLightColors[math.floor(math.random() * 3) + 1])
+                        end
                         if host:isHost() then
                             --モデルのコピー
                             models.models.main.Avatar.Head.FaceParts.Mouth:setVisible(true)
@@ -912,6 +922,9 @@ BlueArchiveCharacter = {
                             models.models.ex_skill_3.Gui.Frame:setColor(1, 0.875, 1)
                             models.models.ex_skill_3.Gui.Frame:setOpacity(0.75)
                         end
+                        for i = 2, 3 do
+                            models.models.ex_skill_3.Stage.SpotLights["SpotLight"..i]["SpotLight"..i.."Core"].SpotLightEmissive:setColor(0.729, 1, 0.996)
+                        end
                         BlueArchiveCharacter.EX_SKILL[3].init = true
                     end
                     if host:isHost() then
@@ -997,8 +1010,9 @@ BlueArchiveCharacter = {
                         models.models.ex_skill_3.Stage.StageEmissives:setColor(vectors.vec3(1, 1, 1):scale(strength))
                         models.models.ex_skill_3.Stage.SpotLights.SpotLight1.SpotLight1Core.SpotLightEmissive:setColor(vectors.vec3(1, 0.875, 1):scale(strength))
                     end, "ex_skill_3_render_global")
-                    for i = 2, 3 do
-                        models.models.ex_skill_3.Stage.SpotLights["SpotLight"..i]["SpotLight"..i.."Core"].SpotLightEmissive:setColor(0.729, 1, 0.996)
+                    for i = 1, 100 do
+                        models.models.ex_skill_3.Stage.PenLights["PenLight"..i]:setPos(math.map(math.random(), 0, 1, -160, 160), 32, math.map(math.random(), 0, 1, -400, -80))
+                        BlueArchiveCharacter.EX_SKILL[3].penLightSwingOffsets[i] = math.random()
                     end
                     FaceParts:setEmotion("NORMAL", "NORMAL", "SMALL", 56, true)
                 end,
@@ -1047,6 +1061,11 @@ BlueArchiveCharacter = {
                         end
                         models.models.main.Avatar.Head.Ears.RightEarPivot:setRot(-45, -10, 0)
                         models.models.ex_skill_3.Stage:setVisible(true)
+                        events.RENDER:register(function (delta)
+                            for i = 1, 100 do
+                                models.models.ex_skill_3.Stage.PenLights["PenLight"..i]:setRot(0, 0, math.sin((BlueArchiveCharacter.EX_SKILL[3].penLightSwingOffsets[i] + delta * 0.1) * 2 * math.pi) * 40)
+                            end
+                        end, "ex_skill_3_pen_light_render")
                     elseif tick == 81 and host:isHost() then
                         events.RENDER:remove("ex_skill_3_background_render")
                         for _, modelPart in ipairs({models.models.ex_skill_3.Gui.WhiteScreen, models.models.ex_skill_3.Camera}) do
@@ -1087,13 +1106,21 @@ BlueArchiveCharacter = {
                     if tick >= 69 and tick < 81 then
                         models.models.ex_skill_3.Camera.Background:setUVPixels((tick - 69) * -10, 0)
                     end
+                    if tick >= 69 then
+                        for i = 1, 100 do
+                            BlueArchiveCharacter.EX_SKILL[3].penLightSwingOffsets[i] = BlueArchiveCharacter.EX_SKILL[3].penLightSwingOffsets[i] + 0.1
+                            BlueArchiveCharacter.EX_SKILL[3].penLightSwingOffsets[i] = BlueArchiveCharacter.EX_SKILL[3].penLightSwingOffsets[i] > 1 and BlueArchiveCharacter.EX_SKILL[3].penLightSwingOffsets[i] - 1 or BlueArchiveCharacter.EX_SKILL[3].penLightSwingOffsets[i]
+                        end
+                    end
                 end,
 
                 ---Exスキルアニメーション終了後のトランジション開始前に実行されるコールバック関数（任意）
                 ---@type fun(forcedStop: boolean)
                 ---@param forcedStop boolean アニメーションが途中終了した場合は"true"、アニメーションが最後まで再生されて終了した場合は"false"が代入される。
                 postAnimation = function(forcedStop)
-                    events.RENDER:remove("ex_skill_3_render_global")
+                    for _, eventName in ipairs({"ex_skill_3_render_global", "ex_skill_3_pen_light_render"}) do
+                        events.RENDER:remove(eventName)
+                    end
                     models.models.ex_skill_3.Stage:setVisible(false)
                     if host:isHost() then
                         events.RENDER:remove("ex_skill_3_render")
@@ -1127,7 +1154,11 @@ BlueArchiveCharacter = {
 
             ---Exスキルの初期化処理が行われたかどうか
             ---@type boolean
-            init = false
+            init = false,
+
+            ---ペンライトの振り時間のオフセット値
+            ---@type number[]
+            penLightSwingOffsets = {}
 		}
 	},
 
