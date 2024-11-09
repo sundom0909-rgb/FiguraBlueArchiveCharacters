@@ -981,6 +981,7 @@ BlueArchiveCharacter = {
                     for i = 2, 3 do
                         models.models.ex_skill_3.Stage.SpotLights["SpotLight"..i]["SpotLight"..i.."Core"].SpotLightEmissive:setColor(0.729, 1, 0.996)
                     end
+                    FaceParts:setEmotion("NORMAL", "NORMAL", "SMALL", 56, true)
                 end,
 
                 ---Exスキルアニメーション再生中のみ実行されるティック関数
@@ -993,8 +994,13 @@ BlueArchiveCharacter = {
                         for _, modelPart in ipairs({models.models.ex_skill_3.Gui.Scrollable, models.models.ex_skill_3.Gui.Scrollable2, models.models.ex_skill_3.Gui.Background}) do
                             modelPart:setVisible(false)
                         end
-                    elseif tick == 56 and host:isHost() then
-                        models.models.ex_skill_3.Gui.Transition:setVisible(false)
+                    elseif tick == 56 then
+                        FaceParts:setEmotion("CLOSED2", "CLOSED2", "SMALL", 5, true)
+                        if host:isHost() then
+                            models.models.ex_skill_3.Gui.Transition:setVisible(false)
+                        end
+                    elseif tick == 61 then
+                        FaceParts:setEmotion("CLOSED2", "CLOSED2", "STRAIGHT", 36, true)
                     elseif tick == 69 then
                         Costume.setCostumeTextureOffset(2)
                         for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer}) do
@@ -1008,7 +1014,26 @@ BlueArchiveCharacter = {
                         end
                         models.models.main.Avatar.Head.Ears.RightEarPivot:setRot(-45, -10, 0)
                         models.models.ex_skill_3.Stage:setVisible(true)
+                    elseif tick == 97 then
+                        FaceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", 3, true)
+                    elseif tick == 100 then
+                        FaceParts:setEmotion("CLOSED2", "CLOSED2", "TRIANGLE", 12, true)
+                    elseif tick == 112 then
+                        FaceParts:setEmotion("CLOSED2", "CLOSED2", "SMALL", 16, true)
+                    elseif tick == 128 then
+                        FaceParts:setEmotion("NARROW1", "NARROW1", "SMILE", 2, true)
+                    elseif tick == 130 then
+                        FaceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 17, true)
+                    elseif tick == 147 then
+                        FaceParts:setEmotion("CLOSED", "CLOSED", "OPENED2", 2, true)
+                    elseif tick == 149 then
+                        FaceParts:setEmotion("INVERTED", "NORMAL", "OPENED2", 22, true)
+                    elseif tick == 171 then
+                        FaceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 4, true)
+                    elseif tick == 175 then
+                        FaceParts:setEmotion("NORMAL", "NORMAL", "OPENED2", 38, true)
                     end
+
                     for _ = 1, 12 do
                         models.models.ex_skill_3.Stage.StageEmissives:setUVPixels(tick * -1, 0)
                     end
