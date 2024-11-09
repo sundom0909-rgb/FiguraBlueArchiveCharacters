@@ -746,12 +746,12 @@ BlueArchiveCharacter = {
                     ---カメラの位置
                     ---BBアニメーション上での値をそのまま入力する。
                     ---@type Vector3
-                    pos = vectors.vec3(),
+                    pos = vectors.vec3(0, 25, -22),
 
                     ---カメラの向き
                     ---BBアニメーション上での値をそのまま入力する。
                     ---@type Vector3
-                    rot = vectors.vec3()
+                    rot = vectors.vec3(0, 180, 0)
                 },
 
                 ---Exスキルアニメーション終了時
@@ -759,12 +759,12 @@ BlueArchiveCharacter = {
                     ---カメラの位置
                     ---BBアニメーション上での値をそのまま入力する。
                     ---@type Vector3
-                    pos = vectors.vec3(),
+                    pos = vectors.vec3(-6, 50, -18),
 
                     ---カメラの向き
                     ---BBアニメーション上での値をそのまま入力する。
                     ---@type Vector3
-                    rot = vectors.vec3()
+                    rot = vectors.vec3(-20, 200, -10)
                 }
             },
 
@@ -1009,7 +1009,7 @@ BlueArchiveCharacter = {
                         models.models.main.Avatar.Head.Ears.RightEarPivot:setRot(-45, -10, 0)
                         models.models.ex_skill_3.Stage:setVisible(true)
                     end
-                    for i = 1, 12 do
+                    for _ = 1, 12 do
                         models.models.ex_skill_3.Stage.StageEmissives:setUVPixels(tick * -1, 0)
                     end
                 end,
