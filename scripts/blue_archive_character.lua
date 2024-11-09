@@ -1084,6 +1084,10 @@ BlueArchiveCharacter = {
                         FaceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 17, true)
                     elseif tick == 147 then
                         FaceParts:setEmotion("CLOSED", "CLOSED", "OPENED2", 2, true)
+                    elseif tick == 148 then
+                        for _ = 1, 4 do
+                            table.insert(BlueArchiveCharacter.EX_SKILL[3].particleAnchors, {vectors.rotateAroundAxis(math.random() * 360, 0, math.random() * 1.5 + 0.5, 1.5, 0, 1, 0), vectors.hsvToRGB(math.random() * 0.28 + 0.9, 0.5, 1), math.random()})
+                        end
                     elseif tick == 149 then
                         FaceParts:setEmotion("INVERTED", "NORMAL", "OPENED2", 22, true)
                     elseif tick == 171 then
@@ -1110,6 +1114,21 @@ BlueArchiveCharacter = {
                         for i = 1, 100 do
                             BlueArchiveCharacter.EX_SKILL[3].penLightSwingOffsets[i] = BlueArchiveCharacter.EX_SKILL[3].penLightSwingOffsets[i] + 0.1
                             BlueArchiveCharacter.EX_SKILL[3].penLightSwingOffsets[i] = BlueArchiveCharacter.EX_SKILL[3].penLightSwingOffsets[i] > 1 and BlueArchiveCharacter.EX_SKILL[3].penLightSwingOffsets[i] - 1 or BlueArchiveCharacter.EX_SKILL[3].penLightSwingOffsets[i]
+                        end
+                    end
+                    if tick >= 136 then
+                        local bodyYaw = player:getBodyYaw()
+                        local anchorPos = player:getPos():add(vectors.rotateAroundAxis(bodyYaw * -1, -6, 3, -4, 0, 1, 0))
+                        for _ = 1, 2 do
+                            particles:newParticle(CompatibilityUtils:checkParticle("minecraft:firework"), anchorPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 12, math.random() * 6, math.random() * 6, 0, 1, 0))):setColor(1, 1, 0.6)
+                        end
+                    end
+                    if tick >= 148 and tick < 166 then
+                        local playerPos = player:getPos():add(0, 2, 0)
+                        local bodyYaw = player:getBodyYaw() * -1 + models.models.main.Avatar:getAnimRot().y * 0.5
+                        for i = 1, 4 do
+                            local anchorPos = playerPos:copy():add(vectors.rotateAroundAxis(bodyYaw, BlueArchiveCharacter.EX_SKILL[3].particleAnchors[i][1]:copy():add(0, math.sin(((tick - 148) / 18 + BlueArchiveCharacter.EX_SKILL[3].particleAnchors[i][3]) * 8 * math.pi) * 0.25, 0), 0, 1, 0))
+                            particles:newParticle(CompatibilityUtils:checkParticle("minecraft:firework"), anchorPos):setScale(1):setVelocity(anchorPos:copy():sub(playerPos):normalize():mul(0.05, 0, 0.05)):setColor(BlueArchiveCharacter.EX_SKILL[3].particleAnchors[i][2]):setGravity(0):setLifetime(213 - tick)
                         end
                     end
                 end,
@@ -1141,6 +1160,8 @@ BlueArchiveCharacter = {
                             modelPart:setVisible(true)
                         end
                         models.models.main.Avatar.Head.Ears.RightEarPivot:setRot(-45, -10, 0)
+                        BlueArchiveCharacter.EX_SKILL[3].penLightSwingOffsets = {}
+                        BlueArchiveCharacter.EX_SKILL[3].particleAnchors = {}
                         if host:isHost() then
                             events.RENDER:remove("ex_skill_3_background_render")
                             for _, modelPart in ipairs({models.models.ex_skill_3.Gui.Transition, models.models.ex_skill_3.Gui.WhiteScreen, models.models.ex_skill_3.Camera}) do
@@ -1158,7 +1179,11 @@ BlueArchiveCharacter = {
 
             ---ペンライトの振り時間のオフセット値
             ---@type number[]
-            penLightSwingOffsets = {}
+            penLightSwingOffsets = {},
+
+            ---くるりんぱする時のパーティクルのアンカー位置
+            ---@type table[]
+            particleAnchors = {}
 		}
 	},
 
