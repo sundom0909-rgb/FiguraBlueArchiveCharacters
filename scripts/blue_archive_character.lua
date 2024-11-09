@@ -1021,7 +1021,13 @@ BlueArchiveCharacter = {
                 ---@type fun(tick: integer)
                 ---@param tick integer アニメーションの現在位置を示す。単位はティック。
                 animationTick = function(tick)
-                    if tick == 50 and host:isHost() then
+                    if tick == 9 and host:isHost() then
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.item.pickup"), player:getPos(), 0.5, 1.5)
+                    elseif tick == 23 and host:isHost() then
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.player.hurt"), player:getPos(), 0.5, 1.2)
+                    elseif tick == 39 and host:isHost() then
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.item.pickup"), player:getPos(), 0.5, 1.5)
+                    elseif tick == 50 and host:isHost() then
                         models.models.ex_skill_3.Gui.Transition:setVisible(true)
                     elseif tick == 53 and host:isHost() then
                         for _, modelPart in ipairs({models.models.ex_skill_3.Gui.Scrollable, models.models.ex_skill_3.Gui.Scrollable2, models.models.ex_skill_3.Gui.Background}) do
@@ -1082,6 +1088,8 @@ BlueArchiveCharacter = {
                         FaceParts:setEmotion("NARROW1", "NARROW1", "SMILE", 2, true)
                     elseif tick == 130 then
                         FaceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 17, true)
+                    elseif tick == 136 then
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos():add(0, 2, 0), 0.1, 2)
                     elseif tick == 147 then
                         FaceParts:setEmotion("CLOSED", "CLOSED", "OPENED2", 2, true)
                     elseif tick == 148 then
@@ -1100,8 +1108,11 @@ BlueArchiveCharacter = {
                         local windowSize = client:getScaledWindowSize()
                         models.models.ex_skill_3.Gui.Frame:setScale(windowSize.x, windowSize.y, 1)
                         models.models.ex_skill_3.Gui.Frame:setVisible(true)
-                    elseif tick == 178 and host:isHost() then
-                        models.models.ex_skill_3.Gui.WhiteScreen:setVisible(false)
+                    elseif tick == 178 then
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos():add(0, 2, 0), 1, 1.5)
+                        if host:isHost() then
+                            models.models.ex_skill_3.Gui.WhiteScreen:setVisible(false)
+                        end
                     end
 
                     for _ = 1, 12 do
@@ -1114,6 +1125,9 @@ BlueArchiveCharacter = {
                         for i = 1, 100 do
                             BlueArchiveCharacter.EX_SKILL[3].penLightSwingOffsets[i] = BlueArchiveCharacter.EX_SKILL[3].penLightSwingOffsets[i] + 0.1
                             BlueArchiveCharacter.EX_SKILL[3].penLightSwingOffsets[i] = BlueArchiveCharacter.EX_SKILL[3].penLightSwingOffsets[i] > 1 and BlueArchiveCharacter.EX_SKILL[3].penLightSwingOffsets[i] - 1 or BlueArchiveCharacter.EX_SKILL[3].penLightSwingOffsets[i]
+                        end
+                        if (tick - 69) % 8 == 0 then
+                            sounds:playSound(CompatibilityUtils:checkSound("minecraft:weather.rain"), player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0, 1, 8, 0, 1, 0)), 0.5, 1.5)
                         end
                     end
                     if tick >= 136 then
@@ -1130,6 +1144,9 @@ BlueArchiveCharacter = {
                             local anchorPos = playerPos:copy():add(vectors.rotateAroundAxis(bodyYaw, BlueArchiveCharacter.EX_SKILL[3].particleAnchors[i][1]:copy():add(0, math.sin(((tick - 148) / 18 + BlueArchiveCharacter.EX_SKILL[3].particleAnchors[i][3]) * 8 * math.pi) * 0.25, 0), 0, 1, 0))
                             particles:newParticle(CompatibilityUtils:checkParticle("minecraft:firework"), anchorPos):setScale(1):setVelocity(anchorPos:copy():sub(playerPos):normalize():mul(0.05, 0, 0.05)):setColor(BlueArchiveCharacter.EX_SKILL[3].particleAnchors[i][2]):setGravity(0):setLifetime(213 - tick)
                         end
+                    end
+                    if tick >= 148 and tick < 176 then
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.experience_orb.pickup"), player:getPos():add(0, 2, 0), 0.5, 1 + ((tick - 148) / 28))
                     end
                 end,
 
