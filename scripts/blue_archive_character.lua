@@ -817,6 +817,23 @@ BlueArchiveCharacter = {
                         if host:isHost() then
                             --モデルのコピー
                             models.models.main.Avatar.Head.FaceParts.Mouth:setVisible(true)
+                            local armorVisible = {}
+                            for index, visible in ipairs(Armor.ArmorVisible) do
+                                armorVisible[index] = visible
+                            end
+                            if armorVisible[1] then
+                                Armor:setHelmet(world.newItem(CompatibilityUtils:checkItem("minecraft:air")))
+                                models.models.main.Avatar.Head.Ears.RightEarPivot:setRot()
+                            end
+                            if armorVisible[2] then
+                                Armor:setChestPlate(world.newItem(CompatibilityUtils:checkItem("minecraft:air")))
+                            end
+                            if armorVisible[3] then
+                                Armor:setLeggings(world.newItem(CompatibilityUtils:checkItem("minecraft:air")))
+                            end
+                            if armorVisible[4] then
+                                Armor:setBoots(world.newItem(CompatibilityUtils:checkItem("minecraft:air")))
+                            end
                             for i = 1, 4 do
                                 models.models.ex_skill_3.Gui.Scrollable.Characters["Pose"..i]:addChild(ModelUtils:copyModel(models.models.main.Avatar))
                             end
@@ -876,6 +893,18 @@ BlueArchiveCharacter = {
                             models.models.ex_skill_3.Gui.Scrollable.Characters.Pose4.Avatar.LowerBody.Legs.LeftLeg:setRot(60, 0, 0)
                             models.models.ex_skill_3.Gui.Scrollable.Characters.Pose4.Avatar.LowerBody.Legs.LeftLeg.LeftLegBottom:setRot(-37.5, 0, 0)
                             models.models.ex_skill_3.Gui.Scrollable.Characters.Pose4.Avatar.Head.FaceParts.Mouth:setUVPixels(BlueArchiveCharacter.FACE_PARTS.Mouth.SMALL[1] * 16, BlueArchiveCharacter.FACE_PARTS.Mouth.SMALL[2] * 8)
+                            if armorVisible[1] then
+                                Armor:setHelmet(Armor.ArmorSlotItemsPrev[1])
+                            end
+                            if armorVisible[2] then
+                                Armor:setChestPlate(Armor.ArmorSlotItemsPrev[2])
+                            end
+                            if armorVisible[3] then
+                                Armor:setLeggings(Armor.ArmorSlotItemsPrev[3])
+                            end
+                            if armorVisible[4] then
+                                Armor:setBoots(Armor.ArmorSlotItemsPrev[4])
+                            end
                             --白い縁取りと影の作成
                             local outlineTexture = textures:newTexture("ex_skill_3_character_outline", 1, 1)
                             outlineTexture:fill(0, 0, 1, 1, 1, 1, 1)
@@ -1065,7 +1094,9 @@ BlueArchiveCharacter = {
                         for _, modelPart in ipairs({models.models.main.Avatar.Head.CIdolH, models.models.main.Avatar.UpperBody.Body.CIdolB, models.models.main.Avatar.LowerBody.Legs.RightLeg.RightLegBottom.CIdolRLB, models.models.main.Avatar.LowerBody.Legs.LeftLeg.LeftLegBottom.CIdolLLB, models.models.main.Avatar.Head.CTracksuitH.HairbandFront, models.models.main.Avatar.Head.CTracksuitH.Hairband, models.models.main.Avatar.Head.CTracksuitH.HairBandRibbon, models.models.main.Avatar.UpperBody.Body.CTracksuitB.TrinityLogo, models.models.main.Avatar.UpperBody.Body.CTracksuitB.Fastener, models.models.main.Avatar.UpperBody.Body.CTracksuitB.Bag}) do
                             modelPart:setVisible(true)
                         end
-                        models.models.main.Avatar.Head.Ears.RightEarPivot:setRot(-45, -10, 0)
+                        if not Armor.ArmorVisible[1] then
+                            models.models.main.Avatar.Head.Ears.RightEarPivot:setRot(-45, -10, 0)
+                        end
                         models.models.ex_skill_3.Stage:setVisible(true)
                         events.RENDER:register(function (delta)
                             for i = 1, 100 do
@@ -1176,7 +1207,9 @@ BlueArchiveCharacter = {
                         for _, modelPart in ipairs({models.models.main.Avatar.Head.CIdolH, models.models.main.Avatar.UpperBody.Body.CIdolB, models.models.main.Avatar.LowerBody.Legs.RightLeg.RightLegBottom.CIdolRLB, models.models.main.Avatar.LowerBody.Legs.LeftLeg.LeftLegBottom.CIdolLLB, models.models.main.Avatar.Head.CTracksuitH.HairbandFront, models.models.main.Avatar.Head.CTracksuitH.Hairband, models.models.main.Avatar.Head.CTracksuitH.HairBandRibbon, models.models.main.Avatar.UpperBody.Body.CTracksuitB.TrinityLogo, models.models.main.Avatar.UpperBody.Body.CTracksuitB.Fastener, models.models.main.Avatar.UpperBody.Body.CTracksuitB.Bag}) do
                             modelPart:setVisible(true)
                         end
-                        models.models.main.Avatar.Head.Ears.RightEarPivot:setRot(-45, -10, 0)
+                        if not Armor.ArmorVisible[1] then
+                            models.models.main.Avatar.Head.Ears.RightEarPivot:setRot(-45, -10, 0)
+                        end
                         BlueArchiveCharacter.EX_SKILL[3].penLightSwingOffsets = {}
                         BlueArchiveCharacter.EX_SKILL[3].particleAnchors = {}
                         if host:isHost() then
@@ -1410,9 +1443,15 @@ BlueArchiveCharacter = {
                         for _, modelPart in ipairs({models.models.main.Avatar.Head.CTracksuitH.HairBandRibbon, models.models.main.Avatar.Head.CTracksuitH.HairTail}) do
                             modelPart:setPos(0, 0, 1)
                         end
+                        models.models.main.Avatar.Head.CIdolH.Hat:setVisible(false)
+                        models.models.main.Avatar.Head.Ears.RightEarPivot:setRot()
                     else
                         for _, modelPart in ipairs({models.models.main.Avatar.Head.CTracksuitH.HairBandRibbon, models.models.main.Avatar.Head.CTracksuitH.HairTail}) do
                             modelPart:setPos()
+                        end
+                        models.models.main.Avatar.Head.CIdolH.Hat:setVisible(true)
+                        if Costume.CurrentCostume == 4 then
+                            models.models.main.Avatar.Head.Ears.RightEarPivot:setRot(-45, -10, 0)
                         end
                     end
                 elseif parts == "CHEST_PLATE" then
@@ -1421,20 +1460,25 @@ BlueArchiveCharacter = {
                             modelPart:setPos(0, 0, -1)
                         end
                         models.models.main.Avatar.UpperBody.Body.VeilBody:setPos(0, 0, 1)
+                        models.models.main.Avatar.UpperBody.Body.CIdolB.NeckRibbon.NeckRibbonBottom:setVisible(false)
                     else
                         for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.FrontHair, models.models.main.Avatar.UpperBody.Body.VeilBody, models.models.main.Avatar.UpperBody.Body.CTracksuitB.FrontHair}) do
                             modelPart:setPos()
                         end
+                        models.models.main.Avatar.UpperBody.Body.CIdolB.NeckRibbon.NeckRibbonBottom:setVisible(true)
                     end
                 elseif parts == "LEGGINGS" then
                     if Armor.ArmorVisible[3] then
-                        for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.Robe, models.models.main.Avatar.UpperBody.Body.BackRibbon}) do
+                        for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.Robe, models.models.main.Avatar.UpperBody.Body.BackRibbon, models.models.main.Avatar.UpperBody.Body.CIdolB.Skirt}) do
                             modelPart:setVisible(false)
                         end
-                    elseif Costume.CurrentCostume <= 2 then
-                        for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.Robe, models.models.main.Avatar.UpperBody.Body.BackRibbon}) do
-                            modelPart:setVisible(true)
+                    else
+                        if Costume.CurrentCostume <= 2 then
+                            for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.Robe, models.models.main.Avatar.UpperBody.Body.BackRibbon}) do
+                                modelPart:setVisible(true)
+                            end
                         end
+                        models.models.main.Avatar.UpperBody.Body.CIdolB.Skirt:setVisible(true)
                     end
                 end
             end
