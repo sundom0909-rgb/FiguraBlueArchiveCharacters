@@ -3740,14 +3740,21 @@ BlueArchiveCharacter = {
                     }
                 }
             }
-        }
+        },
 
-        --[[
         ---物理演算処理後に実行されるコールバック関数（省略可）。ここでモデルパーツの向きを上書きできる。
         ---@param modelPart ModelPart 物理演算が処理されたモデルパーツ
         callback = function (modelPart)
+            if modelPart == models.models.main.Avatar.Head.CTracksuitH.HairTail then
+                modelPart:setRot(math.min(modelPart:getRot().x, 20), 0, 0)
+            elseif modelPart == models.models.main.Avatar.Head.CTracksuitH.HairBandRibbon.HairBandRibbonTopRightYPivot then
+                modelPart:setRot(0, math.min(modelPart:getRot().y, 0), 0)
+            elseif modelPart == models.models.main.Avatar.Head.CTracksuitH.HairBandRibbon.HairBandRibbonTopLeftYPivot then
+                modelPart:setRot(0, math.max(modelPart:getRot().y, 0), 0)
+            elseif modelPart == models.models.main.Avatar.Head.CTracksuitH.HairBandRibbon.HairBandRibbonBottom.HairBandRibbonBottomRightXPivot or modelPart == models.models.main.Avatar.Head.CTracksuitH.HairBandRibbon.HairBandRibbonBottom.HairBandRibbonBottomLeftXPivot then
+                modelPart:setRot(math.min(modelPart:getRot().x, 0), 0, 0)
+            end
         end
-        ]]
     },
 
     --その他定数・変数
