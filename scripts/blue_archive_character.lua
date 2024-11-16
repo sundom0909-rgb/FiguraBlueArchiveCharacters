@@ -585,7 +585,9 @@ BlueArchiveCharacter = {
                 ---@param forcedStop boolean アニメーションが途中終了した場合は"true"、アニメーションが最後まで再生されて終了した場合は"false"が代入される。
                 postAnimation = function(forcedStop)
                     events.RENDER:remove("ex_skill_1_render")
-                    PlacementObjectManager:place(1, player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0, 3, 5, 0, 1, 0)), 0)
+                    if not forcedStop then
+                        PlacementObjectManager:place(1, player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0, 3, 5, 0, 1, 0)), 0)
+                    end
                 end
             }
 		}
