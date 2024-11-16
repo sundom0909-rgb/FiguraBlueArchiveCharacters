@@ -471,12 +471,12 @@
 	"outliner": [
 		{
 			"name": "MedicalBox",
-			"origin": [-5.5, 0, -6],
+			"origin": [0, 0, 0],
 			"color": 0,
 			"uuid": "6801c983-135e-151f-0204-f1c88e0932f8",
 			"export": true,
 			"mirror_uv": false,
-			"isOpen": true,
+			"isOpen": false,
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
@@ -521,6 +521,48 @@
 			"uuid": "8e3beb22-06ee-dcc1-e90c-e2ae03236333",
 			"relative_path": "../../textures/ex_skill_1.png",
 			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAUCAYAAACXtf2DAAAAAXNSR0IArs4c6QAAAMxJREFUSEtjPHr8+H8GKLBqaYAxUehjNdjFiVHPCLMAl2KYTeiWEKsebAGy4sufPqK4XpePH86HWULIcGRHMf73docHEUgCZIHW3iNgNdecbRiQLcAafgQE4RYguxzZAph+ci1CsQBmMLqjKPEJfS2AuZwmQQQznOqRTPNkSpeMRpeiAmQJMWULchImRj3tyyL0ooKU4uDRt29YlctxccHF4T4gxWCY2o8fUQtGmDg/P6KAZNy2YwdKYUeKRURZQLcgIlTGU1Th0DIfAACUPa5AL0jrKQAAAABJRU5ErkJggg=="
+		}
+	],
+	"animations": [
+		{
+			"uuid": "ff2c98b7-b1dd-7411-17ac-06da23da67ed",
+			"name": "ex_skill_1",
+			"loop": "hold",
+			"override": true,
+			"length": 0,
+			"snapping": 20,
+			"selected": true,
+			"anim_time_update": "",
+			"blend_weight": "",
+			"start_delay": "",
+			"loop_delay": "",
+			"animators": {
+				"6801c983-135e-151f-0204-f1c88e0932f8": {
+					"name": "MedicalBox",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": -11
+								}
+							],
+							"uuid": "8ea79170-d009-c9da-7856-2b4caeecac74",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear",
+							"bezier_linked": true,
+							"bezier_left_time": [-0.1, -0.1, -0.1],
+							"bezier_left_value": [0, 0, 0],
+							"bezier_right_time": [0.1, 0.1, 0.1],
+							"bezier_right_value": [0, 0, 0]
+						}
+					]
+				}
+			}
 		}
 	],
 	"reference_images": [
