@@ -353,7 +353,7 @@ BlueArchiveCharacter = {
             ---設置物として扱うモデル
             ---指定したモデルをコピーして設置物とする。
             ---@type ModelPart
-            placementModel = models.models.placement_object.PlacementObject,
+            placementModel = models.models.ex_skill_1.MedicalBox,
 
             ---設置物の当たり判定
             boundingBox = {
@@ -365,7 +365,7 @@ BlueArchiveCharacter = {
 
                 ---当たり判定の大きさ。BlockBenchでのサイズの値をそのまま入力する。基準点はモデルの底面の中心
                 ---@type Vector3
-                size = vectors.vec3(8, 8, 8)
+                size = vectors.vec3(12, 8, 12)
             },
 
             ---設置物の設置モード
@@ -492,7 +492,7 @@ BlueArchiveCharacter = {
                 ---英語
                 ---日本語名を翻訳したものにする。
                 ---@type string
-                en_us = "Intensive are set A",
+                en_us = "Intensive care set A",
 
                 ---日本語
                 ---実際のスキルの名前と同じにする。
@@ -546,6 +546,7 @@ BlueArchiveCharacter = {
                     events.RENDER:register(function ()
                         models.models.main.Avatar.Head.Sweat:setOpacity(models.models.main.Avatar.Head.Sweat.SweatOpacity:getAnimScale().x)
                     end, "ex_skill_1_render")
+                    PlacementObjectManager:removeAll()
                     FaceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 10, true)
                 end,
 
@@ -584,6 +585,7 @@ BlueArchiveCharacter = {
                 ---@param forcedStop boolean アニメーションが途中終了した場合は"true"、アニメーションが最後まで再生されて終了した場合は"false"が代入される。
                 postAnimation = function(forcedStop)
                     events.RENDER:remove("ex_skill_1_render")
+                    PlacementObjectManager:place(1, player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0, 3, 5, 0, 1, 0)), 0)
                 end
             }
 		}
