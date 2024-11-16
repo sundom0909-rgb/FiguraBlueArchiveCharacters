@@ -69,9 +69,11 @@ BlueArchiveCharacter = {
         ---右目
         RightEye = {
             NORMAL = {0, 0},
-            SURPLISED = {1, 0},
-            TIRED = {2, 0},
-            CLOSED = {3, 0}
+            SURPLISED = {2, 0},
+            TIRED = {3, 0},
+            CLOSED = {4, 0},
+            CLOSED2 = {5, 0},
+            INVERTED = {6, 0}
         },
 
         ---左目
@@ -79,11 +81,14 @@ BlueArchiveCharacter = {
             NORMAL = {0, 0},
             SURPLISED = {1, 0},
             TIRED = {2, 0},
-            CLOSED = {3, 0}
+            CLOSED = {3, 0},
+            CLOSED2 = {4, 0}
         },
 
         ---口
         Mouth = {
+            SMILE = {0, 0},
+            TIRED = {1, 0}
         }
 
         ---表情のセット（省略可）
@@ -535,10 +540,29 @@ BlueArchiveCharacter = {
 
             ---コールバック関数
             callbacks = {
+                ---Exスキルアニメーション開始前のトランジション終了後に実行されるコールバック関数（任意）
+                ---@type fun()
+                preAnimation = function()
+                    FaceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 10, true)
+                end,
+
                 ---Exスキルアニメーション再生中のみ実行されるティック関数
                 ---@type fun(tick: integer)
                 ---@param tick integer アニメーションの現在位置を示す。単位はティック。
                 animationTick = function(tick)
+                    if tick == 10 then
+                        FaceParts:setEmotion("CLOSED2", "CLOSED2", "SMILE", 3, true)
+                    elseif tick == 13 then
+                        FaceParts:setEmotion("CLOSED2", "CLOSED2", "TIRED", 11, true)
+                    elseif tick == 24 then
+                        FaceParts:setEmotion("NORMAL", "NORMAL", "TIRED", 8, true)
+                    elseif tick == 32 then
+                        FaceParts:setEmotion("CLOSED2", "CLOSED2", "TIRED", 1, true)
+                    elseif tick == 33 then
+                        FaceParts:setEmotion("CLOSED2", "CLOSED2", "SMILE", 2, true)
+                    elseif tick == 35 then
+                        FaceParts:setEmotion("INVERTED", "NORMAL", "SMILE", 32, true)
+                    end
                 end,
             }
 		}
