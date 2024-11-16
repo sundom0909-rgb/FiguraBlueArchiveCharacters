@@ -116,28 +116,32 @@ BlueArchiveCharacter = {
         ---コールバック関数
         ---@type {[string]: function}
         callbacks = {
-            --[[
-            ---腕の状態が変更された際のコールバック関数（任意）
-            ---@param right integer 新しい右腕の状態
-            ---@param left integer 新しい左腕の状態
-            ---@return {right?: integer, left?: integer}|nil overriddenArmState 返した値で腕の状態を上書きできる。
-            onArmStateChanged = function (right, left)
-            end
-            ]]
-
-            --[[
             ---右腕の追加処理（任意）
             ---@param state integer 新しい右腕の状態
             onAddtionalRightArmProcess = function (state)
-            end
-            ]]
+                if state == 4 then
+                    models.models.main.Avatar.UpperBody.Arms.RightArm:setParentType("Body")
+                    events.TICK:register(function ()
+                        if BlueArchiveCharacter.MedicalBoxPos == 0 then
+                            Arms:setArmState(0, 0)
+                        end
+                    end, "right_arm_tick")
+                    events.RENDER:register(function (delta, context)
+                        local swingPos = (player:getSwingTime() + (player:isSwingingArm() and delta or 0)) / player:getSwingDuration()
+                        for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Arms.RightArm, models.models.main.Avatar.UpperBody.Arms.LeftArm}) do
+                            modelPart:setRot(swingPos < 0.25 and (360 * swingPos + 40) or (-120 * swingPos + 160), 0, 0)
+                        end
+                    end, "right_arm_render")
+                end
+            end,
 
-            --[[
             ---左腕の追加処理（任意）
             ---@param state integer 新しい左腕の状態
             onAddtionalLeftArmProcess = function (state)
+                if state == 4 then
+                    models.models.main.Avatar.UpperBody.Arms.LeftArm:setParentType("Body")
+                end
             end
-            ]]
         }
     },
 
@@ -526,7 +530,7 @@ BlueArchiveCharacter = {
 
             ---Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
             ---@type ModelPart[]
-			models = {models.models.ex_skill_1.MedicalBox, models.models.main.Avatar.Head.Sweat},
+			models = {models.models.main.Avatar.Head.Sweat},
 
             ---Exスキルアニメーションが含まれるモデルファイル名
             ---アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
@@ -571,6 +575,10 @@ BlueArchiveCharacter = {
                         models.models.main.Avatar.Head.Sweat:setOpacity(models.models.main.Avatar.Head.Sweat.SweatOpacity:getAnimScale().x)
                     end, "ex_skill_1_render")
                     PlacementObjectManager:removeAll()
+                    models.models.ex_skill_1.MedicalBox:setPos()
+                    models.models.ex_skill_1.MedicalBox:setRot()
+                    models.models.ex_skill_1.MedicalBox:setScale()
+                    models.models.ex_skill_1.MedicalBox:setParentType("None")
                     FaceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 10, true)
                 end,
 
@@ -612,6 +620,7 @@ BlueArchiveCharacter = {
                     if not forcedStop then
                         PlacementObjectManager:place(1, player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0, 3, 5, 0, 1, 0)), 0)
                     end
+                    models.models.ex_skill_1.MedicalBox:setParentType("Item")
                 end
             }
 		}
@@ -688,12 +697,16 @@ BlueArchiveCharacter = {
             ---@type fun(costumeId: integer)
             ---@param costumeId integer 新たな衣装のインデックス番号
             change = function(costumeId)
+                events.ITEM_RENDER:remove("medical_box_item_render")
             end,
 
             ---衣装がリセットされた時に実行されるコールバック関数
             ---あらゆる衣装からデフォルトの衣装へ推移できるようにする。
             ---@type fun()
             reset = function()
+                if events.ITEM_RENDER:getRegisteredCount("medical_box_item_render") then
+                    events.ITEM_RENDER:register(BlueArchiveCharacter.medicalBoxItemRender, "medical_box_item_render")
+                end
             end,
 
             ---防具が変更された（防具が見える/見えない）時に実行されるコールバック関数
@@ -1961,11 +1974,74 @@ BlueArchiveCharacter = {
         callback = function (modelPart)
         end
         ]]
-    }
+    },
 
     --その他定数・変数
+
+    ---救急箱の位置：0. 持っていない, 1. メインハンドに持っている, 2. オフハンドに持っている
+    ---@type integer
+    MedicalBoxPos = 0,
+
+    ---@param item ItemStack
+    ---@param mode Event.ItemRender.renderType
+    ---@param pos Vector3
+    ---@param rot Vector3
+    ---@param scale Vector3
+    ---@param lefthanded boolean
+    MedicalBoxItemRender = function (item, mode, pos, rot, scale, lefthanded)
+        local isLeftHanded = player:isLeftHanded()
+        if (isLeftHanded and BlueArchiveCharacter.MedicalBoxPos == 2) or (not isLeftHanded and BlueArchiveCharacter.MedicalBoxPos == 1) then
+            --右手に救急箱を持つ
+            if mode == "THIRD_PERSON_RIGHT_HAND" then
+                models.models.ex_skill_1.MedicalBox:setPos(-5.5, -4, 0)
+                models.models.ex_skill_1.MedicalBox:setRot(45, 0, 0)
+                models.models.ex_skill_1.MedicalBox:setScale(0.8, 0.8, 0.8)
+                return models.models.ex_skill_1.MedicalBox
+            elseif mode == "FIRST_PERSON_RIGHT_HAND" and Gun.ShowWeaponInFirstPerson then
+                models.models.ex_skill_1.MedicalBox:setPos(-9, -3, 0)
+                models.models.ex_skill_1.MedicalBox:setRot(0, 0, 0)
+                models.models.ex_skill_1.MedicalBox:setScale(0.8, 0.8, 0.8)
+                return models.models.ex_skill_1.MedicalBox
+            end
+        elseif (isLeftHanded and BlueArchiveCharacter.MedicalBoxPos == 1) or (not isLeftHanded and BlueArchiveCharacter.MedicalBoxPos == 2) then
+            --左手に救急箱を持つ
+            if mode == "THIRD_PERSON_LEFT_HAND" then
+                models.models.ex_skill_1.MedicalBox:setPos(5.5, -4, 0)
+                models.models.ex_skill_1.MedicalBox:setRot(45, 0, 0)
+                models.models.ex_skill_1.MedicalBox:setScale(0.8, 0.8, 0.8)
+                return models.models.ex_skill_1.MedicalBox
+            elseif mode == "FIRST_PERSON_LEFT_HAND" and Gun.ShowWeaponInFirstPerson then
+                models.models.ex_skill_1.MedicalBox:setPos(9, -3, 0)
+                models.models.ex_skill_1.MedicalBox:setRot(0, 0, 0)
+                models.models.ex_skill_1.MedicalBox:setScale(0.8, 0.8, 0.8)
+                return models.models.ex_skill_1.MedicalBox
+            end
+        end
+    end
 }
 
 --生徒固有初期化処理
+
+events.ENTITY_INIT:register(function ()
+    events.TICK:register(function ()
+        if Gun.CurrentGunPosition == "NONE" and ExSkill.AnimationCount == -1 then
+            local healingPotionPos = 0
+            for i = 1, 2 do
+                local heldItem = player:getHeldItem(i == 2)
+                if (heldItem.id == "minecraft:potion" or heldItem.id == "minecraft:splash_potion" or heldItem.id == "minecraft:lingering_potion") and heldItem.tag.Potion ~= nil and heldItem.tag.Potion:match("minecraft:.*healing") ~= nil then
+                    healingPotionPos = i
+                    break
+                end
+            end
+            BlueArchiveCharacter.MedicalBoxPos = healingPotionPos
+        else
+            BlueArchiveCharacter.MedicalBoxPos = 0
+        end
+        if BlueArchiveCharacter.MedicalBoxPos > 0 and Arms.ArmState.right ~= 4 then
+            Arms:setArmState(4, 4)
+        end
+    end)
+    events.ITEM_RENDER:register(BlueArchiveCharacter.MedicalBoxItemRender, "medical_box_item_render")
+end)
 
 return BlueArchiveCharacter

@@ -12,7 +12,7 @@
 ExSkill = {
     ---アバター読み込み時に自動的にExスキルが再生される。デバッグ用。
     ---@type ExSkill.AutoPlayMode
-    AUTO_PLAY = "MAIN",
+    AUTO_PLAY = "NONE",
 
     ---現在再生中のExスキルのインデックス番号
     ---@type integer
