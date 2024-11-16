@@ -502,7 +502,7 @@ BlueArchiveCharacter = {
 
             ---Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
             ---@type ModelPart[]
-			models = {models.models.ex_skill_1.MedicalBox},
+			models = {models.models.ex_skill_1.MedicalBox, models.models.main.Avatar.Head.Sweat},
 
             ---Exスキルアニメーションが含まれるモデルファイル名
             ---アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
@@ -543,6 +543,9 @@ BlueArchiveCharacter = {
                 ---Exスキルアニメーション開始前のトランジション終了後に実行されるコールバック関数（任意）
                 ---@type fun()
                 preAnimation = function()
+                    events.RENDER:register(function ()
+                        models.models.main.Avatar.Head.Sweat:setOpacity(models.models.main.Avatar.Head.Sweat.SweatOpacity:getAnimScale().x)
+                    end, "ex_skill_1_render")
                     FaceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 10, true)
                 end,
 
@@ -554,6 +557,9 @@ BlueArchiveCharacter = {
                         FaceParts:setEmotion("CLOSED2", "CLOSED2", "SMILE", 3, true)
                     elseif tick == 13 then
                         FaceParts:setEmotion("CLOSED2", "CLOSED2", "TIRED", 11, true)
+                    elseif tick == 15 then
+                        particles:newParticle(CompatibilityUtils:checkParticle("minecraft:snowflake"), ModelUtils.getModelWorldPos(models.models.main.Avatar.Head.FaceParts.Mouth)):setScale(0.5):setVelocity(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0, -0.01, 0.01, 0, 1, 0)):setGravity(0):setLifetime(11)
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.item.pickup"), player:getPos(), 0.1, 0.7)
                     elseif tick == 24 then
                         FaceParts:setEmotion("NORMAL", "NORMAL", "TIRED", 8, true)
                     elseif tick == 32 then
@@ -562,8 +568,23 @@ BlueArchiveCharacter = {
                         FaceParts:setEmotion("CLOSED2", "CLOSED2", "SMILE", 2, true)
                     elseif tick == 35 then
                         FaceParts:setEmotion("INVERTED", "NORMAL", "SMILE", 32, true)
+                        local anchorPos = player:getPos():add(0, 0.8, 0)
+                        local bodyYaw = player:getBodyYaw()
+                        local isHost = host:isHost()
+                        local colorTable = {vectors.vec3(0.337, 1, 1), vectors.vec3(0.984, 1, 0.533)}
+                        for _ = 1, 10 do
+                            particles:newParticle(CompatibilityUtils:checkParticle("minecraft:end_rod"), anchorPos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, (math.random() < 0.5 and (isHost and -0.075 or -0.1) or 0.1) * (math.random() * 0.2 + 0.8), math.random() * 0.2 - 0.05, 0, 0, 1, 0)):setColor(colorTable[math.floor(math.random() * 2) + 1])
+                        end
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.item.pickup"), anchorPos, 1, 1.8)
                     end
                 end,
+
+                                ---Exスキルアニメーション終了後のトランジション開始前に実行されるコールバック関数（任意）
+                ---@type fun(forcedStop: boolean)
+                ---@param forcedStop boolean アニメーションが途中終了した場合は"true"、アニメーションが最後まで再生されて終了した場合は"false"が代入される。
+                postAnimation = function(forcedStop)
+                    events.RENDER:remove("ex_skill_1_render")
+                end
             }
 		}
 	},
