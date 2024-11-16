@@ -682,7 +682,7 @@ BlueArchiveCharacter = {
 
                 ---この衣装での生徒の配置タイプ
                 ---@type BlueArchiveCharacter.FormationType
-                formationType = "STRIKER",
+                formationType = "SPECIAL",
 
                 ---コスチュームに対応するExスキルのインデックス番号
                 ---@type integer
