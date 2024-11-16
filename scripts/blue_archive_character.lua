@@ -386,6 +386,30 @@ BlueArchiveCharacter = {
 
             ---コールバック関数
             callbacks = {
+                ---設置物インスタンスが生成された直後に呼ばれる関数（任意）
+                ---@param placementObject table 設置物インスタンス
+                onInit = function (placementObject)
+                    placementObject.tick = 0
+                end,
+
+                ---各ティック毎に呼ばれる関数（任意）
+                ---@param placementObject table 設置物のインスタンス
+                onTick = function (placementObject)
+                    local targetEntiry = raycast:entity(placementObject.currentPos, placementObject.currentPos:copy():add(0, 0.5, 0))
+                    if targetEntiry ~= nil and targetEntiry:isPlayer() then
+                        for _ = 1, 50 do
+                            particles:newParticle(CompatibilityUtils:checkParticle("minecraft:effect"), placementObject.currentPos):setScale(1.2):setVelocity(vectors.rotateAroundAxis(math.random() * 360, 0, 0, math.random() * 0.25, 0, 1, 0)):setColor(0.961, 0.141, 0.137)
+                        end
+                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:block.chest.open"), placementObject.currentPos, 1, 2)
+                        --host:sendChatCommand("/effect give "..targetEntiry:getName().." minecraft:instant_health 1 1 true")
+                        placementObject.remove()
+                    else
+                        if placementObject.tick % 2 == 0 then
+                            particles:newParticle(CompatibilityUtils:checkParticle("minecraft:end_rod"), placementObject.currentPos:copy():add(math.random() - 0.5, math.random(), math.random() - 0.5)):setVelocity(0, 0.1, 0):setColor(1, 0.984, 0.4)
+                        end
+                        placementObject.tick = placementObject.tick + 1
+                    end
+                end
             }
         }
     },
