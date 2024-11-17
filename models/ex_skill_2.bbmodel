@@ -405,6 +405,669 @@
 			},
 			"type": "cube",
 			"uuid": "1e1f4aac-0ff3-3ef8-9914-2f7523b0349b"
+		},
+		{
+			"name": "MusicStandShaft",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [-0.5, 0.5, -0.5],
+			"to": [0.5, 20.5, 0.5],
+			"autouv": 0,
+			"color": 0,
+			"origin": [0, 0, 0],
+			"faces": {
+				"north": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"east": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"south": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"west": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"up": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"down": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				}
+			},
+			"type": "cube",
+			"uuid": "eed9aff8-36ed-a831-b8d9-0aba82d96169"
+		},
+		{
+			"name": "MusicStandFoot1_1",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [-0.5, 4, -8.5],
+			"to": [0.5, 5, -0.5],
+			"autouv": 0,
+			"color": 0,
+			"origin": [0, 0, 0],
+			"faces": {
+				"north": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"east": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"up": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"down": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				}
+			},
+			"type": "cube",
+			"uuid": "cf57c19c-6951-95ab-f2b1-e54f1438ba80"
+		},
+		{
+			"name": "MusicStandFoot1_2",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [-0.5, 4, -8.5],
+			"to": [0.5, 5, -7.5],
+			"autouv": 0,
+			"color": 0,
+			"inflate": 0.1,
+			"origin": [0, 0, 0],
+			"faces": {
+				"north": {
+					"uv": [2, 0, 3, 1],
+					"texture": 3
+				},
+				"east": {
+					"uv": [2, 0, 3, 1],
+					"texture": 3
+				},
+				"south": {
+					"uv": [2, 0, 3, 1],
+					"texture": 3
+				},
+				"west": {
+					"uv": [2, 0, 3, 1],
+					"texture": 3
+				},
+				"up": {
+					"uv": [2, 0, 3, 1],
+					"texture": 3
+				},
+				"down": {
+					"uv": [2, 0, 3, 1],
+					"texture": 3
+				}
+			},
+			"type": "cube",
+			"uuid": "55f44267-f7b1-f981-062c-9c0052fa324e"
+		},
+		{
+			"name": "MusicStandFoot1_3",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [-0.25, 1, -4.75],
+			"to": [0.25, 4, -4.25],
+			"autouv": 0,
+			"color": 0,
+			"origin": [0, 0, 0],
+			"faces": {
+				"north": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"east": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"south": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"west": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "d2ac4a39-c8aa-1cbd-560f-4266ce8aa9ad"
+		},
+		{
+			"name": "MusicStandFoot2_1",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [-0.5, 4, -8.5],
+			"to": [0.5, 5, -0.5],
+			"autouv": 0,
+			"color": 0,
+			"origin": [0, 0, 0],
+			"faces": {
+				"north": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"east": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"up": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"down": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				}
+			},
+			"type": "cube",
+			"uuid": "1e930652-9608-2fcd-a706-d0904ce43743"
+		},
+		{
+			"name": "MusicStandFoot2_2",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [-0.5, 4, -8.5],
+			"to": [0.5, 5, -7.5],
+			"autouv": 0,
+			"color": 0,
+			"inflate": 0.1,
+			"origin": [0, 0, 0],
+			"faces": {
+				"north": {
+					"uv": [2, 0, 3, 1],
+					"texture": 3
+				},
+				"east": {
+					"uv": [2, 0, 3, 1],
+					"texture": 3
+				},
+				"south": {
+					"uv": [2, 0, 3, 1],
+					"texture": 3
+				},
+				"west": {
+					"uv": [2, 0, 3, 1],
+					"texture": 3
+				},
+				"up": {
+					"uv": [2, 0, 3, 1],
+					"texture": 3
+				},
+				"down": {
+					"uv": [2, 0, 3, 1],
+					"texture": 3
+				}
+			},
+			"type": "cube",
+			"uuid": "ee51aaf1-a053-8d36-2144-dc6650dd0f79"
+		},
+		{
+			"name": "MusicStandFoot2_3",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [-0.25, 1, -4.75],
+			"to": [0.25, 4, -4.25],
+			"autouv": 0,
+			"color": 0,
+			"origin": [0, 0, 0],
+			"faces": {
+				"north": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"east": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"south": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"west": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "787075f7-4b8b-f4b7-7299-f39b969f4fe9"
+		},
+		{
+			"name": "MusicStandFoot3_1",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [-0.5, 4, -8.5],
+			"to": [0.5, 5, -0.5],
+			"autouv": 0,
+			"color": 0,
+			"origin": [0, 0, 0],
+			"faces": {
+				"north": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"east": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"up": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"down": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				}
+			},
+			"type": "cube",
+			"uuid": "8228a80a-e1e1-2cdf-3969-a57e5a7441fa"
+		},
+		{
+			"name": "MusicStandFoot3_2",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [-0.5, 4, -8.5],
+			"to": [0.5, 5, -7.5],
+			"autouv": 0,
+			"color": 0,
+			"inflate": 0.1,
+			"origin": [0, 0, 0],
+			"faces": {
+				"north": {
+					"uv": [2, 0, 3, 1],
+					"texture": 3
+				},
+				"east": {
+					"uv": [2, 0, 3, 1],
+					"texture": 3
+				},
+				"south": {
+					"uv": [2, 0, 3, 1],
+					"texture": 3
+				},
+				"west": {
+					"uv": [2, 0, 3, 1],
+					"texture": 3
+				},
+				"up": {
+					"uv": [2, 0, 3, 1],
+					"texture": 3
+				},
+				"down": {
+					"uv": [2, 0, 3, 1],
+					"texture": 3
+				}
+			},
+			"type": "cube",
+			"uuid": "8b105112-2263-3965-0506-7bb1d84c9189"
+		},
+		{
+			"name": "MusicStandFoot3_3",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [-0.25, 1, -4.75],
+			"to": [0.25, 4, -4.25],
+			"autouv": 0,
+			"color": 0,
+			"origin": [0, 0, 0],
+			"faces": {
+				"north": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"east": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"south": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"west": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "b11c9637-38cf-02c9-cfb1-e50e48157100"
+		},
+		{
+			"name": "MusicStandFeetStopper",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [-1, 4, -1],
+			"to": [1, 5, 1],
+			"autouv": 0,
+			"color": 0,
+			"origin": [0, 0, 0],
+			"faces": {
+				"north": {
+					"uv": [2, 0, 3, 1],
+					"texture": 3
+				},
+				"east": {
+					"uv": [2, 0, 3, 1],
+					"texture": 3
+				},
+				"south": {
+					"uv": [2, 0, 3, 1],
+					"texture": 3
+				},
+				"west": {
+					"uv": [2, 0, 3, 1],
+					"texture": 3
+				},
+				"up": {
+					"uv": [2, 0, 3, 1],
+					"texture": 3
+				},
+				"down": {
+					"uv": [2, 0, 3, 1],
+					"texture": 3
+				}
+			},
+			"type": "cube",
+			"uuid": "38d50851-790c-934c-085e-a66bade68cae"
+		},
+		{
+			"name": "MusicStandBookHolderBack",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [-8, 16, -0.5],
+			"to": [8, 26, 0],
+			"autouv": 0,
+			"color": 0,
+			"origin": [-8, 16, -0.5],
+			"faces": {
+				"north": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"east": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"south": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"west": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"up": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"down": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				}
+			},
+			"type": "cube",
+			"uuid": "b5f1c1e9-2b32-64b8-4791-8fe7003479da"
+		},
+		{
+			"name": "MusicStandBookHolderBottom",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [-8, 16, -1.5],
+			"to": [8, 16.5, -0.5],
+			"autouv": 0,
+			"color": 0,
+			"origin": [-8, 16, -0.5],
+			"faces": {
+				"north": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"east": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"south": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"west": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"up": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"down": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				}
+			},
+			"type": "cube",
+			"uuid": "207a72f8-5ac1-9607-0e78-844197d450cf"
+		},
+		{
+			"name": "MusicBook",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [-6, 16.5, -1],
+			"to": [6, 25.5, -0.5],
+			"autouv": 0,
+			"color": 0,
+			"origin": [0, 20.5, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 5, 48, 41],
+					"texture": 3
+				},
+				"east": {
+					"uv": [3, 0, 9, 1],
+					"texture": 3
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [3, 0, 9, 1],
+					"rotation": 180,
+					"texture": 3
+				},
+				"up": {
+					"uv": [3, 0, 9, 1],
+					"rotation": 270,
+					"texture": 3
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "c9aa7493-3805-3c97-5397-819cc1ac787b"
+		},
+		{
+			"name": "MusicBookStopperLeft",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [6.125, 16.5, -1.375],
+			"to": [6.375, 20.5, -1.125],
+			"autouv": 0,
+			"color": 0,
+			"rotation": [0, 0, 62.5],
+			"origin": [6.375, 16.5, -1.25],
+			"faces": {
+				"north": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"east": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"south": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"west": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"up": {
+					"uv": [1, 0, 2, 1],
+					"texture": 3
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "ab3b97a0-6ab5-f48d-5ca5-f72a6c92e968"
+		},
+		{
+			"name": "MusicBookStopperRight",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [-6.375, 16.5, -1.375],
+			"to": [-6.125, 20.5, -1.125],
+			"autouv": 0,
+			"color": 0,
+			"rotation": [0, 0, -62.5],
+			"origin": [-6.375, 16.5, -1.25],
+			"faces": {
+				"north": {
+					"uv": [2, 0, 1, 1],
+					"texture": 3
+				},
+				"east": {
+					"uv": [2, 0, 1, 1],
+					"texture": 3
+				},
+				"south": {
+					"uv": [2, 0, 1, 1],
+					"texture": 3
+				},
+				"west": {
+					"uv": [2, 0, 1, 1],
+					"texture": 3
+				},
+				"up": {
+					"uv": [2, 0, 1, 1],
+					"texture": 3
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "68d8ce7d-a170-787b-ce46-0e77f4ffb911"
 		}
 	],
 	"outliner": [
@@ -429,6 +1092,149 @@
 				"d02946bf-6650-8730-42fe-dc8333ebe3b5",
 				"1335ccd4-c4cd-5da3-a649-f036e13a6c23",
 				"8b5e1314-d01a-320e-9e8f-287637fb2a1d"
+			]
+		},
+		{
+			"name": "MusicStand",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"uuid": "f790a7ef-1106-d449-2fcd-5df5d9fe3c79",
+			"export": true,
+			"mirror_uv": false,
+			"isOpen": true,
+			"locked": false,
+			"visibility": true,
+			"autouv": 0,
+			"children": [
+				"eed9aff8-36ed-a831-b8d9-0aba82d96169",
+				{
+					"name": "MusicStandFeet",
+					"origin": [0, 0, 0],
+					"color": 0,
+					"uuid": "b022f9ce-546c-b974-cf30-c0db4756a9e5",
+					"export": true,
+					"mirror_uv": false,
+					"isOpen": false,
+					"locked": false,
+					"visibility": true,
+					"autouv": 0,
+					"children": [
+						{
+							"name": "MusicStandFoot1",
+							"origin": [0, 5, 0],
+							"rotation": [-35, 0, 0],
+							"color": 0,
+							"uuid": "91de16f4-27c6-0990-703f-5495932dea1b",
+							"export": true,
+							"mirror_uv": false,
+							"isOpen": true,
+							"locked": false,
+							"visibility": true,
+							"autouv": 0,
+							"children": [
+								"cf57c19c-6951-95ab-f2b1-e54f1438ba80",
+								"55f44267-f7b1-f981-062c-9c0052fa324e",
+								{
+									"name": "MusicStandFoot1_3",
+									"origin": [0, 4, -4.75],
+									"rotation": [-40, 0, 0],
+									"color": 0,
+									"uuid": "726c2b93-6a60-7929-bf2b-a8b36cff56a2",
+									"export": true,
+									"mirror_uv": false,
+									"isOpen": true,
+									"locked": false,
+									"visibility": true,
+									"autouv": 0,
+									"children": ["d2ac4a39-c8aa-1cbd-560f-4266ce8aa9ad"]
+								}
+							]
+						},
+						{
+							"name": "MusicStandFoot2",
+							"origin": [0, 5, 0],
+							"rotation": [-35, 120, 0],
+							"color": 0,
+							"uuid": "9585568d-9e50-5f03-75f3-57971f4b5f98",
+							"export": true,
+							"mirror_uv": false,
+							"isOpen": true,
+							"locked": false,
+							"visibility": true,
+							"autouv": 0,
+							"children": [
+								"1e930652-9608-2fcd-a706-d0904ce43743",
+								"ee51aaf1-a053-8d36-2144-dc6650dd0f79",
+								{
+									"name": "MusicStandFoot2_3",
+									"origin": [0, 4, -4.75],
+									"rotation": [-40, 0, 0],
+									"color": 0,
+									"uuid": "9be7eeab-b04c-6858-96aa-10e5d26b42e4",
+									"export": true,
+									"mirror_uv": false,
+									"isOpen": true,
+									"locked": false,
+									"visibility": true,
+									"autouv": 0,
+									"children": ["787075f7-4b8b-f4b7-7299-f39b969f4fe9"]
+								}
+							]
+						},
+						{
+							"name": "MusicStandFoot3",
+							"origin": [0, 5, 0],
+							"rotation": [-35, -120, 0],
+							"color": 0,
+							"uuid": "c3c553ee-7d59-4499-8090-67046f95673f",
+							"export": true,
+							"mirror_uv": false,
+							"isOpen": true,
+							"locked": false,
+							"visibility": true,
+							"autouv": 0,
+							"children": [
+								"8228a80a-e1e1-2cdf-3969-a57e5a7441fa",
+								"8b105112-2263-3965-0506-7bb1d84c9189",
+								{
+									"name": "MusicStandFoot3_3",
+									"origin": [0, 4, -4.75],
+									"rotation": [-40, 0, 0],
+									"color": 0,
+									"uuid": "459fcb76-f0af-ef09-6a9d-0ce32958ee48",
+									"export": true,
+									"mirror_uv": false,
+									"isOpen": true,
+									"locked": false,
+									"visibility": true,
+									"autouv": 0,
+									"children": ["b11c9637-38cf-02c9-cfb1-e50e48157100"]
+								}
+							]
+						}
+					]
+				},
+				"38d50851-790c-934c-085e-a66bade68cae",
+				{
+					"name": "MusicStandBookHolder",
+					"origin": [0, 20.5, 0],
+					"rotation": [15, 0, 0],
+					"color": 0,
+					"uuid": "e46ed66a-f1fa-16fe-f84f-3773aced9f23",
+					"export": true,
+					"mirror_uv": false,
+					"isOpen": true,
+					"locked": false,
+					"visibility": true,
+					"autouv": 0,
+					"children": [
+						"b5f1c1e9-2b32-64b8-4791-8fe7003479da",
+						"207a72f8-5ac1-9607-0e78-844197d450cf",
+						"c9aa7493-3805-3c97-5397-819cc1ac787b",
+						"ab3b97a0-6ab5-f48d-5ca5-f72a6c92e968",
+						"68d8ce7d-a170-787b-ce46-0e77f4ffb911"
+					]
+				}
 			]
 		}
 	],
@@ -457,7 +1263,7 @@
 			"saved": true,
 			"uuid": "49d663f7-0284-81d3-5d9d-8f9c415279bb",
 			"relative_path": "../../textures/main.png",
-			"source": "data:image/png;base64,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"
+			"source": "data:image/png;base64,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"
 		},
 		{
 			"path": "C:\\Users\\gakut\\AppData\\Roaming\\ModrinthApp\\profiles\\Fabricバニラ\\figura\\avatars\\ブルーアーカイブ\\ベースアバター\\textures\\costume_christmas.png",
@@ -535,7 +1341,7 @@
 			"saved": true,
 			"uuid": "b6ad603f-e363-fc62-8f95-c10d8068d80a",
 			"relative_path": "../../textures/ex_skill_2.png",
-			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAAAXNSR0IArs4c6QAAAkZJREFUeF7t1qFNBFEABmHW4A+PIhgMJ2nhCBJFAhaJpgI0EouADqANKACFpwDMEd7mzJVw36zZvGTNzJv82en74219uDyf9npIA9PZ5cX6n/xp/2gIuP39Gu/F8Xx+f3gccazu78Z3mzNpawehp9fV9bjY5+XBwLv5+Bnvk8V8Pn2ZA/i8mgPYnHfQBYk0bV9sF211MG1Pe1OPBWDhRrttoL9/vIkCKADcAI7fAhQAbgDHbwEKADeA47cABYAbwPFbgALADeD4LUAB4AZw/BagAHADOH4LUAC4ARy/BSgA3ACO3wIUAG4Ax28BCgA3gOO3AAWAG8DxW4ACwA3g+C1AAeAGcPwWoABwAzh+C1AAuAEcvwUoANwAjt8CFABuAMdvAQoAN4DjtwAFgBvA8VuAAsAN4PgtQAHgBnD8FqAAcAM4fgtQALgBHL8FKADcAI7fAhQAbgDHbwEKADeA47cABYAbwPFbgALADeD4LUAB4AZw/BagAHADOH4LUAC4ARy/BSgA3ACO3wIUAG4Ax28BCgA3gOO3AAWAG8DxW4ACwA3g+C1AAeAGcPwWoABwAzh+C1AAuAEcvwUoANwAjt8CFABuAMdvAQoAN4DjtwAFgBvA8VuAAsAN4PgtQAHgBnD8FqAAcAM4fgtQALgBHL8FKADcAI7fAhQAbgDHbwEKADeA47cABYAbwPFbgALADeD4LUAB4AZw/BagAHADOH4LUAC4ARy/BSgA3ACO3wIUAG4Ax28BCgA3gOO3AAWAG8DxWwA8gD95hSqBF1wPgAAAAABJRU5ErkJggg=="
+			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAAAXNSR0IArs4c6QAABHZJREFUeF7tnDFrE2EAhi8qimMz2kUQRVx0Euk/KDg6Cbo6iqO/wMXF0dWhXZwV/AEdnOqkCIKgdSxuQVErd+E0PZPcxSe98rZPQMIl916/932ffsn3NXHwafvF3tfHr4oHn98Wm883iuFwWOzu7u67P3liMCi8HckEBjdu3dwrnT09faEyeO/7h+p+5eL4+OWjJ1X56w/vV+fVx0cyjWNoarC5fqcq9tm1YWX/7vZudX9lZXx8dWMMwJvbYwDq42OY1ZG0PGgWa9FHsueZpgbNqd2p/pgB8PPXXjW1H8RtNBoV5b/yjeVB3XyDypIdCAALMF0tAOkNwvHvA2Br6zW83Fi+tna9um++BMy6/ujbj+LsmVOdf3Z9/VLgS0Dn2Kae+A8Ak+H+z6XLkmcBsLPzpXj3/mNx+dL51kvPO2919dwfvQC0Rjn3hF4BaM4Ak7/502aB5mP1sTMAK31S3SsA5QxQ3ub9dk97rvmYM0AoAMsb9t8r+RLAUu11BmBDna4WAJaqALD84tUCEF8hM9ArAOUqoMu7/aalpsZVACv90FcB9QAWXQ3UOlcBoQDU+wBts0Db884AoQDU+wCzht+2S1g/7wwQCsDyhu0+wLKy7PVN4LIGPXkd9wFYqgLA8otXC0B8hcyAALD84tW9AjBtI2jRD4OUibsMXB53vQLQ/HPw5LKvbQk4adllYCgAXT5yNutDIJOPOwOEAtC2EdTVljNA16Taz+v1JaB9OIuf4T7A4pkd2h+D2FCnqwWApeoMwPKLVwtAfIXMgACw/OLVvQIw6xNBi6boMnDRxGaf3ysAXZaBXTaEXAaGAjC5EdT2raDaYn2eG0HLK33uMnAZP2bedwO7Xt/vBnZNip3n18NZfvFqAYivkBkQAJZfvNr/ADK+QmZAAFh+8WoBiK+QGRAAll+8WgDiK2QGBIDlF68WgPgKmQEBYPnFqwUgvkJmQABYfvFqAYivkBkQAJZfvFoA4itkBgSA5RevFoD4CpkBAWD5xasFIL5CZkAAWH7xagGIr5AZEACWX7xaAOIrZAYEgOUXrxaA+AqZAQFg+cWrBSC+QmZAAFh+8WoBiK+QGRAAll+8WgDiK2QGBIDlF68WgPgKmQEBYPnFqwUgvkJmQABYfvFqAYivkBkQAJZfvFoA4itkBgSA5RevFoD4CpkBAWD5xasFIL5CZkAAWH7xagGIr5AZEACWX7xaAOIrZAYEgOUXrxaA+AqZAQFg+cWrBSC+QmZAAFh+8WoBiK+QGRAAll+8WgDiK2QGBIDlF68WgPgKmQEBYPnFqwUgvkJmQABYfvFqAYivkBkQAJZfvFoA4itkBgSA5RevFoD4CpkBAWD5xasFIL5CZkAAWH7xagGIr5AZEACWX7xaAOIrZAYEgOUXrxaA+AqZAQFg+cWrBSC+QmZAAFh+8WoBiK+QGRAAll+8WgDiK2QGBIDlF68WgPgKmQEBYPnFqwUgvkJmQABYfvFqAYivkBkQAJZfvFoA4itkBgSA5RevFoD4CpmB388S6J8Gvlj1AAAAAElFTkSuQmCC"
 		},
 		{
 			"path": "C:\\Users\\gakut\\AppData\\Roaming\\ModrinthApp\\profiles\\Fabricバニラ\\figura\\avatars\\ブルーアーカイブ\\ベースアバター\\textures\\for_modeling\\bell_bottom.png",
@@ -805,6 +1611,50 @@
 							"time": 5.15,
 							"color": -1,
 							"interpolation": "catmullrom",
+							"bezier_linked": true,
+							"bezier_left_time": [-0.1, -0.1, -0.1],
+							"bezier_left_value": [0, 0, 0],
+							"bezier_right_time": [0.1, 0.1, 0.1],
+							"bezier_right_value": [0, 0, 0]
+						}
+					]
+				},
+				"f790a7ef-1106-d449-2fcd-5df5d9fe3c79": {
+					"name": "MusicStand",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": 162.5,
+									"z": "0"
+								}
+							],
+							"uuid": "ec186e5e-89db-1940-c322-cc2e7e0ffb9d",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear",
+							"bezier_linked": true,
+							"bezier_left_time": [-0.1, -0.1, -0.1],
+							"bezier_left_value": [0, 0, 0],
+							"bezier_right_time": [0.1, 0.1, 0.1],
+							"bezier_right_value": [0, 0, 0]
+						},
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": 5,
+									"y": "0",
+									"z": -19
+								}
+							],
+							"uuid": "390a05ff-9eef-7705-77f1-a2384b3efe38",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear",
 							"bezier_linked": true,
 							"bezier_left_time": [-0.1, -0.1, -0.1],
 							"bezier_left_value": [0, 0, 0],

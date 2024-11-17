@@ -646,7 +646,7 @@ BlueArchiveCharacter = {
 
             ---Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
             ---@type ModelPart[]
-			models = {},
+			models = {models.models.ex_skill_2.MusicStand},
 
             ---Exスキルアニメーションが含まれるモデルファイル名
             ---アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
@@ -684,10 +684,13 @@ BlueArchiveCharacter = {
 
             ---コールバック関数
             callbacks = {
-
                 ---Exスキルアニメーション開始前のトランジション終了後に実行されるコールバック関数（任意）
                 ---@type fun()
                 preAnimation = function()
+                    if not BlueArchiveCharacter.EX_SKILL[2].init then
+                        models.models.ex_skill_2.MusicStand.MusicStandBookHolder:newText("music_stand_book_holder"):setText("§7Cherry Berry Merry"):setPos(3, 2.5, -1):setScale(0.03, 0.03, 0.03):setAlignment("CENTER")
+                        BlueArchiveCharacter.EX_SKILL[2].init = true
+                    end
                     models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setPos()
                     models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setRot()
                     models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setParentType("None")
@@ -723,7 +726,11 @@ BlueArchiveCharacter = {
                 postAnimation = function(forcedStop)
                     models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setParentType("Item")
                 end
-            }
+            },
+
+            ---初期化処理がされたかどうか
+            ---@type boolean
+            init = false
 		}
 	},
 
