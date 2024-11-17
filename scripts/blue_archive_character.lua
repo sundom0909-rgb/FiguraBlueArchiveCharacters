@@ -623,6 +623,91 @@ BlueArchiveCharacter = {
                     models.models.ex_skill_1.MedicalBox:setParentType("Item")
                 end
             }
+		},
+
+		{
+            ---Exスキルの名前
+            name = {
+                ---英語
+                ---日本語名を翻訳したものにする。
+                ---@type string
+                en_us = "The sound of blessings",
+
+                ---日本語
+                ---実際のスキルの名前と同じにする。
+                ---@type string
+                ja_jp = "祝福の響き"
+            },
+
+            ---Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
+            ---@type ModelPart[]
+			models = {},
+
+            ---Exスキルアニメーションが含まれるモデルファイル名
+            ---アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
+            ---@type string[]
+			animations = {"main", "ex_skill_2"},
+
+            ---Exスキルアニメーションでのカメラワークのデータ
+            camera = {
+                ---Exスキルアニメーション開始時
+                start = {
+                    ---カメラの位置
+                    ---BBアニメーション上での値をそのまま入力する。
+                    ---@type Vector3
+                    pos = vectors.vec3(),
+
+                    ---カメラの向き
+                    ---BBアニメーション上での値をそのまま入力する。
+                    ---@type Vector3
+                    rot = vectors.vec3()
+                },
+
+                ---Exスキルアニメーション終了時
+                fin = {
+                    ---カメラの位置
+                    ---BBアニメーション上での値をそのまま入力する。
+                    ---@type Vector3
+                    pos = vectors.vec3(),
+
+                    ---カメラの向き
+                    ---BBアニメーション上での値をそのまま入力する。
+                    ---@type Vector3
+                    rot = vectors.vec3()
+                }
+            },
+
+            ---コールバック関数
+            callbacks = {
+
+                ---Exスキルアニメーション開始前のトランジション終了後に実行されるコールバック関数（任意）
+                ---@type fun()
+                preAnimation = function()
+                    models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setParentType("None")
+                end,
+
+                ---Exスキルアニメーション再生中のみ実行されるティック関数
+                ---@type fun(tick: integer)
+                ---@param tick integer アニメーションの現在位置を示す。単位はティック。
+                animationTick = function(tick)
+                    --Exスキルアニメーションを任意のティックで停止させるスニペット。デバッグ用。
+                    --"<>"内を適切な値で置換すること。
+                    --[[
+                    if tick == <tick_int> then
+                        for _, animation in ipairs(BlueArchiveCharacter.EX_SKILL[<ex_skill_index>].animations) do
+                            animations["models."..animation]["ex_skill_"..<ex_skill_index>]:pause()
+                        end
+                    end
+                    ]]
+                end,
+
+                ---Exスキルアニメーション終了後のトランジション開始前に実行されるコールバック関数（任意）
+                ---@type fun(forcedStop: boolean)
+                ---@param forcedStop boolean アニメーションが途中終了した場合は"true"、アニメーションが最後まで再生されて終了した場合は"false"が代入される。
+                postAnimation = function(forcedStop)
+                    models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setParentType("Item")
+                end
+            }
 		}
 	},
 
@@ -711,7 +796,11 @@ BlueArchiveCharacter = {
 
                 ---コスチュームに対応するExスキルのインデックス番号
                 ---@type integer
-                exSkill = 1
+                exSkill = 2,
+
+                ---衣装の初期化処理がされたかどうか
+                ---@type boolean
+                init = false
             }
         },
 
@@ -735,6 +824,15 @@ BlueArchiveCharacter = {
                 models.models.main.Avatar.UpperBody.Body:removeChild(models.models.main.Avatar.Head.ChestRibbon)
                 models.models.main.Avatar.Head.ChestRibbon:setPos(-4.25, 10.5, 1.5)
                 models.models.main.Avatar.Head.ChestRibbon:setRot(0, 90, 0)
+                if not BlueArchiveCharacter.COSTUME.costumes[2].init then
+                    for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell.Handbell1_Top, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell.Handbell2_Top}) do
+                        modelPart:setPrimaryTexture("RESOURCE", "minecraft:textures/block/bell_top.png")
+                    end
+                    for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell.Handbell1_Side, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell.Handbell2_Side}) do
+                        modelPart:setPrimaryTexture("RESOURCE", "minecraft:textures/block/bell_side.png")
+                    end
+                    models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell.Handbell2_Bottom:setPrimaryTexture("RESOURCE", "minecraft:textures/block/bell_bottom.png")
+                end
             end,
 
             ---衣装がリセットされた時に実行されるコールバック関数

@@ -10,7 +10,10 @@
 		"textures.for_modeling.leather_layer_2",
 		"textures.for_modeling.leather_layer_2_overlay",
 		"textures.for_modeling.trim",
-		"textures.for_modeling.trim_leggings"
+		"textures.for_modeling.trim_leggings",
+		"textures.for_modeling.bell_top",
+		"textures.for_modeling.bell_side",
+		"textures.for_modeling.bell_bottom"
 	],
 	"autoScripts": [
 		"scripts/index.lua"
@@ -145,6 +148,10 @@
 			"visible": false,
 			"moveTo": "models.models.main.Avatar.Head",
 			"primaryRenderType": "TRANSLUCENT"
+		},
+		"models.models.ex_skill_2.Handbell": {
+			"moveTo": "models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom",
+			"parentType": "Item"
 		},
 		"models.models.costume_christmas.CChristmasH": {
 			"visible": false,
