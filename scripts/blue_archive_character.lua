@@ -73,7 +73,8 @@ BlueArchiveCharacter = {
             TIRED = {3, 0},
             CLOSED = {4, 0},
             CLOSED2 = {5, 0},
-            INVERTED = {6, 0}
+            INVERTED = {6, 0},
+            NARROW = {8, 0}
         },
 
         ---左目
@@ -82,13 +83,17 @@ BlueArchiveCharacter = {
             SURPLISED = {1, 0},
             TIRED = {2, 0},
             CLOSED = {3, 0},
-            CLOSED2 = {4, 0}
+            CLOSED2 = {4, 0},
+            INVERTED = {6, 0},
+            NARROW = {8, 0}
         },
 
         ---口
         Mouth = {
             SMILE = {0, 0},
-            TIRED = {1, 0}
+            TIRED = {1, 0},
+            OPENED_SMALL = {2, 0},
+            OPENED = {3, 0}
         }
 
         ---表情のセット（省略可）
@@ -686,18 +691,29 @@ BlueArchiveCharacter = {
                     models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setPos()
                     models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setRot()
                     models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setParentType("None")
+                    FaceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 17, true)
                 end,
 
                 ---Exスキルアニメーション再生中のみ実行されるティック関数
                 ---@type fun(tick: integer)
                 ---@param tick integer アニメーションの現在位置を示す。単位はティック。
                 animationTick = function(tick)
-                    --Exスキルアニメーションを任意のティックで停止させるスニペット。デバッグ用。
-                    --"<>"内を適切な値で置換すること。
-                    if tick == 1100 then
-                        for _, animation in ipairs(BlueArchiveCharacter.EX_SKILL[2].animations) do
-                            animations["models."..animation]["ex_skill_"..2]:pause()
-                        end
+                    if tick == 17 then
+                        FaceParts:setEmotion("NORMAL", "INVERTED", "SMILE", 7, true)
+                    elseif tick == 24 then
+                        FaceParts:setEmotion("CLOSED2", "CLOSED2", "SMILE", 12, true)
+                    elseif tick == 36 then
+                        FaceParts:setEmotion("NORMAL", "NORMAL", "OPENED_SMALL", 5, true)
+                    elseif tick == 41 then
+                        FaceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 4, true)
+                    elseif tick == 45 then
+                        FaceParts:setEmotion("CLOSED", "CLOSED", "OPENED", 14, true)
+                    elseif tick == 59 then
+                        FaceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 6, true)
+                    elseif tick == 65 then
+                        FaceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 5, true)
+                    elseif tick == 70 then
+                        FaceParts:setEmotion("NARROW", "NARROW", "SMILE", 44, true)
                     end
                 end,
 
