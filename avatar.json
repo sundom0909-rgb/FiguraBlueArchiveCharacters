@@ -146,6 +146,22 @@
 			"moveTo": "models.models.main.Avatar.Head",
 			"primaryRenderType": "TRANSLUCENT"
 		},
+		"models.models.costume_christmas.CChristmasH": {
+			"visible": false,
+			"moveTo": "models.models.main.Avatar.Head"
+		},
+		"models.models.costume_christmas.CChristmasB": {
+			"visible": false,
+			"moveTo": "models.models.main.Avatar.UpperBody.Body"
+		},
+		"models.models.costume_christmas.CChristmasRA": {
+			"visible": false,
+			"moveTo": "models.models.main.Avatar.UpperBody.Arms.RightArm"
+		},
+		"models.models.costume_christmas.CChristmasLA": {
+			"visible": false,
+			"moveTo": "models.models.main.Avatar.UpperBody.Arms.LeftArm"
+		},
 		"models.models.ex_skill_frame.Particles": {
 			"visible": false
 		},

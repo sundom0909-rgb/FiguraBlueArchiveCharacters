@@ -687,6 +687,31 @@ BlueArchiveCharacter = {
                 ---コスチュームに対応するExスキルのインデックス番号
                 ---@type integer
                 exSkill = 1
+            },
+
+            {
+                ---コスチュームの内部名
+                ---@type string
+                name = "christmas",
+
+                ---コスチュームの表示名
+                display_name = {
+                    ---英語
+                    ---@type string
+                    en_us = "Christmas",
+
+                    ---日本語
+                    ---@type string
+                    ja_jp = "クリスマス"
+                },
+
+                ---この衣装での生徒の配置タイプ
+                ---@type BlueArchiveCharacter.FormationType
+                formationType = "STRIKER",
+
+                ---コスチュームに対応するExスキルのインデックス番号
+                ---@type integer
+                exSkill = 1
             }
         },
 
@@ -698,14 +723,40 @@ BlueArchiveCharacter = {
             ---@param costumeId integer 新たな衣装のインデックス番号
             change = function(costumeId)
                 events.ITEM_RENDER:remove("medical_box_item_render")
+                Costume.setCostumeTextureOffset(1)
+                models.models.main.Avatar.UpperBody.Body.Skirt:setUVPixels(0, 14)
+                for _, modelPart in ipairs({models.models.main.Avatar.Head.CChristmasH, models.models.main.Avatar.UpperBody.Body.CChristmasB, models.models.main.Avatar.UpperBody.Arms.RightArm.CChristmasRA, models.models.main.Avatar.UpperBody.Arms.LeftArm.CChristmasLA}) do
+                    modelPart:setVisible(true)
+                end
+                for _, modelPart in ipairs({models.models.main.Avatar.Head.NurseCap, models.models.main.Avatar.Head.HairTail, models.models.main.Avatar.Head.HairTailRibbon, models.models.main.Avatar.UpperBody.Body.Bag, models.models.main.Avatar.UpperBody.Arms.LeftArm.Cross}) do
+                    modelPart:setVisible(false)
+                end
+                models.models.main.Avatar.UpperBody.Body.ChestRibbon:moveTo(models.models.main.Avatar.Head)
+                models.models.main.Avatar.UpperBody.Body:removeChild(models.models.main.Avatar.Head.ChestRibbon)
+                models.models.main.Avatar.Head.ChestRibbon:setPos(-4.25, 10.5, 1.5)
+                models.models.main.Avatar.Head.ChestRibbon:setRot(0, 90, 0)
             end,
 
             ---衣装がリセットされた時に実行されるコールバック関数
             ---あらゆる衣装からデフォルトの衣装へ推移できるようにする。
             ---@type fun()
             reset = function()
-                if events.ITEM_RENDER:getRegisteredCount("medical_box_item_render") then
-                    events.ITEM_RENDER:register(BlueArchiveCharacter.medicalBoxItemRender, "medical_box_item_render")
+                Costume.setCostumeTextureOffset(0)
+                models.models.main.Avatar.UpperBody.Body.Skirt:setUVPixels()
+                for _, modelPart in ipairs({models.models.main.Avatar.Head.CChristmasH, models.models.main.Avatar.UpperBody.Body.CChristmasB, models.models.main.Avatar.UpperBody.Arms.RightArm.CChristmasRA, models.models.main.Avatar.UpperBody.Arms.LeftArm.CChristmasLA}) do
+                    modelPart:setVisible(false)
+                end
+                for _, modelPart in ipairs({models.models.main.Avatar.Head.NurseCap, models.models.main.Avatar.Head.HairTail, models.models.main.Avatar.Head.HairTailRibbon, models.models.main.Avatar.UpperBody.Body.Bag, models.models.main.Avatar.UpperBody.Arms.LeftArm.Cross}) do
+                    modelPart:setVisible(true)
+                end
+                if models.models.main.Avatar.Head.ChestRibbon ~= nil then
+                    models.models.main.Avatar.Head.ChestRibbon:moveTo(models.models.main.Avatar.UpperBody.Body)
+                    models.models.main.Avatar.Head:removeChild(models.models.main.Avatar.UpperBody.Body.ChestRibbon)
+                    models.models.main.Avatar.UpperBody.Body.ChestRibbon:setPos()
+                    models.models.main.Avatar.UpperBody.Body.ChestRibbon:setRot()
+                end
+                if events.ITEM_RENDER:getRegisteredCount("medical_box_item_render") == 0 then
+                    events.ITEM_RENDER:register(BlueArchiveCharacter.MedicalBoxItemRender, "medical_box_item_render")
                 end
             end,
 
@@ -2036,7 +2087,7 @@ BlueArchiveCharacter = {
 
 events.ENTITY_INIT:register(function ()
     events.TICK:register(function ()
-        if Gun.CurrentGunPosition == "NONE" and ExSkill.AnimationCount == -1 then
+        if Gun.CurrentGunPosition == "NONE" and ExSkill.AnimationCount == -1 and Costume.CurrentCostume == 1 then
             local healingPotionPos = 0
             for i = 1, 2 do
                 local heldItem = player:getHeldItem(i == 2)
@@ -2053,7 +2104,9 @@ events.ENTITY_INIT:register(function ()
             Arms:setArmState(4, 4)
         end
     end)
-    events.ITEM_RENDER:register(BlueArchiveCharacter.MedicalBoxItemRender, "medical_box_item_render")
+    if Costume.CurrentCostume == 1 then
+        events.ITEM_RENDER:register(BlueArchiveCharacter.MedicalBoxItemRender, "medical_box_item_render")
+    end
 end)
 
 return BlueArchiveCharacter
