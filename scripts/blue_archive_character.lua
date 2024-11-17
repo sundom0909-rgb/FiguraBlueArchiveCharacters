@@ -85,7 +85,8 @@ BlueArchiveCharacter = {
             CLOSED = {3, 0},
             CLOSED2 = {4, 0},
             INVERTED = {6, 0},
-            NARROW = {8, 0}
+            NARROW = {8, 0},
+            CENTER = {-1, 1}
         },
 
         ---口
@@ -706,7 +707,7 @@ BlueArchiveCharacter = {
                     elseif tick == 24 then
                         FaceParts:setEmotion("CLOSED2", "CLOSED2", "SMILE", 12, true)
                     elseif tick == 36 then
-                        FaceParts:setEmotion("NORMAL", "NORMAL", "OPENED_SMALL", 5, true)
+                        FaceParts:setEmotion("NORMAL", "CENTER", "OPENED_SMALL", 5, true)
                     elseif tick == 41 then
                         FaceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 4, true)
                     elseif tick == 45 then
