@@ -655,12 +655,12 @@ BlueArchiveCharacter = {
                     ---カメラの位置
                     ---BBアニメーション上での値をそのまま入力する。
                     ---@type Vector3
-                    pos = vectors.vec3(),
+                    pos = vectors.vec3(12, 64.5, 5),
 
                     ---カメラの向き
                     ---BBアニメーション上での値をそのまま入力する。
                     ---@type Vector3
-                    rot = vectors.vec3()
+                    rot = vectors.vec3(70, 60, 0)
                 },
 
                 ---Exスキルアニメーション終了時
@@ -668,12 +668,12 @@ BlueArchiveCharacter = {
                     ---カメラの位置
                     ---BBアニメーション上での値をそのまま入力する。
                     ---@type Vector3
-                    pos = vectors.vec3(),
+                    pos = vectors.vec3(-53.2, 17, -5),
 
                     ---カメラの向き
                     ---BBアニメーション上での値をそのまま入力する。
                     ---@type Vector3
-                    rot = vectors.vec3()
+                    rot = vectors.vec3(-5, 270, 0)
                 }
             },
 
@@ -694,13 +694,11 @@ BlueArchiveCharacter = {
                 animationTick = function(tick)
                     --Exスキルアニメーションを任意のティックで停止させるスニペット。デバッグ用。
                     --"<>"内を適切な値で置換すること。
-                    --[[
-                    if tick == <tick_int> then
-                        for _, animation in ipairs(BlueArchiveCharacter.EX_SKILL[<ex_skill_index>].animations) do
-                            animations["models."..animation]["ex_skill_"..<ex_skill_index>]:pause()
+                    if tick == 1100 then
+                        for _, animation in ipairs(BlueArchiveCharacter.EX_SKILL[2].animations) do
+                            animations["models."..animation]["ex_skill_"..2]:pause()
                         end
                     end
-                    ]]
                 end,
 
                 ---Exスキルアニメーション終了後のトランジション開始前に実行されるコールバック関数（任意）
