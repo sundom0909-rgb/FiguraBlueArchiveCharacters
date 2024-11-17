@@ -794,23 +794,28 @@ BlueArchiveCharacter = {
     DEATH_ANIMATION = {
         ---ダミーアバターから除外したいモデルパーツを配列形式で列挙する。
         ---@type ModelPart[]
-        excludeModels = {}
+        excludeModels = {},
 
-        --[[
         ---死亡アニメーションが再生された直後に実行される関数（省略可）
         ---@param dummyAvatar ModelPart ダミーアバターのルート
         ---@param costume integer ダミーアバターのコスチュームのインデックス
         onPhase1 = function (dummyAvatar, costume)
-        end
-        ]]
+            for _, modelPart in ipairs({dummyAvatar.Head.HairTail, dummyAvatar.Head.HairTailRibbon.HairTailRibbonTip1, dummyAvatar.Head.HairTailRibbon.HairTailRibbonTip2, dummyAvatar.UpperBody.Body.Skirt}) do
+                modelPart:setRot(30, 0, 0)
+            end
+            dummyAvatar.Head.Feather:setRot(55, 0, 0)
+        end,
 
-        --[[
         ---ダミーアバターが縄ばしごにつかまった直後に実行される関数（省略可）
         ---@param dummyAvatar ModelPart ダミーアバターのルート
         ---@param costume integer ダミーアバターのコスチュームのインデックス
         onPhase2 = function (dummyAvatar, costume)
+            for _, modelPart in ipairs({dummyAvatar.Head.HairTail, dummyAvatar.Head.HairTailRibbon.HairTailRibbonTip1, dummyAvatar.Head.HairTailRibbon.HairTailRibbonTip2}) do
+                modelPart:setRot(-20, 0, 0)
+            end
+            dummyAvatar.LowerBody.Legs.RightLeg.RightLegBottom:setPivot(2, 6, -2)
+            dummyAvatar.Head.Feather:setRot(-20, 0, 0)
         end
-        ]]
 
         --[[
         ---モデルのコピー直前に実行される関数（省略可）
