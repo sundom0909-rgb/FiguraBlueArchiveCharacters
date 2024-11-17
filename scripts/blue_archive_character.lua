@@ -802,7 +802,17 @@ BlueArchiveCharacter = {
 
                 ---衣装の初期化処理がされたかどうか
                 ---@type boolean
-                init = false
+                init = false,
+
+                ---クリスマスシーズン（12/24 ~ 12/26）はtrueにする。
+                ---@type boolean
+                isChristmas = false,
+
+                ---ハンドベルの音の高さを決める値
+                ---普段は0固定だが、クリスマスシーズン（12/24 ~ 12/26）のみ、初期値を1とし、ベルを鳴らす度にインクリメントする。
+                ---普段の音は固定だが、クリスマスシーズンのみは曲になるようにする。
+                ---@type integer
+                bellStage = 0
             }
         },
 
@@ -834,8 +844,47 @@ BlueArchiveCharacter = {
                         modelPart:setPrimaryTexture("RESOURCE", "minecraft:textures/block/bell_side.png")
                     end
                     models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell.Handbell2_Bottom:setPrimaryTexture("RESOURCE", "minecraft:textures/block/bell_bottom.png")
+                    BlueArchiveCharacter.COSTUME.costumes[2].init = true
                 end
-                events.ITEM_RENDER:register(function (item, mode, pos, rot, scale, lefthanded)
+                local today = client:getDate()
+                BlueArchiveCharacter.COSTUME.costumes[2].isChristmas = today.month == 12 and today.day >= 24 and today.day <= 26
+                --BlueArchiveCharacter.COSTUME.costumes[2].isChristmas = true
+                BlueArchiveCharacter.COSTUME.costumes[2].bellStage = BlueArchiveCharacter.COSTUME.costumes[2].isChristmas and 1 or 0
+                events.TICK:register(function ()
+                    local isHoldingBell = player:getHeldItem().id == "minecraft:bell"
+                    local targetBlock = player:getTargetedBlock(true, 4.5)
+                    if player:isSwingingArm() and isHoldingBell and player:getSwingTime() == 0 and (targetBlock.id == "minecraft:air" or targetBlock.id == "minecraft:cave_air" or targetBlock.id == "minecraft:void_air") then
+                        local pitch = 1.259921
+                        if (BlueArchiveCharacter.COSTUME.costumes[2].bellStage >= 1 and BlueArchiveCharacter.COSTUME.costumes[2].bellStage <= 7) or BlueArchiveCharacter.COSTUME.costumes[2].bellStage == 11 or (BlueArchiveCharacter.COSTUME.costumes[2].bellStage >= 17 and BlueArchiveCharacter.COSTUME.costumes[2].bellStage <= 19) or (BlueArchiveCharacter.COSTUME.costumes[2].bellStage >= 26 and BlueArchiveCharacter.COSTUME.costumes[2].bellStage <= 32) or BlueArchiveCharacter.COSTUME.costumes[2].bellStage == 36 or (BlueArchiveCharacter.COSTUME.costumes[2].bellStage >= 42 and BlueArchiveCharacter.COSTUME.costumes[2].bellStage <= 44) then
+                            --ラ
+                            pitch = 1.189207
+                        elseif BlueArchiveCharacter.COSTUME.costumes[2].bellStage == 8 or BlueArchiveCharacter.COSTUME.costumes[2].bellStage == 25 or BlueArchiveCharacter.COSTUME.costumes[2].bellStage == 33 or (BlueArchiveCharacter.COSTUME.costumes[2].bellStage >= 45 and BlueArchiveCharacter.COSTUME.costumes[2].bellStage <= 46) then
+                            --ド
+                            pitch = 1.414214
+                        elseif BlueArchiveCharacter.COSTUME.costumes[2].bellStage == 9 or BlueArchiveCharacter.COSTUME.costumes[2].bellStage == 23 or BlueArchiveCharacter.COSTUME.costumes[2].bellStage == 34 or BlueArchiveCharacter.COSTUME.costumes[2].bellStage == 49 then
+                            --ファ
+                            pitch = 0.943874
+                        elseif BlueArchiveCharacter.COSTUME.costumes[2].bellStage == 10 or (BlueArchiveCharacter.COSTUME.costumes[2].bellStage >= 20 and BlueArchiveCharacter.COSTUME.costumes[2].bellStage <= 22) or BlueArchiveCharacter.COSTUME.costumes[2].bellStage == 24 or BlueArchiveCharacter.COSTUME.costumes[2].bellStage == 35 or BlueArchiveCharacter.COSTUME.costumes[2].bellStage == 48 then
+                            --ソ
+                            pitch = 1.059463
+                        elseif BlueArchiveCharacter.COSTUME.costumes[2].bellStage == 50 then
+                            --ファ↑
+                            pitch = 1.887749
+                        end
+                        sounds:playSound("minecraft:block.note_block.chime", player:getPos(), 1, pitch)
+                        if BlueArchiveCharacter.COSTUME.costumes[2].isChristmas then
+                            BlueArchiveCharacter.COSTUME.costumes[2].bellStage = BlueArchiveCharacter.COSTUME.costumes[2].bellStage + 1
+                            if BlueArchiveCharacter.COSTUME.costumes[2].bellStage == 51 then
+                                BlueArchiveCharacter.COSTUME.costumes[2].bellStage = 1
+                            end
+                        else
+                            BlueArchiveCharacter.COSTUME.costumes[2].bellStage = 0
+                        end
+                    elseif not isHoldingBell then
+                        BlueArchiveCharacter.COSTUME.costumes[2].bellStage = BlueArchiveCharacter.COSTUME.costumes[2].isChristmas and 1 or 0
+                    end
+                end, "costume_christmas_hand_bell_tick")
+                events.ITEM_RENDER:register(function (item, mode)
                     if item.id == "minecraft:bell" then
                         if mode == "FIRST_PERSON_LEFT_HAND" then
                             models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setPos(4, -13.5, 0.5)
@@ -852,14 +901,15 @@ BlueArchiveCharacter = {
                         end
                         return models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell
                     end
-                end, "costume_christmas_hand_bell")
+                end, "costume_christmas_hand_bell_item_render")
             end,
 
             ---衣装がリセットされた時に実行されるコールバック関数
             ---あらゆる衣装からデフォルトの衣装へ推移できるようにする。
             ---@type fun()
             reset = function()
-                events.ITEM_RENDER:remove("costume_christmas_hand_bell")
+                events.TICK:remove("costume_christmas_hand_bell_tick")
+                events.ITEM_RENDER:remove("costume_christmas_hand_bell_item_render")
                 Costume.setCostumeTextureOffset(0)
                 models.models.main.Avatar.UpperBody.Body.Skirt:setUVPixels()
                 for _, modelPart in ipairs({models.models.main.Avatar.Head.CChristmasH, models.models.main.Avatar.UpperBody.Body.CChristmasB, models.models.main.Avatar.UpperBody.Arms.RightArm.CChristmasRA, models.models.main.Avatar.UpperBody.Arms.LeftArm.CChristmasLA}) do
