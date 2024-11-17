@@ -683,6 +683,8 @@ BlueArchiveCharacter = {
                 ---Exスキルアニメーション開始前のトランジション終了後に実行されるコールバック関数（任意）
                 ---@type fun()
                 preAnimation = function()
+                    models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setPos()
+                    models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setRot()
                     models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setParentType("None")
                 end,
 
@@ -833,12 +835,31 @@ BlueArchiveCharacter = {
                     end
                     models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell.Handbell2_Bottom:setPrimaryTexture("RESOURCE", "minecraft:textures/block/bell_bottom.png")
                 end
+                events.ITEM_RENDER:register(function (item, mode, pos, rot, scale, lefthanded)
+                    if item.id == "minecraft:bell" then
+                        if mode == "FIRST_PERSON_LEFT_HAND" then
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setPos(4, -13.5, 0.5)
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setRot(-90, -30, 180)
+                        elseif mode == "FIRST_PERSON_RIGHT_HAND" then
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setPos(7, -13.5, 0.5)
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setRot(-90, 30, 180)
+                        elseif mode == "THIRD_PERSON_LEFT_HAND" then
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setPos(5.5, -13.5, 0.5)
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setRot(-90, 0, 180)
+                        elseif mode == "THIRD_PERSON_RIGHT_HAND" then
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setPos(5.5, -13.5, 0.5)
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setRot(-90, 0, 180)
+                        end
+                        return models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell
+                    end
+                end, "costume_christmas_hand_bell")
             end,
 
             ---衣装がリセットされた時に実行されるコールバック関数
             ---あらゆる衣装からデフォルトの衣装へ推移できるようにする。
             ---@type fun()
             reset = function()
+                events.ITEM_RENDER:remove("costume_christmas_hand_bell")
                 Costume.setCostumeTextureOffset(0)
                 models.models.main.Avatar.UpperBody.Body.Skirt:setUVPixels()
                 for _, modelPart in ipairs({models.models.main.Avatar.Head.CChristmasH, models.models.main.Avatar.UpperBody.Body.CChristmasB, models.models.main.Avatar.UpperBody.Arms.RightArm.CChristmasRA, models.models.main.Avatar.UpperBody.Arms.LeftArm.CChristmasLA}) do
