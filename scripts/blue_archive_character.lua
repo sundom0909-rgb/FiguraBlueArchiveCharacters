@@ -646,7 +646,7 @@ BlueArchiveCharacter = {
 
             ---Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
             ---@type ModelPart[]
-			models = {models.models.ex_skill_2.MusicStand, models.models.ex_skill_2.Bag},
+			models = {models.models.ex_skill_2.MusicStand, models.models.ex_skill_2.Bag, models.models.ex_skill_2.Presents},
 
             ---Exスキルアニメーションが含まれるモデルファイル名
             ---アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
