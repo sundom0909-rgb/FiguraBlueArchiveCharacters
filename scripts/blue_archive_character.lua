@@ -848,8 +848,9 @@ BlueArchiveCharacter = {
                 end
                 models.models.main.Avatar.UpperBody.Body.ChestRibbon:moveTo(models.models.main.Avatar.Head)
                 models.models.main.Avatar.UpperBody.Body:removeChild(models.models.main.Avatar.Head.ChestRibbon)
-                models.models.main.Avatar.Head.ChestRibbon:setPos(-4.25, 10.5, 1.5)
+                models.models.main.Avatar.Head.ChestRibbon:setPos(-4.25, 10, 1.5)
                 models.models.main.Avatar.Head.ChestRibbon:setRot(0, 90, 0)
+                models.models.main.Avatar.Head.ChestRibbon:setScale(1.2, 1.2, 1.2)
                 if not BlueArchiveCharacter.COSTUME.costumes[2].init then
                     for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell.Handbell1_Top, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell.Handbell2_Top}) do
                         modelPart:setPrimaryTexture("RESOURCE", "minecraft:textures/block/bell_top.png")
@@ -937,6 +938,7 @@ BlueArchiveCharacter = {
                     models.models.main.Avatar.Head:removeChild(models.models.main.Avatar.UpperBody.Body.ChestRibbon)
                     models.models.main.Avatar.UpperBody.Body.ChestRibbon:setPos()
                     models.models.main.Avatar.UpperBody.Body.ChestRibbon:setRot()
+                    models.models.main.Avatar.UpperBody.Body.ChestRibbon:setScale()
                 end
                 if events.ITEM_RENDER:getRegisteredCount("medical_box_item_render") == 0 then
                     events.ITEM_RENDER:register(BlueArchiveCharacter.MedicalBoxItemRender, "medical_box_item_render")
