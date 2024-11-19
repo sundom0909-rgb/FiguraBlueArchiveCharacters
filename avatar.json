@@ -153,6 +153,9 @@
 			"moveTo": "models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom",
 			"parentType": "Item"
 		},
+		"models.models.ex_skill_2.Handbell.Camera": {
+			"primaryRenderType": "CUTOUT_EMISSIVE_SOLID"
+		},
 		"models.models.ex_skill_2.MusicStand": {
 			"visible": false
 		},
@@ -164,6 +167,10 @@
 		},
 		"models.models.ex_skill_2.StuffedWolf": {
 			"visible": false
+		},
+		"models.models.ex_skill_2.GroundEffect": {
+			"visible": false,
+			"primaryRenderType": "CUTOUT_EMISSIVE_SOLID"
 		},
 		"models.models.costume_christmas.CChristmasH": {
 			"visible": false,

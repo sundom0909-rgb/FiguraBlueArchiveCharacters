@@ -647,7 +647,7 @@ BlueArchiveCharacter = {
 
             ---Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
             ---@type ModelPart[]
-			models = {models.models.ex_skill_2.MusicStand, models.models.ex_skill_2.Bag, models.models.ex_skill_2.Presents, models.models.ex_skill_2.StuffedWolf},
+			models = {models.models.ex_skill_2.MusicStand, models.models.ex_skill_2.Bag, models.models.ex_skill_2.Presents, models.models.ex_skill_2.StuffedWolf, models.models.ex_skill_2.GroundEffect},
 
             ---Exスキルアニメーションが含まれるモデルファイル名
             ---アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
@@ -692,6 +692,11 @@ BlueArchiveCharacter = {
                         models.models.ex_skill_2.MusicStand.MusicStandBookHolder:newText("music_stand_book_holder"):setText("§8Cherry Berry Merry"):setPos(3, 2.5, -1):setScale(0.03, 0.03, 0.03):setAlignment("CENTER")
                         BlueArchiveCharacter.EX_SKILL[2].init = true
                     end
+                    events.RENDER:register(function ()
+                        local opacity = models.models.ex_skill_2.GroundEffect.GroundEffectOpacity:getAnimScale().x
+                        models.models.ex_skill_2.GroundEffect:setOpacity(opacity)
+                        models.models.ex_skill_2.GroundEffect:setColor(vectors.vec3(1, 1, 1):scale(opacity))
+                    end, "ex_skill_2_render")
                     models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setPos()
                     models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setRot()
                     models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setParentType("None")
@@ -712,6 +717,8 @@ BlueArchiveCharacter = {
                         FaceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 4, true)
                     elseif tick == 45 then
                         FaceParts:setEmotion("CLOSED", "CLOSED", "OPENED", 14, true)
+                    elseif tick == 50 then
+                        models.models.ex_skill_2.GroundEffect:setVisible(false)
                     elseif tick == 59 then
                         FaceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 6, true)
                     elseif tick == 65 then
@@ -725,6 +732,7 @@ BlueArchiveCharacter = {
                 ---@type fun(forcedStop: boolean)
                 ---@param forcedStop boolean アニメーションが途中終了した場合は"true"、アニメーションが最後まで再生されて終了した場合は"false"が代入される。
                 postAnimation = function(forcedStop)
+                    events.RENDER:remove("ex_skill_2_render")
                     models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setParentType("Item")
                 end
             },
