@@ -693,9 +693,11 @@ BlueArchiveCharacter = {
                         BlueArchiveCharacter.EX_SKILL[2].init = true
                     end
                     events.RENDER:register(function ()
-                        local opacity = models.models.ex_skill_2.GroundEffect.GroundEffectOpacity:getAnimScale().x
-                        models.models.ex_skill_2.GroundEffect:setOpacity(opacity)
-                        models.models.ex_skill_2.GroundEffect:setColor(vectors.vec3(1, 1, 1):scale(opacity))
+                        for _, modelPart in ipairs({models.models.ex_skill_2.GroundEffect, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell.Camera.HandbellEffect1, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell.Camera.HandbellEffect2}) do
+                            local opacity = modelPart[modelPart:getName().."Opacity"]:getAnimScale().x
+                            modelPart:setOpacity(opacity)
+                            modelPart:setColor(vectors.vec3(1, 1, 1):scale(opacity))
+                        end
                     end, "ex_skill_2_render")
                     models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setPos()
                     models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setRot()
