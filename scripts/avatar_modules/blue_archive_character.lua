@@ -376,7 +376,7 @@ BlueArchiveCharacter = {
                     ja_jp = "百夜堂出張サービス！";
                 };
 
-                formationType = "STRIKER";
+                formationType = "SPECIAL";
 
                 models = {models.models.ex_skill_1.Stall, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet};
 
