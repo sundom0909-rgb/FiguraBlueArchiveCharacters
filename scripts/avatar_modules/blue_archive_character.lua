@@ -290,7 +290,7 @@ BlueArchiveCharacter = {
                 SURPRISED = vectors.vec2(3, 0); --必須
                 TIRED = vectors.vec2(4, 0); --必須
                 CLOSED = vectors.vec2(0, 1); --必須
-                INVERTED = vectors.vec2(2, 0);
+                CENTER = vectors.vec2(2, 0);
                 UNEQUAL = vectors.vec2(1, 1);
             };
 
@@ -486,7 +486,7 @@ BlueArchiveCharacter = {
                                 particles:newParticle(instance.parent.compatibilityUtils.getBlockParticleId(instance.parent.compatibilityUtils:checkBlock("minecraft:dirt")), particleAnchor5Pos:copy():add(math.cos(particleRot) * 0.6, 0, math.sin(particleRot) * 0.6))
                             end
                         end
-                        if tick % math.ceil((ExSkill.AnimationLength - tick) / 20) == 0 then
+                        if tick % math.ceil((animations["models.main"]["ex_skill_1"]:getLength() * 20 - tick) / 20) == 0 then
                             sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.boat.paddle_land"), instance.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Stall.Wheels.ExSkill1SoundAnchor1))
                         end
                     end;
