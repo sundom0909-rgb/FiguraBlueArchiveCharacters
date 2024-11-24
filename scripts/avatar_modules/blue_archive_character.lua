@@ -53,6 +53,7 @@
 ---@field public deathAnimation BlueArchiveCharacter.DeathAnimationStruct 死亡アニメーション
 ---@field public actionWheel BlueArchiveCharacter.ActionWheelStruct アクションホイール
 ---@field public physics BlueArchiveCharacter.PhysicsStruct 物理演算
+---@field public dataSync BlueArchiveCharacter.DataSyncStruct データ同期
 
 --[[ ******************************** ]]
 
@@ -117,6 +118,10 @@
 ---@field physicData BlueArchiveCharacter.PhysicDataSet[] 物理演算データ
 ---@field callbacks? BlueArchiveCharacter.PhysicCallbacks 物理演算のコールバック関数
 
+---@class BlueArchiveCharacter.DataSyncStruct データ同期のデータ構造体
+---@field public syncData {[string]: any} 追加でping同期させるデータテーブル
+---@field public callbacks BlueArchiveCharacter.DataSyncCallbacks データ同期のコールバック関数
+
 --[[ ******************************** ]]
 
 ---@class (exact) BlueArchiveCharacter.OverrideEmotionSet 特定の状況における表情を上書きするセット
@@ -171,6 +176,7 @@
 ---@class (exact) BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワークのセット
 ---@field public start BlueArchiveCharacter.ExSkillCameraPositionSet Exスキルアニメーション開始地点
 ---@field public fin BlueArchiveCharacter.ExSkillCameraPositionSet Exスキルアニメーション終了地点
+---@field public fixMode? boolean カメラの補正モード。通常は無効だが、特定のキャラクターに対しては有効にしておく。
 
 ---@class (exact) BlueArchiveCharacter.ExSkillCameraPositionSet Exスキルアニメーション中のカメラワークの開始/終了地点の位置のデータセット
 ---@field public pos Vector3 カメラの位置
@@ -239,6 +245,9 @@
 
 ---@class (exact) BlueArchiveCharacter.PhysicCallbacks 物理演算のコールバック関数のセット
 ---@field public onPhysicPerformed? fun(self: BlueArchiveCharacter, model: ModelPart) 物理演算処理後に実行されるコールバック関数（省略可）。ここでモデルパーツの向きを上書きできる。
+
+---@class (exact) BlueArchiveCharacter.DataSyncCallbacks データ同期のコールバック関数のセット
+---@field public onDataSynced? fun(self: BlueArchiveCharacter) データが同期されたときに実行させるコールバック関数。ホスト上では実行されない。
 
 --[[ ******************************** ]]
 
@@ -392,6 +401,8 @@ BlueArchiveCharacter = {
                         rot = vectors.vec3(0, 250, 0);
                         pos = vectors.vec3(-146, 25, -33);
                     };
+
+                    fixMode = true;
                 };
 
                 callbacks = {
@@ -518,6 +529,8 @@ BlueArchiveCharacter = {
                 name = {
                     en_us = "Business trip, Momoya summer stall!";
                     ja_jp = "出張、夏の百夜堂出店！";
+
+                    fixMode = true;
                 };
 
                 formationType = "SPECIAL";
@@ -1111,6 +1124,16 @@ BlueArchiveCharacter = {
                         };
                     };
                 };
+            };
+        }
+
+        instance.dataSync = {
+            syncData = {
+
+            };
+
+            callbacks = {
+
             };
         }
 
