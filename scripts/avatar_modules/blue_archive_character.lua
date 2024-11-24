@@ -395,42 +395,42 @@ BlueArchiveCharacter = {
                 };
 
                 callbacks = {
-                    onPreTransition = function ()
-                        instance.parent.placementObjectManager:removeAll()
+                    onPreTransition = function (self)
+                        self.parent.placementObjectManager:removeAll()
                     end;
 
-                    onPreAnimation = function ()
-                        if not instance.exSkill[1].init then
+                    onPreAnimation = function (self)
+                        if not self.exSkill[1].init then
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet:setPos(5.5, 12, 0)
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet:setRot(180, 0, 0)
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet.WaterSpill:setPrimaryTexture("RESOURCE", "textures/block/water_still.png")
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet.WaterSpill:setColor(0.25, 0.39, 0.67)
-                            instance.exSkill[1].init = true
+                            self.exSkill[1].init = true
                         end
-                        instance.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 24, true)
+                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 24, true)
                     end;
 
-                    onAnimationTick = function (tick)
+                    onAnimationTick = function (self, tick)
                         if tick <= 76 then
                             if tick >= 24 and tick < 36 then
                                 if tick == 24 then
-                                    instance.exSkill[1].textTask:setVisible(true)
-                                    instance.parent.faceParts:setEmotion("CENTER", "NORMAL", "SAD", 5, true)
+                                    self.exSkill[1].textTask:setVisible(true)
+                                    self.parent.faceParts:setEmotion("CENTER", "NORMAL", "SAD", 5, true)
                                 elseif tick == 29 then
-                                    instance.parent.faceParts:setEmotion("CENTER", "NORMAL", "TRIANGLE", 8, true)
+                                    self.parent.faceParts:setEmotion("CENTER", "NORMAL", "TRIANGLE", 8, true)
                                 end
                                 if (tick - 24) % 2 == 0 then
-                                    sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.experience_orb.pickup"), player:getPos(), 1, 2)
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.experience_orb.pickup"), player:getPos(), 1, 2)
                                 end
-                                instance.exSkill[1].textTask:setPos(vectors.vec3(-7, 6, -6):add(math.random() * 0.2 - 0.05, math.random() * 0.2 - 0.05))
+                                self.exSkill[1].textTask:setPos(vectors.vec3(-7, 6, -6):add(math.random() * 0.2 - 0.05, math.random() * 0.2 - 0.05))
                             elseif tick == 36 then
-                                instance.exSkill[1].textTask:setVisible(false)
+                                self.exSkill[1].textTask:setVisible(false)
                             elseif tick == 37 then
-                                instance.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "NORMAL", 2, true)
+                                self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "NORMAL", 2, true)
                             elseif tick == 39 then
-                                instance.parent.faceParts:setEmotion("NORMAL", "NORMAL", "TRIANGLE", 7, true)
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "TRIANGLE", 7, true)
                             elseif tick == 46 then
-                                instance.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "NORMAL", 9, true)
+                                self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "NORMAL", 9, true)
                             elseif tick == 56 then
                                 if host:isHost() then
                                     models.models.ex_skill_1.CameraBackground:setVisible(true)
@@ -443,64 +443,64 @@ BlueArchiveCharacter = {
                                         models.models.ex_skill_1.CameraBackground.Background:setPos(backgroundPos)
                                     end, "ex_skill_1_background_render")
                                 end
-                                local particleAnchor = instance.parent.modelUtils.getModelWorldPos(models.models.main.Avatar):add(0, 5, 0)
+                                local particleAnchor = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar):add(0, 5, 0)
                                 local fireworkColor = vectors.hsvToRGB(math.random(), 0.8, 1)
-                                particles:newParticle(instance.parent.compatibilityUtils:checkParticle("minecraft:flash"), particleAnchor):setColor(fireworkColor)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:flash"), particleAnchor):setColor(fireworkColor)
                                 for _ = 1, 400 do
                                     local particleAngleX = math.random() * math.pi * 2
                                         local particleAngleY = math.random() * math.pi * 2
-                                        particles:newParticle(instance.parent.compatibilityUtils:checkParticle("minecraft:firework"), particleAnchor):setVelocity(math.cos(particleAngleX) * math.cos(particleAngleY) * 0.2, math.sin(particleAngleY) * 0.2, math.sin(particleAngleX) * math.cos(particleAngleY) * 0.2):setColor(fireworkColor)
+                                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), particleAnchor):setVelocity(math.cos(particleAngleX) * math.cos(particleAngleY) * 0.2, math.sin(particleAngleY) * 0.2, math.sin(particleAngleX) * math.cos(particleAngleY) * 0.2):setColor(fireworkColor)
                                 end
-                                sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.firework_rocket.large_blast"), player:getPos())
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.firework_rocket.large_blast"), player:getPos())
                             elseif tick == 57 then
-                                instance.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "TRIANGLE", 19, true)
+                                self.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "TRIANGLE", 19, true)
                             elseif tick == 69 and host:isHost() then
                                 models.models.ex_skill_1.CameraBackground:setVisible(false)
                                 events.RENDER:remove("ex_skill_1_background_render")
                             elseif tick == 76 then
-                                instance.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "NORMAL", 24, true)
-                                sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.generic.small_fall"), player:getPos(), 1)
-                                sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:block.glass.break"), instance.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet.ExSkill1SoundAnchor2), 1, 0.5)
-                                local particleAnchor1Pos = instance.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head.ExSkill1ParticleAnchor1)
+                                self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "NORMAL", 24, true)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.small_fall"), player:getPos(), 1)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.glass.break"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet.ExSkill1SoundAnchor2), 1, 0.5)
+                                local particleAnchor1Pos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head.ExSkill1ParticleAnchor1)
                                 for i = 0, 5 do
                                     local particleRot = math.rad(i * 60)
-                                    particles:newParticle(instance.parent.compatibilityUtils:checkParticle("minecraft:wax_off"), particleAnchor1Pos):setColor(1, 1, 0):setLifetime(12):setVelocity(math.cos(particleRot) * 0.05, 0.1, math.sin(particleRot) * 0.05):setGravity(0.5)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:wax_off"), particleAnchor1Pos):setColor(1, 1, 0):setLifetime(12):setVelocity(math.cos(particleRot) * 0.05, 0.1, math.sin(particleRot) * 0.05):setGravity(0.5)
                                 end
-                                local particleAnchor4Pos = instance.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet.WaterSpill.ExSkill1ParticleAnchor4)
+                                local particleAnchor4Pos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet.WaterSpill.ExSkill1ParticleAnchor4)
                                 for i = 0, 5 do
                                     local particleRot = i * (math.pi / 3)
-                                    particles:newParticle(instance.parent.compatibilityUtils:checkParticle("minecraft:splash"), particleAnchor4Pos:copy():add(math.cos(particleRot) * 0.25, 0, math.sin(particleRot) * 0.25)):setScale(1.5):setLifetime(10)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:splash"), particleAnchor4Pos:copy():add(math.cos(particleRot) * 0.25, 0, math.sin(particleRot) * 0.25)):setScale(1.5):setLifetime(10)
                                 end
                             end
                             if tick % 4 == 0 then
                                 for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet.Yunomi1.ExSkill1ParticleAnchor2, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet.Yunomi2.ExSkill1ParticleAnchor3}) do
-                                    local particleAnchorPos = instance.parent.modelUtils.getModelWorldPos(modelPart)
-                                    particles:newParticle(instance.parent.compatibilityUtils:checkParticle("poof"), particleAnchorPos):setScale(0.2):setVelocity():setLifetime(15)
+                                    local particleAnchorPos = self.parent.modelUtils.getModelWorldPos(modelPart)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("poof"), particleAnchorPos):setScale(0.2):setVelocity():setLifetime(15)
                                 end
                             end
                         end
                         if tick % 2 == 0 and tick >= 70 then
-                            local particleAnchor5Pos = instance.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Stall.ExSkill1ParticleAnchor5)
+                            local particleAnchor5Pos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Stall.ExSkill1ParticleAnchor5)
                             for i = 0, 11 do
                                 local particleRot = i * (math.pi / 6)
-                                particles:newParticle(instance.parent.compatibilityUtils.getBlockParticleId(instance.parent.compatibilityUtils:checkBlock("minecraft:dirt")), particleAnchor5Pos:copy():add(math.cos(particleRot) * 0.6, 0, math.sin(particleRot) * 0.6))
+                                particles:newParticle(self.parent.compatibilityUtils.getBlockParticleId(self.parent.compatibilityUtils:checkBlock("minecraft:dirt")), particleAnchor5Pos:copy():add(math.cos(particleRot) * 0.6, 0, math.sin(particleRot) * 0.6))
                             end
                         end
                         if tick % math.ceil((animations["models.main"]["ex_skill_1"]:getLength() * 20 - tick) / 20) == 0 then
-                            sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.boat.paddle_land"), instance.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Stall.Wheels.ExSkill1SoundAnchor1))
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.boat.paddle_land"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Stall.Wheels.ExSkill1SoundAnchor1))
                         end
                     end;
 
-                    onPostAnimation = function (forcedStop)
+                    onPostAnimation = function (self, forcedStop)
                         if forcedStop then
                             if host:isHost() then
                                 models.models.ex_skill_1.CameraBackground:setVisible(false)
                                 events.RENDER:remove("ex_skill_1_background_render")
                             end
-                            instance.exSkill[1].textTask:setVisible(false)
+                            self.exSkill[1].textTask:setVisible(false)
                         else
                             local bodyYaw = player:getBodyYaw() % 360
-                            instance.parent.placementObjectManager:spawn(1, vectors.rotateAroundAxis(bodyYaw * -1, -7.9375, 0, -0.5625, 0, 1, 0):add(player:getPos()), 195 + bodyYaw * -1)
+                            self.parent.placementObjectManager:spawn(1, vectors.rotateAroundAxis(bodyYaw * -1, -7.9375, 0, -0.5625, 0, 1, 0):add(player:getPos()), 195 + bodyYaw * -1)
                         end
                     end;
                 };
@@ -545,25 +545,25 @@ BlueArchiveCharacter = {
                         end
                     end;
 
-                    onPreAnimation = function ()
+                    onPreAnimation = function (self)
                         models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIceFace:setVisible(false)
                         for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce1, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce2, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce3, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce4, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce5, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarLeft, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarRight}) do
                             modelPart:setUVPixels(1)
                         end
-                        instance.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 75, true)
+                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 75, true)
                     end;
 
-                    onAnimationTick = function (tick)
+                    onAnimationTick = function (self, tick)
                         if tick <= 25 then
-                            local particleAnchor1Pos = instance.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ExSkill2ParticleAnchor1)
+                            local particleAnchor1Pos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ExSkill2ParticleAnchor1)
                             if tick <= 16 then
                                 for _ = 1, 2 do
-                                    particles:newParticle(instance.parent.compatibilityUtils.getBlockParticleId(instance.parent.compatibilityUtils:checkBlock("minecraft:snow")), particleAnchor1Pos):setPower(0.25):setLifetime(10)
+                                    particles:newParticle(self.parent.compatibilityUtils.getBlockParticleId(self.parent.compatibilityUtils:checkBlock("minecraft:snow")), particleAnchor1Pos):setPower(0.25):setLifetime(10)
                                 end
                             end
                             if tick >= 16 then
                                 for _ = 1, 4 do
-                                    particles:newParticle(instance.parent.compatibilityUtils.getBlockParticleId(instance.parent.compatibilityUtils:checkBlock("minecraft:light_blue_concrete")), particleAnchor1Pos):setPower(0):setLifetime(10)
+                                    particles:newParticle(self.parent.compatibilityUtils.getBlockParticleId(self.parent.compatibilityUtils:checkBlock("minecraft:light_blue_concrete")), particleAnchor1Pos):setPower(0):setLifetime(10)
                                 end
                                 if tick == 16 then
                                     for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce1, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce2, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce3, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce4, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce5, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarLeft, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarRight}) do
@@ -591,25 +591,25 @@ BlueArchiveCharacter = {
                             models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIceFace:setVisible(true)
                         elseif tick == 30 then
                             models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIceFace:setUVPixels(math.random() > 0.95 and 16 or 0)
-                            local particleAnchor2Pos = instance.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ExSkill2ParticleAnchor2)
+                            local particleAnchor2Pos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ExSkill2ParticleAnchor2)
                             local bodyYaw = player:getBodyYaw()
                             for i = 1, 4 do
-                                particles:newParticle(instance.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), particleAnchor2Pos):setColor(0.99, 0.6, 0.73):setVelocity(vectors.rotateAroundAxis(-bodyYaw - 30, vectors.vec3(i <= 2 and 0.2 or -0.2, i % 2 == 0 and 0 or 0.1), 0, 1)):setGravity(0.5):setLifetime(4)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), particleAnchor2Pos):setColor(0.99, 0.6, 0.73):setVelocity(vectors.rotateAroundAxis(-bodyYaw - 30, vectors.vec3(i <= 2 and 0.2 or -0.2, i % 2 == 0 and 0 or 0.1), 0, 1)):setGravity(0.5):setLifetime(4)
                             end
-                            sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), instance.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ExSkill2SoundAnchor1), 1, 0.75)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ExSkill2SoundAnchor1), 1, 0.75)
                         elseif tick >= 34 and tick <= 69 then
-                            sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), instance.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.Wave.ExSkill2SoundAnchor2), math.clamp(tick <= 43 and (tick * 0.056 - 1.904) or (tick >= 60 and (tick * -0.056 + 3.86) or 0.5), 0, 0.5), 0.75)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.Wave.ExSkill2SoundAnchor2), math.clamp(tick <= 43 and (tick * 0.056 - 1.904) or (tick >= 60 and (tick * -0.056 + 3.86) or 0.5), 0, 0.5), 0.75)
                         elseif tick == 75 then
-                            instance.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 17, true)
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 17, true)
                         elseif tick == 92 then
-                            instance.parent.faceParts:setEmotion("NORMAL", "CLOSED", "OPENED", 18, true)
+                            self.parent.faceParts:setEmotion("NORMAL", "CLOSED", "OPENED", 18, true)
                             local bodyYaw = player:getBodyYaw()
-                            particles:newParticle(instance.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), instance.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head.FaceParts.Eyes.ExSkill2ParticleAnchor3)):setColor(1, 1, 0.68):setVelocity(vectors.rotateAroundAxis(-bodyYaw - 5, vectors.vec3(0.2, 0.2), 0, 1)):setGravity(1):setLifetime(18)
-                            sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.experience_orb.pickup"), instance.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head.FaceParts.Eyes.ExSkill2SoundAnchor3), 1, 2)
-                            local particleAnchor4Pos = instance.parent.modelUtils.getModelWorldPos(models.models.main.ExSkill2ParticleAnchor4)
+                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head.FaceParts.Eyes.ExSkill2ParticleAnchor3)):setColor(1, 1, 0.68):setVelocity(vectors.rotateAroundAxis(-bodyYaw - 5, vectors.vec3(0.2, 0.2), 0, 1)):setGravity(1):setLifetime(18)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.experience_orb.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head.FaceParts.Eyes.ExSkill2SoundAnchor3), 1, 2)
+                            local particleAnchor4Pos = self.parent.modelUtils.getModelWorldPos(models.models.main.ExSkill2ParticleAnchor4)
                             for i = 0, 31 do
                                 local particleRot = i / 8 * math.pi + 0.2
-                                particles:newParticle(instance.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), particleAnchor4Pos):setColor(0.87, 0.71, 0.99, 0.5):setVelocity(vectors.rotateAroundAxis(-bodyYaw - 17.5, vectors.vec3(math.cos(particleRot), math.sin(particleRot)), 0, 1):scale(i < 16 and 0.15 or 0.2)):setScale(1.5) :setLifetime(18)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), particleAnchor4Pos):setColor(0.87, 0.71, 0.99, 0.5):setVelocity(vectors.rotateAroundAxis(-bodyYaw - 17.5, vectors.vec3(math.cos(particleRot), math.sin(particleRot)), 0, 1):scale(i < 16 and 0.15 or 0.2)):setScale(1.5) :setLifetime(18)
                             end
                         end
                     end;
@@ -649,8 +649,8 @@ BlueArchiveCharacter = {
             };
 
             callbacks = {
-                onChange = function ()
-                    instance.parent.costume.setCostumeTextureOffset(1)
+                onChange = function (self)
+                    self.parent.costume.setCostumeTextureOffset(1)
                     for _, modelPart in ipairs({models.models.main.Avatar.Head.Brim, models.models.main.Avatar.UpperBody.Body.BackRibbon, models.models.main.Avatar.UpperBody.Body.Skirt, models.models.main.Avatar.UpperBody.Body.Hairs, models.models.main.Avatar.UpperBody.Arms.RightArm.RightSleeveTop, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeveBottom, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftSleeveTop, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeveBottom}) do
                         modelPart:setVisible(false)
                     end
@@ -669,7 +669,7 @@ BlueArchiveCharacter = {
                     end
                 end;
 
-                onArmorChange = function (parts, isVisible)
+                onArmorChange = function (self, parts, isVisible)
                     if parts == "HELMET" then
                         if isVisible then
                             for _, modelPart in ipairs({models.models.main.Avatar.Head.Brim, models.models.main.Avatar.Head.HairTails, models.models.main.Avatar.Head.CSwimsuitH.Brim, models.models.main.Avatar.Head.CSwimsuitH.EarAccessories}) do
@@ -677,9 +677,9 @@ BlueArchiveCharacter = {
                             end
                         else
                             models.models.main.Avatar.Head.HairTails:setVisible(true)
-                            if instance.parent.costume.currentCostume == 1 then
+                            if self.parent.costume.currentCostume == 1 then
                                 models.models.main.Avatar.Head.Brim:setVisible(true)
-                            elseif instance.parent.costume.currentCostume == 2 then
+                            elseif self.parent.costume.currentCostume == 2 then
                                 for _, modelPart in ipairs({models.models.main.Avatar.Head.CSwimsuitH.Brim, models.models.main.Avatar.Head.CSwimsuitH.EarAccessories}) do
                                     modelPart:setVisible(true)
                                 end
@@ -692,15 +692,15 @@ BlueArchiveCharacter = {
                             end
                             models.models.main.Avatar.UpperBody.Body.Hairs.FrontHair:setPos(0, 0, -1)
                             models.models.main.Avatar.UpperBody.Body.Hairs.BackHair:setPos(0, 0, 1)
-                            instance.physics.physicData[1].x.vertical.neutral = 0
-                            instance.physics.physicData[1].x.vertical.max = 0
-                            instance.physics.physicData[1].x.vertical.bodyX.max = 0
-                            instance.physics.physicData[1].x.vertical.bodyY.max = 0
-                            instance.physics.physicData[1].x.vertical.bodyRot.max = 0
-                            instance.physics.physicData[1].x.horizontal.neutral = 0
-                            instance.physics.physicData[1].x.horizontal.max = 0
+                            self.physics.physicData[1].x.vertical.neutral = 0
+                            self.physics.physicData[1].x.vertical.max = 0
+                            self.physics.physicData[1].x.vertical.bodyX.max = 0
+                            self.physics.physicData[1].x.vertical.bodyY.max = 0
+                            self.physics.physicData[1].x.vertical.bodyRot.max = 0
+                            self.physics.physicData[1].x.horizontal.neutral = 0
+                            self.physics.physicData[1].x.horizontal.max = 0
                         else
-                            if instance.parent.costume.currentCostume == 1 then
+                            if self.parent.costume.currentCostume == 1 then
                                 for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.BackRibbon, models.models.main.Avatar.UpperBody.Body.Skirt}) do
                                     modelPart:setVisible(true)
                                 end
@@ -708,13 +708,13 @@ BlueArchiveCharacter = {
                             for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.Hairs.FrontHair, models.models.main.Avatar.UpperBody.Body.Hairs.BackHair}) do
                                 modelPart:setPos()
                             end
-                            instance.physics.physicData[1].x.vertical.neutral = -10
-                            instance.physics.physicData[1].x.vertical.max = -10
-                            instance.physics.physicData[1].x.vertical.bodyX.max = -10
-                            instance.physics.physicData[1].x.vertical.bodyY.max = -10
-                            instance.physics.physicData[1].x.vertical.bodyRot.max = -10
-                            instance.physics.physicData[1].x.horizontal.neutral = -10
-                            instance.physics.physicData[1].x.horizontal.max = -10
+                            self.physics.physicData[1].x.vertical.neutral = -10
+                            self.physics.physicData[1].x.vertical.max = -10
+                            self.physics.physicData[1].x.vertical.bodyX.max = -10
+                            self.physics.physicData[1].x.vertical.bodyY.max = -10
+                            self.physics.physicData[1].x.vertical.bodyRot.max = -10
+                            self.physics.physicData[1].x.horizontal.neutral = -10
+                            self.physics.physicData[1].x.horizontal.max = -10
                         end
                     end
                 end;
@@ -723,26 +723,26 @@ BlueArchiveCharacter = {
 
         instance.bubble = {
             callbacks = {
-                onPlay = function (type, duration)
+                onPlay = function (self, type, duration)
                     if duration > 0 then
                         if type == "GOOD" then
-                            instance.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", duration, true)
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", duration, true)
                         elseif type == "HEART" then
-                            instance.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", duration, true)
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", duration, true)
                         elseif type == "NOTE" then
-                            instance.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", duration, true)
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", duration, true)
                         elseif type == "QUESTION" then
-                            instance.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SAD", duration, true)
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SAD", duration, true)
                         elseif type == "SWEAT" then
-                            instance.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "TRIANGLE", duration, true)
+                            self.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "TRIANGLE", duration, true)
                             models.models.main.Avatar.Head.FaceLayer:setVisible(true)
                         end
                     end
                 end;
 
-                onStop = function (_, forcedStop)
+                onStop = function (self, _, forcedStop)
                     if not forcedStop then
-                        instance.parent.faceParts:resetEmotion()
+                        self.parent.faceParts:resetEmotion()
                     end
                     models.models.main.Avatar.Head.FaceLayer:setVisible(false)
                 end;
