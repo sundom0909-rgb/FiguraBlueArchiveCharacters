@@ -24,7 +24,7 @@ ExSkill1TextObject = {
         instance.text = text
         instance.currentPos = vectors.rotateAroundAxis(player:getBodyYaw() + 180, instance.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.GameConsole1):sub(player:getPos()), 0, 1, 0):scale(16)
         instance.nextPos = instance.currentPos
-        instance.velocity = vectors.rotateAroundAxis(math.random() * 360, 0, 0.5, 0.1, 0, 1, 0)
+        instance.velocity = vectors.rotateAroundAxis(math.random() * 360, 0, 0.5, 0.2, 0, 1, 0)
         instance.animationCount = 0
 
         instance.callbacks = {
@@ -32,7 +32,8 @@ ExSkill1TextObject = {
             onInit = function (self)
                 self.textTask:setText("§6"..instance.text)
                 self.textTask:setAlignment("CENTER")
-                self.textTask:setShadow(true)
+                self.textTask:setOutline(true)
+                self.textTask:setOutlineColor(0.165, 0.165, 0)
                 self.textTask:setSeeThrough(true)
             end;
 
