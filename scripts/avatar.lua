@@ -30,6 +30,7 @@
 ---@field public hypixelZombies HypixelZombies
 ---@field public textObjectManager ExSkill1TextObjectManager
 ---@field public particleManager ExSkill2ParticleManager
+---@field public transitionManager ExSkill2TransitionManager
 ---@field public instantiate fun(class: table, super: table, ...: any) クラスをインスタンス化する
 
 Avatar = {
@@ -181,6 +182,11 @@ Avatar = {
 			require("scripts.avatar_modules.character_scripts.ex_skill_2_particle")
 			instance.particleManager = ExSkill2ParticleManager.new(instance)
 			instance.particleManager:init()
+
+			require("scripts.avatar_modules.character_scripts.ex_skill_2_transition_manager")
+			require("scripts.avatar_modules.character_scripts.ex_skill_2_transition")
+			instance.transitionManager = ExSkill2TransitionManager.new(instance)
+			instance.transitionManager:init()
 		end)
 
 		return instance

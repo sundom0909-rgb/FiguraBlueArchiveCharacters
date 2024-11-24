@@ -9,7 +9,7 @@ ExSkill2ParticleManager = {
         ---@type ExSkill2ParticleManager
         local instance = Avatar.instantiate(ExSkill2ParticleManager, SpawnObjectManager, parent)
 
-        instance.managerName = "ex_skill_2_text_object"
+        instance.managerName = "ex_skill_2_particle"
 
         return instance
     end;

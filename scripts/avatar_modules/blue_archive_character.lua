@@ -1008,7 +1008,7 @@ BlueArchiveCharacter = {
                             models.models.ex_skill_2.Gui.UI.ClearEffect.Background:setVisible(true)
                             models.models.ex_skill_2.Gui.UI.ClearEffect:getTask("ex_skill_2_clear_effect_text_1"):setVisible(true)
                         elseif tick == 148 and host:isHost() then
-                            --ExSkill2TransitionEffectsManager:play()
+                            instance.parent.transitionManager:play()
                         elseif tick == 154 then
                             instance.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
                         elseif tick == 155 then
@@ -1139,7 +1139,7 @@ BlueArchiveCharacter = {
                                 for _, eventName in ipairs({"ex_skill_2_reticule_render", "ex_skill_2_damage_effect_render", "ex_skill_2_clear_effect_render"}) do
                                     events.RENDER:remove(eventName)
                                 end
-                                --ExSkill2TransitionEffectsManager:stop()
+                                instance.parent.transitionManager:stop()
                             end
                         end
                     end;
