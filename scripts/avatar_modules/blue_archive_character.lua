@@ -1002,7 +1002,7 @@ BlueArchiveCharacter = {
                             end
                         elseif tick == 131 and host:isHost() then
                             for _ = 1, 16 do
-                                --ExSkill2Particles:spawn()
+                                instance.parent.particleManager:spawn()
                             end
                         elseif tick == 132 and host:isHost() then
                             models.models.ex_skill_2.Gui.UI.ClearEffect.Background:setVisible(true)
