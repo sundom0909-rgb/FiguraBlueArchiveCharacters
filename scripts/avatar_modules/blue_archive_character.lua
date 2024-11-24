@@ -1324,7 +1324,29 @@ BlueArchiveCharacter = {
         }
 
         instance.bubble = {
+            callbacks = {
+                onPlay = function(type, duration)
+                    if duration > 0 then
+                        if type == "GOOD" then
+                            instance.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", duration, true)
+                        elseif type == "HEART" then
+                            instance.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", duration, true)
+                        elseif type == "NOTE" then
+                            instance.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", duration, true)
+                        elseif type == "QUESTION" then
+                            instance.parent.faceParts:setEmotion("NORMAL", "NORMAL", "ANXIOUS", duration, true)
+                        elseif type == "SWEAT" then
+                            instance.parent.faceParts:setEmotion("TEAR", "TEAR", "TIRED", duration, true)
+                        end
+                    end
+                end;
 
+                onStop = function(_, forcedStop)
+                    if forcedStop then
+                        instance.parent.faceParts:resetEmotion()
+                    end
+                end;
+            };
         }
 
         instance.headBlock = {
