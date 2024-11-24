@@ -409,6 +409,8 @@ BlueArchiveCharacter = {
                         rot = vectors.vec3(-50, -160, 0);
                         pos = vectors.vec3(-3, 16, -104);
                     };
+
+                    fixMode = true;
                 };
 
                 callbacks = {
@@ -523,6 +525,8 @@ BlueArchiveCharacter = {
                         rot = vectors.vec3(-10, -150, -10);
                         pos = vectors.vec3(-4, 154, -350);
                     };
+
+                    fixMode = true;
                 };
 
                 callbacks = {
