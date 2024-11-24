@@ -17,7 +17,7 @@ ExSkill1TextObject = {
         ---@type ExSkill1TextObject
         local instance = Avatar.instantiate(ExSkill1TextObject, SpawnObject, parent)
 
-        instance.object = models.models.main.CameraAnchor:newText(client.intUUIDToString(client:generateUUID()))
+        instance.object = models.models.main.CameraAnchor:newText(instance.uuid)
         instance.subObject = models.models.main.CameraAnchor:newText(client.intUUIDToString(client:generateUUID()))
         instance.pos = textPos
         instance.text = text
