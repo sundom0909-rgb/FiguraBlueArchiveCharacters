@@ -759,7 +759,7 @@ BlueArchiveCharacter = {
 
         instance.deathAnimation = {
             callbacks = {
-                onPhase1 = function (dummyAvatar, costume)
+                onPhase1 = function (_, dummyAvatar, costume)
                     if costume == 1 then
                         dummyAvatar.UpperBody.Body.Skirt:setRot(35, 0, 0)
                     elseif costume == 2 then
@@ -768,7 +768,7 @@ BlueArchiveCharacter = {
                     end
                 end;
 
-                onPhase2 = function (dummyAvatar, costume)
+                onPhase2 = function (_, dummyAvatar, costume)
                     if costume == 1 then
                         dummyAvatar.UpperBody.Body.Skirt:setRot(15, 0, 0)
                     elseif costume == 2 then
