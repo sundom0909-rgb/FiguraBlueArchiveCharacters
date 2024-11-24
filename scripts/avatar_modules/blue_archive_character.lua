@@ -788,11 +788,9 @@ BlueArchiveCharacter = {
                         ---@diagnostic disable-next-line: discard-returns
                         models.models.ex_skill_2.Covers.CoverBack4:newPart("MissText", "Camera")
                         models.models.ex_skill_2.Covers.CoverBack4.MissText:setOffsetPivot(8, 24, 8)
-                        --BlueArchiveCharacter.EX_SKILL_2_MISS_TEXT_1 = ExSkill2TextAnimation.new(models.models.ex_skill_2.Covers.CoverBack4.MissText)
                         ---@diagnostic disable-next-line: discard-returns
                         models.models.ex_skill_2.Covers.CoverBack1:newPart("MissText", "Camera")
                         models.models.ex_skill_2.Covers.CoverBack1.MissText:setOffsetPivot(8, 24, 8)
-                        --BlueArchiveCharacter.EX_SKILL_2_MISS_TEXT_2 = ExSkill2TextAnimation.new(models.models.ex_skill_2.Covers.CoverBack1.MissText)
                         instance.parent.faceParts:setEmotion("ANGRY_CENTER", "ANGRY", "OPENED", 4, true)
                     end;
 
@@ -835,7 +833,7 @@ BlueArchiveCharacter = {
                             instance.exSkill[2].spawnBulletParticle(instance, models.models.ex_skill_2.Covers.CoverBack4.ExSkill2ParticleAnchor3)
                             instance.exSkill[2].playShotSound(instance)
                             instance.exSkill[2].playPotBreak(instance, models.models.ex_skill_2.Covers.CoverBack4.DecoratedPod3)
-                            --BlueArchiveCharacter.EX_SKILL_2_MISS_TEXT_1:play()
+                            instance.parent.textObjectManager2:spawn(models.models.ex_skill_2.Covers.CoverBack4.MissText)
                             if host:isHost() then
                                 models.models.ex_skill_2.Gui.UI.MomoiUI.LifeIcon1:setVisible(false)
                                 models.models.ex_skill_2.Gui.UI.MomoiHeadUI:setColor(1, 0.75, 0.75)
@@ -874,7 +872,7 @@ BlueArchiveCharacter = {
                             instance.exSkill[2].spawnBulletParticle(instance, models.models.ex_skill_2.Covers.CoverBack1.ExSkill2ParticleAnchor8)
                             instance.exSkill[2].playShotSound(instance)
                             instance.exSkill[2].playPotBreak(instance, models.models.ex_skill_2.Covers.CoverBack1.DecoratedPod2)
-                            --BlueArchiveCharacter.EX_SKILL_2_MISS_TEXT_2:play()
+                            instance.parent.textObjectManager2:spawn(models.models.ex_skill_2.Covers.CoverBack1.MissText)
                             if host:isHost() then
                                 models.models.ex_skill_2.Gui.UI.MomoiUI.LifeIcon2:setVisible(false)
                                 models.models.ex_skill_2.Gui.UI.MomoiHeadUI:setColor(1, 0.75, 0.75)

@@ -1,5 +1,4 @@
 ---@class ExSkill1TextObjectManager : SpawnObjectManager Exスキル1で使用するテキストオブジェクトのマネージャークラス
----@field package objects ExSkill1TextObject[] インスタンスで制御するオブジェクト
 ---@field public getObject fun(self: ExSkill1TextObjectManager, text: string): ExSkill1TextObject テキストオブジェクトのインスタンスを生成して返す
 ---@field public spawn fun(self: ExSkill1TextObjectManager, text: string) テキストオブジェクトを生成する
 
