@@ -1,18 +1,3 @@
----銃の構え方
----@alias BlueArchiveCharacter.GunHoldType
----| "NORMAL" バニラの弓やクロスボウの構え方と同じ
----| "CUSTOM" BBアニメーション"[models.main][gun_hold_right]"と"[models.main][gun_hold_left]"で構え方を定義する
-
----銃を持っていない場合の銃のモデルの扱い
----@alias BlueArchiveCharacter.GunPutType
----| "BODY" アバターのBodyに銃を移動させる
----| "HIDDEN" 銃を隠す
-
----生徒の配置タイプ
----@alias BlueArchiveCharacter.FormationType
----| "STRIKER" ストライカー（前衛）
----| "SPECIAL" スペシャル（後方支援）
-
 ExSkillTextAnimation = require("scripts.utils.ex_skill_text_animation")
 
 ---@class BlueArchiveCharacter （今後別のキャラを作る時に備えて、）キャラクター変数を保持するクラス。別のキャラクターに対してもここを変更するだけで対応できるようにする。
@@ -709,140 +694,14 @@ BlueArchiveCharacter = {
                 ---@type fun(tick: integer)
                 ---@param tick integer アニメーションの現在位置を示す。単位はティック。
                 animationTick = function(tick)
-                    if tick < 25 then
-                        if tick == 0 then
-                            FaceParts:setEmotion("ANGRY", "ANGRY", "CLOSED", 19, true)
-                        elseif tick == 19 then
-                            FaceParts:setEmotion("ANGRY", "ANGRY", "CIRCLE", 2, true)
-                        elseif tick == 21 then
-                            FaceParts:setEmotion("CLOSED", "CLOSED", "CIRCLE", 22, true)
-                        end
-                        local anchor1Pos = ModelUtils.getModelWorldPos(models.models.main.Avatar.ExSkill2Anchor1)
-                        local particleBlock = world.getBlockState(anchor1Pos:copy() - 1).id
-                        if particleBlock ~= "minecraft:air" and particleBlock ~= "minecraft:void_air" then
-                            for _ = 1, 50 do
-                                particles:newParticle(CompatibilityUtils.getBlockParticleId(particleBlock), anchor1Pos:copy():add(math.random() - 0.5, 0, math.random() - 0.5)):setVelocity(math.random() * 0.5 - 0.25, math.random() * 0.5, math.random() * 0.5 - 0.25)
-                            end
-                        end
-                    elseif tick == 25 then
-                        models.models.main.Avatar:setVisible(false)
-                        local anchor1Pos = ModelUtils.getModelWorldPos(models.models.main.Avatar.ExSkill2Anchor1)
-                        for _ = 1, 30 do
-                            particles:newParticle(CompatibilityUtils:checkParticle("minecraft:poof"), anchor1Pos:copy():add(math.random() - 0.5, math.random() * 2, math.random() - 0.5))
-                        end
-                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.bat.takeoff"), ModelUtils.getModelWorldPos(models.models.main.Avatar), 1, 2)
-                    elseif tick == 28 then
-                        renderer:setPostEffect("phosphor")
-                    elseif tick == 38 then
-                        renderer:setPostEffect()
-                    elseif tick == 43 then
-                        models.models.main.Avatar:setVisible(true)
-                        FaceParts:setEmotion("ANGRY", "ANGRY", "SMILE", 42, true)
-                    elseif tick == 44 then
-                        local avatarPos = ModelUtils.getModelWorldPos(models.models.main.Avatar):add(0, -1.5, 0)
-                        for _ = 1, 30 do
-                            particles:newParticle(CompatibilityUtils:checkParticle("minecraft:poof"), avatarPos:copy():add(math.random() - 0.5, math.random() * 2, math.random() - 0.5))
-                        end
-                    elseif tick >= 45 and tick <= 60 then
-                        local avatarPos = ModelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body)
-                        if tick == 45 then
-                            local bodyYaw = player:getBodyYaw()
-                            local particleDirection = vectors.rotateAroundAxis(-bodyYaw, vectors.rotateAroundAxis(40, 0, 0, 1, 1, 0, 0), 0, 1, 0)
-                            for i = 1, 30 do
-                                for j = 0.7, 1.5, 0.1 do
-                                    particles:newParticle(CompatibilityUtils.getDustParticleId(vectors.vec3(100, 1000000000, 1000000000), 1), vectors.rotateAroundAxis(-bodyYaw, vectors.rotateAroundAxis(40, math.cos(math.rad(i * 12)) * j, math.sin(math.rad(i * 12)) * j, 0, 1, 0, 0), 0, 1, 0):add(avatarPos)):setVelocity(particleDirection:copy():scale(math.random() * 0.1 + 0.2)):setLifetime(math.random() * 10 + 10)
-                                end
-                                local particlePos = vectors.rotateAroundAxis(-bodyYaw, vectors.rotateAroundAxis(40, math.cos(math.rad(i * 12)) * 1.5, math.sin(math.rad(i * 12)) * 1.5, 0, 1, 0, 0), 0, 1, 0):add(avatarPos)
-                                particles:newParticle(CompatibilityUtils.getDustParticleId(vectors.vec3(100, 1000000000, 1000000000), 1), particlePos):setVelocity(particleDirection:copy():scale(math.random() * 0.1 + 0.2)):setLifetime(math.random() * 10 + 10)
-                            end
-                        end
-                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:item.bucket.empty"), avatarPos, 1 - math.map(tick, 45, 60, 0, 0.5), 0.75)
-                    elseif tick == 79 and host:isHost() then
-                        models.models.main.CameraBackground:setVisible(true)
-                        local windowSize = client:getWindowSize()
-                        models.models.main.CameraBackground.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(45))
-                        events.RENDER:register(function (delta, context)
-                            models.models.main.CameraBackground:setVisible(context == "RENDER")
-                            local backgroundPos = vectors.rotateAroundAxis(player:getBodyYaw(delta) + 180, renderer:getCameraOffsetPivot():copy():add(0, 1.62, 0):add(client:getCameraDir():copy():scale(2)), 0, 1, 0):scale(16 / 0.9375)
-                            models.models.main.CameraBackground:setOffsetPivot(backgroundPos)
-                            models.models.main.CameraBackground.Background:setPos(backgroundPos)
-                        end, "ex_skill_2_background_render")
-                        models.models.main.Avatar:setColor(0, 0, 0)
-                        for _, modelPart in ipairs({models.models.main.Avatar, models.models.costume_swimsuit.BeachBall}) do
-                            modelPart:setColor(0, 0, 0)
-                        end
-                    elseif tick == 80 then
-                        renderer:setPostEffect("invert")
-                    elseif tick == 84 then
-                        renderer:setPostEffect()
-                    elseif tick == 85 then
-                        FaceParts:setEmotion("ANGRY", "ANGRY", "OPENED", 16, true)
-                        models.models.costume_swimsuit.BeachBall:setUVPixels(0, 7)
-                        models.models.costume_swimsuit.BeachBall:setPrimaryRenderType("EMISSIVE_SOLID")
-                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.blaze.death"), ModelUtils.getModelWorldPos(models.models.main.Avatar), 1, 2)
-                    elseif tick == 86 then
-                        local bodyYaw = player:getBodyYaw()
-                        local anchor2Pos = ModelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.Legs.RightLeg.RightLegBottom.ExSkill2Anchor2):add(vectors.rotateAroundAxis(-bodyYaw, -0.1, 0, 0, 0, 1, 0)):add(0, 0.4, 0)
-                        local particleAxis = vectors.rotateAroundAxis(-bodyYaw, vectors.rotateAroundAxis(30, 0, 0, 1, 1, 0, 0), 0, 1, 0)
-                        local particleVelocityDirection = vectors.rotateAroundAxis(-bodyYaw, vectors.rotateAroundAxis(-50, 0, 0, 1, 1, 0, 0), 0, 1, 0)
-                        for i = 1, 60 do
-                            local currentParticleVelocityDirection = vectors.rotateAroundAxis(i * 6, particleVelocityDirection, particleAxis)
-                            for _, particleData in ipairs({{0.5, 0.4, 0.1}, {0.25, 0.6, 0.025}, {0.375, 2, 0.05}}) do --[1]. 輪っかの半径, [2]. 輪っかの位置のスケール, [3]. 輪っかの拡散速度のスケール
-                                particles:newParticle(CompatibilityUtils.getDustParticleId(vectors.vec3(1000000000, 0, 0), 1), vectors.rotateAroundAxis(i * 6, 0, particleData[1], 0, particleAxis):add(anchor2Pos):add(0, -0.3, 0):add(particleAxis:copy():scale(particleData[2]))):setVelocity(currentParticleVelocityDirection:copy():scale(particleData[3])):setLifetime(20)
-                                particles:newParticle(CompatibilityUtils.getDustParticleId(vectors.vec3(0, 0, 0), 1), vectors.rotateAroundAxis(i * 6, 0, particleData[1] * 1.5, 0, particleAxis):add(anchor2Pos):add(0, -0.3, 0):add(particleAxis:copy():scale(particleData[2]))):setVelocity(currentParticleVelocityDirection:copy():scale(particleData[3])):setLifetime(20)
-                            end
-                        end
-                        if host:isHost() then
-                            models.models.main.CameraBackground:setVisible(false)
-                            events.RENDER:remove("ex_skill_2_background_render")
-                            for _, modelPart in ipairs({models.models.main.Avatar, models.models.costume_swimsuit.BeachBall}) do
-                                modelPart:setColor()
-                            end
-                        end
-                    elseif tick >= 101 then
-                        local bodyYaw = player:getBodyYaw()
-                        local anchor2Pos = ModelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.Legs.RightLeg.RightLegBottom.ExSkill2Anchor2):add(vectors.rotateAroundAxis(-bodyYaw, -0.1, 0, 0, 0, 1, 0)):add(0, -0.3, 0)
-                        local particleAxis = vectors.rotateAroundAxis(-bodyYaw, vectors.rotateAroundAxis(30, 0, 0, 1, 1, 0, 0), 0, 1, 0)
-                        local particleVelocityDirection = vectors.rotateAroundAxis(-bodyYaw, vectors.rotateAroundAxis(-50, 0, 0, 1, 1, 0, 0), 0, 1, 0)
-                        if tick == 101 then
-                            FaceParts:setEmotion("SMILE", "SMILE", "OPENED", 42, true)
-                            models.models.costume_swimsuit.BeachBall:setUVPixels(0, 14)
-                            for i = 1, 60 do
-                                local currentParticleVelocityDirection = vectors.rotateAroundAxis(i * 6, particleVelocityDirection, particleAxis)
-                                for _, particleData in ipairs({{0.3, 3.5, 0.01, 0.5}, {0.5, 3.5, 0.01, 0.5}, {0.25, 7.9, 0.003, 0.2}, {0.28, 7.89, 0.003, 0.2}, {0.45, 7.85, 0.003, 0.5}}) do --[1]. 輪っかの半径, [2]. 輪っかの位置のスケール, [3]. 輪っかの拡散速度のスケール, [4]. 輪っかのパーティクルの大きさ
-                                    particles:newParticle(CompatibilityUtils.getDustParticleId(vectors.vec3(1000000000, 1, 1), particleData[4]), vectors.rotateAroundAxis(i * 6, 0, particleData[1], 0, particleAxis):add(anchor2Pos):add(particleAxis:copy():scale(particleData[2]))):setVelocity(currentParticleVelocityDirection:copy():scale(particleData[3])):setLifetime(45)
-                                end
-                            end
-                            sounds:playSound(CompatibilityUtils:checkSound("minecraft:entity.lightning_bolt.thunder"), ModelUtils.getModelWorldPos(models.models.costume_swimsuit.BeachBall), 1, 2)
-                        end
-                        for _ = 1, 10 do
-                            particles:newParticle(CompatibilityUtils.getDustParticleId(vectors.vec3(1000000000, 1, 1), 1), anchor2Pos:copy():add(particleAxis:copy():scale(7.5)):add(vectors.rotateAroundAxis(-bodyYaw, -0.3, 0, 0, 0, 1, 0)):add(math.random() * 0.2 - 0.1, math.random() * 0.2 - 0.1 - 0.4, math.random() * 0.2 - 0.1)):setVelocity(particleAxis:copy():scale(-1))
-                        end
-                    end
-                    if tick <= 28 and tick % 4 == 0 then
-                        sounds:playSound(CompatibilityUtils:checkSound("minecraft:block.sand.step"), ModelUtils.getModelWorldPos(models.models.main.Avatar))
-                    end
+
                 end,
 
                 ---Exスキルアニメーション終了後のトランジション開始前に実行されるコールバック関数（任意）
                 ---@type fun(forcedStop: boolean)
                 ---@param forcedStop boolean アニメーションが途中終了した場合は"true"、アニメーションが最後まで再生されて終了した場合は"false"が代入される。
                 postAnimation = function(forcedStop)
-                    models.models.main.Avatar:setVisible(true)
-                    models.models.costume_swimsuit.BeachBall:setUVPixels()
-                    models.models.costume_swimsuit.BeachBall:setPrimaryRenderType("CUTOUT")
-                    if host:isHost() then
-                        models.models.main.CameraBackground.Background:setColor()
-                        models.models.main.CameraBackground.Background:setOpacity(1)
-                        if forcedStop then
-                            events.RENDER:remove("ex_skill_2_background_render")
-                            models.models.main.CameraBackground:setVisible(false)
-                            for _, modelPart in ipairs({models.models.main.Avatar, models.models.costume_swimsuit.BeachBall}) do
-                                modelPart:setColor()
-                            end
-                            renderer:setPostEffect()
-                        end
-                    end
+
                 end
             }
 		}
@@ -974,35 +833,7 @@ BlueArchiveCharacter = {
             ---@type fun(index: integer)
             ---@param parts Armor.ArmorPart 変更された防具の部位
             armorChange = function(parts)
-                if parts == "HELMET" then
-                    if Armor.ArmorVisible[1] then
-                        models.models.main.Avatar.Head.CSwimsuitH:setVisible(false)
-                    else
-                        models.models.main.Avatar.Head.CSwimsuitH:setVisible(Costume.CurrentCostume == 2)
-                    end
-                elseif parts == "CHEST_PLATE" then
-                    if Armor.ArmorVisible[2] then
-                        models.models.main.Avatar.UpperBody.Body.Scarfs:setPos(0, 0, 1)
-                        models.models.main.Avatar.UpperBody.Body.CSwimsuitB:setPos(0, 0, -1)
-                        models.models.main.Avatar.UpperBody.Body.BackRibbon:setVisible(false)
-                    else
-                        for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.Scarfs, models.models.main.Avatar.UpperBody.Body.CSwimsuitB}) do
-                            modelPart:setPos()
-                        end
-                        models.models.main.Avatar.UpperBody.Body.BackRibbon:setVisible(Costume.CurrentCostume == 1 and not Armor.ArmorVisible[3])
-                    end
-                elseif parts == "LEGGINGS" then
-                    if Armor.ArmorVisible[3] then
-                        for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.Skirt, models.models.main.Avatar.LowerBody.Legs.LeftLeg.CSwimsuitLL}) do
-                            modelPart:setVisible(false)
-                        end
-                        models.models.main.Avatar.UpperBody.Body.BackRibbon:setVisible(false)
-                    else
-                        models.models.main.Avatar.UpperBody.Body.Skirt:setVisible(Costume.CurrentCostume == 1)
-                        models.models.main.Avatar.LowerBody.Legs.LeftLeg.CSwimsuitLL:setVisible(Costume.CurrentCostume == 2)
-                        models.models.main.Avatar.UpperBody.Body.BackRibbon:setVisible(Costume.CurrentCostume == 1 and not Armor.ArmorVisible[2])
-                    end
-                end
+
             end
         }
 	},
@@ -2849,11 +2680,6 @@ BlueArchiveCharacter = {
 }
 
 --生徒固有初期化処理
-events.RENDER:register(function ()
-    if models.models.main.Avatar.LowerBody.Legs.LeftLeg.CSwimsuitLL:getVisible() then
-        models.models.main.Avatar.LowerBody.Legs.LeftLeg.CSwimsuitLL:setRot((vanilla_model.LEFT_LEG:getOriginRot().x + models.models.main.Avatar.LowerBody.Legs.LeftLeg:getTrueRot().x) * -1, 0, 0)
-    end
-end)
 
 events.ENTITY_INIT:register(function ()
     ---Exスキル1で使用するテキストアニメーションインスタンスのテーブル。4つ合わせて「神出鬼没」。
