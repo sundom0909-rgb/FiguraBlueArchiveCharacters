@@ -1066,7 +1066,7 @@ BlueArchiveCharacter = {
                             models.models.ex_skill_3.Gui.Frame:setVisible(false)
                         end
                         if forcedStop then
-                            instance.parent.costume.setTextureOffset(2)
+                            instance.parent.costume.setCostumeTextureOffset(2)
                             for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer}) do
                                 modelPart:setUVPixels(0, 16)
                             end
