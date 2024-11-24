@@ -419,15 +419,15 @@ BlueArchiveCharacter = {
                         elseif tick == 29 then
                             sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.weak"), player:getPos(), 0.5, 1.5)
                         elseif tick == 31 then
-                            BlueArchiveCharacter.EX_SKILL_1_TEXT_ANIMATIONS[1]:play()
+                            instance.parent.textObjectManager:spawn(vectors.vec2(2, 5.5), "神")
                         elseif tick == 34 then
-                            BlueArchiveCharacter.EX_SKILL_1_TEXT_ANIMATIONS[2]:play()
+                            instance.parent.textObjectManager:spawn(vectors.vec2(2, 0.5), "出")
                         elseif tick == 35 or tick == 40 or tick == 43 or tick == 48 then
                             sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.weak"), player:getPos(), 0.25, 1.5)
                         elseif tick == 38 then
-                            BlueArchiveCharacter.EX_SKILL_1_TEXT_ANIMATIONS[3]:play()
+                            instance.parent.textObjectManager:spawn(vectors.vec2(-5.5, 5.5), "鬼")
                         elseif tick == 41 then
-                            BlueArchiveCharacter.EX_SKILL_1_TEXT_ANIMATIONS[4]:play()
+                            instance.parent.textObjectManager:spawn(vectors.vec2(-5.5, 0.5), "没")
                         elseif tick == 49 then
                             sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), player:getPos(), 0.5, 1.5)
                         elseif tick == 50 and host:isHost() then
@@ -438,18 +438,14 @@ BlueArchiveCharacter = {
                             local windowSize = client:getWindowSize()
                             models.models.main.CameraBackground.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(40))
                             models.models.main.Avatar:setColor(0, 0, 0)
-                            for _, textAnimation in ipairs(BlueArchiveCharacter.EX_SKILL_1_TEXT_ANIMATIONS) do
-                                textAnimation:setBlack(true)
-                            end
+                            instance.parent.textObjectManager:setBlack(true)
                             renderer:setPostEffect("invert")
                         elseif tick == 51 then
                             instance.parent.faceParts:setEmotion("ANGRY", "ANGRY", "CIRCLE", 10, true)
                         elseif tick == 53 and host:isHost() then
                             models.models.main.CameraBackground:setVisible(false)
                             models.models.main.Avatar:setColor(1, 1, 1)
-                            for _, textAnimation in ipairs(BlueArchiveCharacter.EX_SKILL_1_TEXT_ANIMATIONS) do
-                                textAnimation:setBlack(false)
-                            end
+                            instance.parent.textObjectManager:setBlack(false)
                             renderer:setPostEffect()
                         elseif tick == 58 then
                             local playerPos = player:getPos()
@@ -457,12 +453,10 @@ BlueArchiveCharacter = {
                                 particles:newParticle(instance.parent.compatibilityUtils:checkParticle("minecraft:poof"), playerPos:copy():add(math.random() * 2 - 1, math.random() * 3 - 0.5, math.random() * 2 - 1))
                             end
                         elseif tick == 61 then
-                            for _, textAnimation in ipairs(BlueArchiveCharacter.EX_SKILL_1_TEXT_ANIMATIONS) do
-                                textAnimation:stop()
-                            end
+                            instance.parent.textObjectManager:removeAll()
                             instance.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 12, true)
                         elseif tick == 73 then
-                            instance.parent.faceParts:setEmotion("NORMAL", "SMILE", "OPENED", 27, true)
+                            instance.parent.faceParts:setEmotion("NORMAL", "CLOSED", "OPENED", 27, true)
                             local avatarPos = instance.parent.modelUtils.getModelWorldPos(models.models.main.Avatar)
                             for _ = 1, 100 do
                                 local offset = vectors.vec3(math.random() * 2 - 1, math.random() * 2 - 1, math.random() * 2 - 1)
@@ -488,9 +482,7 @@ BlueArchiveCharacter = {
 
                     onPostAnimation = function (forcedStop)
                         if forcedStop then
-                            for _, textAnimation in ipairs(BlueArchiveCharacter.EX_SKILL_1_TEXT_ANIMATIONS) do
-                                textAnimation:stop()
-                            end
+                            instance.parent.textObjectManager:removeAll()
                             if host:isHost() then
                                 models.models.main.CameraBackground:setVisible(false)
                                 models.models.main.Avatar:setColor(1, 1, 1)
@@ -622,7 +614,7 @@ BlueArchiveCharacter = {
                             local particleAxis = vectors.rotateAroundAxis(-bodyYaw, vectors.rotateAroundAxis(30, 0, 0, 1, 1, 0, 0), 0, 1, 0)
                             local particleVelocityDirection = vectors.rotateAroundAxis(-bodyYaw, vectors.rotateAroundAxis(-50, 0, 0, 1, 1, 0, 0), 0, 1, 0)
                             if tick == 101 then
-                                instance.parent.faceParts:setEmotion("SMILE", "SMILE", "OPENED", 42, true)
+                                instance.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", 42, true)
                                 models.models.costume_swimsuit.BeachBall:setUVPixels(0, 14)
                                 for i = 1, 60 do
                                     local currentParticleVelocityDirection = vectors.rotateAroundAxis(i * 6, particleVelocityDirection, particleAxis)
