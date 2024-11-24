@@ -415,7 +415,6 @@ BlueArchiveCharacter = {
                     onPreAnimation = function ()
                         if not instance.exSkill[1].init then
                             models.models.ex_skill_1.Midori.MidoriUpperBody.MidoriArms.MidoriLeftArm.MidoriLeftArmBottom.GameConsole2:addChild(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.GameConsole1:copy("GameConsole2"))
-                            --BlueArchiveCharacter.ExSkill1TextAnimations = {ExSkillTextAnimation.new("damage_indicator_1", "4"), ExSkillTextAnimation.new("damage_indicator_2", "3"), ExSkillTextAnimation.new("damage_indicator_3", "5")}
                             if host:isHost() then
                                 models.models.ex_skill_1.Gui.UI:newText("ex_skill_1_ko"):setText("§cK.O."):setScale(1.5, 1.5, 1.5):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.33, 0, 0):setVisible(false)
                                 models.models.ex_skill_1.Gui.TextAnchor:newText("ex_skill_1:text"):setText("§d§lMOMOI"):setScale(4, 4, 4):setAlignment("RIGHT"):setOutline(true):setOutlineColor(1, 1, 1)
@@ -479,7 +478,7 @@ BlueArchiveCharacter = {
                         elseif tick == 16 then
                             instance.parent.faceParts:setEmotion("ANXIOUS", "ANXIOUS", "ANXIOUS", 24, true)
                         elseif tick == 24 then
-                            --BlueArchiveCharacter.ExSkill1TextAnimations[1]:play()
+                            instance.parent.textObjectManager1:spawn("4")
                             sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.generic.hurt"), player:getPos(), 0.25, 1)
                             if host:isHost() then
                                 models.models.ex_skill_1.Gui.UI.MomoiUI.PaperDoll:setColor(1, 0.75, 0.75)
@@ -494,7 +493,7 @@ BlueArchiveCharacter = {
                             end
                             models.models.ex_skill_1.Gui.UI.MomoiUI.PaperDoll.MomoiPaperDollHead.FaceParts.Mouth:setUVPixels(16, 16)
                         elseif tick == 31 then
-                            --BlueArchiveCharacter.ExSkill1TextAnimations[2]:play()
+                            instance.parent.textObjectManager1:spawn("3")
                             sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.generic.hurt"), player:getPos(), 0.25, 1)
                             if host:isHost() then
                                 models.models.ex_skill_1.Gui.UI.MomoiUI.PaperDoll:setColor(1, 0.75, 0.75)
@@ -509,7 +508,7 @@ BlueArchiveCharacter = {
                             end
                             models.models.ex_skill_1.Gui.UI.MomoiUI.PaperDoll.MomoiPaperDollHead.FaceParts.Mouth:setUVPixels(16, 16)
                         elseif tick == 36 then
-                            --BlueArchiveCharacter.ExSkill1TextAnimations[3]:play()
+                            instance.parent.textObjectManager1:spawn("5")
                             local playerPos = player:getPos()
                             sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.generic.hurt"), playerPos, 0.25, 1)
                             sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), playerPos, 1, 1.5)
@@ -572,11 +571,6 @@ BlueArchiveCharacter = {
                         end
                         if models.models.ex_skill_1.Midori.MidoriLowerBody.MidoriLegs.GameConsole2 ~= nil then
                             models.models.ex_skill_1.Midori.MidoriLowerBody.MidoriLegs.GameConsole2:moveTo(models.models.ex_skill_1.Midori.MidoriUpperBody.MidoriArms.MidoriLeftArm.MidoriLeftArmBottom)
-                        end
-                        if forcedStop then
-                            for i = 1, 3 do
-                                --BlueArchiveCharacter.ExSkill1TextAnimations[i]:stop()
-                            end
                         end
                         if host:isHost() then
                             for _, modelPart in ipairs({models.models.ex_skill_1.Gui.UI, models.models.ex_skill_1.Gui.UI.MomoiUI.PaperDoll.MomoiPaperDollHead.FaceParts.Eyes}) do
