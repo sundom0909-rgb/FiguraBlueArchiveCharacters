@@ -412,8 +412,8 @@ BlueArchiveCharacter = {
                 };
 
                 callbacks = {
-                    onPreAnimation = function ()
-                        if not instance.exSkill[1].init then
+                    onPreAnimation = function (self)
+                        if not self.exSkill[1].init then
                             models.models.ex_skill_1.Midori.MidoriUpperBody.MidoriArms.MidoriLeftArm.MidoriLeftArmBottom.GameConsole2:addChild(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.GameConsole1:copy("GameConsole2"))
                             if host:isHost() then
                                 models.models.ex_skill_1.Gui.UI:newText("ex_skill_1_ko"):setText("§cK.O."):setScale(1.5, 1.5, 1.5):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.33, 0, 0):setVisible(false)
@@ -424,7 +424,7 @@ BlueArchiveCharacter = {
                                 end
                                 models.models.ex_skill_1.Gui.UI.MomoiUI:newText("ex_skill_1_momoi_name"):setText("§d§lMOMOI"):setPos(130, 13, 0):setScale(1.5, 1.5, 1.5):setOutline(true):setOutlineColor(1, 1, 1)
                                 models.models.ex_skill_1.Gui.UI.MomoiUI.PaperDoll:setScale(2.3, 2.3, 2.3)
-                                models.models.ex_skill_1.Gui.UI.MomoiUI.PaperDoll:addChild(instance.parent.modelUtils:copyModel(models.script_head_block.Head, "MomoiPaperDollHead"))
+                                models.models.ex_skill_1.Gui.UI.MomoiUI.PaperDoll:addChild(self.parent.modelUtils:copyModel(models.script_head_block.Head, "MomoiPaperDollHead"))
                                 models.models.ex_skill_1.Gui.UI.MomoiUI.PaperDoll.MomoiPaperDollHead:setPos(models.models.ex_skill_1.Gui.UI.MomoiUI.PaperDoll:getTruePivot():add(0, -24, 0))
                                 models.models.ex_skill_1.Gui.UI.MomoiUI.PaperDoll.MomoiPaperDollHead.HeadRing:setPrimaryRenderType("CUTOUT_EMISSIVE_SOLID")
                                 models.models.ex_skill_1.Gui.UI.MomoiUI.PaperDoll.MomoiPaperDollHead.FaceParts:addChild(models.models.main.Avatar.Head.FaceParts.Mouth:copy("Mouth"))
@@ -434,7 +434,7 @@ BlueArchiveCharacter = {
                                 for _, modelPart in ipairs(models.models.ex_skill_1.Gui.UI.MomoiUI.PaperDoll:getChildren()) do
                                     modelPart:setVisible(false)
                                 end
-                                models.models.ex_skill_1.Gui.UI:addChild(instance.parent.modelUtils:copyModel(models.models.ex_skill_1.Gui.UI.MomoiUI, "MidoriUI"))
+                                models.models.ex_skill_1.Gui.UI:addChild(self.parent.modelUtils:copyModel(models.models.ex_skill_1.Gui.UI.MomoiUI, "MidoriUI"))
                                 for _, modelPart in ipairs(models.models.ex_skill_1.Gui.UI.MomoiUI.PaperDoll:getChildren()) do
                                     modelPart:setVisible(true)
                                 end
@@ -451,35 +451,35 @@ BlueArchiveCharacter = {
                                 models.models.ex_skill_1.Gui.UI.MidoriUI.PaperDoll:setPos(0, 0, 0)
                                 models.models.ex_skill_1.Gui.UI.MidoriUI.PaperDoll:setRot(0, -15, 0)
                                 models.models.ex_skill_1.Gui.UI.MidoriUI.PaperDoll:setOffsetPivot(-139, 0, 0)
-                                models.models.ex_skill_1.Gui.UI.MidoriUI.PaperDoll:addChild(instance.parent.modelUtils:copyModel(models.models.ex_skill_1.Midori.MidoriHead, "MidoriPaperDollHead"))
+                                models.models.ex_skill_1.Gui.UI.MidoriUI.PaperDoll:addChild(self.parent.modelUtils:copyModel(models.models.ex_skill_1.Midori.MidoriHead, "MidoriPaperDollHead"))
                                 models.models.ex_skill_1.Gui.UI.MidoriUI.PaperDoll.MidoriPaperDollHead:setPos(models.models.ex_skill_1.Gui.UI.MidoriUI.PaperDoll:getTruePivot():add(0, -24, 0))
                                 models.models.ex_skill_1.Gui.UI.MidoriUI.PaperDoll.MidoriPaperDollHead.MidoriHeadRing:setPrimaryRenderType("CUTOUT_EMISSIVE_SOLID")
                                 models.models.ex_skill_1.Gui.UI.MidoriUI:newText("ex_skill_1_midori_name"):setText("§a§lMIDORI"):setPos(48, 13, 0):setScale(1.5, 1.5, 1.5):setOutline(true):setOutlineColor(1, 1, 1):setAlignment("RIGHT")
                             end
-                            instance.exSkill[1].init = true
+                            self.exSkill[1].init = true
                         end
                         if host:isHost() then
                             models.models.ex_skill_1.Gui.UI.MidoriUI:setPos(client:getScaledWindowSize().x * -1 + 220, 0, 0)
                         end
                     end;
 
-                    onAnimationTick = function (tick)
+                    onAnimationTick = function (self, tick)
                         if tick == 0 then
-                            instance.parent.faceParts:setEmotion("NORMAL", "NORMAL", "FUN", 16, true)
-                            sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bit"), player:getPos(), 1, 1.5)
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "FUN", 16, true)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bit"), player:getPos(), 1, 1.5)
                         elseif tick == 1 then
-                            sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bit"), player:getPos(), 1, 1.75)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bit"), player:getPos(), 1, 1.75)
                         elseif tick == 2 then
-                            sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bit"), player:getPos(), 1, 2)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bit"), player:getPos(), 1, 2)
                         elseif tick == 14 then
                             for _, modelPart in ipairs({models.models.ex_skill_1.Midori.MidoriHead.MidoriFaceParts.Eyes.EyeLeft, models.models.ex_skill_1.Midori.MidoriHead.MidoriFaceParts.Eyes.EyeRight}) do
                                 modelPart:setUVPixels(12, 0)
                             end
                         elseif tick == 16 then
-                            instance.parent.faceParts:setEmotion("ANXIOUS", "ANXIOUS", "ANXIOUS", 24, true)
+                            self.parent.faceParts:setEmotion("ANXIOUS", "ANXIOUS", "ANXIOUS", 24, true)
                         elseif tick == 24 then
-                            instance.parent.textObjectManager1:spawn("4")
-                            sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.generic.hurt"), player:getPos(), 0.25, 1)
+                            self.parent.textObjectManager1:spawn("4")
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.hurt"), player:getPos(), 0.25, 1)
                             if host:isHost() then
                                 models.models.ex_skill_1.Gui.UI.MomoiUI.PaperDoll:setColor(1, 0.75, 0.75)
                                 models.models.ex_skill_1.Gui.UI.MomoiUI.PaperDoll.MomoiPaperDollHead.FaceParts.Eyes.EyeRight:setUVPixels(6, 0)
@@ -493,8 +493,8 @@ BlueArchiveCharacter = {
                             end
                             models.models.ex_skill_1.Gui.UI.MomoiUI.PaperDoll.MomoiPaperDollHead.FaceParts.Mouth:setUVPixels(16, 16)
                         elseif tick == 31 then
-                            instance.parent.textObjectManager1:spawn("3")
-                            sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.generic.hurt"), player:getPos(), 0.25, 1)
+                            self.parent.textObjectManager1:spawn("3")
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.hurt"), player:getPos(), 0.25, 1)
                             if host:isHost() then
                                 models.models.ex_skill_1.Gui.UI.MomoiUI.PaperDoll:setColor(1, 0.75, 0.75)
                                 models.models.ex_skill_1.Gui.UI.MomoiUI.PaperDoll.MomoiPaperDollHead.FaceParts.Eyes.EyeRight:setUVPixels(6, 0)
@@ -508,10 +508,10 @@ BlueArchiveCharacter = {
                             end
                             models.models.ex_skill_1.Gui.UI.MomoiUI.PaperDoll.MomoiPaperDollHead.FaceParts.Mouth:setUVPixels(16, 16)
                         elseif tick == 36 then
-                            instance.parent.textObjectManager1:spawn("5")
+                            self.parent.textObjectManager1:spawn("5")
                             local playerPos = player:getPos()
-                            sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.generic.hurt"), playerPos, 0.25, 1)
-                            sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), playerPos, 1, 1.5)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.hurt"), playerPos, 0.25, 1)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), playerPos, 1, 1.5)
                             if host:isHost() then
                                 models.models.ex_skill_1.Gui.UI.MomoiUI.PaperDoll:setColor(1, 0.75, 0.75)
                                 models.models.ex_skill_1.Gui.UI.MomoiUI.PaperDoll.MomoiPaperDollHead.FaceParts.Eyes:setVisible(false)
@@ -521,7 +521,7 @@ BlueArchiveCharacter = {
                                 task:setPos(client:getScaledWindowSize().x / 2 * -1, -12, -30)
                                 task:setVisible(true)
                                 events.RENDER:register(function (delta)
-                                    local count = instance.parent.exSkill.animationCount - 37 + delta
+                                    local count = self.parent.exSkill.animationCount - 37 + delta
                                     task:setScale(vectors.vec3(1, 1, 1):scale(count <= 1.5 and (-1.667 * count + 5) or (count + 1)))
                                 end, "ex_skill_1_ko_render")
                             end
@@ -533,19 +533,19 @@ BlueArchiveCharacter = {
                                 models.models.ex_skill_1.Gui.UI:getTask("ex_skill_1_ko"):setScale(3, 3, 3)
                             end
                         elseif tick == 40 then
-                            instance.parent.faceParts:setEmotion("CLOSED", "CLOSED", "ANXIOUS", 3, true)
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "ANXIOUS", 3, true)
                             models.models.ex_skill_1.Midori.MidoriUpperBody.MidoriArms.MidoriLeftArm.MidoriLeftArmBottom.GameConsole2:moveTo(models.models.ex_skill_1.Midori.MidoriLowerBody.MidoriLegs)
                             for _, modelPart in ipairs({models.models.ex_skill_1.Midori.MidoriHead.MidoriFaceParts.Eyes.EyeLeft, models.models.ex_skill_1.Midori.MidoriHead.MidoriFaceParts.Eyes.EyeRight}) do
                                 modelPart:setUVPixels()
                             end
                         elseif tick == 43 then
-                            instance.parent.faceParts:setEmotion("SURPRISED2", "SURPRISED2", "SHOCK", 24, true)
+                            self.parent.faceParts:setEmotion("SURPRISED2", "SURPRISED2", "SHOCK", 24, true)
                         elseif tick == 66 then
                             models.models.ex_skill_1.Midori.MidoriHead.MidoriFaceParts.Eyes.EyeLeft:setUVPixels(24, 0)
                             models.models.ex_skill_1.Midori.MidoriHead.MidoriFaceParts.Eyes.EyeRight:setUVPixels(18, 0)
                         elseif tick == 67 then
                             models.models.ex_skill_1.Gui.UI:setVisible(false)
-                            instance.parent.faceParts:setEmotion("ANGRY", "ANGRY2", "ANGRY", 41, true)
+                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY2", "ANGRY", 41, true)
                             models.models.main.Avatar.Head.EffectPanel:setUVPixels(9, 0)
                             if host:isHost() then
                                 models.models.ex_skill_1.Gui.TextAnchor:setVisible(true)
@@ -555,17 +555,17 @@ BlueArchiveCharacter = {
                                 end, "ex_skill_1_text_render")
                             end
                         elseif tick == 83 then
-                            sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.generic.explode"), player:getPos(), 0.25, 0.5)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.explode"), player:getPos(), 0.25, 0.5)
                         end
                         if tick <= 38 and math.random() >= 0.75 then
-                            sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bit"), player:getPos(), 0.1, 2)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bit"), player:getPos(), 0.1, 2)
                         end
                         if tick <= 38 and tick % 3 == 0 and host:isHost() then
                             sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.nodamage"), player:getPos(), 0.25, 1)
                         end
                     end;
 
-                    onPostAnimation = function (forcedStop)
+                    onPostAnimation = function (_, forcedStop)
                         for _, modelPart in ipairs({models.models.main.Avatar.Head.EffectPanel, models.models.ex_skill_1.Midori.MidoriHead.MidoriFaceParts.Eyes.EyeLeft, models.models.ex_skill_1.Midori.MidoriHead.MidoriFaceParts.Eyes.EyeRight}) do
                             modelPart:setUVPixels()
                         end
@@ -623,54 +623,54 @@ BlueArchiveCharacter = {
                 };
 
                 callbacks = {
-                    onPreAnimation = function ()
-                        if not instance.exSkill[2].init then
+                    onPreAnimation = function (self)
+                        if not self.exSkill[2].init then
                             for _, modelPart in ipairs({models.models.ex_skill_2.Pillagers.Pillager1.Pillager1Head.PillagerHead, models.models.ex_skill_2.Pillagers.Pillager1.Pillager1Head.Pillager1Nose, models.models.ex_skill_2.Pillagers.Pillager1.Pillager1Body, models.models.ex_skill_2.Pillagers.Pillager1.Pillager1RightArm, models.models.ex_skill_2.Pillagers.Pillager1.Pillager1LeftArm, models.models.ex_skill_2.Pillagers.Pillager1.Pillager1RightLeg, models.models.ex_skill_2.Pillagers.Pillager1.Pillager1LeftLeg}) do
                                 modelPart:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/illager/pillager.png")
                             end
                             for _, part in ipairs({"Head", "Body", "RightArm", "LeftArm", "RightLeg", "LeftLeg"}) do
                                 for i = 2, 3 do
-                                    models.models.ex_skill_2.Pillagers["Pillager"..i]["Pillager"..i..part]:addChild(instance.parent.modelUtils:copyModel(models.models.ex_skill_2.Pillagers.Pillager1["Pillager1"..part]))
+                                    models.models.ex_skill_2.Pillagers["Pillager"..i]["Pillager"..i..part]:addChild(self.parent.modelUtils:copyModel(models.models.ex_skill_2.Pillagers.Pillager1["Pillager1"..part]))
                                 end
                             end
                             for y = 0, 1 do
                                 for x = 0, 1 do
-                                    models.models.ex_skill_2.Covers.CoverLeft:newBlock("ex_skill_2_block_"..y * 2 + x):setBlock(instance.parent.compatibilityUtils:checkBlock("minecraft:barrel", "[facing=up]")):setPos(x * 16, y * 16, 0)
+                                    models.models.ex_skill_2.Covers.CoverLeft:newBlock("ex_skill_2_block_"..y * 2 + x):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:barrel", "[facing=up]")):setPos(x * 16, y * 16, 0)
                                 end
                             end
-                            models.models.ex_skill_2.Covers.CoverLeft:newBlock("ex_skill_2_block_4"):setBlock(instance.parent.compatibilityUtils:checkBlock("minecraft:barrel", "[facing=up]")):setPos(16, 0, -16)
-                            --models.models.ex_skill_2.Covers.CoverLeft:newBlock("ex_skill_2_block_5"):setBlock(instance.parent.compatibilityUtils:checkBlock("minecraft:decorated_pot")):setPos(16, 16, -16) --ブロックタスクで何故か飾り壺が描画されない...
+                            models.models.ex_skill_2.Covers.CoverLeft:newBlock("ex_skill_2_block_4"):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:barrel", "[facing=up]")):setPos(16, 0, -16)
+                            --models.models.ex_skill_2.Covers.CoverLeft:newBlock("ex_skill_2_block_5"):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:decorated_pot")):setPos(16, 16, -16) --ブロックタスクで何故か飾り壺が描画されない...
                             for i = 0, 1 do
-                                models.models.ex_skill_2.Covers.CoverRight:newBlock("ex_skill_2_block_"..6 + i):setBlock(instance.parent.compatibilityUtils:checkBlock("minecraft:barrel", "[facing=up]")):setPos(-16, i * 16, 0)
+                                models.models.ex_skill_2.Covers.CoverRight:newBlock("ex_skill_2_block_"..6 + i):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:barrel", "[facing=up]")):setPos(-16, i * 16, 0)
                             end
                             for i = 0, 1 do
-                                models.models.ex_skill_2.Covers.CoverRight:newBlock("ex_skill_2_block_"..8 + i):setBlock(instance.parent.compatibilityUtils:checkBlock("minecraft:barrel", "[facing=up]")):setPos(-32, 0, i * -16)
+                                models.models.ex_skill_2.Covers.CoverRight:newBlock("ex_skill_2_block_"..8 + i):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:barrel", "[facing=up]")):setPos(-32, 0, i * -16)
                             end
                             for i = 0, 1 do
-                                models.models.ex_skill_2.Covers.CoverBack1:newBlock("ex_skill_2_block_"..10 + i):setBlock(instance.parent.compatibilityUtils:checkBlock("minecraft:barrel", "[facing=up]")):setPos(i * 16, 0, 0)
+                                models.models.ex_skill_2.Covers.CoverBack1:newBlock("ex_skill_2_block_"..10 + i):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:barrel", "[facing=up]")):setPos(i * 16, 0, 0)
                             end
-                            models.models.ex_skill_2.Covers.CoverBack1:newBlock("ex_skill_2_block_12"):setBlock(instance.parent.compatibilityUtils:checkBlock("minecraft:barrel", "[facing=up]")):setPos(16, 16, 0)
-                            --models.models.ex_skill_2.Covers.CoverBack1:newBlock("ex_skill_2_block_13"):setBlock(instance.parent.compatibilityUtils:checkBlock("minecraft:decorated_pot")):setPos(0, 16, 0) --ブロックタスクで何故か飾り壺が描画されない...
+                            models.models.ex_skill_2.Covers.CoverBack1:newBlock("ex_skill_2_block_12"):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:barrel", "[facing=up]")):setPos(16, 16, 0)
+                            --models.models.ex_skill_2.Covers.CoverBack1:newBlock("ex_skill_2_block_13"):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:decorated_pot")):setPos(0, 16, 0) --ブロックタスクで何故か飾り壺が描画されない...
                             for i = 0, 1 do
-                                models.models.ex_skill_2.Covers.CoverBack2:newBlock("ex_skill_2_block_"..14 + i):setBlock(instance.parent.compatibilityUtils:checkBlock( "minecraft:chiseled_bookshelf", "[facing=north,slot_0_occupied=true,slot_1_occupied=true,slot_2_occupied=true,slot_3_occupied=true,slot_4_occupied=true,slot_5_occupied=true]")):setPos(-8, i * 16, -8)
+                                models.models.ex_skill_2.Covers.CoverBack2:newBlock("ex_skill_2_block_"..14 + i):setBlock(self.parent.compatibilityUtils:checkBlock( "minecraft:chiseled_bookshelf", "[facing=north,slot_0_occupied=true,slot_1_occupied=true,slot_2_occupied=true,slot_3_occupied=true,slot_4_occupied=true,slot_5_occupied=true]")):setPos(-8, i * 16, -8)
                             end
                             for i = 0, 1 do
-                                models.models.ex_skill_2.Covers.CoverBack3:newBlock("ex_skill_2_block_"..16 + i):setBlock(instance.parent.compatibilityUtils:checkBlock("minecraft:red_wool")):setPos(-8, i * 16, -8)
+                                models.models.ex_skill_2.Covers.CoverBack3:newBlock("ex_skill_2_block_"..16 + i):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:red_wool")):setPos(-8, i * 16, -8)
                             end
-                            models.models.ex_skill_2.Covers.CoverBack4:newBlock("ex_skill_2_block_18"):setBlock(instance.parent.compatibilityUtils:checkBlock("minecraft:dark_oak_planks")):setPos(0, 0, 0)
-                            --models.models.ex_skill_2.Covers.CoverBack4:newBlock("ex_skill_2_block_19"):setBlock(instance.parent.compatibilityUtils:checkBlock("minecraft:decorated_pot")):setPos(-16, 16, 0) --ブロックタスクで何故か飾り壺が描画されない...
+                            models.models.ex_skill_2.Covers.CoverBack4:newBlock("ex_skill_2_block_18"):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:dark_oak_planks")):setPos(0, 0, 0)
+                            --models.models.ex_skill_2.Covers.CoverBack4:newBlock("ex_skill_2_block_19"):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:decorated_pot")):setPos(-16, 16, 0) --ブロックタスクで何故か飾り壺が描画されない...
                             for y = 0, 6 do
                                 for x = 0, 8 do
                                     local blockCount = y * 9 + x
                                     if blockCount == 13 or blockCount == 22 or blockCount == 29 or blockCount == 30 or blockCount == 32 or blockCount == 33 or blockCount == 40 or blockCount == 49 then
-                                        models.models.ex_skill_2.Wall:newBlock("ex_skill_2_block_"..20 + blockCount):setBlock(instance.parent.compatibilityUtils:checkBlock("minecraft:dark_oak_log", "[axis=z]")):setPos(x * 16, y * 16, 0)
+                                        models.models.ex_skill_2.Wall:newBlock("ex_skill_2_block_"..20 + blockCount):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:dark_oak_log", "[axis=z]")):setPos(x * 16, y * 16, 0)
                                     end
-                                    models.models.ex_skill_2.Wall:newBlock("ex_skill_2_block_"..20 + blockCount):setBlock( instance.parent.compatibilityUtils:checkBlock("minecraft:dark_oak_planks")):setPos(x * 16, y * 16, 0)
+                                    models.models.ex_skill_2.Wall:newBlock("ex_skill_2_block_"..20 + blockCount):setBlock( self.parent.compatibilityUtils:checkBlock("minecraft:dark_oak_planks")):setPos(x * 16, y * 16, 0)
                                 end
                             end
                             for j = 0, 1 do
                                 for i = 0, 6 do
-                                    models.models.ex_skill_2.Wall:newBlock("ex_skill_2_block_"..83 + j * 7 + i):setBlock(instance.parent.compatibilityUtils:checkBlock("minecraft:dark_oak_planks")):setPos(j * 128, i * 16, -16)
+                                    models.models.ex_skill_2.Wall:newBlock("ex_skill_2_block_"..83 + j * 7 + i):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:dark_oak_planks")):setPos(j * 128, i * 16, -16)
                                 end
                             end
                             --models.models.ex_skill_2.Wall.Paintings.MainPainting:newEntity("ex_skill_2_entity_1"):setPos(0, 32, 0):setRot(0, 180, 0):setLight(15, 15) --謎の影ができて、それが消せない...
@@ -688,7 +688,7 @@ BlueArchiveCharacter = {
                                 modelPart:setLight(15)
                             end
                             for i = 1, 3 do
-                                models.models.ex_skill_2.Pillagers["Pillager"..i]["Pillager"..i.."RightArm"]:newItem("ex_skill_2_pillager_"..i.."_crossbow"):setItem(instance.parent.compatibilityUtils:checkItem("minecraft:crossbow")):setPos(0, -12, -2):setRot(0, 0, -135)
+                                models.models.ex_skill_2.Pillagers["Pillager"..i]["Pillager"..i.."RightArm"]:newItem("ex_skill_2_pillager_"..i.."_crossbow"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:crossbow")):setPos(0, -12, -2):setRot(0, 0, -135)
                             end
                             if host:isHost() then
                                 models.models.ex_skill_2.Gui.UI.MomoiUI:addChild(models.models.ex_skill_2.Gui.UI.MomoiUI.UI1:copy("UI1Shadow"))
@@ -711,7 +711,7 @@ BlueArchiveCharacter = {
                                     modelPart:setVisible(false)
                                 end
                                 models.models.ex_skill_2.Gui.UI.MomoiUI:setVisible(true)
-                                models.models.ex_skill_2.Gui.UI:addChild(instance.parent.modelUtils:copyModel(models.models.ex_skill_2.Gui.UI.MomoiUI, "MidoriUI"))
+                                models.models.ex_skill_2.Gui.UI:addChild(self.parent.modelUtils:copyModel(models.models.ex_skill_2.Gui.UI.MomoiUI, "MidoriUI"))
                                 for _, modelPart in ipairs({models.models.ex_skill_2.Gui.UI.MomoiUI.GunIcon, models.models.ex_skill_2.Gui.UI.MomoiUI.Bullets}) do
                                     modelPart:setVisible(true)
                                 end
@@ -730,7 +730,7 @@ BlueArchiveCharacter = {
                                 models.models.ex_skill_2.Gui.UI.MomoiHeadUI.FrameShadow:setPos(-1, -1, 1)
                                 models.models.ex_skill_2.Gui.UI.MomoiHeadUI.FrameShadow:setColor(0, 0, 0)
                                 models.models.ex_skill_2.Gui.UI.MomoiHeadUI.Background:setColor(1, 0.643, 0.71)
-                                models.models.ex_skill_2.Gui.UI.MomoiHeadUI.MomoiPaperDoll:addChild(instance.parent.modelUtils:copyModel(models.script_head_block.Head, "MomoiPaperDollHead"))
+                                models.models.ex_skill_2.Gui.UI.MomoiHeadUI.MomoiPaperDoll:addChild(self.parent.modelUtils:copyModel(models.script_head_block.Head, "MomoiPaperDollHead"))
                                 models.models.ex_skill_2.Gui.UI.MomoiHeadUI.MomoiPaperDoll.MomoiPaperDollHead:setPos(models.models.ex_skill_2.Gui.UI.MomoiHeadUI.MomoiPaperDoll:getTruePivot():add(0, -24, 0))
                                 models.models.ex_skill_2.Gui.UI.MomoiHeadUI.MomoiPaperDoll.MomoiPaperDollHead.HeadRing:setPrimaryRenderType("CUTOUT_EMISSIVE_SOLID")
                                 models.models.ex_skill_2.Gui.UI.MomoiHeadUI.MomoiPaperDoll:setScale(4.1, 4.1, 4.1)
@@ -739,7 +739,7 @@ BlueArchiveCharacter = {
                                 models.models.ex_skill_2.Gui.UI.MomoiHeadUI.MomoiPaperDoll.MomoiPaperDollHead.FaceParts.Mouth:setVisible(true)
                                 models.models.ex_skill_2.Gui.UI.MomoiHeadUI.MomoiPaperDoll:setVisible(false)
                                 models.models.ex_skill_2.Gui.UI.MomoiHeadUI:setVisible(true)
-                                models.models.ex_skill_2.Gui.UI:addChild(instance.parent.modelUtils:copyModel(models.models.ex_skill_2.Gui.UI.MomoiHeadUI, "MidoriHeadUI"))
+                                models.models.ex_skill_2.Gui.UI:addChild(self.parent.modelUtils:copyModel(models.models.ex_skill_2.Gui.UI.MomoiHeadUI, "MidoriHeadUI"))
                                 models.models.ex_skill_2.Gui.UI.MomoiHeadUI.MomoiPaperDoll:setVisible(true)
                                 models.models.ex_skill_2.Gui.UI.MidoriHeadUI.Background:setColor(0.573, 0.98, 0.604)
                                 ---@diagnostic disable-next-line: discard-returns
@@ -747,14 +747,14 @@ BlueArchiveCharacter = {
                                 models.models.ex_skill_2.Gui.UI.MidoriHeadUI.MidoriPaperDoll:setScale(4.1, 4.1, 4.1)
                                 models.models.ex_skill_2.Gui.UI.MidoriHeadUI.MidoriPaperDoll:setOffsetPivot(33.25, 12.5, 16)
                                 models.models.ex_skill_2.Gui.UI.MidoriHeadUI.MidoriPaperDoll:setRot(0, -15, 0)
-                                models.models.ex_skill_2.Gui.UI.MidoriHeadUI.MidoriPaperDoll:addChild(instance.parent.modelUtils:copyModel(models.models.ex_skill_2.Midori.MidoriHead, "MidoriPaperDollHead"))
+                                models.models.ex_skill_2.Gui.UI.MidoriHeadUI.MidoriPaperDoll:addChild(self.parent.modelUtils:copyModel(models.models.ex_skill_2.Midori.MidoriHead, "MidoriPaperDollHead"))
                                 models.models.ex_skill_2.Gui.UI.MidoriHeadUI.MidoriPaperDoll.MidoriPaperDollHead:setPrimaryRenderType("CUTOUT")
                                 models.models.ex_skill_2.Gui.UI.MidoriHeadUI.MidoriPaperDoll.MidoriPaperDollHead:setPos(18.25, -88.5, -57)
                                 models.models.ex_skill_2.Gui.UI.MidoriHeadUI.MidoriPaperDoll.MidoriPaperDollHead.MidoriHeadRing:setPrimaryRenderType("CUTOUT_EMISSIVE_SOLID")
                                 models.models.ex_skill_2.Gui.UI.MidoriHeadUI.MidoriPaperDoll.MidoriPaperDollHead.MidoriFaceParts.Eyes.EyeRight:setUVPixels(-6, 0)
-                                models.models.ex_skill_2.Gui.UI.MidoriHeadUI.MidoriPaperDoll:addChild(instance.parent.modelUtils:copyModel(models.models.ex_skill_2.Gui.UI.MomoiHeadUI.MomoiPaperDoll.MomoiPaperDollBody, "MidoriPaperDollBody"))
+                                models.models.ex_skill_2.Gui.UI.MidoriHeadUI.MidoriPaperDoll:addChild(self.parent.modelUtils:copyModel(models.models.ex_skill_2.Gui.UI.MomoiHeadUI.MomoiPaperDoll.MomoiPaperDollBody, "MidoriPaperDollBody"))
                             end
-                            instance.exSkill[2].init = true
+                            self.exSkill[2].init = true
                         end
                         if host:isHost() then
                             models.models.ex_skill_2.Gui:setVisible(true)
@@ -764,20 +764,20 @@ BlueArchiveCharacter = {
                             models.models.ex_skill_2.Gui.UI.MidoriHeadUI:setPos(windowsSize.x * -1 + 88, 0, 0)
                             models.models.ex_skill_2.Gui.UI.MidoriHeadUI:setOffsetPivot(windowsSize.x * -1 + 88, 0, 0)
                         end
-                        instance.parent.gun:setGunPosition("NONE")
-                        instance.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.Gun, models.models.main.Avatar.UpperBody.Arms.RightArm, models.models.main.Avatar.UpperBody.Body)
+                        self.parent.gun:setGunPosition("NONE")
+                        self.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.Gun, models.models.main.Avatar.UpperBody.Arms.RightArm, models.models.main.Avatar.UpperBody.Body)
                         models.models.main.Avatar.UpperBody.Arms.RightArm.Gun:setPos()
                         models.models.main.Avatar.UpperBody.Arms.RightArm.Gun:setRot()
                         models.models.main.Avatar.UpperBody.Arms.RightArm.Gun:setVisible(true)
                         local specialItemValue = math.random() --0.80未満で「金のマガジン」、0.80~0.90未満で「エメラルド」、0.90~1.00未満で「ダイヤモンド」
                         if specialItemValue >= 0.8 then
                             models.models.ex_skill_2.Wall.SpecialItemGroup.SpecialItem.GoldenMagazine:setVisible(false)
-                            models.models.ex_skill_2.Wall.SpecialItemGroup.SpecialItem:newItem("special_item"):setItem(instance.parent.compatibilityUtils:checkItem(specialItemValue < 0.9 and "minecraft:emerald" or "minecraft:diamond"))
+                            models.models.ex_skill_2.Wall.SpecialItemGroup.SpecialItem:newItem("special_item"):setItem(self.parent.compatibilityUtils:checkItem(specialItemValue < 0.9 and "minecraft:emerald" or "minecraft:diamond"))
                         else
                             models.models.ex_skill_2.Wall.SpecialItemGroup.SpecialItem.GoldenMagazine:setVisible(true)
                         end
-                        instance.exSkill[2].glowColor = specialItemValue < 0.8 and vectors.vec3(1, 0.984, 0.4) or (specialItemValue < 0.9 and vectors.vec3(0.686, 0.992, 0.804) or vectors.vec3(0.631, 0.984, 0.91))
-                        models.models.ex_skill_2.Wall.SpecialItemGroup.GlowEffects:setColor(instance.exSkill[2].glowColor)
+                        self.exSkill[2].glowColor = specialItemValue < 0.8 and vectors.vec3(1, 0.984, 0.4) or (specialItemValue < 0.9 and vectors.vec3(0.686, 0.992, 0.804) or vectors.vec3(0.631, 0.984, 0.91))
+                        models.models.ex_skill_2.Wall.SpecialItemGroup.GlowEffects:setColor(self.exSkill[2].glowColor)
                         local paintingResources = {"minecraft:textures/painting/pointer.png", "minecraft:textures/painting/pigscene.png", "minecraft:textures/painting/burning_skull.png"}
                         models.models.ex_skill_2.Wall.Paintings.MainPainting.Painting_Front:setPrimaryTexture("RESOURCE", paintingResources[math.ceil(math.random() * #paintingResources)])
                         --[[
@@ -791,23 +791,23 @@ BlueArchiveCharacter = {
                         ---@diagnostic disable-next-line: discard-returns
                         models.models.ex_skill_2.Covers.CoverBack1:newPart("MissText", "Camera")
                         models.models.ex_skill_2.Covers.CoverBack1.MissText:setOffsetPivot(8, 24, 8)
-                        instance.parent.faceParts:setEmotion("ANGRY_CENTER", "ANGRY", "OPENED", 4, true)
+                        self.parent.faceParts:setEmotion("ANGRY_CENTER", "ANGRY", "OPENED", 4, true)
                     end;
 
-                    onAnimationTick = function (tick)
+                    onAnimationTick = function (self, tick)
                         if tick == 1 then
-                            local playerPos = instance.parent.modelUtils.getModelWorldPos(models.models.main.Avatar)
+                            local playerPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar)
                             local bodyYaw = player:getBodyYaw()
-                            particles:newParticle(instance.parent.compatibilityUtils:checkParticle("minecraft:end_rod"), vectors.rotateAroundAxis(bodyYaw * -1, -0.75, 1.25, 0, 0, 1, 0):add(playerPos)):setScale(1):setColor(1, 0.984, 0.4):setLifetime(20)
-                            particles:newParticle(instance.parent.compatibilityUtils:checkBlock("minecraft:end_rod"), vectors.rotateAroundAxis(bodyYaw * -1, 0.65, 1.9, 0, 0, 1, 0):add(playerPos)):setScale(0.5):setColor(1, 0.984, 0.4):setLifetime(20)
+                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:end_rod"), vectors.rotateAroundAxis(bodyYaw * -1, -0.75, 1.25, 0, 0, 1, 0):add(playerPos)):setScale(1):setColor(1, 0.984, 0.4):setLifetime(20)
+                            particles:newParticle(self.parent.compatibilityUtils:checkBlock("minecraft:end_rod"), vectors.rotateAroundAxis(bodyYaw * -1, 0.65, 1.9, 0, 0, 1, 0):add(playerPos)):setScale(0.5):setColor(1, 0.984, 0.4):setLifetime(20)
                         elseif tick == 4 then
-                            instance.parent.faceParts:setEmotion("ANGRY_CENTER", "ANGRY", "SMILE", 6, true)
+                            self.parent.faceParts:setEmotion("ANGRY_CENTER", "ANGRY", "SMILE", 6, true)
                         elseif tick == 10 then
-                            instance.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 4, true)
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 4, true)
                         elseif tick == 14 then
-                            instance.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "SMILE", 11, true)
+                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "SMILE", 11, true)
                         elseif tick == 25 then
-                            instance.parent.faceParts:setEmotion("ANGRY", "ANGRY", "SMILE", 22, true)
+                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "SMILE", 22, true)
                         elseif tick == 28 and host:isHost() then
                             local windowSize = client:getScaledWindowSize()
                             local centerX = windowSize.x / 2 * -1
@@ -820,20 +820,20 @@ BlueArchiveCharacter = {
                         elseif tick == 35 then
                             models.models.ex_skill_2.Midori.MidoriHead.MidoriFaceParts.Eyes.EyeRight:setUVPixels(-6, 0)
                         elseif tick == 42 then
-                            instance.exSkill[2].spawnBulletParticle(instance, models.models.ex_skill_2.Covers.CoverBack2.ExSkill2ParticleAnchor1)
-                            instance.exSkill[2].playShotSound(instance)
+                            self.exSkill[2].spawnBulletParticle(self, models.models.ex_skill_2.Covers.CoverBack2.ExSkill2ParticleAnchor1)
+                            self.exSkill[2].playShotSound(self)
                             if host:isHost() then
                                 models.models.ex_skill_2.Gui.UI.MomoiUI.Bullets.RearBullets.Bullet24:setColor()
                             end
                         elseif tick == 44 then
-                            instance.exSkill[2].spawnBulletParticle(instance, models.models.ex_skill_2.Covers.CoverBack3.ExSkill2ParticleAnchor2)
-                            instance.exSkill[2].playShotSound(instance)
+                            self.exSkill[2].spawnBulletParticle(self, models.models.ex_skill_2.Covers.CoverBack3.ExSkill2ParticleAnchor2)
+                            self.exSkill[2].playShotSound(self)
                         elseif tick == 47 then
-                            instance.parent.faceParts:setEmotion("ANGRY", "ANGRY2", "ANGRY", 33, true)
-                            instance.exSkill[2].spawnBulletParticle(instance, models.models.ex_skill_2.Covers.CoverBack4.ExSkill2ParticleAnchor3)
-                            instance.exSkill[2].playShotSound(instance)
-                            instance.exSkill[2].playPotBreak(instance, models.models.ex_skill_2.Covers.CoverBack4.DecoratedPod3)
-                            instance.parent.textObjectManager2:spawn(models.models.ex_skill_2.Covers.CoverBack4.MissText)
+                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY2", "ANGRY", 33, true)
+                            self.exSkill[2].spawnBulletParticle(self, models.models.ex_skill_2.Covers.CoverBack4.ExSkill2ParticleAnchor3)
+                            self.exSkill[2].playShotSound(self)
+                            self.exSkill[2].playPotBreak(self, models.models.ex_skill_2.Covers.CoverBack4.DecoratedPod3)
+                            self.parent.textObjectManager2:spawn(models.models.ex_skill_2.Covers.CoverBack4.MissText)
                             if host:isHost() then
                                 models.models.ex_skill_2.Gui.UI.MomoiUI.LifeIcon1:setVisible(false)
                                 models.models.ex_skill_2.Gui.UI.MomoiHeadUI:setColor(1, 0.75, 0.75)
@@ -843,36 +843,36 @@ BlueArchiveCharacter = {
                                 models.models.ex_skill_2.Gui.UI.MomoiUI.Bullets.RearBullets.Bullet23:setColor()
                             end
                         elseif tick == 50 then
-                            instance.exSkill[2].spawnBulletParticle(instance, models.models.ex_skill_2.Covers.CoverBack3.ExSkill2ParticleAnchor4)
-                            instance.exSkill[2].playShotSound(instance)
+                            self.exSkill[2].spawnBulletParticle(self, models.models.ex_skill_2.Covers.CoverBack3.ExSkill2ParticleAnchor4)
+                            self.exSkill[2].playShotSound(self)
                             if host:isHost() then
                                 models.models.ex_skill_2.Gui.UI.MomoiHeadUI:setColor()
                             end
                         elseif tick == 52 then
-                            instance.exSkill[2].spawnBulletParticle(instance, models.models.ex_skill_2.Wall.Paintings.MainPainting.ExSkill2ParticleAnchor5)
-                            instance.exSkill[2].playShotSound(instance)
+                            self.exSkill[2].spawnBulletParticle(self, models.models.ex_skill_2.Wall.Paintings.MainPainting.ExSkill2ParticleAnchor5)
+                            self.exSkill[2].playShotSound(self)
                             if host:isHost() then
                                 models.models.ex_skill_2.Gui.UI.MomoiUI.Bullets.RearBullets.Bullet22:setColor()
                             end
                         elseif tick == 55 then
-                            instance.exSkill[2].spawnBulletParticle(instance, models.models.ex_skill_2.Wall.ExSkill2ParticleAnchor6)
-                            instance.exSkill[2].playShotSound(instance)
+                            self.exSkill[2].spawnBulletParticle(self, models.models.ex_skill_2.Wall.ExSkill2ParticleAnchor6)
+                            self.exSkill[2].playShotSound(self)
                         elseif tick == 60 and host:isHost() then
                             for _, modelPart in ipairs({models.models.ex_skill_2.Gui.UI.MomoiHeadUI.MomoiPaperDoll.MomoiPaperDollHead.FaceParts.Eyes.EyeLeft, models.models.ex_skill_2.Gui.UI.MomoiHeadUI.MomoiPaperDoll.MomoiPaperDollHead.FaceParts.Eyes.EyeRight}) do
                                 modelPart:setUVPixels()
                             end
                             models.models.ex_skill_2.Gui.UI.MomoiHeadUI.MomoiPaperDoll.MomoiPaperDollHead.FaceParts.Mouth:setUVPixels(0, 16)
                         elseif tick == 68 then
-                            instance.exSkill[2].spawnBulletParticle(instance, models.models.ex_skill_2.Wall.ExSkill2ParticleAnchor7)
-                            instance.exSkill[2].playShotSound(instance)
+                            self.exSkill[2].spawnBulletParticle(self, models.models.ex_skill_2.Wall.ExSkill2ParticleAnchor7)
+                            self.exSkill[2].playShotSound(self)
                             if host:isHost() then
                                 models.models.ex_skill_2.Gui.UI.MomoiUI.Bullets.RearBullets.Bullet21:setColor()
                             end
                         elseif tick == 70 then
-                            instance.exSkill[2].spawnBulletParticle(instance, models.models.ex_skill_2.Covers.CoverBack1.ExSkill2ParticleAnchor8)
-                            instance.exSkill[2].playShotSound(instance)
-                            instance.exSkill[2].playPotBreak(instance, models.models.ex_skill_2.Covers.CoverBack1.DecoratedPod2)
-                            instance.parent.textObjectManager2:spawn(models.models.ex_skill_2.Covers.CoverBack1.MissText)
+                            self.exSkill[2].spawnBulletParticle(self, models.models.ex_skill_2.Covers.CoverBack1.ExSkill2ParticleAnchor8)
+                            self.exSkill[2].playShotSound(self)
+                            self.exSkill[2].playPotBreak(self, models.models.ex_skill_2.Covers.CoverBack1.DecoratedPod2)
+                            self.parent.textObjectManager2:spawn(models.models.ex_skill_2.Covers.CoverBack1.MissText)
                             if host:isHost() then
                                 models.models.ex_skill_2.Gui.UI.MomoiUI.LifeIcon2:setVisible(false)
                                 models.models.ex_skill_2.Gui.UI.MomoiHeadUI:setColor(1, 0.75, 0.75)
@@ -881,147 +881,147 @@ BlueArchiveCharacter = {
                                 models.models.ex_skill_2.Gui.UI.MomoiHeadUI.MomoiPaperDoll.MomoiPaperDollHead.FaceParts.Mouth:setUVPixels(16, 0)
                             end
                         elseif tick == 72 then
-                            instance.exSkill[2].spawnBulletParticle(instance, models.models.ex_skill_2.Covers.CoverBack1.ExSkill2ParticleAnchor9)
-                            instance.exSkill[2].playShotSound(instance)
+                            self.exSkill[2].spawnBulletParticle(self, models.models.ex_skill_2.Covers.CoverBack1.ExSkill2ParticleAnchor9)
+                            self.exSkill[2].playShotSound(self)
                             if host:isHost() then
                                 models.models.ex_skill_2.Gui.UI.MomoiUI.Bullets.RearBullets.Bullet20:setColor()
                             end
                         elseif tick == 73 and host:isHost() then
                             models.models.ex_skill_2.Gui.UI.MomoiHeadUI:setColor()
                         elseif tick == 80 then
-                            instance.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "SHOCK", 35, true)
-                            instance.exSkill[2].spawnBulletParticle(instance, models.models.ex_skill_2.Covers.CoverBack1.ExSkill2ParticleAnchor10)
-                            instance.exSkill[2].playShotSound(instance)
+                            self.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "SHOCK", 35, true)
+                            self.exSkill[2].spawnBulletParticle(self, models.models.ex_skill_2.Covers.CoverBack1.ExSkill2ParticleAnchor10)
+                            self.exSkill[2].playShotSound(self)
                         elseif tick == 83 then
-                            instance.exSkill[2].spawnBulletParticle(instance, models.models.ex_skill_2.Covers.CoverBack1.ExSkill2ParticleAnchor11)
-                            instance.exSkill[2].playShotSound(instance)
+                            self.exSkill[2].spawnBulletParticle(self, models.models.ex_skill_2.Covers.CoverBack1.ExSkill2ParticleAnchor11)
+                            self.exSkill[2].playShotSound(self)
                             if host:isHost() then
                                 models.models.ex_skill_2.Gui.UI.MomoiUI.Bullets.RearBullets.Bullet19:setColor()
                             end
                         elseif tick == 86 then
-                            local anchorPos = instance.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Covers.CoverBack1.ExSkill2ParticleAnchor12)
+                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Covers.CoverBack1.ExSkill2ParticleAnchor12)
                             local bodyYaw = player:getBodyYaw()
                             for _ = 1, 5 do
-                                particles:newParticle(instance.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setScale(1):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, 0.1, math.random() * 0.25 - 0.125, math.random() * 0.25 - 0.125, 0, 1, 0)):setColor(0.98, 0.843, 0.341):setLifetime(2)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setScale(1):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, 0.1, math.random() * 0.25 - 0.125, math.random() * 0.25 - 0.125, 0, 1, 0)):setColor(0.98, 0.843, 0.341):setLifetime(2)
                             end
-                            instance.exSkill[2].playShotSound(instance)
+                            self.exSkill[2].playShotSound(self)
                         elseif tick == 88 or tick == 99 then
-                            instance.exSkill[2].playShotSound(instance)
+                            self.exSkill[2].playShotSound(self)
                             if host:isHost() then
                                 models.models.ex_skill_2.Gui.UI.MomoiUI.Bullets.RearBullets.Bullet18:setColor()
                             end
                         elseif tick == 105 then
-                            instance.exSkill[2].spawnBulletParticle(instance, models.models.ex_skill_2.Covers.CoverBack2.ExSkill2ParticleAnchor13)
-                            instance.exSkill[2].playShotSound(instance)
+                            self.exSkill[2].spawnBulletParticle(self, models.models.ex_skill_2.Covers.CoverBack2.ExSkill2ParticleAnchor13)
+                            self.exSkill[2].playShotSound(self)
                             if host:isHost() then
                                 models.models.ex_skill_2.Gui.UI.MomoiUI.Bullets.RearBullets.Bullet17:setColor()
                             end
                         elseif tick == 108 then
-                            instance.exSkill[2].spawnBulletParticle(instance, models.models.ex_skill_2.Covers.CoverBack3.ExSkill2ParticleAnchor14)
-                            instance.exSkill[2].playShotSound(instance)
+                            self.exSkill[2].spawnBulletParticle(self, models.models.ex_skill_2.Covers.CoverBack3.ExSkill2ParticleAnchor14)
+                            self.exSkill[2].playShotSound(self)
                         elseif tick == 110 then
-                            instance.exSkill[2].spawnBulletParticle(instance, models.models.ex_skill_2.Wall.Paintings.MainPainting.ExSkill2ParticleAnchor15)
-                            instance.exSkill[2].playShotSound(instance)
+                            self.exSkill[2].spawnBulletParticle(self, models.models.ex_skill_2.Wall.Paintings.MainPainting.ExSkill2ParticleAnchor15)
+                            self.exSkill[2].playShotSound(self)
                             if host:isHost() then
                                 models.models.ex_skill_2.Gui.UI.MomoiUI.Bullets.RearBullets.Bullet16:setColor()
                             end
                         elseif tick == 112 then
-                            instance.exSkill[2].spawnBulletParticle(instance, models.models.ex_skill_2.Wall.Paintings.MainPainting.ExSkill2ParticleAnchor16)
-                            instance.exSkill[2].playShotSound(instance)
+                            self.exSkill[2].spawnBulletParticle(self, models.models.ex_skill_2.Wall.Paintings.MainPainting.ExSkill2ParticleAnchor16)
+                            self.exSkill[2].playShotSound(self)
                         elseif tick == 113 then
-                            instance.exSkill[2].spawnBulletParticle(instance, models.models.ex_skill_2.Wall.Paintings.MainPainting.ExSkill2ParticleAnchor17)
-                            instance.exSkill[2].playShotSound(instance)
+                            self.exSkill[2].spawnBulletParticle(self, models.models.ex_skill_2.Wall.Paintings.MainPainting.ExSkill2ParticleAnchor17)
+                            self.exSkill[2].playShotSound(self)
                             if host:isHost() then
                                 models.models.ex_skill_2.Gui.UI.MomoiUI.Bullets.RearBullets.Bullet15:setColor()
                             end
                         elseif tick == 115 then
-                            instance.parent.faceParts:setEmotion("NORMAL", "NORMAL", "TRIANGLE", 36, true)
-                            instance.exSkill[2].spawnBulletParticle(instance, models.models.ex_skill_2.Wall.Paintings.MainPainting.ExSkill2ParticleAnchor18)
-                            instance.exSkill[2].playShotSound(instance)
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "TRIANGLE", 36, true)
+                            self.exSkill[2].spawnBulletParticle(self, models.models.ex_skill_2.Wall.Paintings.MainPainting.ExSkill2ParticleAnchor18)
+                            self.exSkill[2].playShotSound(self)
                             if host:isHost() then
                                 models.models.ex_skill_2.Gui.Reticule:setVisible(false)
                                 events.RENDER:remove("ex_skill_2_render")
                             end
                         elseif tick == 116 then
-                            sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.zombie.break_wooden_door"), instance.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Wall.Paintings.MainPainting), 0.25, 2)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.zombie.break_wooden_door"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Wall.Paintings.MainPainting), 0.25, 2)
                         elseif tick == 128 then
-                            sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), instance.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Wall.SpecialItemGroup), 1, 1)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Wall.SpecialItemGroup), 1, 1)
                         elseif tick == 132 then
-                            local anchorPos = vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0, -0.75, 2, 0, 1, 0):add(instance.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Wall.Paintings.MainPainting))
+                            local anchorPos = vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0, -0.75, 2, 0, 1, 0):add(self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Wall.Paintings.MainPainting))
                             for _ = 1, 20 do
                                 local xOffset = math.random() * 4 - 2
                                 local zOffset = math.random() * 4 - 2
-                                particles:newParticle(instance.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), anchorPos:copy():add(xOffset, 0, zOffset)):setScale(5):setVelocity(xOffset * 0.03, 0.025, zOffset * 0.03)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), anchorPos:copy():add(xOffset, 0, zOffset)):setScale(5):setVelocity(xOffset * 0.03, 0.025, zOffset * 0.03)
                             end
-                            sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.zombie.attack_wooden_door"), anchorPos, 0.25, 2)
-                            sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.pillager.hurt"), instance.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Pillagers.Pillager1), 1, 1)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.zombie.attack_wooden_door"), anchorPos, 0.25, 2)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.pillager.hurt"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Pillagers.Pillager1), 1, 1)
                         elseif tick == 138 then
-                            sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.zombie.attack_wooden_door"), instance.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Wall.Paintings.MainPainting), 0.05, 2)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.zombie.attack_wooden_door"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Wall.Paintings.MainPainting), 0.05, 2)
                         elseif tick == 148 and host:isHost() then
                             local windowSize = client:getScaledWindowSize()
                             models.models.ex_skill_2.Gui.TransitionFilter:setScale(windowSize.x, windowSize.y, 1)
                             models.models.ex_skill_2.Gui.TransitionFilter:setVisible(true)
                             events.RENDER:register(function (delta)
-                                if instance.parent.exSkill.animationCount <= 151 then
-                                    models.models.ex_skill_2.Gui.TransitionFilter:setOpacity((instance.parent.exSkill.animationCount - 149 + delta) * 0.3333)
+                                if self.parent.exSkill.animationCount <= 151 then
+                                    models.models.ex_skill_2.Gui.TransitionFilter:setOpacity((self.parent.exSkill.animationCount - 149 + delta) * 0.3333)
                                 else
-                                    models.models.ex_skill_2.Gui.TransitionFilter:setOpacity((instance.parent.exSkill.animationCount - 152 + delta) * -0.3333 + 1)
+                                    models.models.ex_skill_2.Gui.TransitionFilter:setOpacity((self.parent.exSkill.animationCount - 152 + delta) * -0.3333 + 1)
                                 end
                             end, "ex_skill_2_transition_filter_render")
                         elseif tick == 151 then
-                            instance.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.Gun, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.RightArm)
+                            self.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.Gun, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.RightArm)
                             models.models.ex_skill_2.Wall.SpecialItemGroup:moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
-                            instance.parent.faceParts:setEmotion("NORMAL", "CENTER", "TRIANGLE", 3, true)
+                            self.parent.faceParts:setEmotion("NORMAL", "CENTER", "TRIANGLE", 3, true)
                             if host:isHost() then
                                 models.models.ex_skill_2.Gui.UI:setVisible(false)
                             end
                         elseif tick == 154 then
-                            instance.parent.faceParts:setEmotion("CLOSED", "CLOSED", "TRIANGLE", 2, true)
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "TRIANGLE", 2, true)
                             if host:isHost() then
                                 events.RENDER:remove("ex_skill_2_transition_filter_render")
                                 models.models.ex_skill_2.Gui.TransitionFilter:setVisible(false)
                             end
                         elseif tick == 156 then
-                            instance.parent.faceParts:setEmotion("NORMAL", "NORMAL", "TRIANGLE", 7, true)
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "TRIANGLE", 7, true)
                         elseif tick == 163 then
-                            instance.parent.faceParts:setEmotion("CLOSED", "CLOSED", "TRIANGLE", 2, true)
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "TRIANGLE", 2, true)
                         elseif tick == 165 then
-                            instance.parent.faceParts:setEmotion("NORMAL", "CENTER", "TRIANGLE", 6, true)
+                            self.parent.faceParts:setEmotion("NORMAL", "CENTER", "TRIANGLE", 6, true)
                         elseif tick == 171 then
-                            instance.parent.faceParts:setEmotion("CLOSED", "CLOSED", "TRIANGLE", 3, true)
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "TRIANGLE", 3, true)
                         elseif tick == 174 then
-                            instance.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "OPENED", 36, true)
+                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "OPENED", 36, true)
                         elseif tick == 178 then
-                            sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 1, 1.5)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 1, 1.5)
                         end
                         if tick >= 128 and tick < 151 then
-                            local anchorPos = instance.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Wall.SpecialItemGroup)
+                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Wall.SpecialItemGroup)
                             local bodyYaw = player:getBodyYaw()
                             for _ = 1, 5 do
-                                particles:newParticle(instance.parent.compatibilityUtils:checkParticle("minecraft:end_rod"), vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 3 - 1.5, math.random() * 3 - 1.5, 0, 0, 1, 0):add(anchorPos)):setVelocity(0, 0.1, 0):setColor(instance.exSkill[2].glowColor):setLifetime(8)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:end_rod"), vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 3 - 1.5, math.random() * 3 - 1.5, 0, 0, 1, 0):add(anchorPos)):setVelocity(0, 0.1, 0):setColor(self.exSkill[2].glowColor):setLifetime(8)
                             end
                         elseif tick >= 151 and tick < 170 then
-                            local anchorPos = instance.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SpecialItemGroup)
+                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SpecialItemGroup)
                             local bodyYaw = player:getBodyYaw()
                             for _ = 1, 2 do
-                                particles:newParticle(instance.parent.compatibilityUtils:checkParticle("minecraft:end_rod"), vectors.rotateAroundAxis(bodyYaw * -1 + 35, math.random() * 0.5 - 0.25, math.random() * 0.5 - 0.25, 0, 0, 1, 0):add(anchorPos)):setScale(0.25):setVelocity(0, 0.016, 0):setColor(instance.exSkill[2].glowColor):setLifetime(8)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:end_rod"), vectors.rotateAroundAxis(bodyYaw * -1 + 35, math.random() * 0.5 - 0.25, math.random() * 0.5 - 0.25, 0, 0, 1, 0):add(anchorPos)):setScale(0.25):setVelocity(0, 0.016, 0):setColor(self.exSkill[2].glowColor):setLifetime(8)
                             end
                         end
                         if tick < 124 then
                             for i = 1, 3 do
                                 if math.random() >= 0.99 then
-                                    sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.pillager.ambient"), instance.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Pillagers["Pillager"..i]), 0.5, 1)
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.pillager.ambient"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Pillagers["Pillager"..i]), 0.5, 1)
                                 end
                             end
                         end
                         if tick >= 105 and tick < 124 and math.random() >= 0.95 then
-                            sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:item.crossbow.shoot"), instance.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Pillagers.Pillager1), 0.5, 1)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.crossbow.shoot"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Pillagers.Pillager1), 0.5, 1)
                         end
                         if tick >= 70 and tick < 124 and math.random() >= 0.95 then
-                            sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:item.crossbow.shoot"), instance.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Pillagers.Pillager2), 0.5, 1)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.crossbow.shoot"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Pillagers.Pillager2), 0.5, 1)
                         end
                         if tick >= 54 and tick < 124 and math.random() >= 0.95 then
-                            sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:item.crossbow.shoot"), instance.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Pillagers.Pillager3), 0.5, 1)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.crossbow.shoot"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Pillagers.Pillager3), 0.5, 1)
                         end
                         if tick >= 22 and tick < 151 and host:isHost() then
                             if (tick - 22) % 30 == 0 then
@@ -1032,14 +1032,14 @@ BlueArchiveCharacter = {
                         end
                     end;
 
-                    onPostAnimation = function (forcedStop)
+                    onPostAnimation = function (self, forcedStop)
                         for _, modelPart in ipairs({models.models.ex_skill_2.Covers.CoverBack1.DecoratedPod2, models.models.ex_skill_2.Covers.CoverBack4.DecoratedPod3}) do
                             modelPart:setVisible(true)
                         end
                         models.models.ex_skill_2.Midori.MidoriHead.MidoriFaceParts.Eyes.EyeRight:setUVPixels()
                         if models.models.main.Avatar.UpperBody.Arms.RightArm.Gun ~= nil then
                             models.models.main.Avatar.UpperBody.Arms.RightArm.Gun:setVisible(false)
-                            instance.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.Gun, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.RightArm)
+                            self.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.Gun, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.RightArm)
                         elseif models.models.main.Avatar.UpperBody.Body.Gun ~= nil then
                             models.models.main.Avatar.UpperBody.Body.Gun:setVisible(false)
                         end
@@ -1151,11 +1151,11 @@ BlueArchiveCharacter = {
             };
 
             callbacks = {
-                onChange = function ()
+                onChange = function (self)
                     for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer}) do
                         modelPart:setUVPixels(0, 16)
                     end
-                    instance.parent.costume.setCostumeTextureOffset(1)
+                    self.parent.costume.setCostumeTextureOffset(1)
                     for _, modelPart in ipairs({models.models.main.Avatar.Head.HairRibbons, models.models.main.Avatar.UpperBody.Body.CoatRibbon, models.models.main.Avatar.UpperBody.Body.Skirt, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightCoat, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftCoat}) do
                         modelPart:setVisible(false)
                     end
@@ -1167,29 +1167,29 @@ BlueArchiveCharacter = {
                         if not client:isPaused() then
                             local skirtVisible = models.models.main.Avatar.UpperBody.Body.CMaidB:getVisible()
                             local shouldHideLegs = skirtVisible and player:getVehicle() ~= nil
-                            if shouldHideLegs and not instance.costume.costumes[2].shouldHideLegsPrev then
+                            if shouldHideLegs and not self.costume.costumes[2].shouldHideLegsPrev then
                                 models.models.main.Avatar.LowerBody.Legs:setVisible(false)
                                 models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1:setScale(1.2, 0.35, 1.5)
-                            elseif not shouldHideLegs and instance.costume.costumes[2].shouldHideLegsPrev then
+                            elseif not shouldHideLegs and self.costume.costumes[2].shouldHideLegsPrev then
                                 models.models.main.Avatar.LowerBody.Legs:setVisible(true)
                                 models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1:setScale()
                             end
 
                             local shouldAdjustLegs = skirtVisible and not shouldHideLegs
-                            if shouldAdjustLegs and not instance.costume.costumes[2].shouldAdjustLegsPrev then
+                            if shouldAdjustLegs and not self.costume.costumes[2].shouldAdjustLegsPrev then
                                 events.RENDER:register(function ()
                                     local rightLegRotX = vanilla_model.RIGHT_LEG:getOriginRot().x
                                     models.models.main.Avatar.LowerBody.Legs.RightLeg:setRot(rightLegRotX * -0.45, 0, 0)
                                     models.models.main.Avatar.LowerBody.Legs.LeftLeg:setRot(vanilla_model.LEFT_LEG:getOriginRot().x * -0.45, 0, 0)
                                     local rightLegRotAbs = math.abs(rightLegRotX)
                                     local playerPose = player:getPose()
-                                    local skirtFlipVal = math.min(math.abs(instance.parent.physics.velocityAverage[7][2]) * 0.00025 + ((playerPose == "SWIMMING" or playerPose == "FALL_FLYING") and 0 or math.max(instance.parent.physics.velocityAverage[2][2] * -0.25, 0)), 0.5)
+                                    local skirtFlipVal = math.min(math.abs(self.parent.physics.velocityAverage[7][2]) * 0.00025 + ((playerPose == "SWIMMING" or playerPose == "FALL_FLYING") and 0 or math.max(self.parent.physics.velocityAverage[2][2] * -0.25, 0)), 0.5)
                                     models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1:setScale(1 + skirtFlipVal, 1 - skirtFlipVal, rightLegRotAbs * 0.001 + 1 + skirtFlipVal)
                                     models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1.Skirt2:setScale(rightLegRotAbs * -0.0001 + 1, 1, rightLegRotAbs * 0.001 + 1)
                                     models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1.Skirt2.Skirt3:setScale(rightLegRotAbs * -0.0001 + 1, 1, rightLegRotAbs * 0.001 + 1)
                                     models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1.Skirt2.Skirt3.Skirt4:setScale(rightLegRotAbs * -0.00005 + 1, 1, rightLegRotAbs * 0.0005 + 1)
                                 end, "costume_maid_render")
-                            elseif not shouldAdjustLegs and instance.costume.costumes[2].shouldAdjustLegsPrev then
+                            elseif not shouldAdjustLegs and self.costume.costumes[2].shouldAdjustLegsPrev then
                                 events.RENDER:remove("costume_maid_render")
                                 for _, modelPart in ipairs({models.models.main.Avatar.LowerBody.Legs.RightLeg, models.models.main.Avatar.LowerBody.Legs.LeftLeg}) do
                                     modelPart:setRot()
@@ -1201,13 +1201,13 @@ BlueArchiveCharacter = {
                                 end
                             end
 
-                            instance.costume.costumes[2].shouldHideLegsPrev = shouldHideLegs
-                            instance.costume.costumes[2].shouldAdjustLegsPrev = shouldAdjustLegs
+                            self.costume.costumes[2].shouldHideLegsPrev = shouldHideLegs
+                            self.costume.costumes[2].shouldAdjustLegsPrev = shouldAdjustLegs
                         end
                     end,"costume_maid_tick")
                 end;
 
-                onReset = function ()
+                onReset = function (self)
                     events.TICK:remove("costume_maid_tick")
                     events.RENDER:remove("costume_maid_render")
                     models.models.main.Avatar.LowerBody.Legs:setVisible(true)
@@ -1217,7 +1217,7 @@ BlueArchiveCharacter = {
                     for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer}) do
                         modelPart:setUVPixels()
                     end
-                    instance.parent.costume.setCostumeTextureOffset(0)
+                    self.parent.costume.setCostumeTextureOffset(0)
                     for _, modelPart in ipairs({models.models.main.Avatar.Head.HairRibbons, models.models.main.Avatar.UpperBody.Body.CoatRibbon, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightCoat, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftCoat, models.models.main.Avatar.UpperBody.Body.Skirt}) do
                         modelPart:setVisible(true)
                     end
@@ -1226,11 +1226,11 @@ BlueArchiveCharacter = {
                     end
                 end;
 
-                onArmorChange = function (parts, isVisible)
+                onArmorChange = function (self, parts, isVisible)
                     if parts == "HELMET" then
                         models.models.main.Avatar.Head.EffectPanel:setPos(0, 0, isVisible and -1 or 0)
                     elseif parts == "LEGGINGS" then
-                        if instance.parent.costume.currentCostume == 1 then
+                        if self.parent.costume.currentCostume == 1 then
                             models.models.main.Avatar.UpperBody.Body.Skirt:setVisible(not isVisible)
                         else
                             models.models.main.Avatar.UpperBody.Body.CMaidB:setVisible(not isVisible)
@@ -1242,25 +1242,25 @@ BlueArchiveCharacter = {
 
         instance.bubble = {
             callbacks = {
-                onPlay = function(type, duration)
+                onPlay = function(self, type, duration)
                     if duration > 0 then
                         if type == "GOOD" then
-                            instance.parent.faceParts:setEmotion("NORMAL", "NORMAL", "FUN", duration, true)
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "FUN", duration, true)
                         elseif type == "HEART" then
-                            instance.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "OPENED", duration, true)
+                            self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "OPENED", duration, true)
                         elseif type == "NOTE" then
-                            instance.parent.faceParts:setEmotion("ANGRY", "ANGRY", "SMILE", duration, true)
+                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "SMILE", duration, true)
                         elseif type == "QUESTION" then
-                            instance.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "SHOCK", duration, true)
+                            self.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "SHOCK", duration, true)
                         elseif type == "SWEAT" then
-                            instance.parent.faceParts:setEmotion("ANGRY", "ANGRY2", "ANGRY", duration, true)
+                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY2", "ANGRY", duration, true)
                         end
                     end
                 end;
 
-                onStop = function(_, forcedStop)
+                onStop = function(self, _, forcedStop)
                     if forcedStop then
-                        instance.parent.faceParts:resetEmotion()
+                        self.parent.faceParts:resetEmotion()
                     end
                 end;
             };
@@ -1276,7 +1276,7 @@ BlueArchiveCharacter = {
 
         instance.deathAnimation = {
             callbacks = {
-                onPhase1 = function (dummyAvatar, costume)
+                onPhase1 = function (_, dummyAvatar, costume)
                     if costume == "DEFAULT" then
                         dummyAvatar.UpperBody.Body.Skirt:setRot(70, 0, 0)
                     elseif costume == "MAID" then
@@ -1288,7 +1288,7 @@ BlueArchiveCharacter = {
                     end
                 end;
 
-                onPhase2 = function (dummyAvatar, costume)
+                onPhase2 = function (_, dummyAvatar, costume)
                     if costume == "DEFAULT" then
                         dummyAvatar.UpperBody.Body.Skirt:setRot(22.5, 0, 0)
                     elseif costume == "MAID" then
@@ -1642,12 +1642,12 @@ BlueArchiveCharacter = {
             };
 
             callbacks = {
-                onPhysicPerformed = function (model)
+                onPhysicPerformed = function (self, model)
                     local playerPose = player:getPose()
                     local isHorizontal = playerPose == "SWIMMING" or playerPose == "FALL_FLYING"
                     if model:getName():match("^RightHairTail") then
-                        local velocityY = math.clamp(instance.parent.physics.velocityAverage[1][2] * -40, -20, 20)
-                        local velocityZ = math.clamp(instance.parent.physics.velocityAverage[2][2] * (isHorizontal and 160 or -40), -10, 10)
+                        local velocityY = math.clamp(self.parent.physics.velocityAverage[1][2] * -40, -20, 20)
+                        local velocityZ = math.clamp(self.parent.physics.velocityAverage[2][2] * (isHorizontal and 160 or -40), -10, 10)
                         local lookRotY = math.deg(math.asin(player:getLookDir().y)) / 90
                         local rotY = velocityY * (1 - math.abs(lookRotY)) + velocityZ * lookRotY
                         local rotZ = velocityZ * (1 - math.abs(lookRotY)) + velocityY * lookRotY * -1
@@ -1657,8 +1657,8 @@ BlueArchiveCharacter = {
                             models.models.main.Avatar.Head.CMaidH.HairTails.RightHairTail.RightHairTailZPivot:setRot(0, 0, isHorizontal and rotY or rotZ)
                         end
                     elseif model:getName():match("^LeftHairTail") then
-                        local velocityY = math.clamp(instance.parent.physics.velocityAverage[1][2] * 40, -20, 20)
-                        local velocityZ = math.clamp(instance.parent.physics.velocityAverage[2][2] * (isHorizontal and -160 or 40), -10, 10)
+                        local velocityY = math.clamp(self.parent.physics.velocityAverage[1][2] * 40, -20, 20)
+                        local velocityZ = math.clamp(self.parent.physics.velocityAverage[2][2] * (isHorizontal and -160 or 40), -10, 10)
                         local lookRotY = math.deg(math.asin(player:getLookDir().y)) / 90
                         local rotY = velocityY * (1 - math.abs(lookRotY)) + velocityZ * lookRotY
                         local rotZ = velocityZ * (1 - math.abs(lookRotY)) + velocityY * lookRotY * -1
@@ -1668,7 +1668,7 @@ BlueArchiveCharacter = {
                             models.models.main.Avatar.Head.CMaidH.HairTails.LeftHairTail.LeftHairTailZPivot:setRot(0, 0, isHorizontal and rotY or rotZ)
                         end
                     elseif (model == models.models.main.Avatar.UpperBody.Body.CMaidB.BackRibbon.RibbonBottomRight or model == models.models.main.Avatar.UpperBody.Body.CMaidB.BackRibbon.RibbonBottomLeft) and isHorizontal then
-                        model:setRot(model:getRot():scale(1 - math.clamp(instance.parent.physics.velocityAverage[5][2], 0, 1.6) / 1.6))
+                        model:setRot(model:getRot():scale(1 - math.clamp(self.parent.physics.velocityAverage[5][2], 0, 1.6) / 1.6))
                     end
                 end
             };
