@@ -418,7 +418,6 @@ BlueArchiveCharacter = {
                     onPreAnimation = function ()
                         if not instance.exSkill[1].init then
                             models.models.ex_skill_1.Momoi.MomoiUpperBody.MomoiArms.MomoiLeftArm.MomoiLeftArmBottom.GameConsole2:addChild(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.GameConsole1:copy("GameConsole2"))
-                            --BlueArchiveCharacter.EX_SKILL_1_TEXT_ANIMATIONS = {ExSkillTextAnimation.new("damage_indicator_1", "2"), ExSkillTextAnimation.new("damage_indicator_2", "1"), ExSkillTextAnimation.new("damage_indicator_3", "2"), ExSkillTextAnimation.new("damage_indicator_4", "1"), ExSkillTextAnimation.new("damage_indicator_5", "2"), ExSkillTextAnimation.new("damage_indicator_6", "1"), ExSkillTextAnimation.new("damage_indicator_7", "2"), ExSkillTextAnimation.new("damage_indicator_8", "1")}
                             if host:isHost() then
                                 models.models.ex_skill_1.Gui.UI:newText("ex_skill_1_ko"):setText("§cK.O."):setScale(vectors.vec3(1, 1, 1):scale(1.5)):setAlignment("CENTER"):setOutline(true):setVisible(false)
                                 models.models.ex_skill_1.Gui.TextAnchor:newText("ex_skill_1:text"):setText("§a§lMIDORI"):setScale(4, 4, 4):setAlignment("RIGHT"):setOutline(true):setOutlineColor(1, 1, 1)
@@ -481,7 +480,7 @@ BlueArchiveCharacter = {
                         elseif tick == 15 then
                             instance.parent.faceParts:setEmotion("ANXIOUS", "ANXIOUS", "CLOSED", 22, true)
                         elseif tick == 22 then
-                            --BlueArchiveCharacter.EX_SKILL_1_TEXT_ANIMATIONS[1]:play()
+                            instance.parent.textObjectManager:spawn("2")
                             sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.generic.hurt"), player:getPos(), 0.25, 1)
                             if host:isHost() then
                                 models.models.ex_skill_1.Gui.UI.MidoriUI.PaperDoll:setColor(1, 0.75, 0.75)
@@ -490,22 +489,22 @@ BlueArchiveCharacter = {
                                 models.models.ex_skill_1.Gui.UI.MidoriUI.PaperDoll.MidoriPaperDollHead.FaceParts.Mouth:setUVPixels(0, 8)
                             end
                         elseif tick == 24 then
-                            --BlueArchiveCharacter.EX_SKILL_1_TEXT_ANIMATIONS[2]:play()
+                            instance.parent.textObjectManager:spawn("1")
                             sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.generic.hurt"), player:getPos(), 0.25, 1)
                         elseif tick == 26 then
-                            --BlueArchiveCharacter.EX_SKILL_1_TEXT_ANIMATIONS[3]:play()
+                            instance.parent.textObjectManager:spawn("2")
                             sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.generic.hurt"), player:getPos(), 0.25, 1)
                         elseif tick == 28 then
-                            --BlueArchiveCharacter.EX_SKILL_1_TEXT_ANIMATIONS[4]:play()
+                            instance.parent.textObjectManager:spawn("1")
                             sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.generic.hurt"), player:getPos(), 0.25, 1)
                         elseif tick == 30 then
-                            --BlueArchiveCharacter.EX_SKILL_1_TEXT_ANIMATIONS[5]:play()
+                            instance.parent.textObjectManager:spawn("2")
                             sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.generic.hurt"), player:getPos(), 0.25, 1)
                         elseif tick == 32 then
-                            --BlueArchiveCharacter.EX_SKILL_1_TEXT_ANIMATIONS[6]:play()
+                            instance.parent.textObjectManager:spawn("1")
                             sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.generic.hurt"), player:getPos(), 0.25, 1)
                         elseif tick == 34 then
-                            --BlueArchiveCharacter.EX_SKILL_1_TEXT_ANIMATIONS[7]:play()
+                            instance.parent.textObjectManager:spawn("2")
                             sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.generic.hurt"), player:getPos(), 0.25, 1)
                         elseif tick == 36 then
                             for _, modelPart in ipairs({models.models.ex_skill_1.Momoi.MomoiHead.MomoiFaceParts.Eyes.EyeLeft, models.models.ex_skill_1.Momoi.MomoiHead.MomoiFaceParts.Eyes.EyeRight}) do
@@ -513,7 +512,7 @@ BlueArchiveCharacter = {
                             end
                             models.models.ex_skill_1.Momoi.MomoiHead.MomoiFaceParts.Mouth:setUVPixels(32, 0)
                             instance.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED", 11, true)
-                            --BlueArchiveCharacter.EX_SKILL_1_TEXT_ANIMATIONS[8]:play()
+                            instance.parent.textObjectManager:spawn("1")
                             local playerPos = player:getPos()
                             sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), playerPos, 1, 1.5)
                             sounds:playSound(instance.parent.compatibilityUtils:checkSound("minecraft:entity.generic.hurt"), player:getPos(), 0.25, 1)
