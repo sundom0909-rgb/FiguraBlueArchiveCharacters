@@ -1908,7 +1908,7 @@ function pings.launchMissiles()
                     local missileNum = math.floor(launchCounter / 5) + 1
                     local missileModel = missileNum <= 4 and models.models.main.Avatar.Drone.LauncherRight.MissilesRight["Missile"..missileNum] or models.models.main.Avatar.Drone.LauncherLeft.MissilesLeft["Missile"..(missileNum - 4)]
                     local lookDir = player:getLookDir()
-                    --MissileManager:spawn(ModelUtils.getModelWorldPos(missileModel), vectors.vec3(math.deg(math.asin(lookDir.y)) * -1, math.deg(math.atan2(lookDir.z, lookDir.x)) * -1 + 90, 0))
+                    AvatarInstance.missileManager:spawn(AvatarInstance.modelUtils.getModelWorldPos(missileModel), vectors.vec3(math.deg(math.asin(lookDir.y)) * -1, math.deg(math.atan2(lookDir.z, lookDir.x)) * -1 + 90, 0))
                     missileModel:setVisible(false)
                     sounds:playSound(AvatarInstance.compatibilityUtils:checkSound("minecraft:entity.blaze.hurt"), player:getPos(), 1, 1.5)
                 elseif launchCounter == 135 then
