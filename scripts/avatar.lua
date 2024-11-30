@@ -171,8 +171,8 @@ Avatar = {
 			instance.hypixelZombies:init()
 
 			--生徒固有クラスの読み込み
-			require("scripts.avatar_modules.character_scripts.drone_missile_manager")
-			require("scripts.avatar_modules.character_scripts.drone_missile")
+			require("scripts.character_scripts.drone_missile_manager")
+			require("scripts.character_scripts.drone_missile")
 			instance.missileManager = DroneMissileManager.new(instance)
 			instance.missileManager:init()
 		end)
