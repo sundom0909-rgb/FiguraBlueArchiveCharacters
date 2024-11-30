@@ -350,25 +350,27 @@ BlueArchiveCharacter = {
         instance.arms = {
             callbacks = {
                 onArmStateChanged = function (self, right, left)
-                    if left == 2 and right == 1 then
-                        if self.drone.dronePosition ~= "NONE" then
-                            return {right = 1, left = 4}
-                        elseif self.bicycle.bicycleEnabled then
-                            return {right = 7, left = 6}
-                        end
-                    elseif left == 1 and right == 2 then
-                        if self.drone.dronePosition ~= "NONE" then
-                            return {right = 4, left = 1}
-                        elseif self.bicycle.bicycleEnabled then
-                            return {right = 6, left = 7}
-                        end
-                    elseif left == 0 and right == 0 then
-                        if self.drone.dronePosition == "RIGHT" then
-                            return {right = 5, left = 4}
-                        elseif self.drone.dronePosition == "LEFT" then
-                            return {right = 4, left = 5}
-                        elseif self.bicycle.bicycleEnabled then
-                            return {right = 6, left = 6}
+                    if self.parent.drone ~= nil and self.parent.bicycle then
+                        if left == 2 and right == 1 then
+                            if self.parent.drone.dronePosition ~= "NONE" then
+                                return {right = 1, left = 4}
+                            elseif self.parent.bicycle.bicycleEnabled then
+                                return {right = 7, left = 6}
+                            end
+                        elseif left == 1 and right == 2 then
+                            if self.parent.drone.dronePosition ~= "NONE" then
+                                return {right = 4, left = 1}
+                            elseif self.parent.bicycle.bicycleEnabled then
+                                return {right = 6, left = 7}
+                            end
+                        elseif left == 0 and right == 0 then
+                            if self.parent.drone.dronePosition == "RIGHT" then
+                                return {right = 5, left = 4}
+                            elseif self.parent.drone.dronePosition == "LEFT" then
+                                return {right = 4, left = 5}
+                            elseif self.parent.bicycle.bicycleEnabled then
+                                return {right = 6, left = 6}
+                            end
                         end
                     end
                 end;
@@ -376,18 +378,20 @@ BlueArchiveCharacter = {
                 onAdditionalRightArmProcess = function (self, state)
                     if state == 1 then
                         events.RENDER:register(function (_, context)
-                            local isLeftHanded = player:isLeftHanded()
-                            if self.drone.dronePosition == "RIGHT" and isLeftHanded then
-                                local isSwingingArm = player:isSwingingArm() and isLeftHanded
-                                models.models.main.Avatar.UpperBody.Arms.RightArm:setParentType(context == "FIRST_PERSON" and "RightArm" or (isSwingingArm and "LeftArm" or "Body"))
-                                if isSwingingArm then
-                                    models.models.main.Avatar.UpperBody.Arms.RightArm:setRot()
+                            if self.parent.drone ~= nil then
+                                local isLeftHanded = player:isLeftHanded()
+                                if self.parent.drone.dronePosition == "RIGHT" and isLeftHanded then
+                                    local isSwingingArm = player:isSwingingArm() and isLeftHanded
+                                    models.models.main.Avatar.UpperBody.Arms.RightArm:setParentType(context == "FIRST_PERSON" and "RightArm" or (isSwingingArm and "LeftArm" or "Body"))
+                                    if isSwingingArm then
+                                        models.models.main.Avatar.UpperBody.Arms.RightArm:setRot()
+                                    end
                                 end
                             end
                         end, "right_arm_render")
                     elseif state == 2 then
                         events.TICK:register(function ()
-                            if self.bicycle.bicycleEnabled and animations["models.main"]["bicycle_idle"]:getTime() * 4 > 0 then
+                            if self.parent.bicycle.bicycleEnabled and animations["models.main"]["bicycle_idle"]:getTime() * 4 > 0 then
                                 self.parent.arms:setArmState(6, nil)
                             end
                         end, "right_arm_tick")
@@ -426,7 +430,7 @@ BlueArchiveCharacter = {
                             local isSwingingArm = (player:isSwingingArm() and not isLeftHanded) or isUsingSpyglass
                             models.models.main.Avatar.UpperBody.Arms.RightArm:setParentType((context == "FIRST_PERSON" or isSwingingArm) and "RightArm" or "Body")
                             local bicycleIdleFactor = 1 - animations["models.main"]["bicycle_idle"]:getTime() * 4
-                            local currentHandleRot = (self.bicycle.handleRot - self.bicycle.handleRotPrev) * delta + self.bicycle.handleRot
+                            local currentHandleRot = (self.parent.bicycle.handleRot - self.parent.bicycle.handleRotPrev) * delta + self.parent.bicycle.handleRot
                             models.models.main.Avatar.UpperBody.Arms.RightArm:setRot(isSwingingArm and vectors.vec3(isUsingSpyglass and 40 or 20, 0, 0) or vectors.vec3(50 * (1 - bicycleIdleFactor) + 20, 8 * (1 - bicycleIdleFactor) + 8 * (currentHandleRot / 15), 0))
                         end, "right_arm_render")
                     elseif state == 7 then
@@ -460,18 +464,20 @@ BlueArchiveCharacter = {
                 onAdditionalLeftArmProcess = function (self, state)
                     if state == 1 then
                         events.RENDER:register(function (_, context)
-                            local isLeftHanded = player:isLeftHanded()
-                            if self.drone.dronePosition == "LEFT" and not isLeftHanded then
-                                local isSwingingArm = player:isSwingingArm() and not isLeftHanded
-                                models.models.main.Avatar.UpperBody.Arms.LeftArm:setParentType(context == "FIRST_PERSON" and "LeftArm" or (isSwingingArm and "RightArm" or "Body"))
-                                if isSwingingArm then
-                                    models.models.main.Avatar.UpperBody.Arms.LeftArm:setRot()
+                            if self.parent.drone ~= nil then
+                                local isLeftHanded = player:isLeftHanded()
+                                if self.parent.drone.dronePosition == "LEFT" and not isLeftHanded then
+                                    local isSwingingArm = player:isSwingingArm() and not isLeftHanded
+                                    models.models.main.Avatar.UpperBody.Arms.LeftArm:setParentType(context == "FIRST_PERSON" and "LeftArm" or (isSwingingArm and "RightArm" or "Body"))
+                                    if isSwingingArm then
+                                        models.models.main.Avatar.UpperBody.Arms.LeftArm:setRot()
+                                    end
                                 end
                             end
                         end, "left_arm_render")
                     elseif state == 2 then
                         events.TICK:register(function ()
-                            if self.bicycle.bicycleEnabled and animations["models.main"]["bicycle_idle"]:getTime() * 4 > 0 then
+                            if self.parent.bicycle.bicycleEnabled and animations["models.main"]["bicycle_idle"]:getTime() * 4 > 0 then
                                 self.parent.arms:setArmState(nil, 6)
                             end
                         end, "left_arm_tick")
@@ -510,7 +516,7 @@ BlueArchiveCharacter = {
                             local isSwingingArm = (player:isSwingingArm() and isLeftHanded) or isUsingSpyglass
                             models.models.main.Avatar.UpperBody.Arms.LeftArm:setParentType((context == "FIRST_PERSON" or isSwingingArm) and "LeftArm" or "Body")
                             local bicycleIdleFactor = 1 - animations["models.main"]["bicycle_idle"]:getTime() * 4
-                            local currentHandleRot = (self.bicycle.handleRot - self.bicycle.handleRotPrev) * delta + self.bicycle.handleRot
+                            local currentHandleRot = (self.parent.bicycle.handleRot - self.parent.bicycle.handleRotPrev) * delta + self.parent.bicycle.handleRot
                             models.models.main.Avatar.UpperBody.Arms.LeftArm:setRot(isSwingingArm and vectors.vec3(isUsingSpyglass and 40 or 20, 0, 0) or vectors.vec3(50 * (1 - bicycleIdleFactor) + 20, -8 * (1 - bicycleIdleFactor) + 8 * (currentHandleRot / 15), 0))
                         end, "left_arm_render")
                     elseif state == 7 then
@@ -1064,7 +1070,7 @@ BlueArchiveCharacter = {
                         elseif type == "QUESTION" then
                             self.parent.faceParts:setEmotion("NORMAL","NORMAL", "ANGRY", duration, true)
                         elseif type == "SWEAT" then
-                            if not self.bicycle.isTyreBurst then
+                            if not self.parent.bicycle.isTyreBurst then
                                 self.parent.faceParts:setEmotion("NARROW_ANGRY", "NARROW_ANGRY", "ANGRY", duration, true)
                             else
                                 self.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "ANGRY", duration, true)
@@ -1391,102 +1397,9 @@ BlueArchiveCharacter = {
 
             callbacks = {
                 onDataSynced = function (self)
-                    self.drone.isFlying = self.dataSync.syncData.isFlying
+                    self.parent.drone.isFlying = self.dataSync.syncData.isFlying
                 end;
             };
-        }
-
-        ---ドローン
-        instance.drone = {
-            ---ドローンの位置
-            ---@type Gun.GunPosition
-            dronePosition = "NONE";
-
-            ---ドローンの飛行音
-            ---@type Sound|nil
-            droneSound = nil;
-
-            ---ミサイル発射が許可されているかどうか
-            ---@type boolean
-            isMissileLaunchAllowed = false;
-
-            ---ミサイル発射のクールダウン
-            ---@type integer
-            missileCoolDown = 0;
-
-            ---ヒントを表示したかどうか
-            ---@type boolean
-            didTipShow = false;
-
-            ---クリエイティブ飛行中かどうか
-            ---@type boolean
-            isFlying = false;
-
-            ---前ティックにクリエイティブ飛行をしていたかどうか
-            ---@type boolean
-            isFlyingPrev = false;
-
-            ---前ティックにドローンが表示されていたかどうか
-            ---@type boolean
-            shouldShowDronePrev = false;
-
-            ---前ティックにプレイヤーが左利きだったかどうか
-            ---@type boolean
-            isLeftHandedPrev = false;
-
-            ---前ティックの銃の位置
-            ---@type Gun.GunPosition
-            gunPositionPrev = "NONE";
-
-            ---ドローンのキーアサインが登録されたかどうか
-            ---@type boolean
-            isDroneKeyRegistered = false;
-        }
-
-        ---自転車
-        instance.bicycle = {
-            ---自転車乗りが有効かどうか
-            ---@type boolean
-            bicycleEnabled = false;
-
-            ---前ティックに自転車乗りが有効だったかどうか
-            ---@type boolean
-            bicycleEnabledPrev = false;
-
-            ---自転車のオフセット位置
-            ---@type number
-            bicycleOffsetPos = 0;
-
-            ---自転車の風切り音のインスタンス
-            ---@type Sound|nil
-            windSound = nil;
-
-            ---現在の自転車のハンドルの角度
-            ---@type number
-            handleRot = 0;
-
-            ---前ティックの自転車のハンドルの角度
-            ---@type number
-            handleRotPrev = 0;
-
-            ---前ティックに自転車に乗っていたかどうか
-            ---@type boolean
-            isBicycleRidingPrev = false;
-
-            ---自転車のドリンクを持っているかどうか
-            ---@type boolean
-            isDrinkItemHeld = false;
-
-            ---前ティックに自転車のドリンクを持っていたかどうか
-            ---@type boolean
-            isDrinkItemHeldPrev = false;
-        }
-
-        ---その他
-        instance.misc = {
-            ---ロケールマネージャーに追加のロケールをインジェクトしたかどうか
-            ---@type boolean
-            isLocaleInjected = false;
         }
 
         return instance
@@ -1499,444 +1412,5 @@ BlueArchiveCharacter = {
 
         --生徒固有初期化処理
         --Player APIにアクセスする場合は、ENTITY_INIT後に実行されるようにする必要がある。
-        events.TICK:register(function ()
-            local vehicle = player:getVehicle()
-            local shouldShowDrone = self.drone.isFlying and vehicle == nil and player:getPose() == "STANDING"
-            if shouldShowDrone ~= self.drone.shouldShowDronePrev then
-                if shouldShowDrone then
-                    models.models.ex_skill_1.Drone:moveTo(models.models.main.Avatar)
-                    models.models.main.Avatar.Drone:setVisible(true)
-                    self.drone.isLeftHandedPrev = player:isLeftHanded()
-                    self.parent.gun:processGunTick()
-                    self.drone.gunPositionPrev = self.parent.gun.currentGunPosition
-                    if self.drone.gunPositionPrev == "RIGHT" or (self.drone.gunPositionPrev == "NONE" and not self.drone.isLeftHandedPrev) then
-                        animations["models.main"]["creative_flying_transition_right"]:setSpeed(1)
-                        animations["models.main"]["creative_flying_transition_right"]:play()
-                        animations["models.ex_skill_1"]["creative_flying_start_right"]:play()
-                        self.drone.dronePosition = "RIGHT"
-                    else
-                        animations["models.main"]["creative_flying_transition_left"]:setSpeed(1)
-                        animations["models.main"]["creative_flying_transition_left"]:play()
-                        animations["models.ex_skill_1"]["creative_flying_start_left"]:play()
-                        self.drone.dronePosition = "LEFT"
-                    end
-                    if self.parent.gun.currentGunPosition == "RIGHT" then
-                        self.parent.arms:setArmState(1, 4)
-                    elseif self.parent.gun.currentGunPosition == "LEFT" then
-                        self.parent.arms:setArmState(4, 1)
-                    elseif self.drone.dronePosition == "RIGHT" then
-                        self.parent.arms:setArmState(5, 4)
-                    else
-                        self.parent.arms:setArmState(4, 5)
-                    end
-
-                    local particleAnchor = player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1 + 180, self.drone.dronePosition == "RIGHT" and -0.40625 or 0.40625, 5.015625, 1.9375, 0, 1, 0))
-                    for _ = 1, 30 do
-                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:poof"), particleAnchor:copy():add(math.random() * 2.4 - 1.2, math.random() * 1 - 0.5, (math.random() * 2.4 - 1.2)))
-                    end
-                    self.drone.droneSound =  sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.bee.loop"), player:getPos():add(0, 3, 0), 0.1, 1, true)
-
-                    local startCount = 0
-                    events.TICK:register(function ()
-                        if not client:isPaused() then
-                            startCount = startCount + 1
-                            self.drone.droneSound:setPos(player:getPos():add(0, 3, 0))
-                            if startCount == 5 then
-                                events.TICK:remove("drone_tick_start")
-                                for _, ctx in ipairs({"right", "left"}) do
-                                    animations["models.main"]["creative_flying_transition_"..ctx]:stop()
-                                    animations["models.ex_skill_1"]["creative_flying_start_"..ctx]:stop()
-                                end
-                                self.drone.isLeftHandedPrev = player:isLeftHanded()
-                                self.drone.gunPositionPrev = self.parent.gun.currentGunPosition
-                                if self.drone.gunPositionPrev == "RIGHT" or (self.drone.gunPositionPrev == "NONE" and not self.drone.isLeftHandedPrev) then
-                                    for _, animationModel in ipairs({"models.main", "models.ex_skill_1"}) do
-                                        animations[animationModel]["creative_flying_right"]:play()
-                                    end
-                                    self.drone.dronePosition = "RIGHT"
-                                else
-                                    for _, animationModel in ipairs({"models.main", "models.ex_skill_1"}) do
-                                        animations[animationModel]["creative_flying_left"]:play()
-                                    end
-                                    self.drone.dronePosition = "LEFT"
-                                end
-                                if not self.drone.didTipShow and host:isHost() then
-                                    print(self.parent.locale:getLocale("missile_launch.tip_pre")..self.parent.keyManager.keyMappings["missile_launch"]:getKeyName()..self.parent.locale:getLocale("missile_launch.tip_post"))
-                                    self.drone.didTipShow = true
-                                end
-                                self.drone.isMissileLaunchAllowed = true
-
-                                events.TICK:register(function ()
-                                    self.drone.droneSound:setPos(player:getPos():add(0, 3, 0))
-                                    local isLeftHanded = player:isLeftHanded()
-                                    if (self.parent.gun.currentGunPosition == "RIGHT" or (self.parent.gun.currentGunPosition == "NONE" and not isLeftHanded)) and animations["models.main"]["creative_flying_left"]:getPlayState() == "PLAYING" then
-                                        for _, animationModel in ipairs({"models.main", "models.ex_skill_1"}) do
-                                            animations[animationModel]["creative_flying_right"]:play()
-                                            animations[animationModel]["creative_flying_right"]:setTime(animations[animationModel]["creative_flying_left"]:getTime())
-                                            animations[animationModel]["creative_flying_left"]:stop()
-                                        end
-                                        self.drone.dronePosition = "RIGHT"
-                                    elseif (self.parent.gun.currentGunPosition == "LEFT" or (self.parent.gun.currentGunPosition == "NONE" and isLeftHanded)) and animations["models.main"]["creative_flying_right"]:getPlayState() == "PLAYING" then
-                                        for _, animationModel in ipairs({"models.main", "models.ex_skill_1"}) do
-                                            animations[animationModel]["creative_flying_left"]:play()
-                                            animations[animationModel]["creative_flying_left"]:setTime(animations[animationModel]["creative_flying_right"]:getTime())
-                                            animations[animationModel]["creative_flying_right"]:stop()
-                                        end
-                                        self.drone.dronePosition = "LEFT"
-                                    end
-                                    if isLeftHanded ~= self.drone.isLeftHandedPrev and self.parent.gun.currentGunPosition == "NONE" then
-                                        if isLeftHanded then
-                                            self.parent.arms:setArmState(4, 5)
-                                        else
-                                            self.parent.arms:setArmState(5, 4)
-                                        end
-                                    end
-                                    self.drone.isLeftHandedPrev = isLeftHanded
-                                    self.drone.gunPositionPrev = self.parent.gun.currentGunPosition
-                                end, "drone_tick")
-                            end
-                        end
-                    end, "drone_tick_start")
-                elseif models.models.main.Avatar.Drone ~= nil then
-                    for _, eventName in ipairs({"drone_tick_start", "drone_tick"}) do
-                        events.TICK:remove(eventName)
-                    end
-                    for _, ctx in ipairs({"right", "left"}) do
-                        animations["models.main"]["creative_flying_transition_"..ctx]:stop()
-                        animations["models.ex_skill_1"]["creative_flying_start_"..ctx]:stop()
-                        for _, animationModel in ipairs({"models.main", "models.ex_skill_1"}) do
-                            animations[animationModel]["creative_flying_"..ctx]:stop()
-                        end
-                    end
-                    if self.parent.gun.currentGunPosition == "RIGHT" or (self.parent.gun.currentGunPosition == "NONE" and not player:isLeftHanded()) then
-                        animations["models.main"]["creative_flying_transition_right"]:setSpeed(-1)
-                        animations["models.main"]["creative_flying_transition_right"]:play()
-                        animations["models.ex_skill_1"]["creative_flying_end_right"]:play()
-                        self.drone.dronePosition = "RIGHT"
-                    else
-                        animations["models.main"]["creative_flying_transition_left"]:setSpeed(-1)
-                        animations["models.main"]["creative_flying_transition_left"]:play()
-                        animations["models.ex_skill_1"]["creative_flying_end_left"]:play()
-                        self.drone.dronePosition = "LEFT"
-                    end
-                    local endCount = 0
-                    events.TICK:register(function ()
-                        if not client:isPaused() then
-                            endCount = endCount + 1
-                            self.drone.droneSound:setPos(player:getPos():add(0, 3, 0))
-                            if endCount == 5 then
-                                for _, eventName in ipairs({"drone_tick_end", "missile_launch_tick"}) do
-                                    events.TICK:remove(eventName)
-                                end
-                                for _, modelPart in ipairs({models.models.main.Avatar.Drone.LauncherRight.MissilesRight, models.models.main.Avatar.Drone.LauncherLeft.MissilesLeft}) do
-                                    for _, modelPart2 in ipairs(modelPart:getChildren()) do
-                                        modelPart2:setVisible(true)
-                                    end
-                                end
-                                models.models.main.Avatar.Drone:moveTo(models.models.ex_skill_1)
-                                models.models.ex_skill_1.Drone:setVisible(false)
-                                local particleAnchor = player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1 + 180, self.drone.dronePosition == "RIGHT" and -0.40625 or 0.40625, 5.015625, -1.9375, 0, 1, 0))
-                                for _ = 1, 30 do
-                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:poof"), particleAnchor:copy():add(math.random() * 2.4 - 1.2, math.random() * 1 - 0.5, (math.random() * 2.4 - 1.2)))
-                                end
-                                self.drone.droneSound:stop()
-                                self.drone.dronePosition = "NONE"
-                                if self.parent.gun.currentGunPosition == "RIGHT" then
-                                    self.parent.arms:setArmState(1, 2)
-                                elseif self.parent.gun.currentGunPosition == "LEFT" then
-                                    self.parent.arms:setArmState(2, 1)
-                                else
-                                    self.parent.arms:setArmState(0, 0)
-                                end
-                            end
-                        end
-                    end, "drone_tick_end")
-                end
-                self.drone.shouldShowDronePrev = shouldShowDrone
-            end
-
-            self.bicycle.bicycleEnabled = false
-            if vehicle ~= nil then
-                local vehicleType = vehicle:getType()
-                local jockey = vehicle:getControllingPassenger()
-                if jockey ~= nil then
-                    self.bicycle.bicycleEnabled = self.parent.actionWheel.shouldReplaceVehicleModels and (vehicleType == "minecraft:horse" or vehicleType == "minecraft:donkey" or vehicleType == "minecraft:mule") and vehicle:getControllingPassenger():getName() == player:getName()
-                else
-                    self.bicycle.bicycleEnabled = false
-                end
-                if self.bicycle.bicycleEnabled then
-                    if vehicleType == "minecraft:horse" then
-                        self.bicycle.bicycleOffsetPos = 0
-                    elseif vehicleType == "minecraft:donkey" then
-                        self.bicycle.bicycleOffsetPos = 0.35
-                    elseif vehicleType == "minecraft:mule" then
-                        self.bicycle.bicycleOffsetPos = 0.27
-                    end
-                end
-            end
-            if self.bicycle.bicycleEnabled ~= self.bicycle.bicycleEnabledPrev then
-                if self.bicycle.bicycleEnabled then
-                    models.models.main.Avatar.LowerBody.Bicycle:setVisible(true)
-                    renderer:setRenderVehicle(false)
-                    for _, animationModel in ipairs({"models.main", "models.ex_skill_3"}) do
-                        animations[animationModel]["bicycle_idle"]:play()
-                    end
-                    animations["models.main"]["bicycle_idle"]:setSpeed(-1)
-                    if self.parent.gun.currentGunPosition == "RIGHT" then
-                        self.parent.arms:setArmState(7, 6)
-                    elseif self.parent.gun.currentGunPosition == "LEFT" then
-                        self.parent.arms:setArmState(6, 7)
-                    else
-                        self.parent.arms:setArmState(6, 6)
-                    end
-                    events.TICK:register(function ()
-                        if self.bicycle.bicycleEnabled then
-                            models.models.main.Avatar:setPos(0, self.bicycle.bicycleOffsetPos * 16, 0)
-                        end
-                        local velocity = player:getVelocity()
-                        local horizontalSpeed = math.sqrt(velocity.x ^ 2 + velocity.z ^ 2)
-                        local isBicycleRiding = (horizontalSpeed >= 0.01 or math.abs(self.parent.physics.velocityAverage[2][2]) >= 0.01) and self.bicycle.bicycleEnabled
-                        if isBicycleRiding ~= self.bicycle.isBicycleRidingPrev then
-                            if isBicycleRiding then
-                                animations["models.main"]["bicycle_idle"]:setSpeed(1)
-                                for _, animationModel in ipairs({"models.main", "models.ex_skill_3"}) do
-                                    animations[animationModel]["bicycle_run"]:play()
-                                end
-                            else
-                                animations["models.main"]["bicycle_idle"]:setSpeed(-1)
-                                for _, animationModel in ipairs({"models.main", "models.ex_skill_3"}) do
-                                    animations[animationModel]["bicycle_run"]:stop()
-                                end
-                            end
-                            self.bicycle.isBicycleRidingPre = isBicycleRiding
-                        end
-                        for _, animationModel in ipairs({"models.main", "models.ex_skill_3"}) do
-                            animations[animationModel]["bicycle_run"]:setSpeed(2 * (self.parent.physics.velocityAverage[1][2] + math.abs(self.parent.physics.velocityAverage[3][2])))
-                        end
-                        models.models.main.Avatar.LowerBody.Bicycle.Wheels.Chain:setUVPixels(math.ceil(animations["models.main"]["bicycle_run"]:getTime() * 20) % 2, 0)
-                        self.bicycle.handleRotPrev = self.bicycle.handleRot
-                        self.bicycle.handleRot = math.clamp(self.parent.physics.velocityAverage[3][2] + self.parent.physics.velocityAverage[4][2] / 1500, -0.2, 0.2) * -75
-                        if isBicycleRiding and horizontalSpeed >= 0.3 then
-                            local playerPos = player:getPos()
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.dispenser.fail"), playerPos, 0.025, 5)
-                            if self.bicycle.windSound ~= nil then
-                                self.bicycle.windSound:setPos(playerPos)
-                                self.bicycle.windSound:setVolume(0.14285714285714 * horizontalSpeed - 0.042857142857143)
-                            else
-                                self.bicycle.windSound = sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.elytra.flying"), playerPos, 0.14285714285714 * horizontalSpeed - 0.042857142857143, 2, true)
-                            end
-                        elseif self.bicycle.windSound ~= nil then
-                            self.bicycle.windSound:stop()
-                            self.bicycle.windSound = nil
-                        end
-                        self.bicycle.isDrinkItemHeld = false
-                        for _, item in ipairs({player:getHeldItem(false), player:getHeldItem(true)}) do
-                            if item.id == "minecraft:potion" or item.id == "minecraft:milk_bucket" then
-                                self.bicycle.isDrinkItemHeld = true
-                                break
-                            end
-                        end
-                        if self.bicycle.isDrinkItemHeld ~= self.bicycle.isDrinkItemHeldPrev then
-                            if self.bicycle.isDrinkItemHeld then
-                                models.models.main.Avatar.LowerBody.Bicycle.Shaft.Shaft8.WaterBottle:setParentType("Item")
-                                events.ITEM_RENDER:register(function (item, mode)
-                                    if (item.id == "minecraft:potion" or item.id == "minecraft:milk_bucket") and self.bicycle.isDrinkItemHeld and mode ~= "HEAD" and self.parent.exSkill.animationCount == -1 then
-                                        if mode == "FIRST_PERSON_LEFT_HAND" then
-                                            models.models.main.Avatar.LowerBody.Bicycle.Shaft.Shaft8.WaterBottle:setPos(-2, -6, 5.5)
-                                            models.models.main.Avatar.LowerBody.Bicycle.Shaft.Shaft8.WaterBottle:setRot(90, -60, 0)
-                                        elseif mode == "FIRST_PERSON_RIGHT_HAND" then
-                                            models.models.main.Avatar.LowerBody.Bicycle.Shaft.Shaft8.WaterBottle:setPos(2, -6, 5.5)
-                                            models.models.main.Avatar.LowerBody.Bicycle.Shaft.Shaft8.WaterBottle:setRot(90, -120, 0)
-                                        elseif mode == "THIRD_PERSON_LEFT_HAND" then
-                                            models.models.main.Avatar.LowerBody.Bicycle.Shaft.Shaft8.WaterBottle:setPos(0, -7.5, 5.5)
-                                            models.models.main.Avatar.LowerBody.Bicycle.Shaft.Shaft8.WaterBottle:setRot(90, 90, 0)
-                                        elseif mode == "THIRD_PERSON_RIGHT_HAND" then
-                                            models.models.main.Avatar.LowerBody.Bicycle.Shaft.Shaft8.WaterBottle:setPos(0, -7.5, 5.5)
-                                            models.models.main.Avatar.LowerBody.Bicycle.Shaft.Shaft8.WaterBottle:setRot(90, 90, 0)
-                                        end
-                                        return models.models.main.Avatar.LowerBody.Bicycle.Shaft.Shaft8.WaterBottle
-                                    end
-                                end, "drink_bottle_item_render")
-                            else
-                                events.ITEM_RENDER:remove("drink_bottle_item_render")
-                                models.models.main.Avatar.LowerBody.Bicycle.Shaft.Shaft8.WaterBottle:setParentType("None")
-                                models.models.main.Avatar.LowerBody.Bicycle.Shaft.Shaft8.WaterBottle:setPos()
-                                models.models.main.Avatar.LowerBody.Bicycle.Shaft.Shaft8.WaterBottle:setRot()
-                            end
-                            self.bicycle.isDrinkItemHeldPrev = self.bicycle.isDrinkItemHeld
-                        end
-                    end, "bicycle_ride_tick")
-                    events.RENDER:register(function (delta)
-                        local bicycleIdleFactor = 1 - animations["models.main"]["bicycle_idle"]:getTime() * 4
-                        models.models.main.Avatar.Head:setRot(45 - 30 * bicycleIdleFactor, 0, 0)
-                        local currentHandleRot = (self.bicycle.handleRot - self.bicycle.handleRotPrev) * delta + self.bicycle.handleRot
-                        models.models.main.Avatar.LowerBody.Bicycle.Handle:setRot(0, currentHandleRot, 0)
-                        if host:isHost() and self.bicycle.bicycleEnabled then
-                            self.parent.cameraManager.setCameraPivot(vectors.vec3(0, 0.15 * bicycleIdleFactor - 0.75 + self.bicycle.bicycleOffsetPos, 0))
-                            renderer:setEyeOffset(0, 0.15 * bicycleIdleFactor - 0.75 + self.bicycle.bicycleOffsetPos, 0)
-                        end
-                    end, "bicycle_ride_render")
-                    events.ON_PLAY_SOUND:register(function (id, pos, _, _, _, _, path)
-                        if path ~= nil and (id:match("^minecraft:entity%.horse%.") or id:match("^minecraft:entity%.donkey%.") or id:match("^minecraft:entity%.mule%.")) and pos:copy():sub(player:getPos()):length() <= 1.5 then
-                            if id == "minecraft:entity.horse.jump" then
-                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.blaze.hurt"), pos, 0.5, 2, false)
-                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.wool.step"), pos, 1, 0.75, false)
-                            elseif id == "minecraft:entity.horse.land" then
-                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.iron_door.close"), pos, 0.25, 1.75, false)
-                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.wool.step"), pos, 1, 0.75, false)
-                            elseif id:match("^minecraft:entity%.%w+%.hurt$") then
-                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.anvil.place"), pos, 0.5, 2, false)
-                            elseif id:match("^minecraft:entity%.%w+%.death$") then
-                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.firework_rocket.blast"), pos, 1, 2, false)
-                                local playerPos = player:getPos()
-                                local lookDir = player:getLookDir()
-                                local bodyYaw = math.deg(math.atan2(lookDir.z, lookDir.x))
-                                local anchor1Pos = playerPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1 + 90, 0, -0.75, -0.65, 0, 1, 0))
-                                local anchor2Pos = playerPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1 + 90, 0, -0.75, 0.5, 0, 1, 0))
-                                for _ = 1, 5 do
-                                    for _, anchorPos in ipairs({anchor1Pos, anchor2Pos}) do
-                                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:smoke"), anchorPos):setVelocity(math.random() * 0.04 - 0.02, 0, math.random() * 0.04 - 0.02)
-                                    end
-                                end
-                                self.bicycle.isTyreBurst = true
-                                self.parent.bubble:play("SWEAT", 40, vectors.vec2(), 0, false)
-                                self.bicycle.isTyreBurst = false
-                            end
-                            return true
-                        end
-                    end, "bicycle_ride_sound")
-                else
-                    events.TICK:remove("bicycle_ride_tick")
-                    events.RENDER:remove("bicycle_ride_render")
-                    events.ITEM_RENDER:remove("drink_bottle_item_render")
-                    events.ON_PLAY_SOUND:remove("bicycle_ride_sound")
-                    models.models.main.Avatar:setPos()
-                    models.models.main.Avatar.LowerBody.Bicycle:setVisible(false)
-                    renderer:setRenderVehicle(true)
-                    for _, animationModel in ipairs({"models.main", "models.ex_skill_3"}) do
-                        animations[animationModel]["bicycle_run"]:stop()
-                        animations[animationModel]["bicycle_idle"]:stop()
-                    end
-                    models.models.main.Avatar.Head:setRot()
-                    if host:isHost() then
-                        self.parent.cameraManager.setCameraPivot(vectors.vec3())
-                        renderer:setEyeOffset()
-                    end
-                    events.ITEM_RENDER:remove("drink_bottle_item_render")
-                    models.models.main.Avatar.LowerBody.Bicycle.Shaft.Shaft8.WaterBottle:setParentType("None")
-                    models.models.main.Avatar.LowerBody.Bicycle.Shaft.Shaft8.WaterBottle:setPos()
-                    models.models.main.Avatar.LowerBody.Bicycle.Shaft.Shaft8.WaterBottle:setRot()
-                    if self.bicycle.windSound ~= nil then
-                        self.bicycle.windSound:stop()
-                        self.bicycle.windSound = nil
-                    end
-                    self.bicycle.isDrinkItemHeld = false
-                    self.bicycle.bicycleEnabled = false
-                    if self.parent.gun.currentGunPosition == "RIGHT" then
-                        self.parent.arms:setArmState(1, 2)
-                    elseif self.parent.gun.currentGunPosition == "LEFT" then
-                        self.parent.arms:setArmState(2, 1)
-                    else
-                        self.parent.arms:setArmState(0, 0)
-                    end
-                end
-                self.bicycle.bicycleEnabledPrev = self.bicycle.bicycleEnabled
-            end
-        end)
-
-        if host:isHost() then
-            events.TICK:register(function ()
-                if self.parent.locale ~= nil and not self.misc.isLocaleInjected then
-                    local localeStrings = {
-                        {"key_name.missile_launch", "Launch missiles", "ミサイル発射"};
-                        {"missile_launch.in_cool_down_pre", "Please wait ", "あと"};
-                        {"missile_launch.in_cool_down_post", " more seconds to launch missiles.", "秒待ってください。"};
-                        {"missile_launch.tip_pre", "9§l[TIP]§r Press ", "§9§l[TIP]§r "};
-                        {"missile_launch.tip_post", " key to launch missiles!", "キーを押すとミサイルを発射します！"};
-                    }
-
-                    for _, localeSet in ipairs(localeStrings) do
-                        self.parent.locale.localeData.en_us[localeSet[1]] = localeSet[2]
-                        self.parent.locale.localeData.ja_jp[localeSet[1]] = localeSet[3]
-                    end
-
-                    self.misc.isLocaleInjected = true
-                end
-
-                if self.parent.keyManager ~= nil and not self.drone.isDroneKeyRegistered then
-                    self.parent.keyManager:register("missile_launch", "key.keyboard.v"):setOnPress(function ()
-                        if self.drone.isMissileLaunchAllowed then
-                            if self.drone.missileCoolDown == 0 then
-                                pings.launchMissiles()
-                                self.drone.missileCoolDown = 200
-                            else
-                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bass"), player:getPos(), 1, 0.5)
-                                print(self.parent.locale:getLocale("missile_launch.in_cool_down_pre")..math.ceil(self.drone.missileCoolDown / 20)..self.parent.locale:getLocale("missile_launch.in_cool_down_post"))
-                            end
-                        end
-                    end)
-
-                    self.drone.isDroneKeyRegistered = true
-                end
-
-                local isFlying = host:isFlying() and player:getGamemode() ~= "SPECTATOR"
-                if isFlying ~= self.drone.isFlyingPrev then
-                    pings.setIsFlying(isFlying)
-                    self.drone.isFlyingPrev = isFlying
-                end
-                self.dataSync.syncData.isFlying = isFlying
-                self.drone.missileCoolDown = math.max(self.drone.missileCoolDown - 1, 0)
-            end)
-        end
     end;
 }
-
----クリエイティブ飛行フラグを設定する。
----@param isFlying boolean クリエイティブ飛行をしているかどうか
-function pings.setIsFlying(isFlying)
-    AvatarInstance.characterData.drone.isFlying = isFlying
-end
-
----ミサイルを発射する。
-function pings.launchMissiles()
-    if models.models.main.Avatar.Drone ~= nil then
-        AvatarInstance.faceParts:setEmotion("NARROW_ANGRY", "NARROW_ANGRY", "ANGRY", 60, true)
-        local launchCounter = 0
-        if events.TICK:getRegisteredCount("missile_launch_tick") == 0 then
-            events.TICK:register(function ()
-                if launchCounter % 5 == 0 and launchCounter <= 35 then
-                    local missileNum = math.floor(launchCounter / 5) + 1
-                    local missileModel = missileNum <= 4 and models.models.main.Avatar.Drone.LauncherRight.MissilesRight["Missile"..missileNum] or models.models.main.Avatar.Drone.LauncherLeft.MissilesLeft["Missile"..(missileNum - 4)]
-                    local lookDir = player:getLookDir()
-                    AvatarInstance.missileManager:spawn(AvatarInstance.modelUtils.getModelWorldPos(missileModel), vectors.vec3(math.deg(math.asin(lookDir.y)) * -1, math.deg(math.atan2(lookDir.z, lookDir.x)) * -1 + 90, 0))
-                    missileModel:setVisible(false)
-                    sounds:playSound(AvatarInstance.compatibilityUtils:checkSound("minecraft:entity.blaze.hurt"), player:getPos(), 1, 1.5)
-                elseif launchCounter == 135 then
-                    events.TICK:remove("missile_launch_tick")
-                    for _, modelPart in ipairs({models.models.main.Avatar.Drone.LauncherRight.MissilesRight, models.models.main.Avatar.Drone.LauncherLeft.MissilesLeft}) do
-                        for _, modelPart2 in ipairs(modelPart:getChildren()) do
-                            modelPart2:setVisible(true)
-                        end
-                    end
-                    sounds:playSound(AvatarInstance.compatibilityUtils:checkSound("minecraft:block.dispenser.fail"), player:getPos(), 1, 2)
-                end
-                if launchCounter % 5 <= 1 and launchCounter <= 36 then
-                    for _, modelPart in ipairs({models.models.main.Avatar.Drone.LauncherRight.LauncherBase, models.models.main.Avatar.Drone.LauncherLeft.LauncherBase}) do
-                        local anchorPos = ModelUtils.getModelWorldPos(modelPart)
-                        local bodyYaw = player:getBodyYaw()
-                        local particleDir = vectors.rotateAroundAxis(bodyYaw * -1, 0, 0, -0.25, 0, 1, 0)
-                        if launchCounter % 5 == 0 then
-                            for _ = 1, 5 do
-                                particles:newParticle(AvatarInstance.compatibilityUtils:checkParticle("minecraft:flame"), anchorPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 0.5 - 0.25, math.random() * 0.5 - 0.25, 0, 0, 1, 0))):setVelocity(particleDir:copy():scale(2)):setLifetime(4)
-                            end
-                        end
-                        for _ = 1, 5 do
-                            particles:newParticle(AvatarInstance.compatibilityUtils:checkParticle("minecraft:large_smoke"), anchorPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 0.5 - 0.25, math.random() * 0.5 - 0.25, 0, 0, 1, 0))):setVelocity(particleDir)
-                        end
-                    end
-                end
-                launchCounter = launchCounter + 1
-            end, "missile_launch_tick")
-        end
-    end
-end

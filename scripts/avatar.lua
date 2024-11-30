@@ -29,6 +29,8 @@
 ---@field public barrier Barrier
 ---@field public deathAnimation DeathAnimation
 ---@field public hypixelZombies HypixelZombies
+---@field public drone Drone
+---@field public bicycle Bicycle
 ---@field public missileManager DroneMissileManager
 ---@field public instantiate fun(class: table, super: table, ...: any) クラスをインスタンス化する
 
@@ -178,10 +180,18 @@ Avatar = {
 			instance.hypixelZombies:init()
 
 			--生徒固有クラスの読み込み
+			require("scripts.character_scripts.drone")
+			instance.drone = Drone.new(instance)
+			instance.drone:init()
+
 			require("scripts.character_scripts.drone_missile_manager")
 			require("scripts.character_scripts.drone_missile")
 			instance.missileManager = DroneMissileManager.new(instance)
 			instance.missileManager:init()
+
+			require("scripts.character_scripts.bicycle")
+			instance.bicycle = Bicycle.new(instance)
+			instance.bicycle:init()
 
 			--SCRIPT_INITイベントを実行
 			instance.avatarEvents.SCRIPT_INIT:fire()
