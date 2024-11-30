@@ -1112,13 +1112,13 @@ BlueArchiveCharacter = {
                 onPhase1 = function (_, dummyAvatar, costume)
                     dummyAvatar.Head.Ears.RightEarPivot:setRot(-49.02, -11.44, -9.77)
                     dummyAvatar.Head.Ears.LeftEarPivot:setRot(-49.02, 11.44, 9.77)
-                    if costume <= 2 then
+                    if costume == "DEFAULT" or costume == "MASKED" then
                         dummyAvatar.UpperBody.Body.Skirt:setRot(27.5, 0, 0)
                     end
                 end;
 
                 onPhase2 = function (_, dummyAvatar, costume)
-                    if costume <= 2 then
+                    if costume == "DEFAULT" or costume == "MASKED" then
                         dummyAvatar.UpperBody.Body.Skirt:setRot(12.5, 0, 0)
                     end
                 end;
