@@ -1,4 +1,5 @@
 ---@class Avatar アバターのメインクラス
+---@field public avatarEvents AvatarEvents
 ---@field public modelUtils ModelUtils
 ---@field public playerUtils PlayerUtils
 ---@field public compatibilityUtils CompatibilityUtils
@@ -39,9 +40,15 @@ Avatar = {
 		local instance = Avatar.instantiate(Avatar)
 
 		--ENTITY_INIT前に読み込み
-		require("scripts.avatar_module")
+		require("scripts.avatar_modules.avatar_module")
 
 		--ユーティリティクラスの読み込み
+		require("scripts.avatar_modules.events.abstract_event")
+		require("scripts.avatar_modules.events.script_init_event")
+		require("scripts.avatar_modules.events.avatar_events")
+		instance.avatarEvents = AvatarEvents.new(instance)
+		instance.avatarEvents:init()
+
 		require("scripts.avatar_modules.utils.model_utils")
 		instance.modelUtils = ModelUtils.new(instance)
 		instance.modelUtils:init()
@@ -175,6 +182,9 @@ Avatar = {
 			require("scripts.character_scripts.ex_skill_1_text_object")
 			instance.textObjectManager = ExSkill1TextObjectManager.new(instance)
 			instance.textObjectManager:init()
+
+			--SCRIPT_INITイベントを実行
+			instance.avatarEvents.SCRIPT_INIT:fire()
 		end)
 
 		return instance
