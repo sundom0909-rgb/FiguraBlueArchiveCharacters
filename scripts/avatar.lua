@@ -32,6 +32,7 @@
 ---@field public shield Shield
 ---@field public whaleFloat WhaleFloat
 ---@field public subGun SubGun
+---@field public waveParticleManager ExSkill2WaveParticleManager
 ---@field public instantiate fun(class: table, super: table, ...: any) クラスをインスタンス化する
 
 Avatar = {
@@ -192,6 +193,11 @@ Avatar = {
 			require("scripts.character_scripts.sub_gun")
 			instance.subGun = SubGun.new(instance)
 			instance.subGun:init()
+
+			require("scripts.character_scripts.ex_skill_2_wave_particle_manager")
+			require("scripts.character_scripts.ex_skill_2_wave_particle")
+			instance.waveParticleManager = ExSkill2WaveParticleManager.new(instance)
+			instance.waveParticleManager:init()
 
 			--SCRIPT_INITイベントを実行
 			instance.avatarEvents.SCRIPT_INIT:fire()
