@@ -173,18 +173,18 @@ Avatar = {
 			instance.hypixelZombies:init()
 
 			--生徒固有クラスの読み込み
-			require("scripts.avatar_modules.character_scripts.ex_skill_1_text_object_manager")
-			require("scripts.avatar_modules.character_scripts.ex_skill_1_text_object")
+			require("scripts.character_scripts.ex_skill_1_text_object_manager")
+			require("scripts.character_scripts.ex_skill_1_text_object")
 			instance.textObjectManager = ExSkill1TextObjectManager.new(instance)
 			instance.textObjectManager:init()
 
-			require("scripts.avatar_modules.character_scripts.ex_skill_2_particle_manager")
-			require("scripts.avatar_modules.character_scripts.ex_skill_2_particle")
+			require("scripts.character_scripts.ex_skill_2_particle_manager")
+			require("scripts.character_scripts.ex_skill_2_particle")
 			instance.particleManager = ExSkill2ParticleManager.new(instance)
 			instance.particleManager:init()
 
-			require("scripts.avatar_modules.character_scripts.ex_skill_2_transition_manager")
-			require("scripts.avatar_modules.character_scripts.ex_skill_2_transition")
+			require("scripts.character_scripts.ex_skill_2_transition_manager")
+			require("scripts.character_scripts.ex_skill_2_transition")
 			instance.transitionManager = ExSkill2TransitionManager.new(instance)
 			instance.transitionManager:init()
 		end)
