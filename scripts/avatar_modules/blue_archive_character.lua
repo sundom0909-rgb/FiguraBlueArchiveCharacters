@@ -1229,22 +1229,3 @@ BlueArchiveCharacter = {
 
     end;
 }
-
----テレポート時の演出（パーティクル、狐の人形）
----@param currentPos Vector3 テレポート先のワールド座標
----@param previousPos Vector3 テレポート元のワークフロー座標
----@param previousRot number テレポート時の体の向き
-function pings.teleport(currentPos, previousPos, previousRot)
-    AvatarInstance.placementObjectManager:removeAll()
-    if math.random() >= 0.95 then
-        AvatarInstance.characterData.placementObjects[1].model:setPrimaryTexture("RESOURCE", "textures/entity/fox/snow_fox.png")
-    else
-        AvatarInstance.characterData.placementObjects[1].model:setPrimaryTexture("PRIMARY")
-    end
-    AvatarInstance.placementObjectManager:spawn(1, previousPos, previousRot * -1 + 180)
-    for _ = 1, 70 do
-        particles:newParticle(AvatarInstance.compatibilityUtils:checkParticle("minecraft:poof"), currentPos:copy():add(math.random() * 2 - 1, math.random() * 3 - 0.5, math.random() * 2 - 1))
-        particles:newParticle(AvatarInstance.compatibilityUtils:checkParticle("minecraft:poof"), previousPos:copy():add(math.random() * 2 - 1, math.random() * 3 - 0.5, math.random() * 2 - 1))
-    end
-    sounds:playSound(AvatarInstance.compatibilityUtils:checkSound("minecraft:entity.shulker.shoot"), currentPos, 1, 2)
-end

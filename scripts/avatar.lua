@@ -30,6 +30,7 @@
 ---@field public deathAnimation DeathAnimation
 ---@field public hypixelZombies HypixelZombies
 ---@field public textObjectManager ExSkill1TextObjectManager
+---@field public teleport Teleport
 ---@field public instantiate fun(class: table, super: table, ...: any) クラスをインスタンス化する
 
 Avatar = {
@@ -182,6 +183,10 @@ Avatar = {
 			require("scripts.character_scripts.ex_skill_1_text_object")
 			instance.textObjectManager = ExSkill1TextObjectManager.new(instance)
 			instance.textObjectManager:init()
+
+			require("scripts.character_scripts.teleport")
+			instance.teleport = Teleport.new(instance)
+			instance.teleport:init()
 
 			--SCRIPT_INITイベントを実行
 			instance.avatarEvents.SCRIPT_INIT:fire()

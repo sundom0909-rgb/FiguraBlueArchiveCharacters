@@ -21,7 +21,7 @@ PlayerUtils = {
         return instance
     end;
 
-        ---初期化関数
+    ---初期化関数
     ---@param self PlayerUtils
     init = function (self)
         AvatarModule.init(self)
