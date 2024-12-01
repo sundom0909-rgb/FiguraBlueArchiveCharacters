@@ -29,6 +29,7 @@
 ---@field public barrier Barrier
 ---@field public deathAnimation DeathAnimation
 ---@field public hypixelZombies HypixelZombies
+---@field public melodyParticleManager ExSkill2MelodyParticleManager
 ---@field public instantiate fun(class: table, super: table, ...: any) クラスをインスタンス化する
 
 Avatar = {
@@ -177,6 +178,10 @@ Avatar = {
 			instance.hypixelZombies:init()
 
 			--生徒固有クラスの読み込み
+			require("scripts.character_scripts.ex_skill_2_melody_particle_manager")
+			require("scripts.character_scripts.ex_skill_2_melody_particle")
+			instance.melodyParticleManager = ExSkill2MelodyParticleManager.new(instance)
+			instance.melodyParticleManager:init()
 
 			--SCRIPT_INITイベントを実行
 			instance.avatarEvents.SCRIPT_INIT:fire()

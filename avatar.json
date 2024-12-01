@@ -154,6 +154,7 @@
 			"parentType": "Item"
 		},
 		"models.models.ex_skill_2.Handbell.Camera": {
+			"visible": false,
 			"primaryRenderType": "CUTOUT_EMISSIVE_SOLID"
 		},
 		"models.models.ex_skill_2.MusicStand": {
@@ -171,6 +172,18 @@
 		"models.models.ex_skill_2.GroundEffect": {
 			"visible": false,
 			"primaryRenderType": "CUTOUT_EMISSIVE_SOLID"
+		},
+		"models.models.ex_skill_2.Notes": {
+			"visible": false
+		},
+		"models.models.ex_skill_2.Notes.Note1": {
+			"primaryRenderType": "EMISSIVE_SOLID"
+		},
+		"models.models.ex_skill_2.Notes.Note2": {
+			"primaryRenderType": "EMISSIVE_SOLID"
+		},
+		"models.models.ex_skill_2.Notes.Note3": {
+			"primaryRenderType": "EMISSIVE_SOLID"
 		},
 		"models.models.costume_christmas.CChristmasH": {
 			"visible": false,

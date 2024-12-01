@@ -503,7 +503,7 @@ BlueArchiveCharacter = {
 
                 formationType = "STRIKER";
 
-                models = {models.models.ex_skill_2.MusicStand, models.models.ex_skill_2.Bag, models.models.ex_skill_2.Presents, models.models.ex_skill_2.StuffedWolf, models.models.ex_skill_2.GroundEffect};
+                models = {models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell.Camera, models.models.ex_skill_2.MusicStand, models.models.ex_skill_2.Bag, models.models.ex_skill_2.Presents, models.models.ex_skill_2.StuffedWolf, models.models.ex_skill_2.GroundEffect};
 
                 animations = {"main", "ex_skill_2"};
 
@@ -539,7 +539,11 @@ BlueArchiveCharacter = {
                     end;
 
                     onAnimationTick = function (self, tick)
-                        if tick == 17 then
+                        if tick == 3 then
+                            self.exSkill[2].spawnHandbellParticles(self)
+                        elseif tick == 13 then
+                            self.exSkill[2].spawnHandbellParticles(self)
+                        elseif tick == 17 then
                             self.parent.faceParts:setEmotion("NORMAL", "INVERTED", "SMILE", 7, true)
                         elseif tick == 24 then
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMILE", 12, true)
@@ -557,6 +561,8 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 5, true)
                         elseif tick == 70 then
                             self.parent.faceParts:setEmotion("NARROW", "NARROW", "SMILE", 44, true)
+                        elseif tick == 71 then
+                            self.exSkill[2].spawnHandbellParticles(self)
                         end
 
                         local melodyParticlePos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.ExSkill2ParticleAnchor1)
@@ -591,6 +597,15 @@ BlueArchiveCharacter = {
                 ---前ティックの楽譜のパーティクルのアンカー方向
                 ---@type Vector3
                 melodyParticleDirPrev = vectors.vec3();
+
+                ---ハンドベルの音符パーティクルを表示する。
+                ---@param self BlueArchiveCharacter
+                spawnHandbellParticles = function (self)
+                    local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell.Camera.HandbellEffect1)
+                    for _ = 1, 5 do
+                        self.parent.melodyParticleManager:spawn(anchorPos, vectors.vec3(), vectors.vec2(0.25, 0.25), vectors.vec3(math.random() * 2 - 1, math.random() * 2 - 1, math.random() * 2 - 1):normalize():scale(0.02), 20, true)
+                    end
+                end;
             }
         }
 
