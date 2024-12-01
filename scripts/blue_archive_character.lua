@@ -540,6 +540,8 @@ BlueArchiveCharacter = {
                         models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setParentType("None")
                         self.exSkill[2].noteParticleSpawnCount = math.random(2, 3)
                         self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 17, true)
+                        pings.selectChristmasSong(math.random(1, 5))
+                        self.costume.costumes[2].bellStage = 1
                     end;
 
                     onAnimationTick = function (self, tick)
@@ -774,7 +776,6 @@ BlueArchiveCharacter = {
                         local isHoldingBell = player:getHeldItem().id == "minecraft:bell"
                         local targetBlock = player:getTargetedBlock(true, 4.5)
                         if player:isSwingingArm() and isHoldingBell and player:getSwingTime() == 0 and (targetBlock.id == "minecraft:air" or targetBlock.id == "minecraft:cave_air" or targetBlock.id == "minecraft:void_air") then
-                            print(self.costume.costumes[2].bellStage)
                             local scale = self.costume.costumes[2].songIndex >= 1 and self.costume.costumes[2].songs[self.costume.costumes[2].songIndex][self.costume.costumes[2].bellStage] or 23
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 1, 2 ^ ((scale - 12) / 12))
                             if self.costume.costumes[2].songIndex >= 1 then
@@ -1080,3 +1081,11 @@ BlueArchiveCharacter = {
         end)
     end;
 }
+
+---Exスキル2後のハンドベルで演奏できるクリスマスソングを決める。
+---@param index integer 曲のインデックス番号
+function pings.selectChristmasSong(index)
+    AvatarInstance.characterData.costume.costumes[2].songIndex = index
+    local songNames = {"Jingle Bells", "We Wish You A Merry Christmas", "Santa Claus is coming to town", "Silent Night", "Joy to the World!"}
+    models.models.ex_skill_2.MusicStand.MusicStandBookHolder:getTask("music_stand_book_holder"):setText(songNames[AvatarInstance.characterData.costume.costumes[2].songIndex])
+end
