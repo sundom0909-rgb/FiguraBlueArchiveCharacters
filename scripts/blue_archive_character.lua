@@ -750,7 +750,7 @@ BlueArchiveCharacter = {
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), playerPos, 1, 0.25)
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), playerPos, 1, 0.5)
                             elseif tick == 170 then
-                                self.parent.compatibilityUtils:setPostEffect()
+                                self.parent.compatibilityUtils.setPostEffect()
                             end
                         elseif tick == 175 then
                             models.models.ex_skill_2.UnderWater.ForCameraOffset.Tuna:moveTo(models.models.ex_skill_2)
@@ -798,7 +798,7 @@ BlueArchiveCharacter = {
                             for _, modelPart in ipairs({models.models.ex_skill_2.UnderWater, models.models.ex_skill_2.Flash}) do
                                 modelPart:setVisible(false)
                             end
-                            self.parent.compatibilityUtils:setPostEffect()
+                            self.parent.compatibilityUtils.setPostEffect()
                         elseif not forcedStop then
                             models.models.main.Avatar:setPos(0, 8, 0)
                         end
