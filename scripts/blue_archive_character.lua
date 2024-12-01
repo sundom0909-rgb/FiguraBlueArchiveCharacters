@@ -535,6 +535,7 @@ BlueArchiveCharacter = {
                         models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setPos()
                         models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setRot()
                         models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setParentType("None")
+                        self.exSkill[2].noteParticleSpawnCount = math.random(2, 3)
                         self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 17, true)
                     end;
 
@@ -576,6 +577,16 @@ BlueArchiveCharacter = {
                                 end
                             end
                         end
+                        if self.exSkill[2].noteParticleSpawnCount == 0 then
+                            local offsetPos = math.random(0, 10) * 0.5
+                            self.parent.melodyParticleManager:spawn(melodyParticlePos:copy():add(melodyParticleDir:copy():scale(offsetPos + (offsetPos >= 2.5 and 0 or 2))), models.models.ex_skill_2.ExSkill2ParticleAnchor1:getAnimRot():mul(-1, 1, -1), vectors.vec2(0.8, 0.8), vectors.vec3(), 60, false)
+                            if offsetPos >= 2.5 then
+                                self.parent.melodyParticleManager.objects[#self.parent.melodyParticleManager.objects].subObject:setScale(1, -1, 1)
+                            end
+                            self.exSkill[2].noteParticleSpawnCount = math.random(2, 3)
+                        else
+                            self.exSkill[2].noteParticleSpawnCount = self.exSkill[2].noteParticleSpawnCount - 1
+                        end
                         self.exSkill[2].melodyParticlePosPrev = melodyParticlePos:copy()
                         self.exSkill[2].melodyParticleDirPrev = melodyParticleDir:copy()
                     end;
@@ -597,6 +608,10 @@ BlueArchiveCharacter = {
                 ---前ティックの楽譜のパーティクルのアンカー方向
                 ---@type Vector3
                 melodyParticleDirPrev = vectors.vec3();
+
+                ---楽譜の音符パーティクルをスポーンさせるまでのカウンター
+                ---@type integer
+                noteParticleSpawnCount = 0;
 
                 ---ハンドベルの音符パーティクルを表示する。
                 ---@param self BlueArchiveCharacter

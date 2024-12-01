@@ -1,5 +1,6 @@
 ---@class (exact) ExSkill2MelodyParticle : SpawnObject Exスキル2で使用する音符の独自パーティクルのクラス
 ---@field package object ModelPart インスタンスで制御するモデルパーツ
+---@field public subObject ModelPart インスタンスで制御するサブモデルパーツ
 ---@field package currentPos Vector3 現ティックのパーティクルの位置
 ---@field package nextPos Vector3 次ティックのパーティクルの位置
 ---@field package rot Vector3 パーティクルの向き
@@ -23,7 +24,8 @@ ExSkill2MelodyParticle = {
         ---@type ExSkill2MelodyParticle
         local instance = Avatar.instantiate(ExSkill2MelodyParticle, SpawnObject, parent)
 
-        instance.object = models.models.ex_skill_2.Notes["Note"..math.random(1, 3)]:copy(instance.uuid)
+        instance.object = models.script_ex_skill_2_melody_particle:newPart(instance.uuid)
+        instance.subObject = models.models.ex_skill_2.Notes["Note"..math.random(1, 3)]:copy(client.intUUIDToString(client.generateUUID()))
         instance.currentPos = pos:copy()
         instance.nextPos = instance.currentPos:copy()
         instance.rot = rot:copy()
@@ -35,16 +37,19 @@ ExSkill2MelodyParticle = {
         instance.callbacks = {
             ---@param self ExSkill2MelodyParticle
             onInit = function (self)
-                self.object:setVisible(true)
-                self.object:setScale(self.size:copy():augmented(1))
+                self.subObject:setVisible(true)
+                self.subObject:setScale(self.size:copy():augmented(1))
                 if not self.shouldSeeCamera then
-                    self.object:setRot(self.rot)
+                    self.object:setRot(0, player:getBodyYaw() * -1, 0)
+                    self.subObject:setRot(self.rot)
                 end
-                models.script_ex_skill_2_melody_particle:addChild(instance.object)
+                self.object:addChild(self.subObject)
             end;
 
             ---@param self ExSkill2MelodyParticle
             onDeinit = function (self)
+                self.object:removeChild(self.subObject)
+                self.subObject:remove()
                 models.script_ex_skill_2_melody_particle:removeChild(self.object)
                 self.object:remove()
             end;

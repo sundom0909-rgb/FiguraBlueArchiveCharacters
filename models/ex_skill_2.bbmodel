@@ -4724,7 +4724,7 @@
 			"uuid": "95bdcf2b-d165-b0b0-3430-544358e69f4a",
 			"export": true,
 			"mirror_uv": false,
-			"isOpen": true,
+			"isOpen": false,
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
@@ -6132,6 +6132,25 @@
 							],
 							"uuid": "62520758-702c-03a4-2eb5-ccdd0ac67a9c",
 							"time": 5.6,
+							"color": -1,
+							"interpolation": "catmullrom",
+							"bezier_linked": true,
+							"bezier_left_time": [-0.1, -0.1, -0.1],
+							"bezier_left_value": [0, 0, 0],
+							"bezier_right_time": [0.1, 0.1, 0.1],
+							"bezier_right_value": [0, 0, 0]
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": 187.68176,
+									"y": -24.80948,
+									"z": -237.02505
+								}
+							],
+							"uuid": "d8106e1c-e840-3e9c-3521-5a050bdfe23a",
+							"time": 1.1,
 							"color": -1,
 							"interpolation": "catmullrom",
 							"bezier_linked": true,
