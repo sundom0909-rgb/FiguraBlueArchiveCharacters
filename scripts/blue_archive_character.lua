@@ -522,7 +522,7 @@ BlueArchiveCharacter = {
                 callbacks = {
                     onPreAnimation = function (self)
                         if not self.exSkill[2].init then
-                            models.models.ex_skill_2.MusicStand.MusicStandBookHolder:newText("music_stand_book_holder"):setText("§8Cherry Berry Merry"):setPos(3, 2.5, -1):setScale(0.03, 0.03, 0.03):setAlignment("CENTER")
+                            models.models.ex_skill_2.MusicStand.MusicStandBookHolder:newText("music_stand_book_holder"):setText("§7Cherry Berry Merry"):setPos(3, 2.5, -1):setScale(0.03, 0.03, 0.03):setWrap(true):setWidth(120):setAlignment("CENTER")
                             self.exSkill[2].init = true
                         end
                         events.RENDER:register(function ()
@@ -1087,5 +1087,5 @@ BlueArchiveCharacter = {
 function pings.selectChristmasSong(index)
     AvatarInstance.characterData.costume.costumes[2].songIndex = index
     local songNames = {"Jingle Bells", "We Wish You A Merry Christmas", "Santa Claus is coming to town", "Silent Night", "Joy to the World!"}
-    models.models.ex_skill_2.MusicStand.MusicStandBookHolder:getTask("music_stand_book_holder"):setText(songNames[AvatarInstance.characterData.costume.costumes[2].songIndex])
+    models.models.ex_skill_2.MusicStand.MusicStandBookHolder:getTask("music_stand_book_holder"):setText("§7"..songNames[AvatarInstance.characterData.costume.costumes[2].songIndex])
 end
