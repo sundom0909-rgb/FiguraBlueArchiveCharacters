@@ -734,7 +734,7 @@ BlueArchiveCharacter = {
                         elseif tick == 150 then
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED", 8, true)
                             if host:isHost() then
-                                renderer:setPostEffect("phosphor")
+                                self.parent.compatibilityUtils.setPostEffect("phosphor")
                             end
                         elseif tick == 157 then
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), player:getPos(), 0.5, 2)
@@ -750,7 +750,7 @@ BlueArchiveCharacter = {
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), playerPos, 1, 0.25)
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), playerPos, 1, 0.5)
                             elseif tick == 170 then
-                                renderer:setPostEffect()
+                                self.parent.compatibilityUtils:setPostEffect()
                             end
                         elseif tick == 175 then
                             models.models.ex_skill_2.UnderWater.ForCameraOffset.Tuna:moveTo(models.models.ex_skill_2)
@@ -798,7 +798,7 @@ BlueArchiveCharacter = {
                             for _, modelPart in ipairs({models.models.ex_skill_2.UnderWater, models.models.ex_skill_2.Flash}) do
                                 modelPart:setVisible(false)
                             end
-                            renderer:setPostEffect()
+                            self.parent.compatibilityUtils:setPostEffect()
                         elseif not forcedStop then
                             models.models.main.Avatar:setPos(0, 8, 0)
                         end
