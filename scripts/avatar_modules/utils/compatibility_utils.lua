@@ -15,6 +15,7 @@
 ---@field public checkSound fun(self: CompatibilityUtils, sound: Minecraft.soundID): Minecraft.soundID 指定されたサウンドIDがレジストリに登録されているか確認する。レジストリに未登録の場合は"minecraft:empty"を返す。
 ---@field public getBlockParticleId fun(block: Minecraft.blockID): string ブロックの破片のパーティクルを示す文字列を返す。Minecraftのバージョン違いを吸収するための関数。
 ---@field public getDustParticleId fun(color: Vector3, size: number): string dustパーティクルを示す文字列を返す。Minecraftのバージョン違いを吸収するための関数。
+---@field public setPostEffect fun(effect: Minecraft.shaderName) renderer:setPostEffect()のラッパー関数。1.20.5でレンダーエフェクトが削除されたことによる対応。
 
 CompatibilityUtils = {
     ---コンストラクタ
@@ -154,6 +155,15 @@ CompatibilityUtils = {
     ---@param size number dustの大きさ
     ---@return string particleData dustの破片のパーティクルを示す文字列
     getDustParticleId = function (color, size)
-        return client:getVersion() >= "1.20.5" and "minecraft:dust{color:["..color.x..","..color.y..","..color.z.."],scale:"..size.."}" or "minecraft:dust "..color.x.." "..color.y.." "..color.z.." "..size
+        return client:getVersion() >= "1.20.5" and "minecraft:dust{color:["..color.x..","..color.y..","..color.z.."],scale:"..math.clamp(size, 0.01, 4).."}" or "minecraft:dust "..color.x.." "..color.y.." "..color.z.." "..size
+    end;
+
+    ---renderer:setPostEffect()のラッパー関数
+    ---1.20.5でレンダーエフェクトが削除されたことによる対応
+    ---@param effect? Minecraft.shaderName 適用するエフェクト
+    setPostEffect = function (effect)
+        if client:getVersion() < "1.20.5" then
+            renderer:setPostEffect(effect)
+        end
     end;
 }
