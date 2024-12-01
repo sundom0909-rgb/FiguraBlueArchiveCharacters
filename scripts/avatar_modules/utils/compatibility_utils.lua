@@ -154,6 +154,6 @@ CompatibilityUtils = {
     ---@param size number dustの大きさ
     ---@return string particleData dustの破片のパーティクルを示す文字列
     getDustParticleId = function (color, size)
-        return client:getVersion() >= "1.20.5" and "minecraft:dust{color:["..color.x..","..color.y..","..color.z.."],scale:"..size.."}" or "minecraft:dust "..color.x.." "..color.y.." "..color.z.." "..size
+        return client:getVersion() >= "1.20.5" and "minecraft:dust{color:["..color.x..","..color.y..","..color.z.."],scale:"..math.clamp(size, 0.01, 4).."}" or "minecraft:dust "..color.x.." "..color.y.." "..color.z.." "..size
     end;
 }
