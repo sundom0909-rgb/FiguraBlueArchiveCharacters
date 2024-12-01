@@ -450,14 +450,15 @@ BlueArchiveCharacter = {
                             models.models.main.CameraBackground.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(40))
                             models.models.main.Avatar:setColor(0, 0, 0)
                             self.parent.textObjectManager:setBlack(true)
-                            renderer:setPostEffect("invert")
+
+                            self.parent.compatibilityUtils.setPostEffect("invert")
                         elseif tick == 51 then
                             self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "CIRCLE", 10, true)
                         elseif tick == 53 and host:isHost() then
                             models.models.main.CameraBackground:setVisible(false)
                             models.models.main.Avatar:setColor(1, 1, 1)
                             self.parent.textObjectManager:setBlack(false)
-                            renderer:setPostEffect()
+                            self.parent.compatibilityUtils.setPostEffect()
                         elseif tick == 58 then
                             local playerPos = player:getPos()
                             for _ = 1, 70 do
@@ -554,9 +555,9 @@ BlueArchiveCharacter = {
                             end
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.bat.takeoff"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 2)
                         elseif tick == 28 then
-                            renderer:setPostEffect("phosphor")
+                            self.parent.compatibilityUtils.setPostEffect("phosphor")
                         elseif tick == 38 then
-                            renderer:setPostEffect()
+                            self.parent.compatibilityUtils.setPostEffect()
                         elseif tick == 43 then
                             models.models.main.Avatar:setVisible(true)
                             self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "SMILE", 42, true)
@@ -594,9 +595,9 @@ BlueArchiveCharacter = {
                                 modelPart:setColor(0, 0, 0)
                             end
                         elseif tick == 80 then
-                            renderer:setPostEffect("invert")
+                            self.parent.compatibilityUtils.setPostEffect("invert")
                         elseif tick == 84 then
-                            renderer:setPostEffect()
+                            self.parent.compatibilityUtils.setPostEffect()
                         elseif tick == 85 then
                             self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "OPENED", 16, true)
                             models.models.costume_swimsuit.BeachBall:setUVPixels(0, 7)
@@ -659,7 +660,7 @@ BlueArchiveCharacter = {
                                 for _, modelPart in ipairs({models.models.main.Avatar, models.models.costume_swimsuit.BeachBall}) do
                                     modelPart:setColor()
                                 end
-                                renderer:setPostEffect()
+                                self.parent.compatibilityUtils.setPostEffect()
                             end
                         end
                     end;
