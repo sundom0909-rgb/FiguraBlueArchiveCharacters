@@ -590,7 +590,7 @@ BlueArchiveCharacter = {
                             particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:soul"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head.FaceParts.Mouth):add(vectors.rotateAroundAxis(-bodyYaw, 0.1, 0.17, 0.35, 0, 1, 0))):setScale(0.75):setVelocity(vectors.rotateAroundAxis(-bodyYaw, -0.01, 0, 0, 0, 1, 0)):setLifetime(40)
                             local playerPos = player:getPos()
                             for _ = 1, 50 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:entity_effect"), playerPos:copy():add(math.random() * 1.5 - 0.75, math.random() * 1.5 + 0.5, math.random() * 1.5 - 0.75)):setGravity(0.1):setLifetime(40)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:effect"), playerPos:copy():add(math.random() * 1.5 - 0.75, math.random() * 1.5 + 0.5, math.random() * 1.5 - 0.75)):setColor(0.1, 0.1, 0.1):setGravity(0.1):setLifetime(40)
                             end
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.beacon.deactivate"), playerPos, 1, 2)
                         end
