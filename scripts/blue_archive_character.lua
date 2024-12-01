@@ -545,6 +545,9 @@ BlueArchiveCharacter = {
                     onAnimationTick = function (self, tick)
                         if tick == 3 then
                             self.exSkill[2].spawnHandbellParticles(self)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 1, 1.887749)
+                        elseif tick == 6 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 0.25, 1.887749)
                         elseif tick == 13 then
                             self.exSkill[2].spawnHandbellParticles(self)
                         elseif tick == 17 then
@@ -564,10 +567,16 @@ BlueArchiveCharacter = {
                                 local windowSize = client:getScaledWindowSize()
                                 models.models.ex_skill_2.Gui.Frame:setScale(windowSize.x, windowSize.y, 1)
                             end
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 1, 1.887749)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 0.5, 0.943874)
+                        elseif tick == 44 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 0.75, 1.887749)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 0.375, 0.943874)
                         elseif tick == 45 then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", 14, true)
                         elseif tick == 50 then
                             models.models.ex_skill_2.GroundEffect:setVisible(false)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 0.5, 1.887749)
                         elseif tick == 59 then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 6, true)
                         elseif tick == 65 then
@@ -576,6 +585,9 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("NARROW", "NARROW", "SMILE", 44, true)
                         elseif tick == 71 then
                             self.exSkill[2].spawnHandbellParticles(self)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 1, 1.887749)
+                        elseif tick == 74 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 0.25, 1.887749)
                         end
 
                         local melodyParticlePos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.ExSkill2ParticleAnchor1)
