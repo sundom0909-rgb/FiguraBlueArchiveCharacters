@@ -503,7 +503,7 @@ BlueArchiveCharacter = {
 
                 formationType = "STRIKER";
 
-                models = {models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell.Camera, models.models.ex_skill_2.MusicStand, models.models.ex_skill_2.Bag, models.models.ex_skill_2.Presents, models.models.ex_skill_2.StuffedWolf, models.models.ex_skill_2.GroundEffect};
+                models = {models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell.Camera, models.models.ex_skill_2.MusicStand, models.models.ex_skill_2.Bag, models.models.ex_skill_2.Presents, models.models.ex_skill_2.StuffedWolf, models.models.ex_skill_2.GroundEffect, models.models.ex_skill_2.Gui};
 
                 animations = {"main", "ex_skill_2"};
 
@@ -531,6 +531,9 @@ BlueArchiveCharacter = {
                                 modelPart:setOpacity(opacity)
                                 modelPart:setColor(vectors.vec3(1, 1, 1):scale(opacity))
                             end
+                            if host:isHost() then
+                                models.models.ex_skill_2.Gui.Frame:setOpacity(models.models.ex_skill_2.Gui.FrameOpacity:getAnimScale().x)
+                            end
                         end, "ex_skill_2_render")
                         models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setPos()
                         models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setRot()
@@ -552,6 +555,15 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("NORMAL", "CENTER", "OPENED_SMALL", 5, true)
                         elseif tick == 41 then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 4, true)
+                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head):add(0, 0.25, 0)
+                            local bodyYaw = player:getBodyYaw()
+                            for i = 0, 7 do
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:end_rod"), anchorPos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, math.cos(i / 4 * math.pi) * 0.075, math.sin(i / 4 * math.pi) * 0.075, 0, 0, 1, 0)):setScale(2):setColor(1, 0.443, 0.631):setLifetime(20)
+                            end
+                            if host:isHost() then
+                                local windowSize = client:getScaledWindowSize()
+                                models.models.ex_skill_2.Gui.Frame:setScale(windowSize.x, windowSize.y, 1)
+                            end
                         elseif tick == 45 then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", 14, true)
                         elseif tick == 50 then
