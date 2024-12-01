@@ -900,12 +900,12 @@ BlueArchiveCharacter = {
                         elseif tick == 21 then
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.anvil.place"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Shield), 0.15, 2)
                         elseif tick == 23 and host:isHost() then
-                            renderer:setPostEffect("phosphor")
+                            self.parent.compatibilityUtils.setPostEffect("phosphor")
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), self.parent.modelUtils.getModelWorldPos(models.models.main.CameraAnchor), 0.15, 0.5)
                         elseif tick == 36 then
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.vindicator.ambient"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_3.Illagers.Vindicator1), 1, 1)
                         elseif tick == 38 and host:isHost() then
-                            renderer:setPostEffect()
+                            self.parent.compatibilityUtils.setPostEffect()
                         elseif tick == 42 then
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.ravager.roar"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_3.Illagers.Ravager), 1, 1)
                         elseif tick == 46 then
@@ -1001,7 +1001,7 @@ BlueArchiveCharacter = {
                             end
                             models.models.ex_skill_3.Gui.Filter:setUVPixels()
                             if host:isHost() then
-                                renderer:setPostEffect()
+                                self.parent.compatibilityUtils.setPostEffect()
                                 models.models.ex_skill_3.Gui:setVisible(false)
                             end
                         end
@@ -1085,12 +1085,12 @@ BlueArchiveCharacter = {
                         elseif tick == 50 then
                             models.models.main.Avatar.Head.EyeShine:setVisible(true)
                         elseif tick == 52 and host:isHost() then
-                            renderer:setPostEffect("phosphor")
+                            self.parent.compatibilityUtils.setPostEffect("phosphor")
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 0.5)
                         elseif tick == 59 then
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 16, true)
                             if host:isHost() then
-                                renderer:setPostEffect()
+                                self.parent.compatibilityUtils.setPostEffect()
                             end
                         elseif tick == 66 then
                             models.models.main.Avatar.Head.EyeShine:setVisible(false)
@@ -1189,7 +1189,7 @@ BlueArchiveCharacter = {
                         if forcedStop then
                             models.models.main.Avatar.Head.EyeShine:setVisible(false)
                             if host:isHost() then
-                                renderer:setPostEffect()
+                                self.parent.compatibilityUtils.setPostEffect()
                             end
                         end
                     end;
