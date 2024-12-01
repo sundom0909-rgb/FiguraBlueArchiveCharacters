@@ -711,15 +711,36 @@ BlueArchiveCharacter = {
                     ---@type boolean
                     init = false;
 
-                    ---クリスマスシーズン（12/24 ~ 12/26）はtrueにする。
-                    ---@type boolean
-                    isChristmas = false;
+                    ---ハンドベルで演奏する曲データ
+                    ---音階をintegerで表す。
+                    ---@type integer[][]
+                    songs = {
+                        -- 1. ジングルベル（Jingle Bells） - https://youtu.be/iyj1SJ5QhjE?si=WEVd-lbmTmJrSlFV
+                        {6, 6, 15, 13, 11, 6, 6, 6, 15, 13, 11, 8, 8, 8, 16, 15, 13, 10, 18, 20, 18, 16, 13, 15, 6, 6, 15, 13, 11, 6, 6, 6, 15, 13, 11, 8, 8, 8, 16, 15, 13, 18, 18, 18, 18, 20, 18, 16, 13, 11, 15, 15, 15, 15, 15, 15, 15, 15, 18, 11, 13, 15, 16, 16, 16, 16, 16, 15, 15, 15, 15, 13, 13, 11, 13, 18, 15, 15, 15, 15, 15, 15, 15, 18, 11, 13, 15, 16, 16, 16, 16, 16, 15, 15, 15, 18, 18, 16, 13, 11};
+
+                        -- 2. We Wish You A Merry Christmas - https://youtu.be/qzLf6vkgCYA?si=FnAuabFiLweN5mgf
+                        {8, 13, 13, 15, 13, 12, 10, 10, 10, 15, 15, 17, 15, 13, 12, 8, 8, 17, 17, 18, 17, 15, 13, 10, 8, 8, 10, 15, 12, 13, 8, 13, 13, 13, 12, 12, 13, 12, 10, 8, 15, 17, 15, 13, 20, 8, 8, 8, 10, 15, 12, 13};
+
+                        -- 3. サンタが街にやってくる（Santa Claus is coming to town）- https://youtu.be/fm-YVXMjZw4?si=GIh685jacZ1e8A5V
+                        {13, 10, 11, 13, 13, 13, 15, 17, 18, 18, 10, 11, 13, 13, 13, 15, 13, 11, 11, 10, 13, 6, 10, 8, 11, 5, 6, 13, 10, 11, 13, 13, 13, 15, 17, 18, 18, 10, 11, 13, 13, 13, 15, 13, 11, 11, 10, 13, 6, 10, 8, 11, 5, 6, 18, 20, 18, 17, 18, 15, 15, 18, 20, 18, 17, 18, 15, 20, 22, 20, 19, 20, 17, 17, 17, 17, 18, 20, 18, 17, 15, 13, 13, 13, 10, 11, 13, 13, 13, 15, 17, 18, 18, 10, 11, 13, 13, 13, 15, 13, 11, 11, 10, 13, 6, 10, 8, 11, 20, 18, 30};
+
+                        -- 4. きよしこの夜（Silent Night） - https://youtu.be/IgTv3Osi_oU?si=XdnJgwDeH2jeXDl0
+                        {13, 15, 13, 10, 13, 15, 13, 10, 20, 20, 17, 18, 18, 13, 15, 15, 18, 17, 15, 13, 15, 13, 10, 15, 15, 18, 17, 15, 13, 15, 13, 10, 20, 20, 23, 20, 17, 18, 22, 18, 13, 10, 13, 11, 8, 6};
+
+                        -- 5. もろびとこぞりて（Joy to the World!） - https://youtu.be/Zk9AB0RfubI?si=Q_O7tJA_-fpgZ73b
+                        {20, 19, 17, 15, 13, 12, 10, 8, 15, 17, 17, 19, 19, 20, 20, 20, 19, 17, 15, 15, 13, 12, 20, 20, 19, 17, 15, 15, 13, 12, 12, 12, 12, 12, 13, 15, 13, 12, 10, 10, 10, 10, 12, 13, 12, 10, 8, 20, 17, 15, 13, 12, 13, 12, 10, 8};
+                    };
+
+                    ---ハンドベルで演奏する曲のインデックス番号
+                    ---0では固定音を出す。
+                    ---@type integer
+                    songIndex = 0;
 
                     ---ハンドベルの音の高さを決める値
                     ---普段は0固定だが、クリスマスシーズン（12/24 ~ 12/26）のみ、初期値を1とし、ベルを鳴らす度にインクリメントする。
                     ---普段の音は固定だが、クリスマスシーズンのみは曲になるようにする。
                     ---@type integer
-                    bellStage = 0;
+                    bellStage = 1;
                 };
             };
 
@@ -749,42 +770,24 @@ BlueArchiveCharacter = {
                         models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell.Handbell2_Bottom:setPrimaryTexture("RESOURCE", "minecraft:textures/block/bell_bottom.png")
                         self.costume.costumes[2].init = true
                     end
-                    local today = client:getDate()
-                    self.costume.costumes[2].isChristmas = today.month == 12 and today.day >= 24 and today.day <= 26
-                    --self.costume.costumes[2].isChristmas = true
-                    self.costume.costumes[2].bellStage = self.costume.costumes[2].isChristmas and 1 or 0
                     events.TICK:register(function ()
                         local isHoldingBell = player:getHeldItem().id == "minecraft:bell"
                         local targetBlock = player:getTargetedBlock(true, 4.5)
                         if player:isSwingingArm() and isHoldingBell and player:getSwingTime() == 0 and (targetBlock.id == "minecraft:air" or targetBlock.id == "minecraft:cave_air" or targetBlock.id == "minecraft:void_air") then
-                            local pitch = 1.259921
-                            if (self.costume.costumes[2].bellStage >= 1 and self.costume.costumes[2].bellStage <= 7) or self.costume.costumes[2].bellStage == 11 or (self.costume.costumes[2].bellStage >= 17 and self.costume.costumes[2].bellStage <= 19) or (self.costume.costumes[2].bellStage >= 26 and self.costume.costumes[2].bellStage <= 32) or self.costume.costumes[2].bellStage == 36 or (self.costume.costumes[2].bellStage >= 42 and self.costume.costumes[2].bellStage <= 44) then
-                                --ラ
-                                pitch = 1.189207
-                            elseif self.costume.costumes[2].bellStage == 8 or self.costume.costumes[2].bellStage == 25 or self.costume.costumes[2].bellStage == 33 or (self.costume.costumes[2].bellStage >= 45 and self.costume.costumes[2].bellStage <= 46) then
-                                --ド
-                                pitch = 1.414214
-                            elseif self.costume.costumes[2].bellStage == 9 or self.costume.costumes[2].bellStage == 23 or self.costume.costumes[2].bellStage == 34 or self.costume.costumes[2].bellStage == 49 then
-                                --ファ
-                                pitch = 0.943874
-                            elseif self.costume.costumes[2].bellStage == 10 or (self.costume.costumes[2].bellStage >= 20 and self.costume.costumes[2].bellStage <= 22) or self.costume.costumes[2].bellStage == 24 or self.costume.costumes[2].bellStage == 35 or self.costume.costumes[2].bellStage == 48 then
-                                --ソ
-                                pitch = 1.059463
-                            elseif self.costume.costumes[2].bellStage == 50 then
-                                --ファ↑
-                                pitch = 1.887749
-                            end
-                            sounds:playSound("minecraft:block.note_block.chime", player:getPos(), 1, pitch)
-                            if self.costume.costumes[2].isChristmas then
-                                self.costume.costumes[2].bellStage = self.costume.costumes[2].bellStage + 1
-                                if self.costume.costumes[2].bellStage == 51 then
+                            print(self.costume.costumes[2].bellStage)
+                            local scale = self.costume.costumes[2].songIndex >= 1 and self.costume.costumes[2].songs[self.costume.costumes[2].songIndex][self.costume.costumes[2].bellStage] or 23
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 1, 2 ^ ((scale - 12) / 12))
+                            if self.costume.costumes[2].songIndex >= 1 then
+                                if self.costume.costumes[2].bellStage == #self.costume.costumes[2].songs[self.costume.costumes[2].songIndex] then
                                     self.costume.costumes[2].bellStage = 1
+                                else
+                                    self.costume.costumes[2].bellStage = self.costume.costumes[2].bellStage + 1
                                 end
                             else
-                                self.costume.costumes[2].bellStage = 0
+                                self.costume.costumes[2].bellStage = 1
                             end
                         elseif not isHoldingBell then
-                            self.costume.costumes[2].bellStage = self.costume.costumes[2].isChristmas and 1 or 0
+                            self.costume.costumes[2].bellStage = 1
                         end
                     end, "costume_christmas_hand_bell_tick")
                     events.ITEM_RENDER:register(function (item, mode)

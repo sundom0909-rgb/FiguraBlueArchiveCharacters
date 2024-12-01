@@ -31,7 +31,7 @@ ExSkill = {
         ---@type ExSkill
         local instance = Avatar.instantiate(ExSkill, AvatarModule, parent)
 
-        instance.AUTO_PLAY = "MAIN"
+        instance.AUTO_PLAY = "NONE"
 
         instance.frameParticleAmount = instance.parent.config:loadConfig("exSkillFrameParticleAmount", 1)
         instance.exSkillIndex = 1
@@ -265,7 +265,7 @@ ExSkill = {
 
         self.parent.bubble:stop()
         renderer:setFOV(70 / client:getFOV())
-        renderer:setRenderHUD(false)
+        --renderer:setRenderHUD(false)
         self.parent.cameraManager:setCameraCollisionDenial(true)
         models.models.ex_skill_frame.Gui:setColor(self.parent.characterData.exSkill[self.exSkillIndex].formationType == "STRIKER" and vectors.vec3(1, 0.75, 0.75) or vectors.vec3(0.75, 1, 1))
         sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 5, 2)
