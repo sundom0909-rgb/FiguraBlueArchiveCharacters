@@ -37,6 +37,7 @@
 
 ---@alias BlueArchiveCharacter.Costumes
 ---| "DEFAULT" # デフォルト衣装
+---| "CHRISTMAS" # クリスマス
 
 --[[ ******************************** ]]
 
@@ -836,9 +837,15 @@ BlueArchiveCharacter = {
 
                 onArmorChange = function (self, parts, isVisible)
                     if parts == "HELMET" then
-                        models.models.main.Avatar.Head.NurseCap:setVisible(not isVisible)
+                        if self.parent.costume.currentCostume == 1 then
+                            models.models.main.Avatar.Head.NurseCap:setVisible(not isVisible)
+                        else
+                            for _, modelPart in ipairs({models.models.main.Avatar.Head.CChristmasH.Hat, models.models.main.Avatar.Head.CChristmasH.Bun}) do
+                                modelPart:setVisible(not isVisible)
+                            end
+                        end
                     elseif parts == "CHEST_PLATE" then
-                        models.models.main.Avatar.UpperBody.Body.Bag:setVisible(not isVisible)
+                        models.models.main.Avatar.UpperBody.Body.Bag:setVisible(not isVisible and self.parent.costume.currentCostume == 1)
                     elseif parts == "LEGGINGS" then
                         models.models.main.Avatar.UpperBody.Body.Skirt:setVisible(not isVisible)
                     end
