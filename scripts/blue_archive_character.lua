@@ -22,6 +22,7 @@
 ---| "SMILE" # にっこり
 ---| "OPENED_SMALL" # 小さく開いた口
 ---| "OPENED" # 開いた口
+---| "SAD" # への口
 
 ---@alias BlueArchiveCharacter.GunHoldType
 ---| "NORMAL" # バニラの弓やクロスボウの構え方と同じ
@@ -323,6 +324,7 @@ BlueArchiveCharacter = {
                 TIRED = vectors.vec2(1, 0);
                 OPENED_SMALL = vectors.vec2(2, 0);
                 OPENED = vectors.vec2(3, 0);
+                SAD = vectors.vec2(0, 1)
             };
         }
 
@@ -854,7 +856,29 @@ BlueArchiveCharacter = {
         }
 
         instance.bubble = {
+            callbacks = {
+                onPlay = function (self, type, duration)
+                    if duration > 0 then
+                        if type == "GOOD" then
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", duration, true)
+                        elseif type == "HEART" then
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", duration, true)
+                        elseif type == "NOTE" then
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED_SMALL", duration, true)
+                        elseif type == "QUESTION" then
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "TIRED", duration, true)
+                        elseif type == "SWEAT" then
+                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SAD", duration, true)
+                        end
+                    end
+                end;
 
+                onStop = function (self, _, forcedStop)
+                    if not forcedStop then
+                        self.parent.faceParts:resetEmotion()
+                    end
+                end;
+            };
         }
 
         instance.headBlock = {
