@@ -498,6 +498,7 @@ BlueArchiveCharacter = {
                             if host:isHost() then
                                 models.models.main.CameraBackground:setVisible(false)
                                 models.models.main.Avatar:setColor(1, 1, 1)
+                                self.parent.compatibilityUtils.setPostEffect()
                             end
                         end
                     end;
@@ -647,7 +648,7 @@ BlueArchiveCharacter = {
                         end
                     end;
 
-                    onPostAnimation = function (_, forcedStop)
+                    onPostAnimation = function (self, forcedStop)
                         models.models.main.Avatar:setVisible(true)
                         models.models.costume_swimsuit.BeachBall:setUVPixels()
                         models.models.costume_swimsuit.BeachBall:setPrimaryRenderType("CUTOUT")
