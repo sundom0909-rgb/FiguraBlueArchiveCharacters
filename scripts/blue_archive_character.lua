@@ -868,18 +868,31 @@ BlueArchiveCharacter = {
         instance.deathAnimation = {
             callbacks = {
                 onPhase1 = function (_, dummyAvatar, costume)
-                    for _, modelPart in ipairs({dummyAvatar.Head.HairTail, dummyAvatar.Head.HairTailRibbon.HairTailRibbonTip1, dummyAvatar.Head.HairTailRibbon.HairTailRibbonTip2, dummyAvatar.UpperBody.Body.Skirt}) do
-                        modelPart:setRot(30, 0, 0)
+                    if costume == "DEFAULT" then
+                        for _, modelPart in ipairs({dummyAvatar.Head.HairTail, dummyAvatar.Head.HairTailRibbon.HairTailRibbonTip1, dummyAvatar.Head.HairTailRibbon.HairTailRibbonTip2}) do
+                            modelPart:setRot(30, 0, 0)
+                        end
                     end
+                    dummyAvatar.UpperBody.Body.Skirt:setRot(30, 0, 0)
                     dummyAvatar.Head.Feather:setRot(55, 0, 0)
                 end;
 
                 onPhase2 = function (_, dummyAvatar, costume)
-                    for _, modelPart in ipairs({dummyAvatar.Head.HairTail, dummyAvatar.Head.HairTailRibbon.HairTailRibbonTip1, dummyAvatar.Head.HairTailRibbon.HairTailRibbonTip2}) do
-                        modelPart:setRot(-20, 0, 0)
+                    if costume == "DEFAULT" then
+                        for _, modelPart in ipairs({dummyAvatar.Head.HairTail, dummyAvatar.Head.HairTailRibbon.HairTailRibbonTip1, dummyAvatar.Head.HairTailRibbon.HairTailRibbonTip2}) do
+                            modelPart:setRot(-20, 0, 0)
+                        end
                     end
                     dummyAvatar.LowerBody.Legs.RightLeg.RightLegBottom:setPivot(2, 6, -2)
                     dummyAvatar.Head.Feather:setRot(-20, 0, 0)
+                end;
+
+                onBeforeModelCopy = function ()
+                    models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setVisible(false)
+                end;
+
+                onAfterModelCopy = function ()
+                    models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setVisible(true)
                 end;
             };
         }
