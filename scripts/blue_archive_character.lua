@@ -558,6 +558,20 @@ BlueArchiveCharacter = {
                         elseif tick == 70 then
                             self.parent.faceParts:setEmotion("NARROW", "NARROW", "SMILE", 44, true)
                         end
+
+                        local melodyParticlePos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.ExSkill2ParticleAnchor1)
+                        local melodyParticleDir = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.ExSkill2ParticleAnchor1.ExSkill2ParticleAnchor2):sub(melodyParticlePos):normalize():scale(0.1)
+                        if tick >= 1 then
+                            for i = 1, 8 do
+                                local offsetPos = melodyParticlePos:copy():sub(self.exSkill[2].melodyParticlePosPrev):scale(0.125 * i)
+                                local offsetDir = melodyParticleDir:copy():sub(self.exSkill[2].melodyParticleDirPrev):scale(0.125 * i)
+                                for j = 1, 5 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), self.exSkill[2].melodyParticlePosPrev:copy():add(offsetPos):add(self.exSkill[2].melodyParticleDirPrev:copy():add(offsetDir):normalize():scale(0.1 * j))):setScale(0.1):setColor(1, 0.902, 0.576):setGravity(0)
+                                end
+                            end
+                        end
+                        self.exSkill[2].melodyParticlePosPrev = melodyParticlePos:copy()
+                        self.exSkill[2].melodyParticleDirPrev = melodyParticleDir:copy()
                     end;
 
                     onPostAnimation = function (self, forcedStop)
@@ -569,6 +583,14 @@ BlueArchiveCharacter = {
                 ---このExスキルの初期化処理が行われたかどうか
                 ---@type boolean
                 init = false;
+
+                ---前ティックの楽譜のパーティクルのアンカー位置
+                ---@type Vector3
+                melodyParticlePosPrev = vectors.vec3();
+
+                ---前ティックの楽譜のパーティクルのアンカー方向
+                ---@type Vector3
+                melodyParticleDirPrev = vectors.vec3();
             }
         }
 
