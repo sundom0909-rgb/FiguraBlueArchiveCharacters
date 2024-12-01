@@ -790,8 +790,10 @@ BlueArchiveCharacter = {
                             else
                                 self.costume.costumes[2].bellStage = 1
                             end
+                            self.dataSync.syncData.bellStage = self.costume.costumes[2].bellStage
                         elseif not isHoldingBell then
                             self.costume.costumes[2].bellStage = 1
+                            self.dataSync.syncData.bellStage = 1
                         end
                     end, "costume_christmas_hand_bell_tick")
                     events.ITEM_RENDER:register(function (item, mode)
@@ -1081,11 +1083,15 @@ BlueArchiveCharacter = {
 
         instance.dataSync = {
             syncData = {
-
+                songIndex = 1;
+                bellStage = 1;
             };
 
             callbacks = {
-
+                onDataSynced = function (self)
+                    self.costume.costumes[2].songIndex = self.dataSync.syncData.songIndex
+                    self.costume.costumes[2].bellStage = self.dataSync.syncData.bellStage
+                end;
             };
         }
 
@@ -1131,5 +1137,11 @@ BlueArchiveCharacter = {
 function pings.selectChristmasSong(index)
     AvatarInstance.characterData.costume.costumes[2].songIndex = index
     local songNames = {"Jingle Bells", "We Wish You A Merry Christmas", "Santa Claus is coming to town", "Silent Night", "Joy to the World!"}
-    models.models.ex_skill_2.MusicStand.MusicStandBookHolder:getTask("music_stand_book_holder"):setText("§8"..songNames[AvatarInstance.characterData.costume.costumes[2].songIndex])
+    local task = models.models.ex_skill_2.MusicStand.MusicStandBookHolder:getTask("music_stand_book_holder")
+    if task ~= nil then
+        task:setText("§8"..songNames[AvatarInstance.characterData.costume.costumes[2].songIndex])
+    end
+    if host:isHost() then
+        AvatarInstance.characterData.dataSync.syncData.songIndex = index
+    end
 end
