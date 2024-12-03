@@ -29,6 +29,7 @@
 ---@field public barrier Barrier
 ---@field public deathAnimation DeathAnimation
 ---@field public hypixelZombies HypixelZombies
+---@field public updateChecker UpdateChecker
 ---@field public fireworkManager FireworkManager
 ---@field public instantiate fun(class: table, super: table, ...: any) クラスをインスタンス化する
 
@@ -176,6 +177,10 @@ Avatar = {
 			require("scripts.avatar_modules.hypixel_zombies")
 			instance.hypixelZombies = HypixelZombies.new(instance)
 			instance.hypixelZombies:init()
+
+			require("scripts.avatar_modules.action_wheel.update_checker")
+			instance.updateChecker = UpdateChecker.new(instance)
+			instance.updateChecker:init()
 
 			--生徒固有クラスの読み込み
 			require("scripts.character_scripts.firework_manager")
