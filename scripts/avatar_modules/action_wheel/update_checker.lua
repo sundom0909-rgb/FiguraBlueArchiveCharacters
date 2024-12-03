@@ -19,7 +19,7 @@ UpdateChecker = {
         local instance = Avatar.instantiate(UpdateChecker, AvatarModule, parent)
 
         instance.FBAC_VERSION = "v1.10.0_dev"
-        instance.BRANCH_NAME = "BaseAvatar"
+        instance.BRANCH_NAME = "Shizuko"
         instance.latestVersion = instance.parent.config:loadConfig("PUBLIC", "latestVersion", instance.FBAC_VERSION)
         instance.isCheckingUpdate = false
         instance.didCheckLatest = false
