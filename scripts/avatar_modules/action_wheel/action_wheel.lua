@@ -9,6 +9,7 @@
 ---@field package refreshCostumeChangeActionTitle fun(self: ActionWheel) 衣装変更アクションのタイトルを更新する
 ---@field package refreshNameChangeActionTitle fun(self: ActionWheel) 名前変更アクションのタイトルを更新する
 ---@field package refreshExSkillParticleActionTitle fun(self: ActionWheel) Exスキルアニメーションのパーティクル量調整アクションのタイトルを更新する
+---@field package refreshUpdateActionStatus fun(self: ActionWheel) アップデート確認アクションの状態を更新する
 
 ActionWheel = {
     ---コンストラクタ
@@ -23,7 +24,7 @@ ActionWheel = {
         instance.selectingName = instance.parent.nameplate.currentName
         instance.selectingShouldShowClubName = instance.parent.nameplate.shouldShowClubName
         instance.selectingExSkillParticleAmount = instance.parent.exSkill.frameParticleAmount
-        instance.shouldReplaceVehicleModels = instance.parent.config:loadConfig("replaceVehicleModels", true)
+        instance.shouldReplaceVehicleModels = instance.parent.config:loadConfig("PRIVATE", "replaceVehicleModels", true)
         instance.isActionWheelOpenedPrev = false
 
         return instance
@@ -37,23 +38,25 @@ ActionWheel = {
         if host:isHost() then
             events.TICK:register(function()
                 local isActionWheelOpened = action_wheel:isEnabled()
-                if not isActionWheelOpened and self.isActionWheelOpenedPrev then
+                if isActionWheelOpened  then
+                    self:refreshUpdateActionStatus()
+                elseif not isActionWheelOpened and self.isActionWheelOpenedPrev then
                     if self.selectingCostume ~= self.parent.costume.currentCostume then
                         pings.actionWheelChangeCostume(self.selectingCostume)
-                        self.parent.config:saveConfig("costume", self.selectingCostume)
+                        self.parent.config:saveConfig("PRIVATE", "costume", self.selectingCostume)
                         sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.armor.equip_leather"), player:getPos())
                         print(self.parent.locale:getLocale("action_wheel.main.action_1.done_first")..self.parent.costume:getCostumeLocalName(self.selectingCostume)..self.parent.locale:getLocale("action_wheel.main.action_1.done_last"))
                     end
                     if self.selectingName ~= self.parent.nameplate.currentName or self.selectingShouldShowClubName ~= self.parent.nameplate.shouldShowClubName then
                         pings.actionWheelChangeName(self.selectingName, self.selectingShouldShowClubName)
-                        self.parent.config:saveConfig("name", self.selectingName)
-                        self.parent.config:saveConfig("showClubName", self.selectingShouldShowClubName)
+                        self.parent.config:saveConfig("PRIVATE", "name", self.selectingName)
+                        self.parent.config:saveConfig("PRIVATE", "showClubName", self.selectingShouldShowClubName)
                         sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:ui.cartography_table.take_result"), player:getPos())
                         print(self.parent.locale:getLocale("action_wheel.main.action_2.done_first")..self.parent.nameplate:getName(self.selectingName)..self.parent.locale:getLocale("action_wheel.main.action_2.done_last"))
                     end
                     if self.selectingExSkillParticleAmount ~= self.parent.exSkill.frameParticleAmount then
                         self.parent.exSkill.frameParticleAmount = self.selectingExSkillParticleAmount
-                        self.parent.config:saveConfig("exSkillFrameParticleAmount", self.selectingExSkillParticleAmount)
+                        self.parent.config:saveConfig("PRIVATE", "exSkillFrameParticleAmount", self.selectingExSkillParticleAmount)
                         sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), player:getPos(), 1, 0.5)
                         print(self.parent.locale:getLocale("action_wheel.main.action_5.done_first")..self.parent.locale:getLocale("action_wheel.main.action_5.option_"..self.selectingExSkillParticleAmount)..self.parent.locale:getLocale("action_wheel.main.action_5.done_last"))
                     end
@@ -118,29 +121,29 @@ ActionWheel = {
             self.mainPage:newAction(3):setTitle(self.parent.locale:getLocale("action_wheel.main.action_3.title").."§c"..self.parent.locale:getLocale("action_wheel.toggle_off")):setToggleTitle(self.parent.locale:getLocale("action_wheel.main.action_3.title").."§a"..self.parent.locale:getLocale("action_wheel.toggle_on")):setItem(self.parent.compatibilityUtils:checkItem("minecraft:iron_chestplate")):setColor(0.67, 0, 0):setHoverColor(1, 0.33, 0.33):setToggleColor(0, 0.67, 0):setOnToggle(function (_, action)
                 pings.actionWheelSetArmorVisible(true)
                 action:setHoverColor(0.33, 1, 0.33)
-                self.parent.config:saveConfig("showArmor", true)
+                self.parent.config:saveConfig("PRIVATE", "showArmor", true)
             end):setOnUntoggle(function(_, action)
                 pings.actionWheelSetArmorVisible(false)
                 action:setHoverColor(1, 0.33, 0.33)
-                self.parent.config:saveConfig("showArmor", false)
+                self.parent.config:saveConfig("PRIVATE", "showArmor", false)
             end)
-            if self.parent.config:loadConfig("showArmor", false) then
+            if self.parent.config:loadConfig("PRIVATE", "showArmor", false) then
                 local action = self.mainPage:getAction(3)
                 action:setToggled(true)
                 action:setHoverColor(0.33, 1, 0.33)
             end
 
             --アクション4. 一人称視点での武器モデルの表示
-            self.mainPage:newAction(4):setTitle(self.parent.locale:getLocale("action_wheel.main.action_4.title").."§c"..self.parent.locale:getLocale("action_wheel.toggle_off")):setToggleTitle(self.parent.locale:getLocale("action_wheel.main.action_4.title").."§a"..self.parent.locale:getLocale("action_wheel.toggle_on")):item(self.parent.compatibilityUtils:checkItem("minecraft:bow")):setColor(0.67, 0, 0):setHoverColor(1, 0.33, 0.33):setToggleColor(0, 0.67, 0):setOnToggle(function (_, action)
+            self.mainPage:newAction(4):setTitle(self.parent.locale:getLocale("action_wheel.main.action_4.title").."§c"..self.parent.locale:getLocale("action_wheel.toggle_off")):setToggleTitle(self.parent.locale:getLocale("action_wheel.main.action_4.title").."§a"..self.parent.locale:getLocale("action_wheel.toggle_on")):setItem(self.parent.compatibilityUtils:checkItem("minecraft:bow")):setColor(0.67, 0, 0):setHoverColor(1, 0.33, 0.33):setToggleColor(0, 0.67, 0):setOnToggle(function (_, action)
                 self.parent.gun.shouldShowWeaponInFirstPerson = true
                 action:setHoverColor(0.33, 1, 0.33)
-                self.parent.config:saveConfig("firstPersonWeapon", true)
+                self.parent.config:saveConfig("PRIVATE", "firstPersonWeapon", true)
             end):setOnUntoggle(function (_, action)
                 self.parent.gun.shouldShowWeaponInFirstPerson = false
                 action:setHoverColor(1, 0.33, 0.33)
-                self.parent.config:saveConfig("firstPersonWeapon", false)
+                self.parent.config:saveConfig("PRIVATE", "firstPersonWeapon", false)
             end)
-            if self.parent.config:loadConfig("firstPersonWeapon", true) then
+            if self.parent.config:loadConfig("PRIVATE", "firstPersonWeapon", true) then
                 local action = self.mainPage:getAction(4)
                 action:setToggled(true)
                 action:setHoverColor(0.33, 1, 0.33)
@@ -163,11 +166,11 @@ ActionWheel = {
             end)
 
             --アクション6. 乗り物モデルの置き換え
-            self.mainPage:newAction(6):setTitle(self.parent.locale:getLocale("action_wheel.main.action_6.title").."§c"..self.parent.locale:getLocale("action_wheel.toggle_off")):setToggleTitle(self.parent.locale:getLocale("action_wheel.main.action_6.title").."§a"..self.parent.locale:getLocale("action_wheel.toggle_on")):item(self.parent.compatibilityUtils:checkItem("minecraft:oak_boat")):setColor(0.67, 0, 0):setHoverColor(1, 0.33, 0.33):setToggleColor(0, 0.67, 0):setOnToggle(function (_, action)
+            self.mainPage:newAction(6):setTitle(self.parent.locale:getLocale("action_wheel.main.action_6.title").."§c"..self.parent.locale:getLocale("action_wheel.toggle_off")):setToggleTitle(self.parent.locale:getLocale("action_wheel.main.action_6.title").."§a"..self.parent.locale:getLocale("action_wheel.toggle_on")):setItem(self.parent.compatibilityUtils:checkItem("minecraft:oak_boat")):setColor(0.67, 0, 0):setHoverColor(1, 0.33, 0.33):setToggleColor(0, 0.67, 0):setOnToggle(function (_, action)
                 if self.parent.characterData.actionWheel.isVehicleOptionEnabled then
                     pings.actionWheelSetShouldReplaceVehicleModels(true)
                     action:setHoverColor(0.33, 1, 0.33)
-                    self.parent.config:saveConfig("replaceVehicleModels", true)
+                    self.parent.config:saveConfig("PRIVATE", "replaceVehicleModels", true)
                 else
                     print(self.parent.locale:getLocale("action_wheel.main.action_6.unavailable"))
                     action:setToggled(false)
@@ -175,7 +178,7 @@ ActionWheel = {
             end):setOnUntoggle(function (_, action)
                 pings.actionWheelSetShouldReplaceVehicleModels(false)
                 action:setHoverColor(1, 0.33, 0.33)
-                self.parent.config:saveConfig("replaceVehicleModels", false)
+                self.parent.config:saveConfig("PRIVATE", "replaceVehicleModels", false)
             end)
             if not self.parent.characterData.actionWheel.isVehicleOptionEnabled then
                 local action = self.mainPage:getAction(6)
@@ -190,8 +193,29 @@ ActionWheel = {
             end
 
             --アクション7. （空欄）
+            self.mainPage:newAction(7):setItem("minecraft:compass"):setOnLeftClick(function ()
+                if not self.parent.updateChecker.isCheckingUpdate then
+                    self.parent.updateChecker:checkUpdate()
+                else
+                    print("action_wheel.main.action_7.ongoing")
+                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bass"), player:getPos(), 1, 0.5)
+                end
+                if not net:isNetworkingAllowed() or not net:isLinkAllowed("https://api.github.com") then
+                    print(self.parent.locale:getLocale("action_wheel.main.action_7.networking_api"))
+                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bass"), player:getPos(), 1, 0.5)
+                end
+            end):onRightClick(function ()
+                if self.parent.updateChecker.didCheckLatest then
+                    host:setClipboard("https://github.com/Gakuto1112/FiguraBlueArchiveCharacters/releases/tag/"..self.parent.updateChecker.latestVersion)
+                    print(self.parent.locale:getLocale("action_wheel.main.action_7.copied"))
+                else
+                    print(self.parent.locale:getLocale("action_wheel.main.action_7.cannot_check_latest"))
+                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bass"), player:getPos(), 1, 0.5)
+                end
+            end)
 
             --アクション8. （空欄）
+            self.mainPage:newAction(8):setColor(0.16, 0.16, 0.16):setHoverColor(0.16, 0.16, 0.16)
 
             self:refreshCostumeChangeActionTitle()
             self:refreshNameChangeActionTitle()
@@ -229,6 +253,28 @@ ActionWheel = {
     ---@param self ActionWheel
     refreshExSkillParticleActionTitle = function (self)
         self.mainPage:getAction(5):title(self.parent.locale:getLocale("action_wheel.main.action_5.title").."§b"..self.parent.locale:getLocale("action_wheel.main.action_5.option_"..self.selectingExSkillParticleAmount))
+    end;
+
+    ---アップデート確認アクションの状態を更新する。
+    ---@param self ActionWheel
+    refreshUpdateActionStatus = function (self)
+        local action = self.mainPage:getAction(7)
+        local actionTitle = ""
+        if self.parent.updateChecker.isCheckingUpdate then
+            actionTitle = actionTitle.."§7"..self.parent.locale:getLocale("action_wheel.main.action_7.title_1")..self.parent.locale:getLocale("action_wheel.main.action_7.title_2").."\n"
+            action:setColor(0.16, 0.16, 0.16)
+            action:setHoverColor(1, 0.33, 0.33)
+        else
+            actionTitle = actionTitle..self.parent.locale:getLocale("action_wheel.main.action_7.title_1").."§b"..self.parent.locale:getLocale("action_wheel.main.action_7.title_2").."\n"
+            action:setColor(0.78, 0.78, 0.78)
+            action:setHoverColor(1, 1, 1)
+        end
+        if self.parent.updateChecker.didCheckLatest then
+            actionTitle = actionTitle.."§r"..self.parent.locale:getLocale("action_wheel.main.action_7.title_3").."§b"..self.parent.locale:getLocale("action_wheel.main.action_7.title_4")
+        else
+            actionTitle = actionTitle.."§7"..self.parent.locale:getLocale("action_wheel.main.action_7.title_3")..self.parent.locale:getLocale("action_wheel.main.action_7.title_4")
+        end
+        action:setTitle(actionTitle)
     end;
 }
 
