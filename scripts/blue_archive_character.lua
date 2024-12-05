@@ -721,19 +721,34 @@ BlueArchiveCharacter = {
                     ---@type integer[][]
                     songs = {
                         -- 1. ジングルベル（Jingle Bells） - https://youtu.be/iyj1SJ5QhjE?si=WEVd-lbmTmJrSlFV
-                        {6, 6, 15, 13, 11, 6, 6, 6, 15, 13, 11, 8, 8, 8, 16, 15, 13, 10, 18, 20, 18, 16, 13, 15, 6, 6, 15, 13, 11, 6, 6, 6, 15, 13, 11, 8, 8, 8, 16, 15, 13, 18, 18, 18, 18, 20, 18, 16, 13, 11, 15, 15, 15, 15, 15, 15, 15, 15, 18, 11, 13, 15, 16, 16, 16, 16, 16, 15, 15, 15, 15, 13, 13, 11, 13, 18, 15, 15, 15, 15, 15, 15, 15, 18, 11, 13, 15, 16, 16, 16, 16, 16, 15, 15, 15, 18, 18, 16, 13, 11};
+                        {
+                            name = "Jingle Bells";
+                            song = {6, 6, 15, 13, 11, 6, 6, 6, 15, 13, 11, 8, 8, 8, 16, 15, 13, 10, 18, 20, 18, 16, 13, 15, 6, 6, 15, 13, 11, 6, 6, 6, 15, 13, 11, 8, 8, 8, 16, 15, 13, 18, 18, 18, 18, 20, 18, 16, 13, 11, 15, 15, 15, 15, 15, 15, 15, 15, 18, 11, 13, 15, 16, 16, 16, 16, 16, 15, 15, 15, 15, 13, 13, 11, 13, 18, 15, 15, 15, 15, 15, 15, 15, 18, 11, 13, 15, 16, 16, 16, 16, 16, 15, 15, 15, 18, 18, 16, 13, 11};
+                        };
 
                         -- 2. We Wish You A Merry Christmas - https://youtu.be/qzLf6vkgCYA?si=FnAuabFiLweN5mgf
-                        {8, 13, 13, 15, 13, 12, 10, 10, 10, 15, 15, 17, 15, 13, 12, 8, 8, 17, 17, 18, 17, 15, 13, 10, 8, 8, 10, 15, 12, 13, 8, 13, 13, 13, 12, 12, 13, 12, 10, 8, 15, 17, 15, 13, 20, 8, 8, 8, 10, 15, 12, 13};
+                        {
+                            name = "We Wish You A Merry Christmas";
+                            song = {8, 13, 13, 15, 13, 12, 10, 10, 10, 15, 15, 17, 15, 13, 12, 8, 8, 17, 17, 18, 17, 15, 13, 10, 8, 8, 10, 15, 12, 13, 8, 13, 13, 13, 12, 12, 13, 12, 10, 8, 15, 17, 15, 13, 20, 8, 8, 8, 10, 15, 12, 13};
+                        };
 
                         -- 3. サンタが街にやってくる（Santa Claus is coming to town）- https://youtu.be/fm-YVXMjZw4?si=GIh685jacZ1e8A5V
-                        {13, 10, 11, 13, 13, 13, 15, 17, 18, 18, 10, 11, 13, 13, 13, 15, 13, 11, 11, 10, 13, 6, 10, 8, 11, 5, 6, 13, 10, 11, 13, 13, 13, 15, 17, 18, 18, 10, 11, 13, 13, 13, 15, 13, 11, 11, 10, 13, 6, 10, 8, 11, 5, 6, 18, 20, 18, 17, 18, 15, 15, 18, 20, 18, 17, 18, 15, 20, 22, 20, 19, 20, 17, 17, 17, 17, 18, 20, 18, 17, 15, 13, 13, 13, 10, 11, 13, 13, 13, 15, 17, 18, 18, 10, 11, 13, 13, 13, 15, 13, 11, 11, 10, 13, 6, 10, 8, 11, 20, 18, 30};
+                        {
+                            name = "Santa Claus is coming to town";
+                            song = {13, 10, 11, 13, 13, 13, 15, 17, 18, 18, 10, 11, 13, 13, 13, 15, 13, 11, 11, 10, 13, 6, 10, 8, 11, 5, 6, 13, 10, 11, 13, 13, 13, 15, 17, 18, 18, 10, 11, 13, 13, 13, 15, 13, 11, 11, 10, 13, 6, 10, 8, 11, 5, 6, 18, 20, 18, 17, 18, 15, 15, 18, 20, 18, 17, 18, 15, 20, 22, 20, 19, 20, 17, 17, 17, 17, 18, 20, 18, 17, 15, 13, 13, 13, 10, 11, 13, 13, 13, 15, 17, 18, 18, 10, 11, 13, 13, 13, 15, 13, 11, 11, 10, 13, 6, 10, 8, 11, 20, 18, 30};
+                        };
 
                         -- 4. きよしこの夜（Silent Night） - https://youtu.be/IgTv3Osi_oU?si=XdnJgwDeH2jeXDl0
-                        {13, 15, 13, 10, 13, 15, 13, 10, 20, 20, 17, 18, 18, 13, 15, 15, 18, 17, 15, 13, 15, 13, 10, 15, 15, 18, 17, 15, 13, 15, 13, 10, 20, 20, 23, 20, 17, 18, 22, 18, 13, 10, 13, 11, 8, 6};
+                        {
+                            name = "Silent Night";
+                            song = {13, 15, 13, 10, 13, 15, 13, 10, 20, 20, 17, 18, 18, 13, 15, 15, 18, 17, 15, 13, 15, 13, 10, 15, 15, 18, 17, 15, 13, 15, 13, 10, 20, 20, 23, 20, 17, 18, 22, 18, 13, 10, 13, 11, 8, 6};
+                        };
 
                         -- 5. もろびとこぞりて（Joy to the World!） - https://youtu.be/Zk9AB0RfubI?si=Q_O7tJA_-fpgZ73b
-                        {20, 19, 17, 15, 13, 12, 10, 8, 15, 17, 17, 19, 19, 20, 20, 20, 19, 17, 15, 15, 13, 12, 20, 20, 19, 17, 15, 15, 13, 12, 12, 12, 12, 12, 12, 13, 15, 13, 12, 10, 10, 10, 10, 12, 13, 12, 10, 8, 20, 17, 15, 13, 12, 13, 12, 10, 8};
+                        {
+                            name = "Joy to the World!";
+                            song = {20, 19, 17, 15, 13, 12, 10, 8, 15, 17, 17, 19, 19, 20, 20, 20, 19, 17, 15, 15, 13, 12, 20, 20, 19, 17, 15, 15, 13, 12, 12, 12, 12, 12, 12, 13, 15, 13, 12, 10, 10, 10, 10, 12, 13, 12, 10, 8, 20, 17, 15, 13, 12, 13, 12, 10, 8};
+                        };
                     };
 
                     ---ハンドベルで演奏する曲のインデックス番号
@@ -777,10 +792,10 @@ BlueArchiveCharacter = {
                         local isHoldingBell = player:getHeldItem().id == "minecraft:bell"
                         local targetBlock = player:getTargetedBlock(true, 4.5)
                         if player:isSwingingArm() and isHoldingBell and player:getSwingTime() == 0 and (targetBlock.id == "minecraft:air" or targetBlock.id == "minecraft:cave_air" or targetBlock.id == "minecraft:void_air") then
-                            local scale = self.costume.costumes[2].songIndex >= 1 and self.costume.costumes[2].songs[self.costume.costumes[2].songIndex][self.costume.costumes[2].bellStage] or 23
+                            local scale = self.costume.costumes[2].songIndex >= 1 and self.costume.costumes[2].songs[self.costume.costumes[2].songIndex].song[self.costume.costumes[2].bellStage] or 23
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 1, 2 ^ ((scale - 12) / 12))
                             if self.costume.costumes[2].songIndex >= 1 then
-                                if self.costume.costumes[2].bellStage == #self.costume.costumes[2].songs[self.costume.costumes[2].songIndex] then
+                                if self.costume.costumes[2].bellStage == #self.costume.costumes[2].songs[self.costume.costumes[2].songIndex].song then
                                     self.costume.costumes[2].bellStage = 1
                                 else
                                     self.costume.costumes[2].bellStage = self.costume.costumes[2].bellStage + 1
@@ -1134,10 +1149,9 @@ BlueArchiveCharacter = {
 ---@param index integer 曲のインデックス番号
 function pings.selectChristmasSong(index)
     AvatarInstance.characterData.costume.costumes[2].songIndex = index
-    local songNames = {"Jingle Bells", "We Wish You A Merry Christmas", "Santa Claus is coming to town", "Silent Night", "Joy to the World!"}
     local task = models.models.ex_skill_2.MusicStand.MusicStandBookHolder:getTask("music_stand_book_holder")
     if task ~= nil then
-        task:setText("§8"..songNames[AvatarInstance.characterData.costume.costumes[2].songIndex])
+        task:setText("§8"..AvatarInstance.characterData.costume.costumes[2].songs[index].name)
     end
     if host:isHost() then
         AvatarInstance.characterData.dataSync.syncData.songIndex = index
