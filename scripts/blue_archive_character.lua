@@ -543,7 +543,7 @@ BlueArchiveCharacter = {
                         models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setParentType("None")
                         self.exSkill[2].noteParticleSpawnCount = math.random(2, 3)
                         self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 17, true)
-                        pings.selectChristmasSong(math.random(1, 5))
+                        pings.selectChristmasSong(math.random(1, #self.costume.costumes[2].songs))
                         self.costume.costumes[2].bellStage = 1
                     end;
 
@@ -748,6 +748,12 @@ BlueArchiveCharacter = {
                         {
                             name = "Joy to the World!";
                             song = {20, 19, 17, 15, 13, 12, 10, 8, 15, 17, 17, 19, 19, 20, 20, 20, 19, 17, 15, 15, 13, 12, 20, 20, 19, 17, 15, 15, 13, 12, 12, 12, 12, 12, 12, 13, 15, 13, 12, 10, 10, 10, 10, 12, 13, 12, 10, 8, 20, 17, 15, 13, 12, 13, 12, 10, 8};
+                        };
+
+                        --6. あわてんぼうのサンタクロース（Hasty Santa Claus） - https://youtu.be/QZ-HOovEBCE?si=HFyMtQa_NfQkOukg
+                        {
+                            name = "Hasty Santa Claus";
+                            song = {6, 11, 15, 13, 11, 11, 13, 11, 11, 11, 8, 6, 6, 6, 11, 11, 11, 15, 18, 15, 13, 13, 15, 11, 13, 6, 11, 15, 15, 15, 13, 11, 11, 11, 16, 16, 16, 18, 20, 20, 20, 18, 18, 15, 18, 16, 16, 15, 13, 11, 20, 20, 18, 15, 18, 16, 15, 13, 11};
                         };
                     };
 
