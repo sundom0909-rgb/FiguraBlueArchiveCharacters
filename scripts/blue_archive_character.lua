@@ -419,7 +419,63 @@ BlueArchiveCharacter = {
 
         instance.physics = {
             physicData = {
+                {
+                    models = {models.models.main.Avatar.Head.BackHair};
 
+                    x = {
+                        vertical = {
+                            min = -170;
+                            neutral = 0;
+                            max = 0;
+                            sneakOffset = -30;
+
+                            headRotMultiplayer = -1;
+
+                            headX = {
+                                multiplayer = -80;
+                                min = -90;
+                                max = 0;
+                            };
+
+                            headRot = {
+                                multiplayer = 0.05;
+                                min = -90;
+                                max = 0;
+                            };
+
+                            bodyY = {
+                                multiplayer = 80;
+                                min = -170;
+                                max = 0;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -135;
+                            neutral = -30;
+                            max = 0;
+
+                            headX = {
+                                multiplayer = -80;
+                                min = -45;
+                                max = 0;
+                            };
+                        };
+                    };
+                };
+            };
+
+            callbacks = {
+                onPhysicPerformed = function (self, model)
+                    if model == models.models.main.Avatar.Head.BackHair then
+                        local rot = math.deg(math.asin(player:getLookDir().y)) - model:getRot().x
+                        if rot < 0 then
+                            models.models.main.Avatar.Head.BackHair:setOffsetPivot(0, 0, 2)
+                        else
+                            models.models.main.Avatar.Head.BackHair:setOffsetPivot()
+                        end
+                    end
+                end
             };
         }
 
