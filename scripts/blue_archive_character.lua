@@ -499,5 +499,19 @@ BlueArchiveCharacter = {
 
         --生徒固有初期化処理
         --Player APIにアクセスする場合は、ENTITY_INIT後に実行されるようにする必要がある。
+
+        for _, modelPart in ipairs({models.models.ex_skill_1.Tank.PSLogo1, models.models.ex_skill_1.Tank.Turret.PSLogo2, models.models.ex_skill_1.Tank.Turret.PSLogo3}) do
+            modelPart:newText("toramaru_logo_text"):setText("§e万魔殿"):setPos(0, 2.25, 0):setScale(0.2):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.404, 0.306, 0.051)
+        end
+        models.models.ex_skill_1.Tank.Turret.Cannon.HangingSign:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/signs/hanging/oak.png")
+        models.models.ex_skill_1.Tank.Turret.Cannon.HangingSign:newText("toramaru_sign_text_1"):setText("§0§l巡回中"):setPos(-1, 7, 0.5):setRot(0, 90, 0):setScale(0.5):setAlignment("CENTER")
+        models.models.ex_skill_1.Tank.Turret.Cannon.HangingSign:newText("toramaru_sign_text_2"):setText("§0§l巡回中"):setPos(1, 7, -0.5):setRot(0, -90, 0):setScale(0.5):setAlignment("CENTER")
+        self.parent.avatarEvents.SCRIPT_INIT:register(function ()
+            for i = 0, 1 do
+                for j = 0, 9 do
+                    models.models.ex_skill_1.Tank:newBlock("toramaru_log_"..(i * 10 + j)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:oak_log").."[axis=z]"):setPos(36 + i * -80, 23, j * 8 - 32):setScale(0.5)
+                end
+            end
+        end)
     end;
 }
