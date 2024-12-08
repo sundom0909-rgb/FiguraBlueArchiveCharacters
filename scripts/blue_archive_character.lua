@@ -534,42 +534,75 @@ BlueArchiveCharacter = {
                     renderer:setRenderVehicle(false)
                     models.models.ex_skill_1.Tank:setVisible(true)
                     models.models.main.Avatar:setPos(-13, 16, 4)
-                    models.models.ex_skill_1.Tank:setPos(0, -24.5, 0)
                     models.models.ex_skill_1.Tank:setOffsetPivot(0, 0, 8)
                     self.parent.cameraManager:setThirdPersonCameraDistance(8)
+                    animations["models.main"]["tank_start"]:play()
+                    for _, animationName in ipairs({"tank_start", "tank_move"}) do
+                        animations["models.ex_skill_1"][animationName]:play()
+                    end
+                    self.costume.costumes[1].tankVelocity = vectors.rotateAroundAxis(vehicle:getRot().y * -1, 0, 0, 1, 0, 1, 0)
                     events.TICK:register(function ()
                         local camelRot = vehicle:getRot().y % 360
                         table.insert(self.costume.costumes[1].camelRotData, camelRot)
                         table.remove(self.costume.costumes[1].camelRotData, 1)
                         local velocity = vehicle:getVelocity():mul(1, 0, 1)
-                        if velocity:length() > 0.01 then
-                            self.costume.costumes[1].tankVelocity = velocity
+                        local camelVelocity = velocity:length()
+                        if camelVelocity > 0.01 then
+                            self.costume.costumes[1].tankVelocity = vectors.rotateAroundAxis(camelRot * -1, 0, 0, 1, 0, 1, 0)
+                        end
+                        local isEngineActive = (player:getPos():sub(vehicle:getPos()):length() - 1.51017) * -1.35 < 1
+                        animations["models.main"]["tank_idle"]:setPlaying(isEngineActive)
+                        animations["models.ex_skill_1"]["tank_idle"]:setPlaying(isEngineActive)
+                        animations["models.ex_skill_1"]["tank_move"]:setSpeed(self.parent.physics.velocityAverage[5][2] * 2.5)
+                        local beltOffset = math.floor(animations["models.ex_skill_1"]["tank_move"]:getTime() * 32) % 2
+                        for _, modelPart in ipairs({models.models.ex_skill_1.Tank.RightCrawler.RightCrawlerBelt, models.models.ex_skill_1.Tank.LeftCrawler.LeftCrawlerBelt}) do
+                            modelPart:setUVPixels(0, beltOffset)
                         end
                     end, "tank_tick")
                     events.RENDER:register(function (delta, ctx, matrix)
                         local camelRot = math.abs(self.costume.costumes[1].camelRotData[1] - self.costume.costumes[1].camelRotData[2]) <= 180 and self.costume.costumes[1].camelRotData[2] + ((self.costume.costumes[1].camelRotData[2] - self.costume.costumes[1].camelRotData[1]) * delta) or self.costume.costumes[1].camelRotData[2]
                         local camelVelocity = vehicle:getVelocity():mul(1, 0, 1):length()
                         local baseRot = camelRot - (math.deg(math.atan2(self.costume.costumes[1].tankVelocity.z, self.costume.costumes[1].tankVelocity.x)) - 90) % 360
-                        local turretRot = math.clamp(math.deg(math.asin(player:getLookDir().y)), -15, 25)
+                        local lookDir = player:getLookDir()
+                        local turretRot = math.clamp(math.deg(math.asin(lookDir.y)), -15, 25)
+                        local heightOffset = (player:getPos(delta):sub(vehicle:getPos(delta)):length() - 1.51017) * -1.35
+                        models.models.main.Avatar:setPos(-13, 16 + heightOffset * 16, 4)
+                        models.models.ex_skill_1.Tank:setPos(0, -24.5 + heightOffset * 16, 0)
                         models.models.ex_skill_1.Tank.Turret.Cannon:setRot(turretRot, 0, 0)
                         models.models.ex_skill_1.Tank.Turret.Cannon.HangingSign:setRot(turretRot * -1, 0, 0)
                         if camelVelocity > 0.01 then
-                            models.models.main.Avatar:setPos(-13, 16, 4)
                             for _, modelPart in ipairs({models.models.ex_skill_1.Tank, models.models.ex_skill_1.Tank.Turret}) do
                                 modelPart:setRot()
                             end
                         else
-                            models.models.main.Avatar:setPos(vectors.vec3(math.sin(math.rad(baseRot * -1)) * 4, 0, math.cos(math.rad(baseRot * -1)) * -4 + 4):add(-13, 16, 4))
                             models.models.ex_skill_1.Tank:setRot(0, baseRot, 0)
                             models.models.ex_skill_1.Tank.Turret:setRot(0, baseRot * -1, 0)
                         end
 
+                        local bodyYaw = player:getBodyYaw(delta)
+                        if renderer:isFirstPerson() then
+                            renderer:setCameraPos(-0.75, 0, 0)
+                            self.parent.cameraManager.setCameraPivot(vectors.vec3(math.sin(math.rad(bodyYaw)) * 0.2, 1 + heightOffset, math.cos(math.rad(bodyYaw)) * -0.2))
+                            renderer:setEyeOffset(vectors.rotateAroundAxis(bodyYaw * -1, 0.8, 1 + heightOffset, 0.2, 0, 1, 0))
+
+                        else
+                            self.parent.cameraManager.setCameraPivot(vectors.vec3(0, heightOffset * 0.75, 0))
+                            renderer:setEyeOffset(0, heightOffset * 0.75, 0)
+                        end
                     end, "tank_render")
                 else
                     renderer:setRenderVehicle(true)
                     models.models.ex_skill_1.Tank:setVisible(false)
                     models.models.main.Avatar:setPos()
                     self.parent.cameraManager:setThirdPersonCameraDistance(4)
+                    self.parent.cameraManager.setCameraPivot()
+                    renderer:setEyeOffset()
+                    for _, animationName in ipairs({"tank_start", "tank_idle"}) do
+                        animations["models.main"][animationName]:stop()
+                    end
+                    for _, animationName in ipairs({"tank_start", "tank_idle", "tank_move"}) do
+                        animations["models.ex_skill_1"][animationName]:stop()
+                    end
                     events.TICK:remove("tank_tick")
                     events.RENDER:remove("tank_render")
                 end
