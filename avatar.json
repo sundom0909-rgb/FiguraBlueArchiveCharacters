@@ -141,6 +141,9 @@
 		"models.models.gun.Gun": {
 			"moveTo": "models.models.main.Avatar.UpperBody.Body"
 		},
+		"models.models.ex_skill_1.Tank": {
+			"visible": false
+		},
 		"models.models.placement_object.PlacementObject": {
 			"visible": false
 		},

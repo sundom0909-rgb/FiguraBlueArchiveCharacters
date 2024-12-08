@@ -392,6 +392,18 @@ BlueArchiveCharacter = {
                     };
 
                     exSkill = 1;
+
+                    ---前ティックに戦車に乗っていたかどうか
+                    ---@type boolean
+                    isRidingTankPrev = false;
+
+                    ---ラクダの向きのデータ
+                    ---@type number[]
+                    camelRotData = {0, 0};
+
+                    ---現ティックの戦車の移動ベクトル
+                    ---@type Vector3
+                    tankVelocity = vectors.vec3();
                 };
             };
 
@@ -414,7 +426,7 @@ BlueArchiveCharacter = {
         }
 
         instance.actionWheel = {
-            isVehicleOptionEnabled = false;
+            isVehicleOptionEnabled = true;
         }
 
         instance.physics = {
@@ -504,14 +516,65 @@ BlueArchiveCharacter = {
             modelPart:newText("toramaru_logo_text"):setText("§e万魔殿"):setPos(0, 2.25, 0):setScale(0.2):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.404, 0.306, 0.051)
         end
         models.models.ex_skill_1.Tank.Turret.Cannon.HangingSign:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/signs/hanging/oak.png")
-        models.models.ex_skill_1.Tank.Turret.Cannon.HangingSign:newText("toramaru_sign_text_1"):setText("§0§l巡回中"):setPos(-1, 7, 0.5):setRot(0, 90, 0):setScale(0.5):setAlignment("CENTER")
-        models.models.ex_skill_1.Tank.Turret.Cannon.HangingSign:newText("toramaru_sign_text_2"):setText("§0§l巡回中"):setPos(1, 7, -0.5):setRot(0, -90, 0):setScale(0.5):setAlignment("CENTER")
+        models.models.ex_skill_1.Tank.Turret.Cannon.HangingSign:newText("toramaru_sign_text_1"):setText("§0§l巡回中"):setPos(-1, -9, 0.5):setRot(0, 90, 0):setScale(0.5):setAlignment("CENTER")
+        models.models.ex_skill_1.Tank.Turret.Cannon.HangingSign:newText("toramaru_sign_text_2"):setText("§0§l巡回中"):setPos(1, -9, -0.5):setRot(0, -90, 0):setScale(0.5):setAlignment("CENTER")
         self.parent.avatarEvents.SCRIPT_INIT:register(function ()
             for i = 0, 1 do
                 for j = 0, 9 do
-                    models.models.ex_skill_1.Tank:newBlock("toramaru_log_"..(i * 10 + j)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:oak_log").."[axis=z]"):setPos(36 + i * -80, 23, j * 8 - 32):setScale(0.5)
+                    models.models.ex_skill_1.Tank.BaseBase1:newBlock("toramaru_log_"..(i * 10 + j)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:oak_log").."[axis=z]"):setPos(36 + i * -80, -2, j * 8 - 41):setScale(0.5)
                 end
             end
+        end)
+
+        events.TICK:register(function ()
+            local vehicle = player:getVehicle()
+            local isRidingTank = vehicle ~= nil and vehicle:getType() == "minecraft:camel" and vehicle:getControllingPassenger() ~= nil and vehicle:getControllingPassenger():getName() == player:getName() and #vehicle:getPassengers() == 1 and self.parent.actionWheel.shouldReplaceVehicleModels
+            if isRidingTank ~= self.costume.costumes[1].isRidingTankPrev then
+                if isRidingTank then
+                    renderer:setRenderVehicle(false)
+                    models.models.ex_skill_1.Tank:setVisible(true)
+                    models.models.main.Avatar:setPos(-13, 16, 4)
+                    models.models.ex_skill_1.Tank:setPos(0, -24.5, 0)
+                    models.models.ex_skill_1.Tank:setOffsetPivot(0, 0, 8)
+                    self.parent.cameraManager:setThirdPersonCameraDistance(8)
+                    events.TICK:register(function ()
+                        local camelRot = vehicle:getRot().y % 360
+                        table.insert(self.costume.costumes[1].camelRotData, camelRot)
+                        table.remove(self.costume.costumes[1].camelRotData, 1)
+                        local velocity = vehicle:getVelocity():mul(1, 0, 1)
+                        if velocity:length() > 0.01 then
+                            self.costume.costumes[1].tankVelocity = velocity
+                        end
+                    end, "tank_tick")
+                    events.RENDER:register(function (delta, ctx, matrix)
+                        local camelRot = math.abs(self.costume.costumes[1].camelRotData[1] - self.costume.costumes[1].camelRotData[2]) <= 180 and self.costume.costumes[1].camelRotData[2] + ((self.costume.costumes[1].camelRotData[2] - self.costume.costumes[1].camelRotData[1]) * delta) or self.costume.costumes[1].camelRotData[2]
+                        local camelVelocity = vehicle:getVelocity():mul(1, 0, 1):length()
+                        local baseRot = camelRot - (math.deg(math.atan2(self.costume.costumes[1].tankVelocity.z, self.costume.costumes[1].tankVelocity.x)) - 90) % 360
+                        local turretRot = math.clamp(math.deg(math.asin(player:getLookDir().y)), -15, 25)
+                        models.models.ex_skill_1.Tank.Turret.Cannon:setRot(turretRot, 0, 0)
+                        models.models.ex_skill_1.Tank.Turret.Cannon.HangingSign:setRot(turretRot * -1, 0, 0)
+                        if camelVelocity > 0.01 then
+                            models.models.main.Avatar:setPos(-13, 16, 4)
+                            for _, modelPart in ipairs({models.models.ex_skill_1.Tank, models.models.ex_skill_1.Tank.Turret}) do
+                                modelPart:setRot()
+                            end
+                        else
+                            models.models.main.Avatar:setPos(vectors.vec3(math.sin(math.rad(baseRot * -1)) * 4, 0, math.cos(math.rad(baseRot * -1)) * -4 + 4):add(-13, 16, 4))
+                            models.models.ex_skill_1.Tank:setRot(0, baseRot, 0)
+                            models.models.ex_skill_1.Tank.Turret:setRot(0, baseRot * -1, 0)
+                        end
+
+                    end, "tank_render")
+                else
+                    renderer:setRenderVehicle(true)
+                    models.models.ex_skill_1.Tank:setVisible(false)
+                    models.models.main.Avatar:setPos()
+                    self.parent.cameraManager:setThirdPersonCameraDistance(4)
+                    events.TICK:remove("tank_tick")
+                    events.RENDER:remove("tank_render")
+                end
+            end
+            self.costume.costumes[1].isRidingTankPrev = isRidingTank
         end)
     end;
 }
