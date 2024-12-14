@@ -416,6 +416,8 @@ BlueArchiveCharacter = {
 
                     onPreAnimation = function (self)
                         if not self.exSkill[1].init then
+                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet.WaterSpill:setPrimaryTexture("RESOURCE", "textures/block/water_still.png")
+                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet.WaterSpill:setColor(0.25, 0.39, 0.67)
                             self.exSkill[1].init = true
                         end
                         self.parent.faceParts:setEmotion("NORMAL", "CENTER", "OPENED", 22, true)
@@ -427,8 +429,10 @@ BlueArchiveCharacter = {
                         elseif tick == 24 then
                             self.parent.faceParts:setEmotion("INVERTED", "NORMAL", "WORRY", 1, true)
                         elseif tick == 25 then
+                            self.exSkill[1].textTask:setVisible(true)
                             self.parent.faceParts:setEmotion("INVERTED", "NORMAL", "TRIANGLE", 8, true)
                         elseif tick == 33 then
+                            self.exSkill[1].textTask:setVisible(false)
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "TRIANGLE", 1, true)
                         elseif tick == 34 then
                             self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "FRUST", 1, true)
@@ -442,23 +446,87 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "FRUST", 6, true)
                         elseif tick == 53 then
                             self.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "TRIANGLE", 14, true)
+                            if host:isHost() then
+                                models.models.ex_skill_1.CameraBackground:setVisible(true)
+                                local windowSize = client:getWindowSize()
+                                models.models.ex_skill_1.CameraBackground.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(45))
+                                events.RENDER:register(function (delta, context)
+                                    models.models.ex_skill_1.CameraBackground:setVisible(context == "RENDER")
+                                    local backgroundPos = vectors.rotateAroundAxis(player:getBodyYaw(delta) + 180, renderer:getCameraOffsetPivot():copy():add(0, 1.62, 0):add(client:getCameraDir():copy():scale(1.75)), 0, 1, 0):scale(16 / 0.9375)
+                                    models.models.ex_skill_1.CameraBackground:setOffsetPivot(backgroundPos)
+                                    models.models.ex_skill_1.CameraBackground.Background:setPos(backgroundPos)
+                                end, "ex_skill_1_background_render")
+                            end
+                            local particleAnchor = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar):add(0, 5, 0)
+                            local fireworkColor = vectors.hsvToRGB(math.random(), 0.8, 1)
+                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:flash"), particleAnchor):setColor(fireworkColor)
+                            for _ = 1, 400 do
+                                local particleAngleX = math.random() * math.pi * 2
+                                    local particleAngleY = math.random() * math.pi * 2
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), particleAnchor):setVelocity(math.cos(particleAngleX) * math.cos(particleAngleY) * 0.2, math.sin(particleAngleY) * 0.2, math.sin(particleAngleX) * math.cos(particleAngleY) * 0.2):setColor(fireworkColor)
+                            end
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.firework_rocket.large_blast"), player:getPos())
                         elseif tick == 56 then
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet:moveTo(models.models.main)
                         elseif tick == 67 then
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "WORRY", 8, true)
+                            if host:isHost() then
+                                models.models.ex_skill_1.CameraBackground:setVisible(false)
+                                events.RENDER:remove("ex_skill_1_background_render")
+                            end
+                        elseif tick == 69 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.glass.break"), self.parent.modelUtils.getModelWorldPos(models.models.main.TeaSet.ExSkill1SoundAnchor2), 1, 0.5)
+                            local particleAnchor1Pos = self.parent.modelUtils.getModelWorldPos(models.models.main.TeaSet.WaterSpill)
+                            for _ = 1, 20 do
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:splash"), particleAnchor1Pos:copy():add(math.random() - 0.5, 0, math.random() - 0.5)):setLifetime(10)
+                            end
                         elseif tick == 74 then
                             self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "FRUST", 21, true)
-                        end
-                        if tick == 900 then
-                            for _, animation in ipairs(self.exSkill[1].animations) do
-                                animations["models."..animation]["ex_skill_1"]:pause()
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.small_fall"), player:getPos(), 1)
+                            local particleAnchor1Pos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head.ExSkill1ParticleAnchor1)
+                            for i = 0, 5 do
+                                local particleRot = math.rad(i * 60)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:wax_off"), particleAnchor1Pos):setColor(1, 1, 0):setLifetime(12):setVelocity(math.cos(particleRot) * 0.05, 0.1, math.sin(particleRot) * 0.05):setGravity(0.5)
                             end
+                        end
+
+                        if tick >= 25 and tick < 33 then
+                            self.exSkill[1].textTask:setPos(vectors.vec3(-9, 8, -8):add(math.random() * 0.5 - 0.25, math.random() * 0.5 - 0.25))
+                            if (tick - 25) % 2 == 0 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.experience_orb.pickup"), player:getPos(), 1, 2)
+                            end
+                        end
+                        if tick < 56 and tick % 4 == 0 then
+                            for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet.Yunomi1.ExSkill1ParticleAnchor2, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet.Yunomi2.ExSkill1ParticleAnchor3}) do
+                                local particleAnchorPos = self.parent.modelUtils.getModelWorldPos(modelPart)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("poof"), particleAnchorPos):setScale(0.2):setVelocity():setLifetime(15)
+                            end
+                        end
+                        if tick % 2 == 0 and tick >= 70 then
+                            local particleAnchor5Pos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Stall.ExSkill1ParticleAnchor5)
+                            for i = 0, 11 do
+                                local particleRot = i * (math.pi / 6)
+                                particles:newParticle(self.parent.compatibilityUtils.getBlockParticleId(self.parent.compatibilityUtils:checkBlock("minecraft:dirt")), particleAnchor5Pos:copy():add(math.cos(particleRot) * 0.6, 0, math.sin(particleRot) * 0.6))
+                            end
+                        end
+                        if tick % math.ceil((animations["models.main"]["ex_skill_1"]:getLength() * 20 - tick) / 20) == 0 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.boat.paddle_land"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Stall.Wheels.ExSkill1SoundAnchor1))
                         end
                     end;
 
                     onPostAnimation = function (self, forcedStop)
                         if models.models.main.TeaSet ~= nil then
                             models.models.main.TeaSet:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
+                        end
+                        if forcedStop then
+                            if host:isHost() then
+                                models.models.ex_skill_1.CameraBackground:setVisible(false)
+                                events.RENDER:remove("ex_skill_1_background_render")
+                            end
+                            self.exSkill[1].textTask:setVisible(false)
+                        else
+                            local bodyYaw = player:getBodyYaw() % 360
+                            self.parent.placementObjectManager:spawn(1, vectors.rotateAroundAxis(bodyYaw * -1, -10.75, 1, -2.1875, 0, 1, 0):add(player:getPos()), 180 + bodyYaw * -1)
                         end
                     end;
                 };

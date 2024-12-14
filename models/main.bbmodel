@@ -11031,7 +11031,7 @@
 							"uuid": "576f2755-a002-2a02-d284-d0c446e1d376",
 							"time": 3.2,
 							"color": -1,
-							"interpolation": "catmullrom",
+							"interpolation": "step",
 							"bezier_linked": true,
 							"bezier_left_time": [-0.1, -0.1, -0.1],
 							"bezier_left_value": [0, 0, 0],
@@ -11048,7 +11048,7 @@
 								}
 							],
 							"uuid": "52488213-3ff6-a2aa-3346-529f36bc994c",
-							"time": 3.45,
+							"time": 3.35,
 							"color": -1,
 							"interpolation": "catmullrom",
 							"bezier_linked": true,
