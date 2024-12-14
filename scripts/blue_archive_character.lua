@@ -789,7 +789,7 @@ BlueArchiveCharacter = {
                         end
                     end;
 
-                    onPostAnimation = function (_, forcedStop)
+                    onPostAnimation = function (self, forcedStop)
                         if models.models.ex_skill_2.Tuna ~= nil then
                             models.models.ex_skill_2.Tuna:moveTo(models.models.ex_skill_2.UnderWater.ForCameraOffset)
                         end
@@ -811,7 +811,7 @@ BlueArchiveCharacter = {
                 };
 
                 ---このExスキルの初期化処理が行われたかどうか
-                ---@param boolean
+                ---@type boolean
                 init = false;
             };
 
