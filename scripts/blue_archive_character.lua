@@ -3,7 +3,7 @@
 ---| "SURPRISED" # 驚いた目（ダメージを受けたときなど）
 ---| "TIRED" # 疲れた目（死亡アニメーションなど）
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
----| "CENTER" # 少し反対側を見る目
+---| "INVERTED" # 困りつつ、反対側を見る目
 ---| "UNEQUAL" # ><
 
 ---@alias BlueArchiveCharacter.LeftEyeTextures
@@ -12,13 +12,15 @@
 ---| "TIRED" # 疲れた目（死亡アニメーションなど）
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
 ---| "UNEQUAL" # ><
+---| "CENTER" # 少し反対側を見る目
 
 ---@alias BlueArchiveCharacter.MouthTextures
 ---| "NORMAL" # 通常
 ---| "OPENED" # 開いた口
 ---| "TRIANGLE" # 三角形の口
----| "SMILE" # にっこり
+---| "FRUST" # ぐじゅぐじゅ口
 ---| "SAD" # への字口
+---| "WORRY" # 困った口
 
 ---@alias BlueArchiveCharacter.GunHoldType
 ---| "NORMAL" # バニラの弓やクロスボウの構え方と同じ
@@ -299,7 +301,7 @@ BlueArchiveCharacter = {
                 SURPRISED = vectors.vec2(3, 0); --必須
                 TIRED = vectors.vec2(4, 0); --必須
                 CLOSED = vectors.vec2(0, 1); --必須
-                CENTER = vectors.vec2(2, 0);
+                INVERTED = vectors.vec2(2, 1);
                 UNEQUAL = vectors.vec2(1, 1);
             };
 
@@ -309,13 +311,15 @@ BlueArchiveCharacter = {
                 TIRED = vectors.vec2(3, 0); --必須
                 CLOSED = vectors.vec2(-1, 1); --必須
                 UNEQUAL = vectors.vec2(0, 1);
+                CENTER = vectors.vec2(1, 0);
             };
 
             mouth = {
                 OPENED = vectors.vec2(0, 1);
                 TRIANGLE = vectors.vec2(1, 1);
-                SMILE = vectors.vec2(0, 2);
+                FRUST = vectors.vec2(0, 2);
                 SAD = vectors.vec2(1, 2);
+                WORRY = vectors.vec2(0, 0);
             };
         }
 
@@ -414,11 +418,36 @@ BlueArchiveCharacter = {
                         if not self.exSkill[1].init then
                             self.exSkill[1].init = true
                         end
+                        self.parent.faceParts:setEmotion("NORMAL", "CENTER", "OPENED", 22, true)
                     end;
 
                     onAnimationTick = function (self, tick)
-                        if tick == 56 then
+                        if tick == 22 then
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", 2, true)
+                        elseif tick == 24 then
+                            self.parent.faceParts:setEmotion("INVERTED", "NORMAL", "WORRY", 1, true)
+                        elseif tick == 25 then
+                            self.parent.faceParts:setEmotion("INVERTED", "NORMAL", "TRIANGLE", 8, true)
+                        elseif tick == 33 then
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "TRIANGLE", 1, true)
+                        elseif tick == 34 then
+                            self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "FRUST", 1, true)
+                        elseif tick == 35 then
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "FRUST", 1, true)
+                        elseif tick == 36 then
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "TRIANGLE", 10, true)
+                        elseif tick == 46 then
+                            self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "TRIANGLE", 1, true)
+                        elseif tick == 47 then
+                            self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "FRUST", 6, true)
+                        elseif tick == 53 then
+                            self.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "TRIANGLE", 14, true)
+                        elseif tick == 56 then
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet:moveTo(models.models.main)
+                        elseif tick == 67 then
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "WORRY", 8, true)
+                        elseif tick == 74 then
+                            self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "FRUST", 21, true)
                         end
                         if tick == 900 then
                             for _, animation in ipairs(self.exSkill[1].animations) do
