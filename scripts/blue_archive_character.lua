@@ -403,7 +403,7 @@ BlueArchiveCharacter = {
 
                     fin = {
                         rot = vectors.vec3(10, -100, 0);
-                        pos = vectors.vec3(-197, 26, 23);
+                        pos = vectors.vec3(-203, 24, 23);
                     };
 
                     fixMode = true;
