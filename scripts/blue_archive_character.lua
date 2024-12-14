@@ -544,25 +544,23 @@ BlueArchiveCharacter = {
                 name = {
                     en_us = "Business trip, Momoya summer stall!";
                     ja_jp = "出張、夏の百夜堂出店！";
-
-                    fixMode = true;
                 };
 
                 formationType = "SPECIAL";
 
-                models = {models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate};
+                models = {models.models.ex_skill_2.Plate};
 
                 animations = {"main", "costume_swimsuit", "ex_skill_2"};
 
                 camera = {
                     start = {
-                        pos = vectors.vec3(33, 26, 9.5),
-                        rot = vectors.vec3(0, 210)
+                        pos = vectors.vec3(),
+                        rot = vectors.vec3()
                     };
 
                     fin = {
-                        pos = vectors.vec3(6, 26, -18.5),
-                        rot = vectors.vec3(0, 197.5)
+                        pos = vectors.vec3(),
+                        rot = vectors.vec3()
                     };
                 };
 
@@ -574,71 +572,21 @@ BlueArchiveCharacter = {
                     end;
 
                     onPreAnimation = function (self)
-                        models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIceFace:setVisible(false)
-                        for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce1, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce2, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce3, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce4, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce5, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarLeft, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarRight}) do
-                            modelPart:setUVPixels(1)
+                        --models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIceFace:setVisible(false)
+                        for _, modelPart in ipairs({models.models.ex_skill_2.Plate.ShavedIce.ShavedIce2.ShavedIce1, models.models.ex_skill_2.Plate.ShavedIce.ShavedIce2.ShavedIce2, models.models.ex_skill_2.Plate.ShavedIce.ShavedIce2.ShavedIce3, models.models.ex_skill_2.Plate.ShavedIce.ShavedIce2.ShavedIce4, models.models.ex_skill_2.Plate.ShavedIce.ShavedIce2.ShavedIce5, models.models.ex_skill_2.Plate.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarLeft, models.models.ex_skill_2.Plate.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarRight}) do
+                            modelPart:setUVPixels(1, 0)
                         end
-                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 75, true)
                     end;
 
                     onAnimationTick = function (self, tick)
-                        if tick <= 25 then
-                            local particleAnchor1Pos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ExSkill2ParticleAnchor1)
-                            if tick <= 16 then
-                                for _ = 1, 2 do
-                                    particles:newParticle(self.parent.compatibilityUtils.getBlockParticleId(self.parent.compatibilityUtils:checkBlock("minecraft:snow")), particleAnchor1Pos):setPower(0.25):setLifetime(10)
-                                end
-                            end
-                            if tick >= 16 then
-                                for _ = 1, 4 do
-                                    particles:newParticle(self.parent.compatibilityUtils.getBlockParticleId(self.parent.compatibilityUtils:checkBlock("minecraft:light_blue_concrete")), particleAnchor1Pos):setPower(0):setLifetime(10)
-                                end
-                                if tick == 16 then
-                                    for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce1, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce2, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce3, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce4, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce5, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarLeft, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarRight}) do
-                                        modelPart:setUVPixels(2)
-                                    end
-                                elseif tick == 19 then
-                                    for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce1, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce2, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce3, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce4, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce5, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarLeft, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarRight}) do
-                                        modelPart:setUVPixels(3)
-                                    end
-                                elseif tick == 22 then
-                                    for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce1, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce2, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce3, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce4, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce5, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarLeft, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarRight}) do
-                                        modelPart:setUVPixels(4)
-                                    end
-                                elseif tick == 25 then
-                                    for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce1, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce2, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce3, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce4, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce5, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarLeft, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarRight}) do
-                                        modelPart:setUVPixels(5)
-                                    end
-                                end
-                            end
-                        elseif tick == 28 then
-                            for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce1, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce2, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce3, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce4, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIce5, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarLeft, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarRight}) do
-                                modelPart:setUVPixels()
-                            end
-                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIceFace:setUVPixels(8)
-                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIceFace:setVisible(true)
-                        elseif tick == 30 then
-                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ShavedIceFace:setUVPixels(math.random() > 0.95 and 16 or 0)
-                            local particleAnchor2Pos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ExSkill2ParticleAnchor2)
-                            local bodyYaw = player:getBodyYaw()
-                            for i = 1, 4 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), particleAnchor2Pos):setColor(0.99, 0.6, 0.73):setVelocity(vectors.rotateAroundAxis(-bodyYaw - 30, vectors.vec3(i <= 2 and 0.2 or -0.2, i % 2 == 0 and 0 or 0.1), 0, 1)):setGravity(0.5):setLifetime(4)
-                            end
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.ShavedIce2.ExSkill2SoundAnchor1), 1, 0.75)
-                        elseif tick >= 34 and tick <= 69 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIce.Wave.ExSkill2SoundAnchor2), math.clamp(tick <= 43 and (tick * 0.056 - 1.904) or (tick >= 60 and (tick * -0.056 + 3.86) or 0.5), 0, 0.5), 0.75)
-                        elseif tick == 75 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 17, true)
-                        elseif tick == 92 then
-                            self.parent.faceParts:setEmotion("NORMAL", "CLOSED", "OPENED", 18, true)
-                            local bodyYaw = player:getBodyYaw()
-                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head.FaceParts.Eyes.ExSkill2ParticleAnchor3)):setColor(1, 1, 0.68):setVelocity(vectors.rotateAroundAxis(-bodyYaw - 5, vectors.vec3(0.2, 0.2), 0, 1)):setGravity(1):setLifetime(18)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.experience_orb.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head.FaceParts.Eyes.ExSkill2SoundAnchor3), 1, 2)
-                            local particleAnchor4Pos = self.parent.modelUtils.getModelWorldPos(models.models.main.ExSkill2ParticleAnchor4)
-                            for i = 0, 31 do
-                                local particleRot = i / 8 * math.pi + 0.2
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), particleAnchor4Pos):setColor(0.87, 0.71, 0.99, 0.5):setVelocity(vectors.rotateAroundAxis(-bodyYaw - 17.5, vectors.vec3(math.cos(particleRot), math.sin(particleRot)), 0, 1):scale(i < 16 and 0.15 or 0.2)):setScale(1.5) :setLifetime(18)
-                            end
+                        if tick == 52 then
+                            models.models.ex_skill_2.Plate:moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
+                        end
+                    end;
+
+                    onPostAnimation = function (_, forcedStop)
+                        if models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate ~= nil then
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate:moveTo( models.models.ex_skill_2)
                         end
                     end;
 
