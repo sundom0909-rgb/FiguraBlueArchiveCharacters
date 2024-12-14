@@ -393,13 +393,13 @@ BlueArchiveCharacter = {
 
                 camera = {
                     start = {
-                        rot = vectors.vec3(0, 160, 0);
-                        pos = vectors.vec3(-2, 24, -18);
+                        rot = vectors.vec3(0, 180, 0);
+                        pos = vectors.vec3(-5, 23, -16);
                     };
 
                     fin = {
-                        rot = vectors.vec3(0, 250, 0);
-                        pos = vectors.vec3(-146, 25, -33);
+                        rot = vectors.vec3(10, -100, 0);
+                        pos = vectors.vec3(-197, 26, 23);
                     };
 
                     fixMode = true;
@@ -417,9 +417,20 @@ BlueArchiveCharacter = {
                     end;
 
                     onAnimationTick = function (self, tick)
+                        if tick == 56 then
+                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet:moveTo(models.models.main)
+                        end
+                        if tick == 900 then
+                            for _, animation in ipairs(self.exSkill[1].animations) do
+                                animations["models."..animation]["ex_skill_1"]:pause()
+                            end
+                        end
                     end;
 
                     onPostAnimation = function (self, forcedStop)
+                        if models.models.main.TeaSet ~= nil then
+                            models.models.main.TeaSet:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
+                        end
                     end;
                 };
 
