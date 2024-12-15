@@ -6,6 +6,7 @@
 	"color": "a3e0fb",
 	"ignoredTextures": [
 		"textures.for_modeling.water_still",
+		"textures.for_modeling.water_flow",
 		"textures.for_modeling.leather_layer_1",
 		"textures.for_modeling.leather_layer_1_overlay",
 		"textures.for_modeling.leather_layer_2",
@@ -177,11 +178,11 @@
 		"models.models.ex_skill_2.Plate": {
 			"visible": false
 		},
-		"models.models.ex_skill_2.Plate.ShavedIce.ShavedIce2.PopEffects": {
+		"models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.PopEffects": {
 			"parentType": "Camera",
 			"primaryRenderType": "EMISSIVE_SOLID"
 		},
-		"models.models.ex_skill_2.Plate.ShavedIce.ShavedIce2.ShavedIceFace": {
+		"models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceFace": {
 			"visible": false
 		},
 		"models.models.ex_skill_2.WinkEffect": {
