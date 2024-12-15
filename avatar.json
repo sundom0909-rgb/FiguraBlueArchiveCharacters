@@ -177,7 +177,20 @@
 		"models.models.ex_skill_2.Plate": {
 			"visible": false
 		},
+		"models.models.ex_skill_2.Plate.ShavedIce.ShavedIce2.PopEffects": {
+			"parentType": "Camera",
+			"primaryRenderType": "EMISSIVE_SOLID"
+		},
 		"models.models.ex_skill_2.Plate.ShavedIce.ShavedIce2.ShavedIceFace": {
+			"visible": false
+		},
+		"models.models.ex_skill_2.WinkEffect": {
+			"visible": false,
+			"parentType": "Camera",
+			"primaryRenderType": "CUTOUT_EMISSIVE_SOLID",
+			"moveTo": "models.models.main.Avatar.Head"
+		},
+		"models.models.ex_skill_2.Gui": {
 			"visible": false
 		},
 		"models.models.costume_swimsuit.CSwimsuitH": {
