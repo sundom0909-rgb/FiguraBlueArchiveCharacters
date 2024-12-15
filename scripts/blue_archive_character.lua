@@ -404,6 +404,14 @@ BlueArchiveCharacter = {
                     ---@type boolean
                     isRidingTankPrev = false;
 
+                    ---前ティックに戦車のエンジンが起動していたかどうか
+                    ---@type boolean
+                    isEngineActivePrev = false;
+
+                    ---戦車に乗っているときのティックカウンター
+                    ---@type integer
+                    tankTick = 0;
+
                     ---ラクダの向きのデータ
                     ---@type number[]
                     camelRotData = {0, 0};
@@ -417,7 +425,15 @@ BlueArchiveCharacter = {
         }
 
         instance.bubble = {
-
+            callbacks = {
+                onPlay = function (self, type, duration, showInGui)
+                    if type == "SWEAT" then
+                        if not showInGui then
+                            self.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "CLOSED", 60, true)
+                        end
+                    end
+                end
+            };
         }
 
         instance.headBlock = {
@@ -542,8 +558,10 @@ BlueArchiveCharacter = {
                     models.models.ex_skill_1.Tank:setVisible(true)
                     models.models.main.Avatar:setPos(-13, 16, 4)
                     models.models.ex_skill_1.Tank:setOffsetPivot(0, 0, 8)
+                    models.models.ex_skill_1.Tank:setColor(1, 1, 1)
                     self.parent.cameraManager:setThirdPersonCameraDistance(8)
                     animations["models.main"]["tank_start"]:play()
+                    animations["models.main"]["tank_idle"]:play()
                     for _, animationName in ipairs({"tank_start", "tank_move"}) do
                         animations["models.ex_skill_1"][animationName]:play()
                     end
@@ -559,9 +577,14 @@ BlueArchiveCharacter = {
                         if camelVelocity > 0.01 then
                             self.costume.costumes[1].tankVelocity = vectors.rotateAroundAxis(camelRot * -1, 0, 0, 1, 0, 1, 0)
                         end
-                        local isEngineActive = self.costume.costumes[1].isRidingTank and (player:getPos():sub(vehicle:getPos()):length() - 1.51017) * -1.35 < 1
-                        animations["models.main"]["tank_idle"]:setPlaying(isEngineActive)
-                        animations["models.ex_skill_1"]["tank_idle"]:setPlaying(isEngineActive)
+                        local isEngineActive = self.costume.costumes[1].isRidingTank and (player:getPos():sub(vehicle:getPos()):length() - 1.51017) * -1.35 < 1 and models.models.ex_skill_1.Tank:getColor() == vectors.vec3(1, 1, 1)
+                        if isEngineActive and not self.costume.costumes[1].isEngineActivePrev then
+                            animations["models.main"]["tank_idle_powered"]:play()
+                            animations["models.ex_skill_1"]["tank_idle"]:play()
+                        elseif not isEngineActive and self.costume.costumes[1].isEngineActivePrev then
+                            animations["models.main"]["tank_idle_powered"]:stop()
+                            animations["models.ex_skill_1"]["tank_idle"]:stop()
+                        end
                         animations["models.ex_skill_1"]["tank_move"]:setSpeed(self.parent.physics.velocityAverage[5][2] * 2.5)
                         local beltOffset = math.floor(animations["models.ex_skill_1"]["tank_move"]:getTime() * 32) % 2
                         for _, modelPart in ipairs({models.models.ex_skill_1.Tank.RightCrawler.RightCrawlerBelt, models.models.ex_skill_1.Tank.LeftCrawler.LeftCrawlerBelt}) do
@@ -572,6 +595,22 @@ BlueArchiveCharacter = {
                         else
                             self.parent.faceParts:setEmotion("NORMAL", "INVERTED", "CLOSED", 1)
                         end
+                        if self.costume.costumes[1].tankTick % 2 == 0 and isEngineActive then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound(self.costume.costumes[1].tankTick % 4 == 0 and "minecraft:block.piston.extend" or "minecraft:block.piston.contract"), vehicle:getPos(), 0.02, 0.5)
+                        end
+                        local health = vehicle:getNbt().Health
+                        if health < 16 then
+                            local playerPos = player:getPos()
+                            local bodyYaw = player:getBodyYaw()
+                            if health < 8 then
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:flame"), playerPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1 , math.random() * 5 - 2.5, math.random() * 3 - 1.5, math.random() * 7 - 3.5, 0, 1, 0)))
+                            end
+                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:large_smoke"), playerPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1 , math.random() * 5 - 2.5, math.random() * 3 - 1.5, math.random() * 7 - 3.5, 0, 1, 0)))
+                        elseif health < 16 then
+
+                        end
+                        self.costume.costumes[1].tankTick = self.costume.costumes[1].isRidingTank and self.costume.costumes[1].tankTick + 1 or 0
+                        self.costume.costumes[1].isEngineActivePrev = isEngineActive
                     end, "tank_tick")
                     events.RENDER:register(function (delta, ctx, matrix)
                         local camelRot = math.abs(self.costume.costumes[1].camelRotData[1] - self.costume.costumes[1].camelRotData[2]) <= 180 and self.costume.costumes[1].camelRotData[2] + ((self.costume.costumes[1].camelRotData[2] - self.costume.costumes[1].camelRotData[1]) * delta) or self.costume.costumes[1].camelRotData[2]
@@ -598,15 +637,44 @@ BlueArchiveCharacter = {
                             renderer:setCameraPos(-0.75, 0, 0)
                             self.parent.cameraManager.setCameraPivot(vectors.vec3(math.sin(math.rad(bodyYaw)) * 0.2, 1 + heightOffset, math.cos(math.rad(bodyYaw)) * -0.2))
                             renderer:setEyeOffset(vectors.rotateAroundAxis(bodyYaw * -1, 0.8, 1 + heightOffset, 0.2, 0, 1, 0))
-
                         else
                             self.parent.cameraManager.setCameraPivot(vectors.vec3(0, heightOffset * 0.75, 0))
                             renderer:setEyeOffset(0, heightOffset * 0.75, 0)
                         end
                     end, "tank_render")
+
+                    events.ON_PLAY_SOUND:register(function (id, pos, volume, pitch, loop, category, path)
+                        if pos:copy():sub(vehicle:getPos()):length() < 2 then
+                            if id:match("^minecraft:entity.camel") ~= nil or id == "minecraft:entity.horse.land" then
+                                print(id)
+                                if id == "minecraft:entity.camel.step" then
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.wool.step"), pos, 0.25, 1)
+                                elseif id == "minecraft:entity.horse.land" then
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.wool.step"), pos, 1, 1)
+                                elseif id == "minecraft:entity.camel.dash" then
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.blaze.hurt"), pos, 1, 1.5)
+                                elseif id == "minecraft:entity.camel.hurt" then
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.anvil.place"), pos, 1, 2)
+                                elseif id == "minecraft:entity.camel.death" then
+                                    models.models.ex_skill_1.Tank:setColor(0.2, 0.2, 0.2)
+                                    local playerPos = player:getPos()
+                                    local bodyYaw = player:getBodyYaw()
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:explosion_emitter"), playerPos)
+                                    for _ = 0, 50 do
+                                        local offsetPos = vectors.rotateAroundAxis(bodyYaw * -1 , math.random() * 5 - 2.5, math.random() * 3 - 1.5, math.random() * 7 - 3.5, 0, 1, 0)
+                                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:poof"), playerPos:copy():add(offsetPos)):setColor(vectors.vec3(1, 1, 1):scale(math.random() * 0.1 + 0.2)):setScale(5):setVelocity(offsetPos:copy():scale(0.05))
+                                    end
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.explode"), pos, 1, 1)
+                                    self.parent.bubble:play("SWEAT", 20, vectors.vec2(), 40, false)
+                                end
+                                return true
+                            end
+                        end
+                    end, "tank_on_play_sound")
                 else
                     events.TICK:remove("tank_tick")
                     events.RENDER:remove("tank_render")
+                    events.ON_PLAY_SOUND:remove("tank_on_play_sound")
                     renderer:setRenderVehicle(true)
                     models.models.ex_skill_1.Tank:setVisible(false)
                     models.models.main.Avatar:setPos()
@@ -619,6 +687,7 @@ BlueArchiveCharacter = {
                     for _, animationName in ipairs({"tank_start", "tank_idle", "tank_move"}) do
                         animations["models.ex_skill_1"][animationName]:stop()
                     end
+                    self.costume.costumes[1].tankTick = 0
                 end
             end
             self.costume.costumes[1].isRidingTankPrev = self.costume.costumes[1].isRidingTank
