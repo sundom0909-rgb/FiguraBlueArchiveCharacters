@@ -12926,7 +12926,7 @@
 			"uuid": "5232aa7b-58bd-24ed-d634-ad0982a8a530"
 		},
 		{
-			"name": "Hatch1_Cover1",
+			"name": "Hatch1Cover1",
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
@@ -15352,7 +15352,7 @@
 								"977b74fa-af39-7b49-f6b1-8f4412830637",
 								"5232aa7b-58bd-24ed-d634-ad0982a8a530",
 								{
-									"name": "Hatch1_Cover",
+									"name": "Hatch1Cover",
 									"origin": [-20, 57, -3],
 									"color": 0,
 									"uuid": "4199566b-a768-86c8-99e9-3aa51dea883c",
@@ -15771,7 +15771,7 @@
 			"loop_delay": "",
 			"animators": {
 				"4199566b-a768-86c8-99e9-3aa51dea883c": {
-					"name": "Hatch1_Cover",
+					"name": "Hatch1Cover",
 					"type": "bone",
 					"keyframes": [
 						{
@@ -15823,7 +15823,7 @@
 			"override": false,
 			"length": 1,
 			"snapping": 20,
-			"selected": true,
+			"selected": false,
 			"anim_time_update": "",
 			"blend_weight": "",
 			"start_delay": "",

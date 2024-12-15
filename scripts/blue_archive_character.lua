@@ -9,9 +9,11 @@
 ---| "SURPRISED" # 驚いた目（ダメージを受けたときなど）
 ---| "TIRED" # 疲れた目（死亡アニメーションなど）
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
+---| "INVERTED" # 反対側を見る目
 
 ---@alias BlueArchiveCharacter.MouthTextures
 ---| "NORMAL" # 通常
+---| "CLOSED" # 閉じた口
 
 ---@alias BlueArchiveCharacter.GunHoldType
 ---| "NORMAL" # バニラの弓やクロスボウの構え方と同じ
@@ -288,9 +290,9 @@ BlueArchiveCharacter = {
         instance.faceParts = {
             rightEye = {
                 NORMAL = vectors.vec2(0, 0); --必須
-                SURPRISED = vectors.vec2(1, 0); --必須
-                TIRED = vectors.vec2(2, 0); --必須
-                CLOSED = vectors.vec2(3, 0); --必須
+                SURPRISED = vectors.vec2(2, 0); --必須
+                TIRED = vectors.vec2(3, 0); --必須
+                CLOSED = vectors.vec2(4, 0); --必須
             };
 
             leftEye = {
@@ -298,10 +300,11 @@ BlueArchiveCharacter = {
                 SURPRISED = vectors.vec2(1, 0); --必須
                 TIRED = vectors.vec2(2, 0); --必須
                 CLOSED = vectors.vec2(3, 0); --必須
+                INVERTED = vectors.vec2(4, 0)
             };
 
             mouth = {
-
+                CLOSED = vectors.vec2(0, 0)
             };
         }
 
@@ -392,6 +395,10 @@ BlueArchiveCharacter = {
                     };
 
                     exSkill = 1;
+
+                    ---戦車に乗っているかどうか
+                    ---@type boolean
+                    isRidingTank = false;
 
                     ---前ティックに戦車に乗っていたかどうか
                     ---@type boolean
@@ -528,9 +535,9 @@ BlueArchiveCharacter = {
 
         events.TICK:register(function ()
             local vehicle = player:getVehicle()
-            local isRidingTank = vehicle ~= nil and vehicle:getType() == "minecraft:camel" and vehicle:getControllingPassenger() ~= nil and vehicle:getControllingPassenger():getName() == player:getName() and #vehicle:getPassengers() == 1 and self.parent.actionWheel.shouldReplaceVehicleModels
-            if isRidingTank ~= self.costume.costumes[1].isRidingTankPrev then
-                if isRidingTank then
+            self.costume.costumes[1].isRidingTank = vehicle ~= nil and vehicle:getType() == "minecraft:camel" and vehicle:getControllingPassenger() ~= nil and vehicle:getControllingPassenger():getName() == player:getName() and #vehicle:getPassengers() == 1 and self.parent.actionWheel.shouldReplaceVehicleModels
+            if self.costume.costumes[1].isRidingTank ~= self.costume.costumes[1].isRidingTankPrev then
+                if self.costume.costumes[1].isRidingTank then
                     renderer:setRenderVehicle(false)
                     models.models.ex_skill_1.Tank:setVisible(true)
                     models.models.main.Avatar:setPos(-13, 16, 4)
@@ -540,6 +547,8 @@ BlueArchiveCharacter = {
                     for _, animationName in ipairs({"tank_start", "tank_move"}) do
                         animations["models.ex_skill_1"][animationName]:play()
                     end
+                    self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 35, true)
+                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.iron_door.open"), player:getPos(), 0.5, 1)
                     self.costume.costumes[1].tankVelocity = vectors.rotateAroundAxis(vehicle:getRot().y * -1, 0, 0, 1, 0, 1, 0)
                     events.TICK:register(function ()
                         local camelRot = vehicle:getRot().y % 360
@@ -550,13 +559,18 @@ BlueArchiveCharacter = {
                         if camelVelocity > 0.01 then
                             self.costume.costumes[1].tankVelocity = vectors.rotateAroundAxis(camelRot * -1, 0, 0, 1, 0, 1, 0)
                         end
-                        local isEngineActive = (player:getPos():sub(vehicle:getPos()):length() - 1.51017) * -1.35 < 1
+                        local isEngineActive = self.costume.costumes[1].isRidingTank and (player:getPos():sub(vehicle:getPos()):length() - 1.51017) * -1.35 < 1
                         animations["models.main"]["tank_idle"]:setPlaying(isEngineActive)
                         animations["models.ex_skill_1"]["tank_idle"]:setPlaying(isEngineActive)
                         animations["models.ex_skill_1"]["tank_move"]:setSpeed(self.parent.physics.velocityAverage[5][2] * 2.5)
                         local beltOffset = math.floor(animations["models.ex_skill_1"]["tank_move"]:getTime() * 32) % 2
                         for _, modelPart in ipairs({models.models.ex_skill_1.Tank.RightCrawler.RightCrawlerBelt, models.models.ex_skill_1.Tank.LeftCrawler.LeftCrawlerBelt}) do
                             modelPart:setUVPixels(0, beltOffset)
+                        end
+                        if self.parent.faceParts.blinkCount == 0 then
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "CLOSED", 2, true)
+                        else
+                            self.parent.faceParts:setEmotion("NORMAL", "INVERTED", "CLOSED", 1)
                         end
                     end, "tank_tick")
                     events.RENDER:register(function (delta, ctx, matrix)
@@ -591,6 +605,8 @@ BlueArchiveCharacter = {
                         end
                     end, "tank_render")
                 else
+                    events.TICK:remove("tank_tick")
+                    events.RENDER:remove("tank_render")
                     renderer:setRenderVehicle(true)
                     models.models.ex_skill_1.Tank:setVisible(false)
                     models.models.main.Avatar:setPos()
@@ -603,11 +619,9 @@ BlueArchiveCharacter = {
                     for _, animationName in ipairs({"tank_start", "tank_idle", "tank_move"}) do
                         animations["models.ex_skill_1"][animationName]:stop()
                     end
-                    events.TICK:remove("tank_tick")
-                    events.RENDER:remove("tank_render")
                 end
             end
-            self.costume.costumes[1].isRidingTankPrev = isRidingTank
+            self.costume.costumes[1].isRidingTankPrev = self.costume.costumes[1].isRidingTank
         end)
     end;
 }
