@@ -19,7 +19,7 @@
 ---| "OPENED" # 開いた口
 ---| "TRIANGLE" # 三角形の口
 ---| "FRUST" # ぐじゅぐじゅ口
----| "SAD" # への字口
+---| "SMILE" # にっこり
 ---| "WORRY" # 困った口
 
 ---@alias BlueArchiveCharacter.GunHoldType
@@ -318,7 +318,7 @@ BlueArchiveCharacter = {
                 OPENED = vectors.vec2(0, 1);
                 TRIANGLE = vectors.vec2(1, 1);
                 FRUST = vectors.vec2(0, 2);
-                SAD = vectors.vec2(1, 2);
+                SMILE = vectors.vec2(1, 2);
                 WORRY = vectors.vec2(0, 0);
             };
         }
@@ -810,7 +810,7 @@ BlueArchiveCharacter = {
                         elseif type == "NOTE" then
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", duration, true)
                         elseif type == "QUESTION" then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SAD", duration, true)
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "WORRY", duration, true)
                         elseif type == "SWEAT" then
                             self.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "TRIANGLE", duration, true)
                             models.models.main.Avatar.Head.FaceLayer:setVisible(true)
