@@ -615,7 +615,7 @@ BlueArchiveCharacter = {
         --Player APIにアクセスする場合は、ENTITY_INIT後に実行されるようにする必要がある。
 
         for _, modelPart in ipairs({models.models.ex_skill_1.Tank.PSLogo1, models.models.ex_skill_1.Tank.Turret.PSLogo2, models.models.ex_skill_1.Tank.Turret.PSLogo3}) do
-            modelPart:newText("toramaru_logo_text"):setText("§e万魔殿"):setPos(0, 2.25, 0):setScale(0.2):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.404, 0.306, 0.051)
+            modelPart:newText("toramaru_logo_text"):setPos(0, 2.25, 0):setScale(0.2):setAlignment("CENTER"):setOutline(true)
         end
         models.models.ex_skill_1.Tank.Turret.Cannon.HangingSign:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/signs/hanging/oak.png")
         models.models.ex_skill_1.Tank.Turret.Cannon.HangingSign:newText("toramaru_sign_text_1"):setText("§0§l巡回中"):setPos(-1, -9, 0.5):setRot(0, 90, 0):setScale(0.5):setAlignment("CENTER")
@@ -639,6 +639,14 @@ BlueArchiveCharacter = {
                         models.models.main.Avatar:setPos(-13, 16, 4)
                         models.models.ex_skill_1.Tank:setOffsetPivot(0, 0, 8)
                         models.models.ex_skill_1.Tank:setColor(1, 1, 1)
+                        for _, modelPart in ipairs({models.models.ex_skill_1.Tank.PSLogo1, models.models.ex_skill_1.Tank.Turret.PSLogo2, models.models.ex_skill_1.Tank.Turret.PSLogo3}) do
+                            modelPart:getTask("toramaru_logo_text"):setText("§e万魔殿"):setOutlineColor(0.404, 0.306, 0.051)
+                        end
+                        for i = 0, 1 do
+                            for j = 0, 9 do
+                                models.models.ex_skill_1.Tank.BaseBase1:getTask("toramaru_log_"..(i * 10 + j)):setLight()
+                            end
+                        end
                         self.parent.cameraManager:setThirdPersonCameraDistance(8)
                         self.parent.arms:setArmState(0, 0)
                         animations["models.main"]["tank_start"]:play()
@@ -733,7 +741,7 @@ BlueArchiveCharacter = {
                             end
                         end, "tank_render")
 
-                        events.ON_PLAY_SOUND:register(function (id, pos, volume, pitch, loop, category, path)
+                        events.ON_PLAY_SOUND:register(function (id, pos, _, _, _, _, path)
                             if pos:copy():sub(vehicle:getPos()):length() < 2 and path ~= nil then
                                 if id:match("^minecraft:entity.camel") ~= nil or id == "minecraft:entity.horse.land" then
                                     if id == "minecraft:entity.camel.step" then
@@ -748,6 +756,14 @@ BlueArchiveCharacter = {
                                         sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.anvil.place"), pos, 1, 2)
                                     elseif id == "minecraft:entity.camel.death" then
                                         models.models.ex_skill_1.Tank:setColor(0.2, 0.2, 0.2)
+                                        for _, modelPart in ipairs({models.models.ex_skill_1.Tank.PSLogo1, models.models.ex_skill_1.Tank.Turret.PSLogo2, models.models.ex_skill_1.Tank.Turret.PSLogo3}) do
+                                            modelPart:getTask("toramaru_logo_text"):setText("§0万魔殿"):setOutlineColor(0, 0, 0)
+                                        end
+                                        for i = 0, 1 do
+                                            for j = 0, 9 do
+                                                models.models.ex_skill_1.Tank.BaseBase1:getTask("toramaru_log_"..(i * 10 + j)):setLight(0)
+                                            end
+                                        end
                                         local playerPos = player:getPos()
                                         local bodyYaw = player:getBodyYaw()
                                         particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:explosion_emitter"), playerPos)
