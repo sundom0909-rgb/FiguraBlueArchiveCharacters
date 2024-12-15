@@ -576,11 +576,22 @@ BlueArchiveCharacter = {
                         for _, modelPart in ipairs({models.models.ex_skill_2.Plate.ShavedIce.ShavedIce2.ShavedIce1, models.models.ex_skill_2.Plate.ShavedIce.ShavedIce2.ShavedIce2, models.models.ex_skill_2.Plate.ShavedIce.ShavedIce2.ShavedIce3, models.models.ex_skill_2.Plate.ShavedIce.ShavedIce2.ShavedIce4, models.models.ex_skill_2.Plate.ShavedIce.ShavedIce2.ShavedIce5, models.models.ex_skill_2.Plate.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarLeft, models.models.ex_skill_2.Plate.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarRight}) do
                             modelPart:setUVPixels(1, 0)
                         end
+                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 71, true)
                     end;
 
                     onAnimationTick = function (self, tick)
                         if tick == 52 then
                             models.models.ex_skill_2.Plate:moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
+                        elseif tick == 71 then
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", 3, true)
+                        elseif tick == 74 then
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "WORRY", 9, true)
+                        elseif tick == 85 then
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "WORRY", 3, true)
+                        elseif tick == 87 then
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 5, true)
+                        elseif tick == 92 then
+                            self.parent.faceParts:setEmotion("NORMAL", "CLOSED", "OPENED", 25, true)
                         end
                     end;
 
