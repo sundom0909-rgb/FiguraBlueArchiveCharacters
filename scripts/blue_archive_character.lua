@@ -439,15 +439,15 @@ BlueArchiveCharacter = {
         instance.exSkill = {
             {
                 name = {
-                    en_us = "Ex Skill name";
-                    ja_jp = "Exスキル名";
+                    en_us = "Let's go, Toramaru";
+                    ja_jp = "行きますよ、虎丸";
                 };
 
-                formationType = "STRIKER";
+                formationType = "SPECIAL";
 
-                models = {};
+                models = {models.models.ex_skill_1.Tank, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Book};
 
-                animations = {"main"};
+                animations = {"main", "ex_skill_1"};
 
                 camera = {
                     start = {
@@ -614,16 +614,16 @@ BlueArchiveCharacter = {
         --生徒固有初期化処理
         --Player APIにアクセスする場合は、ENTITY_INIT後に実行されるようにする必要がある。
 
-        for _, modelPart in ipairs({models.models.ex_skill_1.Tank.PSLogo1, models.models.ex_skill_1.Tank.Turret.PSLogo2, models.models.ex_skill_1.Tank.Turret.PSLogo3}) do
+        for _, modelPart in ipairs({models.models.ex_skill_1.Tank.TankBody.PSLogo1, models.models.ex_skill_1.Tank.TankBody.Turret.PSLogo2, models.models.ex_skill_1.Tank.TankBody.Turret.PSLogo3}) do
             modelPart:newText("toramaru_logo_text"):setPos(0, 2.25, 0):setScale(0.2):setAlignment("CENTER"):setOutline(true)
         end
-        models.models.ex_skill_1.Tank.Turret.Cannon.HangingSign:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/signs/hanging/oak.png")
-        models.models.ex_skill_1.Tank.Turret.Cannon.HangingSign:newText("toramaru_sign_text_1"):setText("§0§l巡回中"):setPos(-1, -9, 0.5):setRot(0, 90, 0):setScale(0.5):setAlignment("CENTER")
-        models.models.ex_skill_1.Tank.Turret.Cannon.HangingSign:newText("toramaru_sign_text_2"):setText("§0§l巡回中"):setPos(1, -9, -0.5):setRot(0, -90, 0):setScale(0.5):setAlignment("CENTER")
+        models.models.ex_skill_1.Tank.TankBody.Turret.Cannon.HangingSign:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/signs/hanging/oak.png")
+        models.models.ex_skill_1.Tank.TankBody.Turret.Cannon.HangingSign:newText("toramaru_sign_text_1"):setText("§0§l巡回中"):setPos(-1, -9, 0.5):setRot(0, 90, 0):setScale(0.5):setAlignment("CENTER")
+        models.models.ex_skill_1.Tank.TankBody.Turret.Cannon.HangingSign:newText("toramaru_sign_text_2"):setText("§0§l巡回中"):setPos(1, -9, -0.5):setRot(0, -90, 0):setScale(0.5):setAlignment("CENTER")
         self.parent.avatarEvents.SCRIPT_INIT:register(function ()
             for i = 0, 1 do
                 for j = 0, 9 do
-                    models.models.ex_skill_1.Tank.BaseBase1:newBlock("toramaru_log_"..(i * 10 + j)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:oak_log").."[axis=z]"):setPos(36 + i * -80, -2, j * 8 - 41):setScale(0.5)
+                    models.models.ex_skill_1.Tank.TankBody.BaseBase1:newBlock("toramaru_log_"..(i * 10 + j)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:oak_log").."[axis=z]"):setPos(36 + i * -80, -2, j * 8 - 41):setScale(0.5)
                 end
             end
         end)
@@ -639,12 +639,12 @@ BlueArchiveCharacter = {
                         models.models.main.Avatar:setPos(-13, 16, 4)
                         models.models.ex_skill_1.Tank:setOffsetPivot(0, 0, 8)
                         models.models.ex_skill_1.Tank:setColor(1, 1, 1)
-                        for _, modelPart in ipairs({models.models.ex_skill_1.Tank.PSLogo1, models.models.ex_skill_1.Tank.Turret.PSLogo2, models.models.ex_skill_1.Tank.Turret.PSLogo3}) do
+                        for _, modelPart in ipairs({models.models.ex_skill_1.Tank.TankBody.PSLogo1, models.models.ex_skill_1.Tank.TankBody.Turret.PSLogo2, models.models.ex_skill_1.Tank.TankBody.Turret.PSLogo3}) do
                             modelPart:getTask("toramaru_logo_text"):setText("§e万魔殿"):setOutlineColor(0.404, 0.306, 0.051)
                         end
                         for i = 0, 1 do
                             for j = 0, 9 do
-                                models.models.ex_skill_1.Tank.BaseBase1:getTask("toramaru_log_"..(i * 10 + j)):setLight()
+                                models.models.ex_skill_1.Tank.TankBody.BaseBase1:getTask("toramaru_log_"..(i * 10 + j)):setLight()
                             end
                         end
                         self.parent.cameraManager:setThirdPersonCameraDistance(8)
@@ -718,15 +718,15 @@ BlueArchiveCharacter = {
                                 local heightOffset = (player:getPos(delta):sub(vehicle:getPos(delta)):length() - 1.51017) * -1.35
                                 models.models.main.Avatar:setPos(-13, 16 + heightOffset * 16, 4)
                                 models.models.ex_skill_1.Tank:setPos(0, -24.5 + heightOffset * 16, 0)
-                                models.models.ex_skill_1.Tank.Turret.Cannon:setRot(turretRot, 0, 0)
-                                models.models.ex_skill_1.Tank.Turret.Cannon.HangingSign:setRot(turretRot * -1, 0, 0)
+                                models.models.ex_skill_1.Tank.TankBody.Turret.Cannon:setRot(turretRot, 0, 0)
+                                models.models.ex_skill_1.Tank.TankBody.Turret.Cannon.HangingSign:setRot(turretRot * -1, 0, 0)
                                 if camelVelocity > 0.01 then
-                                    for _, modelPart in ipairs({models.models.ex_skill_1.Tank, models.models.ex_skill_1.Tank.Turret}) do
+                                    for _, modelPart in ipairs({models.models.ex_skill_1.Tank, models.models.ex_skill_1.Tank.TankBody.Turret}) do
                                         modelPart:setRot()
                                     end
                                 else
                                     models.models.ex_skill_1.Tank:setRot(0, baseRot, 0)
-                                    models.models.ex_skill_1.Tank.Turret:setRot(0, baseRot * -1, 0)
+                                    models.models.ex_skill_1.Tank.TankBody.Turret:setRot(0, baseRot * -1, 0)
                                 end
 
                                 local bodyYaw = player:getBodyYaw(delta)
@@ -756,12 +756,12 @@ BlueArchiveCharacter = {
                                         sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.anvil.place"), pos, 1, 2)
                                     elseif id == "minecraft:entity.camel.death" then
                                         models.models.ex_skill_1.Tank:setColor(0.2, 0.2, 0.2)
-                                        for _, modelPart in ipairs({models.models.ex_skill_1.Tank.PSLogo1, models.models.ex_skill_1.Tank.Turret.PSLogo2, models.models.ex_skill_1.Tank.Turret.PSLogo3}) do
+                                        for _, modelPart in ipairs({models.models.ex_skill_1.Tank.TankBody.PSLogo1, models.models.ex_skill_1.Tank.TankBody.Turret.PSLogo2, models.models.ex_skill_1.Tank.TankBody.Turret.PSLogo3}) do
                                             modelPart:getTask("toramaru_logo_text"):setText("§0万魔殿"):setOutlineColor(0, 0, 0)
                                         end
                                         for i = 0, 1 do
                                             for j = 0, 9 do
-                                                models.models.ex_skill_1.Tank.BaseBase1:getTask("toramaru_log_"..(i * 10 + j)):setLight(0)
+                                                models.models.ex_skill_1.Tank.TankBody.BaseBase1:getTask("toramaru_log_"..(i * 10 + j)):setLight(0)
                                             end
                                         end
                                         local playerPos = player:getPos()
@@ -784,6 +784,10 @@ BlueArchiveCharacter = {
                         events.ON_PLAY_SOUND:remove("tank_on_play_sound")
                         renderer:setRenderVehicle(true)
                         models.models.ex_skill_1.Tank:setVisible(false)
+                        for _, modelPart in ipairs({models.models.ex_skill_1.Tank, models.models.ex_skill_1.Tank.TankBody.Turret, models.models.ex_skill_1.Tank.TankBody.Turret.Cannon}) do
+                            modelPart:setPos()
+                            modelPart:setRot()
+                        end
                         models.models.main.Avatar:setPos()
                         self.parent.cameraManager:setThirdPersonCameraDistance(4)
                         self.parent.cameraManager.setCameraPivot()

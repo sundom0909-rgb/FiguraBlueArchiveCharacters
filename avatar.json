@@ -144,6 +144,10 @@
 		"models.models.ex_skill_1.Tank": {
 			"visible": false
 		},
+		"models.models.ex_skill_1.Book": {
+			"visible": false,
+			"moveTo": "models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom"
+		},
 		"models.models.placement_object.PlacementObject": {
 			"visible": false
 		},
