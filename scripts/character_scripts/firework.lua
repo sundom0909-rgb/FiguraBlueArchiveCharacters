@@ -19,7 +19,7 @@ Firework = {
         ---@type Firework
         local instance = Avatar.instantiate(Firework, SpawnObject, parent)
 
-        instance.object = models.script_firework:newItem("firework_"..instance.uuid):setItem(instance.parent.compatibilityUtils:checkItem("minecraft:firework_rocket")):setScale(0.5, 0.5, 0.5)
+        instance.object = models.script_firework:newItem(instance.uuid):setItem(instance.parent.compatibilityUtils:checkItem("minecraft:firework_rocket")):setScale(0.5, 0.5, 0.5)
         instance.currentPos = startPos:copy()
         instance.nextPos = instance.currentPos:copy()
         instance.rot = rot:copy()
