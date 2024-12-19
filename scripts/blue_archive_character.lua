@@ -1262,6 +1262,8 @@ BlueArchiveCharacter = {
                         for _, modelPart in ipairs({models.models.main.Avatar.LowerBody.Legs.RightLeg, models.models.main.Avatar.LowerBody.Legs.LeftLeg}) do
                             modelPart:setRot()
                         end
+                        self.costume.costumes[1].shouldHideLegsPrev = false
+                        self.costume.costumes[1].shouldAdjustLegsPrev = false
                     end
                 end;
 
