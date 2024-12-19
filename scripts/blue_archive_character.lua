@@ -3,6 +3,8 @@
 ---| "SURPRISED" # 驚いた目（ダメージを受けたときなど）
 ---| "TIRED" # 疲れた目（死亡アニメーションなど）
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
+---| "CENTER" # 少し反対側を見る目
+---| "CLOSED2" # 閉じた目2
 
 ---@alias BlueArchiveCharacter.LeftEyeTextures
 ---| "NORMAL" # 通常
@@ -10,10 +12,14 @@
 ---| "TIRED" # 疲れた目（死亡アニメーションなど）
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
 ---| "INVERTED" # 反対側を見る目
+---| "CLOSED2" # 閉じた目2
 
 ---@alias BlueArchiveCharacter.MouthTextures
 ---| "NORMAL" # 通常
 ---| "CLOSED" # 閉じた口
+---| "SMALL" # 小さく開いた口
+---| "SIGH" # ため息口
+---| "ANXIOUS" # への口
 
 ---@alias BlueArchiveCharacter.GunHoldType
 ---| "NORMAL" # バニラの弓やクロスボウの構え方と同じ
@@ -293,6 +299,8 @@ BlueArchiveCharacter = {
                 SURPRISED = vectors.vec2(2, 0); --必須
                 TIRED = vectors.vec2(3, 0); --必須
                 CLOSED = vectors.vec2(4, 0); --必須
+                CENTER = vectors.vec2(6, 0);
+                CLOSED2 = vectors.vec2(7, 0);
             };
 
             leftEye = {
@@ -300,11 +308,15 @@ BlueArchiveCharacter = {
                 SURPRISED = vectors.vec2(1, 0); --必須
                 TIRED = vectors.vec2(2, 0); --必須
                 CLOSED = vectors.vec2(3, 0); --必須
-                INVERTED = vectors.vec2(4, 0)
+                INVERTED = vectors.vec2(4, 0);
+                CLOSED2 = vectors.vec2(6, 0);
             };
 
             mouth = {
-                CLOSED = vectors.vec2(0, 0)
+                CLOSED = vectors.vec2(0, 0);
+                SMALL = vectors.vec2(1, 0);
+                SIGH = vectors.vec2(2, 0);
+                ANXIOUS = vectors.vec2(3, 0);
             };
         }
 
@@ -459,6 +471,32 @@ BlueArchiveCharacter = {
                         rot = vectors.vec3(-5, 280, 0);
                         pos = vectors.vec3(-8, 60.4, -388);
                     };
+                };
+
+                callbacks = {
+                    onPreAnimation = function (self)
+                        self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 13)
+                    end;
+
+                    onAnimationTick = function (self, tick)
+                        if tick == 13 then
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMALL", 6)
+                        elseif tick == 19 then
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SIGH", 5)
+                        elseif tick == 24 then
+                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMALL", 10)
+                        elseif tick == 34 then
+                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", 3)
+                        elseif tick == 37 then
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "ANXIOUS", 35)
+                        elseif tick == 72 then
+                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", 6)
+                        elseif tick == 78 then
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 19)
+                        elseif tick == 97 then
+                            self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 16)
+                        end
+                    end
                 };
             };
         }
