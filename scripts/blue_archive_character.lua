@@ -13,6 +13,7 @@
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
 ---| "INVERTED" # 反対側を見る目
 ---| "CLOSED2" # 閉じた目2
+---| "CENTER" # 少し反対側を見る目
 
 ---@alias BlueArchiveCharacter.MouthTextures
 ---| "NORMAL" # 通常
@@ -310,6 +311,7 @@ BlueArchiveCharacter = {
                 CLOSED = vectors.vec2(3, 0); --必須
                 INVERTED = vectors.vec2(4, 0);
                 CLOSED2 = vectors.vec2(6, 0);
+                CENTER = vectors.vec2(7, 0);
             };
 
             mouth = {
@@ -480,15 +482,20 @@ BlueArchiveCharacter = {
 
                     onAnimationTick = function (self, tick)
                         if tick == 13 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMALL", 6)
+                            self.parent.faceParts:setEmotion("NORMAL", "CENTER", "SMALL", 6)
                         elseif tick == 19 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SIGH", 5)
+                            self.parent.faceParts:setEmotion("NORMAL", "CENTER", "SIGH", 5)
                         elseif tick == 24 then
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMALL", 10)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.chiseled_bookshelf.insert"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Book), 1, 1)
                         elseif tick == 34 then
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", 3)
                         elseif tick == 37 then
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "ANXIOUS", 35)
+                        elseif tick == 40 then
+                            self.exSkill[1].engineSound = sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.minecart.riding"), player:getPos(), 0.25, 0.5)
+                        elseif tick == 62 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 1, 1.5)
                         elseif tick == 72 then
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", 6)
                         elseif tick == 78 then
@@ -496,8 +503,25 @@ BlueArchiveCharacter = {
                         elseif tick == 97 then
                             self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 16)
                         end
-                    end
+                        if tick > 40 then
+                            self.exSkill[1].engineSound:setPos(self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Tank))
+                        end
+                        if tick > 73 then
+                            if tick % 2 == 0 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.piston.extend"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Tank), 0.2, 0.2 + (tick - 73) / 370)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.piston.contract"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Tank), 0.2, 0.2 + (tick - 73) / 370)
+                            end
+                        end
+                    end;
+
+                    onPostAnimation = function (self, forcedStop)
+                        self.exSkill[1].engineSound = nil
+                    end;
                 };
+
+                ---戦車のエンジン音のインスタンス
+                ---@type Sound|nil
+                engineSound = nil;
             };
         }
 
