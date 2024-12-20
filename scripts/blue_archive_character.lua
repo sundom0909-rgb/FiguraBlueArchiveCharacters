@@ -386,7 +386,7 @@ BlueArchiveCharacter = {
                         end, "right_arm_tick")
                         events.RENDER:register(function (delta)
                             local headRot = vanilla_model.HEAD:getOriginRot()
-                            models.models.main.Avatar.UpperBody.Arms.LeftArm:setRot(player:isSwingingArm() and not player:isLeftHanded() and vectors.vec3() or vectors.vec3(headRot.x + math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * 2.5 + 90, 90, 0))
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm:setRot(player:isSwingingArm() and player:isLeftHanded() and vectors.vec3() or vectors.vec3(headRot.x + math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * 2.5 + 90, 90, 0))
                         end, "right_arm_render")
                     elseif state == 5 then
                         --虎丸搭乗中の武器を持っていない手
