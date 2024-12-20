@@ -613,6 +613,10 @@ BlueArchiveCharacter = {
                     ---次の砲弾を撃つまでのクールダウン
                     ---@type integer
                     shootCooldown = 0;
+
+                    ---ヒント表示をしたかどうか。
+                    ---@type boolean
+                    isTipShowed = false;
                 };
             };
 
@@ -845,16 +849,27 @@ BlueArchiveCharacter = {
             end
 
             if host:isHost() then
+                local localeStrings = {
+                    {"key_name.tank_shoot", "Main gun aim, fire", "主砲照準、発射"};
+                    {"tank_shoot.in_cool_down_pre", "Please wait ", "あと"};
+                    {"tank_shoot.in_cool_down_post", " more seconds to launch missiles.", "秒待ってください。"};
+                    {"tank_shoot.tip_pre", "9§l[TIP]§r Press ", "§9§l[TIP]§r "};
+                    {"tank_shoot.tip_post", " key to launch a shell!", "キーを押すと砲弾を発射します！"};
+                }
+
+                for _, localeSet in ipairs(localeStrings) do
+                    self.parent.locale.localeData.en_us[localeSet[1]] = localeSet[2]
+                    self.parent.locale.localeData.ja_jp[localeSet[1]] = localeSet[3]
+                end
+
                 self.parent.keyManager:register("tank_shoot", "key.keyboard.b"):setOnPress(function ()
-                    if self.costume.costumes[1].isRidingTank and models.models.ex_skill_1.Tank:getColor() == vectors.vec3(1, 1, 1) and self.costume.costumes[1].shootCooldown == 0 then
-                        animations["models.main"]["tank_shoot_right"]:play()
-                        animations["models.ex_skill_1"]["tank_shoot"]:play()
-                        self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "CLOSED", 38, true)
-                        events.RENDER:register(function (delta, ctx, matrix)
-                            models.models.ex_skill_1.Tank:setPos(0, models.models.ex_skill_1.Tank:getPos().y, models.models.ex_skill_1.ShootAnimAnchor:getAnimPos().z)
-                        end, "tank_shoot_render")
-                        self.costume.costumes[1].shootTick = 0
-                        self.costume.costumes[1].shootCooldown = 100
+                    if self.costume.costumes[1].isRidingTank and self.costume.costumes[1].tankTick >= 36 and models.models.ex_skill_1.Tank:getColor() == vectors.vec3(1, 1, 1) then
+                        if self.costume.costumes[1].shootCooldown == 0 then
+                            pings.tankShoot()
+                        else
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bass"), player:getPos(), 1, 0.5)
+                            print(self.parent.locale:getLocale("tank_shoot.in_cool_down_pre")..math.ceil(self.costume.costumes[1].shootCooldown / 20)..self.parent.locale:getLocale("tank_shoot.in_cool_down_post"))
+                        end
                     end
                 end)
             end
@@ -913,6 +928,10 @@ BlueArchiveCharacter = {
                                         self.parent.arms:setArmState(4, 5)
                                     elseif self.parent.gun.currentGunPosition == "LEFT" then
                                         self.parent.arms:setArmState(5, 4)
+                                    end
+                                    if not self.costume.costumes[1].isTipShowed then
+                                        print(self.parent.locale:getLocale("tank_shoot.tip_pre")..self.parent.keyManager.keyMappings["tank_shoot"]:getKeyName()..self.parent.locale:getLocale("tank_shoot.tip_post"))
+                                        self.costume.costumes[1].isTipShowed = true
                                     end
                                 end
                                 if self.costume.costumes[1].tankTick % 2 == 0 and isEngineActive then
@@ -1061,3 +1080,15 @@ BlueArchiveCharacter = {
         end)
     end;
 }
+
+---虎丸の弾を発射する。
+function pings.tankShoot()
+    animations["models.main"]["tank_shoot_right"]:play()
+    animations["models.ex_skill_1"]["tank_shoot"]:play()
+    AvatarInstance.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "CLOSED", 38, true)
+    events.RENDER:register(function (delta, ctx, matrix)
+        models.models.ex_skill_1.Tank:setPos(0, models.models.ex_skill_1.Tank:getPos().y, models.models.ex_skill_1.ShootAnimAnchor:getAnimPos().z)
+    end, "tank_shoot_render")
+    AvatarInstance.characterData.costume.costumes[1].shootTick = 0
+    AvatarInstance.characterData.costume.costumes[1].shootCooldown = 100
+end
