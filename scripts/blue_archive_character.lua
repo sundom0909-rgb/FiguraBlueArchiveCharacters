@@ -483,11 +483,23 @@ BlueArchiveCharacter = {
                     onAnimationTick = function (self, tick)
                         if tick == 13 then
                             self.parent.faceParts:setEmotion("NORMAL", "CENTER", "SMALL", 6)
+                            models.models.main.Avatar.Head.NoticeEffect:setVisible(true)
+                        elseif tick == 15 then
+                            models.models.main.Avatar.Head.NoticeEffect:setVisible(false)
+                        elseif tick == 17 then
+                            models.models.main.Avatar.Head.NoticeEffect:setVisible(true)
                         elseif tick == 19 then
                             self.parent.faceParts:setEmotion("NORMAL", "CENTER", "SIGH", 5)
+                            models.models.main.Avatar.Head.NoticeEffect:setVisible(false)
+                        elseif tick == 22 then
+                            local bodyYaw = player:getBodyYaw() * -1 - 60
+                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Book):add(vectors.rotateAroundAxis(bodyYaw, -0.25, 0.2, 0.1, 0, 1, 0))):setScale(0.5):setVelocity(vectors.rotateAroundAxis(bodyYaw, -0.1, 0.05, 0, 0, 1, 0)):setColor(1, 1, 0.608):setGravity(0.4)
                         elseif tick == 24 then
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMALL", 10)
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.chiseled_bookshelf.insert"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Book), 1, 1)
+                        elseif tick == 26 then
+                            local bodyYaw = player:getBodyYaw() * -1 - 60
+                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:snowflake"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head.FaceParts.Mouth):add(vectors.rotateAroundAxis(bodyYaw, 0, 0, 0.2, 0, 1, 0))):setScale(0.5):setVelocity(vectors.rotateAroundAxis(bodyYaw, 0, -0.01, 0.05, 0, 1, 0)):setGravity(0):setLifetime(8)
                         elseif tick == 34 then
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", 3)
                         elseif tick == 37 then
@@ -503,19 +515,38 @@ BlueArchiveCharacter = {
                         elseif tick == 97 then
                             self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 16)
                         end
+                        if (tick >= 51 and tick < 65) or (tick >= 74 and tick < 77) then
+                            for _, modelPart in ipairs({models.models.ex_skill_1.Tank.RightCrawler.ExSkill1ParticleAnchor1, models.models.ex_skill_1.Tank.LeftCrawler.ExSkill1ParticleAnchor2}) do
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(modelPart)
+                                for _ = 1, 5 do
+                                    local offsetPos = vectors.vec3(math.random() - 0.5, 0, math.random() - 0.5)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos:copy():add(offsetPos)):setVelocity(offsetPos:copy():scale(0.1):add(0, 0.05, 0)):setColor(0.98, 0.784, 0.533)
+                                end
+                            end
+                        end
+                        if (tick >= 51 and tick < 65) or tick >= 74 then
+                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Tank)
+                            for _ = 1, 5 do
+                                local offsetPos = vectors.vec3(math.random() * 7 - 3.5, 0, math.random() * 7 - 3.5)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), anchorPos:copy():add(offsetPos)):setScale(5):setVelocity(offsetPos:copy():scale(0.01):add(0, 0.025, 0))
+                            end
+                        end
                         if tick > 40 then
                             self.exSkill[1].engineSound:setPos(self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Tank))
                         end
                         if tick > 73 then
                             if tick % 2 == 0 then
-                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.piston.extend"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Tank), 0.2, 0.2 + (tick - 73) / 370)
-                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.piston.contract"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Tank), 0.2, 0.2 + (tick - 73) / 370)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.piston.extend"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Tank), 0.75, 0.2 + (tick - 73) / 370)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.piston.contract"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Tank), 0.75, 0.2 + (tick - 73) / 370)
                             end
                         end
                     end;
 
                     onPostAnimation = function (self, forcedStop)
                         self.exSkill[1].engineSound = nil
+                        if forcedStop then
+                            models.models.main.Avatar.Head.NoticeEffect:setVisible(false)
+                        end
                     end;
                 };
 

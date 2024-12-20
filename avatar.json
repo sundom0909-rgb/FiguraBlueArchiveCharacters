@@ -155,6 +155,11 @@
 			"visible": false,
 			"moveTo": "models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom"
 		},
+		"models.models.ex_skill_1.NoticeEffect": {
+			"visible": false,
+			"parentType": "Camera",
+			"moveTo": "models.models.main.Avatar.Head"
+		},
 		"models.models.placement_object.PlacementObject": {
 			"visible": false
 		},
