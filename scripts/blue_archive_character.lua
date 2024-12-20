@@ -550,8 +550,8 @@ BlueArchiveCharacter = {
                         end
                         if tick > 73 then
                             if tick % 2 == 0 then
-                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.piston.extend"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Tank), 0.75, 0.2 + (tick - 73) / 370)
-                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.piston.contract"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Tank), 0.75, 0.2 + (tick - 73) / 370)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.piston.extend"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Tank), 0.5, 0.2 + (tick - 73) / 370)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.piston.contract"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Tank), 0.5, 0.2 + (tick - 73) / 370)
                             end
                         end
                     end;
