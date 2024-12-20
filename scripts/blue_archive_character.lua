@@ -1073,7 +1073,7 @@ BlueArchiveCharacter = {
                             self.parent.arms:setArmState(2, 1)
                         end
                         self.costume.costumes[1].tankTick = 0
-                        self.costume.costumes[1].shootTick = 0
+                        self.costume.costumes[1].shootTick = -1
                         self.costume.costumes[1].isEngineActivePrev = false
                     end
                 end
