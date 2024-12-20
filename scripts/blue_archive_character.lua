@@ -917,7 +917,7 @@ BlueArchiveCharacter = {
                             animations["models.ex_skill_1"][animationName]:play()
                         end
                         self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 35, true)
-                        sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.iron_door.open"), player:getPos(), 0.5, 1)
+                        sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.iron_trapdoor.open"), player:getPos(), 1, 0.5)
                         self.costume.costumes[1].tankVelocity = vectors.rotateAroundAxis(vehicle:getRot().y * -1, 0, 0, 1, 0, 1, 0)
                         events.TICK:register(function ()
                             if not client:isPaused() then
