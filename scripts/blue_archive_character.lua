@@ -459,7 +459,7 @@ BlueArchiveCharacter = {
 
                 formationType = "SPECIAL";
 
-                models = {models.models.ex_skill_1.Tank, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Book};
+                models = {models.models.ex_skill_1.Tank, models.models.ex_skill_1.Tank.TankBody.Turret.Cannon.ShineEffect, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Book};
 
                 animations = {"main", "ex_skill_1"};
 
@@ -841,6 +841,7 @@ BlueArchiveCharacter = {
                             modelPart:setPos()
                             modelPart:setRot()
                         end
+                        models.models.ex_skill_1.Tank.TankBody.Turret.Cannon.HangingSign:setRot()
                         models.models.ex_skill_1.Tank:setColor(1, 1, 1)
                         for _, modelPart in ipairs({models.models.ex_skill_1.Tank.TankBody.PSLogo1, models.models.ex_skill_1.Tank.TankBody.Turret.PSLogo2, models.models.ex_skill_1.Tank.TankBody.Turret.PSLogo3}) do
                             modelPart:getTask("toramaru_logo_text"):setText("§e万魔殿"):setOutlineColor(0.404, 0.306, 0.051)

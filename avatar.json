@@ -144,6 +144,13 @@
 		"models.models.ex_skill_1.Tank": {
 			"visible": false
 		},
+		"models.models.ex_skill_1.Tank.TankBody.Turret.Cannon.ShineEffect": {
+			"visible": false,
+			"primaryRenderType": "EMISSIVE_SOLID"
+		},
+		"models.models.ex_skill_1.Tank.TankBody.Turret.Cannon.ShineEffect.ShineEffect2": {
+			"parentType": "Camera"
+		},
 		"models.models.ex_skill_1.Book": {
 			"visible": false,
 			"moveTo": "models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom"
