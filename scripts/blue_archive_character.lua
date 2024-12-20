@@ -477,43 +477,43 @@ BlueArchiveCharacter = {
 
                 callbacks = {
                     onPreAnimation = function (self)
-                        self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 13)
+                        self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 13, true)
                     end;
 
                     onAnimationTick = function (self, tick)
                         if tick == 13 then
-                            self.parent.faceParts:setEmotion("NORMAL", "CENTER", "SMALL", 6)
+                            self.parent.faceParts:setEmotion("NORMAL", "CENTER", "SMALL", 6, true)
                             models.models.main.Avatar.Head.NoticeEffect:setVisible(true)
                         elseif tick == 15 then
                             models.models.main.Avatar.Head.NoticeEffect:setVisible(false)
                         elseif tick == 17 then
                             models.models.main.Avatar.Head.NoticeEffect:setVisible(true)
                         elseif tick == 19 then
-                            self.parent.faceParts:setEmotion("NORMAL", "CENTER", "SIGH", 5)
+                            self.parent.faceParts:setEmotion("NORMAL", "CENTER", "SIGH", 5, true)
                             models.models.main.Avatar.Head.NoticeEffect:setVisible(false)
                         elseif tick == 22 then
                             local bodyYaw = player:getBodyYaw() * -1 - 60
                             particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Book):add(vectors.rotateAroundAxis(bodyYaw, -0.25, 0.2, 0.1, 0, 1, 0))):setScale(0.5):setVelocity(vectors.rotateAroundAxis(bodyYaw, -0.1, 0.05, 0, 0, 1, 0)):setColor(1, 1, 0.608):setGravity(0.4)
                         elseif tick == 24 then
-                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMALL", 10)
+                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMALL", 10, true)
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.chiseled_bookshelf.insert"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Book), 1, 1)
                         elseif tick == 26 then
                             local bodyYaw = player:getBodyYaw() * -1 - 60
                             particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:snowflake"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head.FaceParts.Mouth):add(vectors.rotateAroundAxis(bodyYaw, 0, 0, 0.2, 0, 1, 0))):setScale(0.5):setVelocity(vectors.rotateAroundAxis(bodyYaw, 0, -0.01, 0.05, 0, 1, 0)):setGravity(0):setLifetime(8)
                         elseif tick == 34 then
-                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", 3)
+                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", 3, true)
                         elseif tick == 37 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "ANXIOUS", 35)
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "ANXIOUS", 35, true)
                         elseif tick == 40 then
                             self.exSkill[1].engineSound = sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.minecart.riding"), player:getPos(), 0.25, 0.5)
                         elseif tick == 62 then
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 1, 1.5)
                         elseif tick == 72 then
-                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", 6)
+                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", 6, true)
                         elseif tick == 78 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 19)
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 19, true)
                         elseif tick == 97 then
-                            self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 16)
+                            self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 16, true)
                         end
                         if (tick >= 51 and tick < 65) or (tick >= 74 and tick < 77) then
                             for _, modelPart in ipairs({models.models.ex_skill_1.Tank.RightCrawler.ExSkill1ParticleAnchor1, models.models.ex_skill_1.Tank.LeftCrawler.ExSkill1ParticleAnchor2}) do
