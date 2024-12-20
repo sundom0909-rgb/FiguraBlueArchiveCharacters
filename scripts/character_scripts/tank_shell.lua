@@ -88,6 +88,7 @@ TankShell = {
             particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:large_smoke"), self.currentPos:copy():add(randomOffset:copy():scale(5))):setScale(10):setVelocity(randomOffset:copy():scale(0.1)):setLifetime(100 + math.random(-20, 20))
         end
         sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.explode"), self.currentPos, 0.5, 1):setAttenuation(5)
+        --host:sendChatCommand("/summon creeper "..self.currentPos.x.." "..(self.currentPos.y + 1).." "..self.currentPos.z.." {NoGravity:1b,Silent:1b,Invulnerable:1b,NoAI:1b,ExplosionRadius:5b,Fuse:0,ignited:1b}")
         self.explosionCount = -1
         self.shouldDeinit = true
     end;
