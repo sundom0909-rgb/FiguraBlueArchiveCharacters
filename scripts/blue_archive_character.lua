@@ -16,6 +16,7 @@
 ---| "CLOSED2" # 閉じた目2
 ---| "CENTER" # 少し反対側を見る目
 ---| "ANGRY_INVERTED" # 怒りつつ、反対側を見る目
+---| "ANGRY" # 怒った目
 
 ---@alias BlueArchiveCharacter.MouthTextures
 ---| "NORMAL" # 通常
@@ -23,6 +24,7 @@
 ---| "SMALL" # 小さく開いた口
 ---| "SIGH" # ため息口
 ---| "ANXIOUS" # への口
+---| "SMILE" # にっこり
 
 ---@alias BlueArchiveCharacter.GunHoldType
 ---| "NORMAL" # バニラの弓やクロスボウの構え方と同じ
@@ -316,6 +318,7 @@ BlueArchiveCharacter = {
                 CLOSED2 = vectors.vec2(6, 0);
                 CENTER = vectors.vec2(7, 0);
                 ANGRY_INVERTED = vectors.vec2(-1, 1);
+                ANGRY = vectors.vec2(0, 1);
             };
 
             mouth = {
@@ -323,6 +326,7 @@ BlueArchiveCharacter = {
                 SMALL = vectors.vec2(1, 0);
                 SIGH = vectors.vec2(2, 0);
                 ANXIOUS = vectors.vec2(3, 0);
+                SMILE = vectors.vec2(0, 1);
             };
         }
 
@@ -624,8 +628,19 @@ BlueArchiveCharacter = {
         instance.bubble = {
             callbacks = {
                 onPlay = function (self, type, duration, showInGui)
-                    if type == "SWEAT" then
-                        if not showInGui then
+                    if type == "GOOD" then
+                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", duration, true)
+                    elseif type == "HEART" then
+                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", duration, true)
+                    elseif type == "NOTE" then
+                        self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "SMILE", duration, true)
+                    elseif type == "QUESTION" then
+                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMALL", duration, true)
+                    elseif type == "SWEAT" then
+                        if showInGui then
+                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SIGH", duration, true)
+                        else
+
                             self.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "CLOSED", 60, true)
                         end
                     end
@@ -927,7 +942,7 @@ BlueArchiveCharacter = {
                                 for _, modelPart in ipairs({models.models.ex_skill_1.Tank.RightCrawler.RightCrawlerBelt, models.models.ex_skill_1.Tank.LeftCrawler.LeftCrawlerBelt}) do
                                     modelPart:setUVPixels(0, beltOffset)
                                 end
-                                if self.parent.faceParts.blinkCount == 0 and self.costume.costumes[1].shootTick == -1 then
+                                if self.parent.faceParts.blinkCount == 0 and self.parent.faceParts.emotionCount == 0 then
                                     self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "CLOSED", 2, true)
                                 else
                                     self.parent.faceParts:setEmotion("NORMAL", "INVERTED", "CLOSED", 1)
