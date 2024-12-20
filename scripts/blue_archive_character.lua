@@ -531,6 +531,16 @@ BlueArchiveCharacter = {
                                 particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), anchorPos:copy():add(offsetPos)):setScale(5):setVelocity(offsetPos:copy():scale(0.01):add(0, 0.025, 0))
                             end
                         end
+                        if tick >= 51 and tick < 65 and tick % 2 == 0 then
+                            for _, modelPart in ipairs({models.models.ex_skill_1.Tank.RightCrawler.RightCrawlerBelt, models.models.ex_skill_1.Tank.LeftCrawler.LeftCrawlerBelt}) do
+                                modelPart:setUVPixels(0, (tick % 4) / 2)
+                            end
+                        end
+                        if tick >= 74 then
+                            for _, modelPart in ipairs({models.models.ex_skill_1.Tank.RightCrawler.RightCrawlerBelt, models.models.ex_skill_1.Tank.LeftCrawler.LeftCrawlerBelt}) do
+                                modelPart:setUVPixels(0, (tick % 2))
+                            end
+                        end
                         if tick > 40 then
                             self.exSkill[1].engineSound:setPos(self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Tank))
                         end
