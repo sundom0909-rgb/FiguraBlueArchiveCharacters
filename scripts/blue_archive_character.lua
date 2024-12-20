@@ -895,7 +895,7 @@ BlueArchiveCharacter = {
         events.TICK:register(function ()
             if not client:isPaused() then
                 local vehicle = player:getVehicle()
-                self.costume.costumes[1].isRidingTank = vehicle ~= nil and vehicle:getType() == "minecraft:camel" and vehicle:getControllingPassenger() ~= nil and vehicle:getControllingPassenger():getName() == player:getName() and #vehicle:getPassengers() == 1 and self.parent.actionWheel.shouldReplaceVehicleModels
+                self.costume.costumes[1].isRidingTank = vehicle ~= nil and vehicle:getType() == "minecraft:camel" and vehicle:getControllingPassenger() ~= nil and vehicle:getControllingPassenger():getName() == player:getName() and #vehicle:getPassengers() == 1 and self.parent.actionWheel.shouldReplaceVehicleModels and player:getHealth() > 0
                 if self.costume.costumes[1].isRidingTank ~= self.costume.costumes[1].isRidingTankPrev then
                     if self.costume.costumes[1].isRidingTank then
                         renderer:setRenderVehicle(false)
@@ -967,7 +967,7 @@ BlueArchiveCharacter = {
                                 self.costume.costumes[1].isEngineActivePrev = isEngineActive
                             end
                         end, "tank_tick")
-                        events.RENDER:register(function (delta, ctx, matrix)
+                        events.RENDER:register(function (delta)
                             if not client:isPaused() then
                                 local camelRot = math.abs(self.costume.costumes[1].camelRotData[1] - self.costume.costumes[1].camelRotData[2]) <= 180 and self.costume.costumes[1].camelRotData[2] + ((self.costume.costumes[1].camelRotData[2] - self.costume.costumes[1].camelRotData[1]) * delta) or self.costume.costumes[1].camelRotData[2]
                                 local camelVelocity = vehicle:getVelocity():mul(1, 0, 1):length()
@@ -1061,10 +1061,10 @@ BlueArchiveCharacter = {
                         self.parent.cameraManager:setThirdPersonCameraDistance(4)
                         self.parent.cameraManager.setCameraPivot()
                         renderer:setEyeOffset()
-                        for _, animationName in ipairs({"tank_start", "tank_idle", "tank_idle_powered"}) do
+                        for _, animationName in ipairs({"tank_start", "tank_idle", "tank_idle_powered", "tank_shoot_right", "tank_shoot_left"}) do
                             animations["models.main"][animationName]:stop()
                         end
-                        for _, animationName in ipairs({"tank_start", "tank_idle", "tank_move"}) do
+                        for _, animationName in ipairs({"tank_start", "tank_idle", "tank_move", "tank_shoot"}) do
                             animations["models.ex_skill_1"][animationName]:stop()
                         end
                         if self.parent.gun.currentGunPosition == "RIGHT" then
@@ -1073,6 +1073,7 @@ BlueArchiveCharacter = {
                             self.parent.arms:setArmState(2, 1)
                         end
                         self.costume.costumes[1].tankTick = 0
+                        self.costume.costumes[1].shootTick = 0
                         self.costume.costumes[1].isEngineActivePrev = false
                     end
                 end
@@ -1100,7 +1101,8 @@ BlueArchiveCharacter = {
 
 ---虎丸の弾を発射する。
 function pings.tankShoot()
-    animations["models.main"]["tank_shoot_right"]:play()
+    animations["models.main"]["tank_shoot"]:play()
+    animations["models.main"]["tank_shoot_"..(player:isLeftHanded() and "left" or "right")]:play()
     animations["models.ex_skill_1"]["tank_shoot"]:play()
     AvatarInstance.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "CLOSED", 38, true)
     events.RENDER:register(function (delta, ctx, matrix)
