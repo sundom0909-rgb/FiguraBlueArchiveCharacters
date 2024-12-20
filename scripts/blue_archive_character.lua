@@ -631,7 +631,7 @@ BlueArchiveCharacter = {
 
                     x = {
                         vertical = {
-                            min = -170;
+                            min = -120;
                             neutral = 0;
                             max = 0;
                             sneakOffset = -30;
@@ -652,7 +652,7 @@ BlueArchiveCharacter = {
 
                             bodyY = {
                                 multiplayer = 80;
-                                min = -170;
+                                min = -120;
                                 max = 0;
                             };
                         };
@@ -665,6 +665,106 @@ BlueArchiveCharacter = {
                             headX = {
                                 multiplayer = -80;
                                 min = -45;
+                                max = 0;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.Head.Hat.RightHatRibbon};
+
+                    x = {
+                        vertical = {
+                            min = -5;
+                            neutral = -5;
+                            max = -5;
+                        };
+                    };
+
+                    z = {
+                        vertical = {
+                            min = 0;
+                            neutral = 0;
+                            max = 150;
+
+                            bodyY = {
+                                multiplayer = -80;
+                                min = 0;
+                                max = 150;
+                            };
+
+                            headZ = {
+                                multiplayer = -80;
+                                min = 0;
+                                max = 90;
+                            };
+
+                            headRot = {
+                                multiplayer = -0.05;
+                                min = 0;
+                                max = 90;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -150;
+                            neutral = -10;
+                            max = 35;
+
+                            bodyX = {
+                                multiplayer = 80;
+                                min = -150;
+                                max = 0;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.Head.Hat.LeftHatRibbon};
+
+                    x = {
+                        vertical = {
+                            min = -5;
+                            neutral = -5;
+                            max = -5;
+                        };
+                    };
+
+                    z = {
+                        vertical = {
+                            min = -150;
+                            neutral = 0;
+                            max = 0;
+
+                            bodyY = {
+                                multiplayer = 80;
+                                min = -150;
+                                max = 0;
+                            };
+
+                            headZ = {
+                                multiplayer = -80;
+                                min = -90;
+                                max = 0;
+                            };
+
+                            headRot = {
+                                multiplayer = 0.05;
+                                min = -90;
+                                max = 0;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -150;
+                            neutral = -10;
+                            max = 35;
+
+                            bodyX = {
+                                multiplayer = 80;
+                                min = -150;
                                 max = 0;
                             };
                         };
