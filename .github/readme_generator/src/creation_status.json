@@ -125,9 +125,7 @@
             },
             "costume_name": null,
             "issue_number": 38
-        }
-    ],
-    "in_progress": [
+        },
         {
             "character_name": {
                 "first_name": {
@@ -142,6 +140,8 @@
             "costume_name": null,
             "issue_number": 64
         }
+    ],
+    "in_progress": [
     ],
     "planned": [
         {
@@ -185,6 +185,36 @@
             },
             "costume_name": null,
             "issue_number": 39
+        }
+    ],
+    "requested": [
+        {
+            "character_name": {
+                "first_name": {
+                    "en": "Aris",
+                    "jp": "アリス"
+                },
+                "last_name": {
+                    "en": "Tendo",
+                    "jp": "天童"
+                }
+            },
+            "costume_name": null,
+            "issue_number": 97
+        },
+        {
+            "character_name": {
+                "first_name": {
+                    "en": "Haruka",
+                    "jp": "ハルカ"
+                },
+                "last_name": {
+                    "en": "Igusa",
+                    "jp": "伊草"
+                }
+            },
+            "costume_name": null,
+            "issue_number": 98
         }
     ]
 }
