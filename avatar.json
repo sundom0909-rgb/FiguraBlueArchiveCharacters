@@ -151,6 +151,9 @@
 		"models.models.ex_skill_1.Tank.TankBody.Turret.Cannon.ShineEffect.ShineEffect2": {
 			"parentType": "Camera"
 		},
+		"models.models.ex_skill_1.Shell": {
+			"visible": false
+		},
 		"models.models.ex_skill_1.Book": {
 			"visible": false,
 			"moveTo": "models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom"

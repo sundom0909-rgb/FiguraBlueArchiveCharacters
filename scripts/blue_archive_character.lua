@@ -5,6 +5,7 @@
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
 ---| "CENTER" # 少し反対側を見る目
 ---| "CLOSED2" # 閉じた目2
+---| "ANGRY" # 怒った目
 
 ---@alias BlueArchiveCharacter.LeftEyeTextures
 ---| "NORMAL" # 通常
@@ -14,6 +15,7 @@
 ---| "INVERTED" # 反対側を見る目
 ---| "CLOSED2" # 閉じた目2
 ---| "CENTER" # 少し反対側を見る目
+---| "ANGRY_INVERTED" # 怒りつつ、反対側を見る目
 
 ---@alias BlueArchiveCharacter.MouthTextures
 ---| "NORMAL" # 通常
@@ -302,6 +304,7 @@ BlueArchiveCharacter = {
                 CLOSED = vectors.vec2(4, 0); --必須
                 CENTER = vectors.vec2(6, 0);
                 CLOSED2 = vectors.vec2(7, 0);
+                ANGRY = vectors.vec2(9, 0);
             };
 
             leftEye = {
@@ -312,6 +315,7 @@ BlueArchiveCharacter = {
                 INVERTED = vectors.vec2(4, 0);
                 CLOSED2 = vectors.vec2(6, 0);
                 CENTER = vectors.vec2(7, 0);
+                ANGRY_INVERTED = vectors.vec2(-1, 1);
             };
 
             mouth = {
@@ -342,7 +346,7 @@ BlueArchiveCharacter = {
                         --虎丸搭乗中の武器の構え
                         events.TICK:register(function ()
                             self.parent.arms:processArmWingCount()
-                            if player:isSwingingArm() and not player:isLeftHanded() then
+                            if player:isSwingingArm() and not player:isLeftHanded() and self.costume.costumes[1].shootTick == -1 then
                                 models.models.main.Avatar.UpperBody.Arms.RightArm:setParentType("RightArm")
                             else
                                 models.models.main.Avatar.UpperBody.Arms.RightArm:setParentType("Body")
@@ -353,16 +357,16 @@ BlueArchiveCharacter = {
                         end, "right_arm_tick")
                         events.RENDER:register(function (delta)
                             local headRot = vanilla_model.HEAD:getOriginRot()
-                            models.models.main.Avatar.UpperBody.Arms.RightArm:setRot(player:isSwingingArm() and not player:isLeftHanded() and vectors.vec3() or vectors.vec3(headRot.x + math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * 2.5 + 90, 70, 0))
+                            models.models.main.Avatar.UpperBody.Arms.RightArm:setRot(((player:isSwingingArm() and not player:isLeftHanded()) or self.costume.costumes[1].shootTick >= 0) and vectors.vec3() or vectors.vec3(headRot.x + math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * 2.5 + 90, 70, 0))
                         end, "right_arm_render")
                     elseif state == 5 then
                         --虎丸搭乗中の武器を持っていない手
                         local isHolding = false
                         events.TICK:register(function ()
                             self.parent.arms:processArmWingCount()
-                            local heldItem = player:getHeldItem(not player:isLeftHanded())
+                            local heldItem = player:getHeldItem(player:isLeftHanded())
                             isHolding = player:getActiveItem().id == "minecraft:bow" or (heldItem.id == "minecraft:crossbow" and heldItem.tag.Charged ~= nil and heldItem.tag.Charged == 1)
-                            models.models.main.Avatar.UpperBody.Arms.RightArm:setParentType(isHolding and "Body" or "RightArm")
+                            models.models.main.Avatar.UpperBody.Arms.RightArm:setParentType((isHolding or self.costume.costumes[1].shootTick >= 0) and "Body" or "RightArm")
                         end, "right_arm_tick")
                         events.RENDER:register(function (delta)
                             models.models.main.Avatar.UpperBody.Arms.RightArm:setRot(isHolding and vectors.vec3(math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * 2.5 + 35, 0, 0) or vectors.vec3())
@@ -375,7 +379,7 @@ BlueArchiveCharacter = {
                         --虎丸搭乗中の武器の構え
                         events.TICK:register(function ()
                             self.parent.arms:processArmWingCount()
-                            if player:isSwingingArm() and player:isLeftHanded() then
+                            if player:isSwingingArm() and player:isLeftHanded() and self.costume.costumes[1].shootTick == -1 then
                                 models.models.main.Avatar.UpperBody.Arms.LeftArm:setParentType("LeftArm")
                             else
                                 models.models.main.Avatar.UpperBody.Arms.LeftArm:setParentType("Body")
@@ -386,16 +390,16 @@ BlueArchiveCharacter = {
                         end, "right_arm_tick")
                         events.RENDER:register(function (delta)
                             local headRot = vanilla_model.HEAD:getOriginRot()
-                            models.models.main.Avatar.UpperBody.Arms.LeftArm:setRot(player:isSwingingArm() and player:isLeftHanded() and vectors.vec3() or vectors.vec3(headRot.x + math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * 2.5 + 90, 90, 0))
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm:setRot(((player:isSwingingArm() and player:isLeftHanded()) or self.costume.costumes[1].shootTick >= 0) and vectors.vec3() or vectors.vec3(headRot.x + math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * 2.5 + 90, 90, 0))
                         end, "right_arm_render")
                     elseif state == 5 then
                         --虎丸搭乗中の武器を持っていない手
                         local isHolding = false
                         events.TICK:register(function ()
                             self.parent.arms:processArmWingCount()
-                            local heldItem = player:getHeldItem(player:isLeftHanded())
+                            local heldItem = player:getHeldItem(not player:isLeftHanded())
                             isHolding = player:getActiveItem().id == "minecraft:bow" or (heldItem.id == "minecraft:crossbow" and heldItem.tag.Charged ~= nil and heldItem.tag.Charged == 1)
-                            models.models.main.Avatar.UpperBody.Arms.LeftArm:setParentType(isHolding and "Body" or "LeftArm")
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm:setParentType((isHolding or self.costume.costumes[1].shootTick >= 0) and "Body" or "LeftArm")
                         end, "right_arm_tick")
                         events.RENDER:register(function (delta)
                             models.models.main.Avatar.UpperBody.Arms.LeftArm:setRot(isHolding and vectors.vec3(math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * 2.5 + 35, 0, 0) or vectors.vec3())
@@ -601,6 +605,14 @@ BlueArchiveCharacter = {
                     ---現ティックの戦車の移動ベクトル
                     ---@type Vector3
                     tankVelocity = vectors.vec3();
+
+                    ---砲弾を撃つ際のティックカウンター
+                    ---@type integer
+                    shootTick = -1;
+
+                    ---次の砲弾を撃つまでのクールダウン
+                    ---@type integer
+                    shootCooldown = 0;
                 };
             };
 
@@ -817,17 +829,34 @@ BlueArchiveCharacter = {
         --生徒固有初期化処理
         --Player APIにアクセスする場合は、ENTITY_INIT後に実行されるようにする必要がある。
 
+        models.models.ex_skill_1.Tank:setColor(1, 1, 1)
         for _, modelPart in ipairs({models.models.ex_skill_1.Tank.TankBody.PSLogo1, models.models.ex_skill_1.Tank.TankBody.Turret.PSLogo2, models.models.ex_skill_1.Tank.TankBody.Turret.PSLogo3}) do
             modelPart:newText("toramaru_logo_text"):setText("§e万魔殿"):setPos(0, 2.25, 0):setScale(0.2):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.404, 0.306, 0.051)
         end
         models.models.ex_skill_1.Tank.TankBody.Turret.Cannon.HangingSign:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/signs/hanging/oak.png")
         models.models.ex_skill_1.Tank.TankBody.Turret.Cannon.HangingSign:newText("toramaru_sign_text_1"):setText("§0§l巡回中"):setPos(-1, -9, 0.5):setRot(0, 90, 0):setScale(0.5):setAlignment("CENTER")
         models.models.ex_skill_1.Tank.TankBody.Turret.Cannon.HangingSign:newText("toramaru_sign_text_2"):setText("§0§l巡回中"):setPos(1, -9, -0.5):setRot(0, -90, 0):setScale(0.5):setAlignment("CENTER")
+
         self.parent.avatarEvents.SCRIPT_INIT:register(function ()
             for i = 0, 1 do
                 for j = 0, 9 do
                     models.models.ex_skill_1.Tank.TankBody.BaseBase1:newBlock("toramaru_log_"..(i * 10 + j)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:oak_log").."[axis=z]"):setPos(36 + i * -80, -2, j * 8 - 41):setScale(0.5)
                 end
+            end
+
+            if host:isHost() then
+                self.parent.keyManager:register("tank_shoot", "key.keyboard.b"):setOnPress(function ()
+                    if self.costume.costumes[1].isRidingTank and models.models.ex_skill_1.Tank:getColor() == vectors.vec3(1, 1, 1) and self.costume.costumes[1].shootCooldown == 0 then
+                        animations["models.main"]["tank_shoot_right"]:play()
+                        animations["models.ex_skill_1"]["tank_shoot"]:play()
+                        self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "CLOSED", 38, true)
+                        events.RENDER:register(function (delta, ctx, matrix)
+                            models.models.ex_skill_1.Tank:setPos(0, models.models.ex_skill_1.Tank:getPos().y, models.models.ex_skill_1.ShootAnimAnchor:getAnimPos().z)
+                        end, "tank_shoot_render")
+                        self.costume.costumes[1].shootTick = 0
+                        self.costume.costumes[1].shootCooldown = 100
+                    end
+                end)
             end
         end)
 
@@ -874,7 +903,7 @@ BlueArchiveCharacter = {
                                 for _, modelPart in ipairs({models.models.ex_skill_1.Tank.RightCrawler.RightCrawlerBelt, models.models.ex_skill_1.Tank.LeftCrawler.LeftCrawlerBelt}) do
                                     modelPart:setUVPixels(0, beltOffset)
                                 end
-                                if self.parent.faceParts.blinkCount == 0 then
+                                if self.parent.faceParts.blinkCount == 0 and self.costume.costumes[1].shootTick == -1 then
                                     self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "CLOSED", 2, true)
                                 else
                                     self.parent.faceParts:setEmotion("NORMAL", "INVERTED", "CLOSED", 1)
@@ -1011,7 +1040,23 @@ BlueArchiveCharacter = {
                         self.costume.costumes[1].isEngineActivePrev = false
                     end
                 end
+
+                if self.costume.costumes[1].shootTick >= 0 then
+                    self.costume.costumes[1].shootTick = self.costume.costumes[1].shootTick + 1
+                    if self.costume.costumes[1].shootTick == 13 then
+                        local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Tank.TankBody.Turret.Cannon.MuzzleAnchor1)
+                        self.parent.shellManager:spawn(anchorPos, vectors.vec3(models.models.ex_skill_1.Tank.TankBody.Turret.Cannon:getRot().x * -1, player:getBodyYaw() * -1, 0))
+                        for _ = 1, 10 do
+                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:large_smoke"), anchorPos:copy():add(math.random() - 0.5, math.random() - 0.5, math.random() - 0.5)):setScale(2)
+                        end
+                        sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.firework_rocket.large_blast"), player:getPos(), 1, 1)
+                    elseif self.costume.costumes[1].shootTick == 38 then
+                        events.RENDER:remove("tank_shoot_render")
+                        self.costume.costumes[1].shootTick = -1
+                    end
+                end
                 self.costume.costumes[1].isRidingTankPrev = self.costume.costumes[1].isRidingTank
+                self.costume.costumes[1].shootCooldown = math.max(self.costume.costumes[1].shootCooldown - 1, 0)
             end
         end)
     end;
