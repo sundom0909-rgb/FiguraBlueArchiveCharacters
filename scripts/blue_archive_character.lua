@@ -953,7 +953,7 @@ BlueArchiveCharacter = {
                                     elseif self.parent.gun.currentGunPosition == "LEFT" then
                                         self.parent.arms:setArmState(5, 4)
                                     end
-                                    if not self.costume.costumes[1].isTipShowed then
+                                    if host:isHost() and not self.costume.costumes[1].isTipShowed then
                                         print(self.parent.locale:getLocale("tank_shoot.tip_pre")..self.parent.keyManager.keyMappings["tank_shoot"]:getKeyName()..self.parent.locale:getLocale("tank_shoot.tip_post"))
                                         self.costume.costumes[1].isTipShowed = true
                                     end
