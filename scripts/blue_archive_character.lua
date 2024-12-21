@@ -368,7 +368,7 @@ BlueArchiveCharacter = {
                         local isHolding = false
                         events.TICK:register(function ()
                             self.parent.arms:processArmWingCount()
-                            local heldItem = player:getHeldItem(player:isLeftHanded())
+                            local heldItem = player:getHeldItem(not player:isLeftHanded())
                             isHolding = player:getActiveItem().id == "minecraft:bow" or (heldItem.id == "minecraft:crossbow" and heldItem.tag.Charged ~= nil and heldItem.tag.Charged == 1)
                             models.models.main.Avatar.UpperBody.Arms.RightArm:setParentType((isHolding or self.costume.costumes[1].shootTick >= 0) and "Body" or "RightArm")
                         end, "right_arm_tick")
@@ -401,7 +401,7 @@ BlueArchiveCharacter = {
                         local isHolding = false
                         events.TICK:register(function ()
                             self.parent.arms:processArmWingCount()
-                            local heldItem = player:getHeldItem(not player:isLeftHanded())
+                            local heldItem = player:getHeldItem(player:isLeftHanded())
                             isHolding = player:getActiveItem().id == "minecraft:bow" or (heldItem.id == "minecraft:crossbow" and heldItem.tag.Charged ~= nil and heldItem.tag.Charged == 1)
                             models.models.main.Avatar.UpperBody.Arms.LeftArm:setParentType((isHolding or self.costume.costumes[1].shootTick >= 0) and "Body" or "LeftArm")
                         end, "right_arm_tick")
