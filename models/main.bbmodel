@@ -1970,7 +1970,7 @@
 					"texture": null
 				},
 				"west": {
-					"uv": [36, 47, 54, 57],
+					"uv": [36, 53, 54, 63],
 					"texture": 0
 				},
 				"up": {
@@ -2000,27 +2000,27 @@
 			"origin": [-5, 22, 0],
 			"faces": {
 				"north": {
-					"uv": [36, 50, 37, 51],
+					"uv": [36, 56, 37, 57],
 					"texture": 0
 				},
 				"east": {
-					"uv": [36, 50, 37, 51],
+					"uv": [36, 56, 37, 57],
 					"texture": 0
 				},
 				"south": {
-					"uv": [36, 50, 37, 51],
+					"uv": [36, 56, 37, 57],
 					"texture": 0
 				},
 				"west": {
-					"uv": [47, 50, 53, 51],
+					"uv": [47, 56, 53, 57],
 					"texture": 0
 				},
 				"up": {
-					"uv": [0, 0, 0, 0],
+					"uv": [0, 6, 0, 6],
 					"texture": null
 				},
 				"down": {
-					"uv": [0, 0, 0, 0],
+					"uv": [0, 6, 0, 6],
 					"texture": null
 				}
 			},
@@ -6665,7 +6665,7 @@
 			"override": false,
 			"length": 1.75,
 			"snapping": 20,
-			"selected": true,
+			"selected": false,
 			"anim_time_update": "",
 			"blend_weight": "",
 			"start_delay": "",
