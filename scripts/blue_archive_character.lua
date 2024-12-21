@@ -886,7 +886,7 @@ BlueArchiveCharacter = {
                     self.parent.locale.localeData.ja_jp[localeSet[1]] = localeSet[3]
                 end
 
-                self.parent.keyManager:register("tank_shoot", "key.keyboard.b"):setOnPress(function ()
+                self.parent.keyManager:register("tank_shoot", "key.keyboard.g"):setOnPress(function ()
                     if self.costume.costumes[1].isRidingTank and self.costume.costumes[1].tankTick >= 36 and models.models.ex_skill_1.Tank:getColor() == vectors.vec3(1, 1, 1) then
                         if self.costume.costumes[1].shootCooldown == 0 then
                             pings.tankShoot()
