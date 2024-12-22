@@ -954,7 +954,7 @@ BlueArchiveCharacter = {
                                         self.parent.arms:setArmState(5, 4)
                                     end
                                     if host:isHost() and not self.costume.costumes[1].isTipShowed then
-                                        print(self.parent.locale:getLocale("tank_shoot.tip_pre")..self.parent.keyManager.keyMappings["tank_shoot"]:getKeyName()..self.parent.locale:getLocale("tank_shoot.tip_post"))
+                                        print(self.parent.locale:getLocale("tank_shoot.tip_pre")..self.parent.keyManager.keyMappings["tank_shoot"].keybind:getKeyName()..self.parent.locale:getLocale("tank_shoot.tip_post"))
                                         self.costume.costumes[1].isTipShowed = true
                                     end
                                 end
