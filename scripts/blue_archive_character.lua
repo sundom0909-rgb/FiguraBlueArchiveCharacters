@@ -455,5 +455,21 @@ BlueArchiveCharacter = {
 
         --生徒固有初期化処理
         --Player APIにアクセスする場合は、ENTITY_INIT後に実行されるようにする必要がある。
+
+        events.RENDER:register(function (_, context)
+            if context == "FIRST_PERSON" then
+                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve:setRot(0, 0, -60)
+                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve:setOffsetPivot(1.5, 0, 0)
+                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve:setRot(0, 0, 60)
+                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve:setOffsetPivot(-1.5, 0, 0)
+            else
+                local rightArmRot = math.clamp(((models.models.main.Avatar.UpperBody.Arms.RightArm:getParentType() == "RightArm" and not (context == "PAPERDOLL" and self.parent.gun.currentGunPosition ~= "NONE")) and vanilla_model.RIGHT_ARM:getOriginRot().x or 0) + models.models.main.Avatar.UpperBody.Arms.RightArm:getTrueRot().x, -60, 60)
+                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve:setRot(rightArmRot * -1, 0, 0)
+                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve:setOffsetPivot(0, 0, rightArmRot < 0 and 4 or 0)
+                local leftArmRot = math.clamp(((models.models.main.Avatar.UpperBody.Arms.LeftArm:getParentType() == "LeftArm" and not (context == "PAPERDOLL" and self.parent.gun.currentGunPosition ~= "NONE")) and vanilla_model.LEFT_ARM:getOriginRot().x or 0) + models.models.main.Avatar.UpperBody.Arms.LeftArm:getTrueRot().x, -60, 60)
+                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve:setRot(leftArmRot * -1, 0, 0)
+                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve:setOffsetPivot(0, 0, leftArmRot < 0 and 4 or 0)
+            end
+        end)
     end;
 }
