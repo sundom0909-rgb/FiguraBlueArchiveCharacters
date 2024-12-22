@@ -53,20 +53,19 @@ TankShell = {
                 self.object:setPos(self.currentPos:copy():scale(16))
                 self.missileSound:setPos(self.currentPos)
 
-                --当たり判定チェック
-                local block, _, _ = raycast:block(self.currentPos, self.nextPos, "COLLIDER", "NONE")
-                if block.id ~= "minecraft:air" and block.id ~= "minecraft:cave_air" and block.id ~= "minecraft:void_air" then
-                    self:explode()
-                end
-
                 particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:large_smoke"), self.currentPos):setVelocity(vectors.rotateAroundAxis(self.rot.z, vectors.rotateAroundAxis(self.rot.y, vectors.rotateAroundAxis(self.rot.x, math.random() * 0.05 - 0.025, math.random() * 0.05 - 0.025, 0, 1, 0, 0), 0, 1, 0), 0, 0, 1))
                 particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:flame"), self.currentPos):setScale(1.5):setVelocity(vectors.rotateAroundAxis(self.rot.z, vectors.rotateAroundAxis(self.rot.y, vectors.rotateAroundAxis(self.rot.x, math.random() * 0.05 - 0.025, math.random() * 0.05 - 0.025, 0, 1, 0, 0), 0, 1, 0), 0, 0, 1)):setLifetime(4)
 
                 --次ティックの砲弾の位置を算出
                 self.nextPos = self.currentPos:copy():add(self.velocity:copy():scale(4))
                 self.velocity.y = self.velocity.y - 0.01
-
                 self.object:setRot(math.deg(math.atan2(self.velocity.y, math.sqrt(self.velocity.x ^ 2 + self.velocity.z ^ 2))) * -1, self.rot.y, self.rot.z)
+
+                --当たり判定チェック
+                local block, _, _ = raycast:block(self.currentPos, self.nextPos, "COLLIDER", "NONE")
+                if block.id ~= "minecraft:air" and block.id ~= "minecraft:cave_air" and block.id ~= "minecraft:void_air" then
+                    self:explode()
+                end
 
                 self.explosionCount = self.explosionCount - 1
             end;
