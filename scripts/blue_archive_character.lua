@@ -626,8 +626,8 @@ BlueArchiveCharacter = {
 
                     onPostTransition = function (self, forcedStop)
                         if not forcedStop and not self.exSkill[1].didTipShow and host:isHost() then
-                            print(self.parent.locale:getLocale("ex_skill_1.tip_1_pre")..self.parent.keyManager.keyMappings["ex_skill"]:getKeyName()..self.parent.locale:getLocale("ex_skill_1.tip_1_post"))
-                            print(self.parent.locale:getLocale("ex_skill_1.tip_2_pre")..self.parent.keyManager.keyMappings["firework_launch"]:getKeyName()..self.parent.locale:getLocale("ex_skill_1.tip_2_post"))
+                            print(self.parent.locale:getLocale("ex_skill_1.tip_1_pre")..self.parent.keyManager.keyMappings["ex_skill"].keybind:getKeyName()..self.parent.locale:getLocale("ex_skill_1.tip_1_post"))
+                            print(self.parent.locale:getLocale("ex_skill_1.tip_2_pre")..self.parent.keyManager.keyMappings["firework_launch"].keybind:getKeyName()..self.parent.locale:getLocale("ex_skill_1.tip_2_post"))
                             self.exSkill[1].didTipShow = true
                         end
                     end;
