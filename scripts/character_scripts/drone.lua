@@ -98,7 +98,7 @@ Drone = {
                                     self.dronePosition = "LEFT"
                                 end
                                 if not self.didTipShow and host:isHost() then
-                                    print(self.parent.locale:getLocale("missile_launch.tip_pre")..self.parent.keyManager.keyMappings["missile_launch"]:getKeyName()..self.parent.locale:getLocale("missile_launch.tip_post"))
+                                    print(self.parent.locale:getLocale("missile_launch.tip_pre")..self.parent.keyManager.keyMappings["missile_launch"].keybind:getKeyName()..self.parent.locale:getLocale("missile_launch.tip_post"))
                                     self.didTipShow = true
                                 end
                                 self.isMissileLaunchAllowed = true
