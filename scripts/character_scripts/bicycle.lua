@@ -89,14 +89,14 @@ Bicycle = {
                                     animations[animationModel]["bicycle_run"]:stop()
                                 end
                             end
-                            self.isBicycleRidingPre = isBicycleRiding
+                            self.isBicycleRidingPrev = isBicycleRiding
                         end
                         for _, animationModel in ipairs({"models.main", "models.ex_skill_3"}) do
                             animations[animationModel]["bicycle_run"]:setSpeed(2 * (self.parent.physics.velocityAverage[1][2] + math.abs(self.parent.physics.velocityAverage[3][2])))
                         end
                         models.models.main.Avatar.LowerBody.Bicycle.Wheels.Chain:setUVPixels(math.ceil(animations["models.main"]["bicycle_run"]:getTime() * 20) % 2, 0)
                         self.handleRotPrev = self.handleRot
-                        self.handleRot = math.clamp(self.parent.physics.velocityAverage[3][2] + self.parent.physics.velocityAverage[4][2] / 1500, -0.2, 0.2) * -75
+                        self.handleRot = isBicycleRiding and math.clamp(self.parent.physics.velocityAverage[3][2] + self.parent.physics.velocityAverage[4][2] / 1500, -0.2, 0.2) * -75 or 0
                         if isBicycleRiding and horizontalSpeed >= 0.3 then
                             local playerPos = player:getPos()
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.dispenser.fail"), playerPos, 0.025, 5)
