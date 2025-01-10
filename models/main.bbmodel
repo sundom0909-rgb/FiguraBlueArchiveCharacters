@@ -21661,13 +21661,13 @@
 			"override": false,
 			"length": 0.25,
 			"snapping": 20,
-			"selected": false,
+			"selected": true,
 			"anim_time_update": "",
 			"blend_weight": "",
 			"start_delay": "",
 			"loop_delay": "",
 			"animators": {
-				"0e72e2b8-177c-5b4f-dbcd-98110638a41d": {
+				"680dacda-bbeb-7f3e-539f-7f8ee0261527": {
 					"name": "HeadRingCenter",
 					"type": "bone",
 					"keyframes": [
@@ -21680,7 +21680,7 @@
 									"z": "1"
 								}
 							],
-							"uuid": "32b748eb-7ebc-92d2-79eb-b6ec001c4265",
+							"uuid": "317362f6-850f-d603-7481-c33200e32d5f",
 							"time": 0,
 							"color": -1,
 							"uniform": true,
@@ -21700,7 +21700,7 @@
 									"z": "0"
 								}
 							],
-							"uuid": "92dda563-b5db-3f0a-2291-ff54fe9abeb0",
+							"uuid": "5d1f9ed8-47a2-2a05-de20-0e51450f6353",
 							"time": 0.25,
 							"color": -1,
 							"uniform": true,
