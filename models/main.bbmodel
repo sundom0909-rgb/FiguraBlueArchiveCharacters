@@ -3842,7 +3842,7 @@
 							"children": [
 								{
 									"name": "HeadRingCenter",
-									"origin": [0, 28, 0],
+									"origin": [0, 36, 0],
 									"color": 0,
 									"uuid": "9cab2003-e24b-f297-b725-4b93dc192330",
 									"export": true,
@@ -12799,13 +12799,13 @@
 			"override": false,
 			"length": 0.25,
 			"snapping": 20,
-			"selected": false,
+			"selected": true,
 			"anim_time_update": "",
 			"blend_weight": "",
 			"start_delay": "",
 			"loop_delay": "",
 			"animators": {
-				"0e72e2b8-177c-5b4f-dbcd-98110638a41d": {
+				"9cab2003-e24b-f297-b725-4b93dc192330": {
 					"name": "HeadRingCenter",
 					"type": "bone",
 					"keyframes": [
