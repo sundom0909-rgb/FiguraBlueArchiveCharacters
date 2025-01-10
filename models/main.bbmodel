@@ -1851,7 +1851,6 @@
 			"to": [4, 36, 4],
 			"autouv": 0,
 			"color": 0,
-			"rotation": [45, 0, 0],
 			"origin": [0, 28, 0],
 			"faces": {
 				"north": {
@@ -3831,6 +3830,7 @@
 						{
 							"name": "HeadRing",
 							"origin": [0, 28, 0],
+							"rotation": [45, 0, 0],
 							"color": 0,
 							"uuid": "a0a9e8dc-34d7-c519-37ee-072140e723ff",
 							"export": true,
@@ -3840,13 +3840,11 @@
 							"visibility": true,
 							"autouv": 0,
 							"children": [
-								"1b474e89-7152-081b-08e8-337f43a183de",
 								{
-									"name": "InnerRing",
+									"name": "HeadRingCenter",
 									"origin": [0, 28, 0],
-									"rotation": [45, 0, 0],
 									"color": 0,
-									"uuid": "a1251680-7912-923b-91d7-e46c1741e3b8",
+									"uuid": "9cab2003-e24b-f297-b725-4b93dc192330",
 									"export": true,
 									"mirror_uv": false,
 									"isOpen": true,
@@ -3854,33 +3852,47 @@
 									"visibility": true,
 									"autouv": 0,
 									"children": [
-										"44f1873c-2d7d-0c90-0145-9db758d6ad19",
-										"2cb4c163-f31e-0f36-cbd4-3bd42615163f",
-										"d43c851f-9472-bb2a-3371-5ebcf38d982c",
-										"da78b587-a7e8-3e5d-ea1d-bf7c045b881c",
-										"02a17bf0-5590-739c-ffc1-f6170d1e8400",
-										"176b89c4-0717-5808-8e48-cfbed6f04f33"
-									]
-								},
-								{
-									"name": "OuterRing",
-									"origin": [0, 28, 0],
-									"rotation": [45, 0, 0],
-									"color": 0,
-									"uuid": "5d83c3c1-ad7e-3a34-7cf4-7f16cf77d8aa",
-									"export": true,
-									"mirror_uv": false,
-									"isOpen": false,
-									"locked": false,
-									"visibility": true,
-									"autouv": 0,
-									"children": [
-										"e6779cb0-ae90-2069-95c6-79a62d7ce6b4",
-										"407bb643-5ff6-5890-66b5-2c514a00421e",
-										"28f99ded-3391-c344-7caf-84dca58346e9",
-										"9b21c51e-09e8-bcb0-75f6-47c18ed2a376",
-										"f1e850ef-cf15-8c5e-57b9-e1f784b4f177",
-										"5e24302f-320b-ff88-369f-b697322a8e0f"
+										"1b474e89-7152-081b-08e8-337f43a183de",
+										{
+											"name": "InnerRing",
+											"origin": [0, 28, 0],
+											"color": 0,
+											"uuid": "a1251680-7912-923b-91d7-e46c1741e3b8",
+											"export": true,
+											"mirror_uv": false,
+											"isOpen": true,
+											"locked": false,
+											"visibility": true,
+											"autouv": 0,
+											"children": [
+												"44f1873c-2d7d-0c90-0145-9db758d6ad19",
+												"2cb4c163-f31e-0f36-cbd4-3bd42615163f",
+												"d43c851f-9472-bb2a-3371-5ebcf38d982c",
+												"da78b587-a7e8-3e5d-ea1d-bf7c045b881c",
+												"02a17bf0-5590-739c-ffc1-f6170d1e8400",
+												"176b89c4-0717-5808-8e48-cfbed6f04f33"
+											]
+										},
+										{
+											"name": "OuterRing",
+											"origin": [0, 28, 0],
+											"color": 0,
+											"uuid": "5d83c3c1-ad7e-3a34-7cf4-7f16cf77d8aa",
+											"export": true,
+											"mirror_uv": false,
+											"isOpen": false,
+											"locked": false,
+											"visibility": true,
+											"autouv": 0,
+											"children": [
+												"e6779cb0-ae90-2069-95c6-79a62d7ce6b4",
+												"407bb643-5ff6-5890-66b5-2c514a00421e",
+												"28f99ded-3391-c344-7caf-84dca58346e9",
+												"9b21c51e-09e8-bcb0-75f6-47c18ed2a376",
+												"f1e850ef-cf15-8c5e-57b9-e1f784b4f177",
+												"5e24302f-320b-ff88-369f-b697322a8e0f"
+											]
+										}
 									]
 								}
 							]
@@ -9668,7 +9680,7 @@
 			"override": true,
 			"length": 10.65,
 			"snapping": 20,
-			"selected": true,
+			"selected": false,
 			"anim_time_update": "",
 			"blend_weight": "",
 			"start_delay": "",
@@ -12770,6 +12782,67 @@
 							"time": 8.75,
 							"color": -1,
 							"interpolation": "linear",
+							"bezier_linked": true,
+							"bezier_left_time": [-0.1, -0.1, -0.1],
+							"bezier_left_value": [0, 0, 0],
+							"bezier_right_time": [0.1, 0.1, 0.1],
+							"bezier_right_value": [0, 0, 0]
+						}
+					]
+				}
+			}
+		},
+		{
+			"uuid": "32fa508f-6231-249d-8d16-a70232d41da2",
+			"name": "halo_sleep",
+			"loop": "hold",
+			"override": false,
+			"length": 0.25,
+			"snapping": 20,
+			"selected": false,
+			"anim_time_update": "",
+			"blend_weight": "",
+			"start_delay": "",
+			"loop_delay": "",
+			"animators": {
+				"0e72e2b8-177c-5b4f-dbcd-98110638a41d": {
+					"name": "HeadRingCenter",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "scale",
+							"data_points": [
+								{
+									"x": "1",
+									"y": "1",
+									"z": "1"
+								}
+							],
+							"uuid": "32b748eb-7ebc-92d2-79eb-b6ec001c4265",
+							"time": 0,
+							"color": -1,
+							"uniform": true,
+							"interpolation": "bezier",
+							"bezier_linked": true,
+							"bezier_left_time": [-0.25333, -0.25333, -0.25333],
+							"bezier_left_value": [0, 0, 0],
+							"bezier_right_time": [0.25333, 0.25333, 0.25333],
+							"bezier_right_value": [0, 0, 0]
+						},
+						{
+							"channel": "scale",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "92dda563-b5db-3f0a-2291-ff54fe9abeb0",
+							"time": 0.25,
+							"color": -1,
+							"uniform": true,
+							"interpolation": "bezier",
 							"bezier_linked": true,
 							"bezier_left_time": [-0.1, -0.1, -0.1],
 							"bezier_left_value": [0, 0, 0],
