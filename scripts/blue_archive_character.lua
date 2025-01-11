@@ -431,7 +431,164 @@ BlueArchiveCharacter = {
 
         instance.physics = {
             physicData = {
+                {
+                    models = {models.models.main.Avatar.Head.HairTail};
 
+                    x = {
+                        vertical = {
+                            min = -90;
+                            neutral = 0;
+                            max = 90;
+
+                            headRotMultiplayer = -1;
+
+                            headX = {
+                                multiplayer = -80;
+                                min = -90;
+                                max = 90;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -45;
+                            neutral = 45;
+                            max = 45;
+
+                            headX = {
+                                multiplayer = -80;
+                                min = -45;
+                                max = 45;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.Head.HairTail.HairTail};
+
+                    z = {
+                        vertical = {
+                            min = -60;
+                            neutral = 0;
+                            max = 0;
+
+                            headZ = {
+                                multiplayer = -80;
+                                min = -60;
+                                max = 0;
+                            };
+
+                            headRot = {
+                                multiplayer = 0.05;
+                                min = -60;
+                                max = 0;
+                            };
+
+                            bodyY = {
+                                multiplayer = 80;
+                                min = -60;
+                                max = 0;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.BearPouch.SecurityAlarm},
+
+                    x = {
+                        vertical = {
+                            min = 0;
+                            neutral = 0;
+                            max = 170;
+                            sneakOffset = 30;
+
+                            bodyX = {
+                                multiplayer = -80;
+                                min = 0;
+                                max = 170;
+                            };
+
+                            bodyY = {
+                                multiplayer = -80;
+                                min = 0;
+                                max = 170;
+                            };
+
+                            bodyRot = {
+                                multiplayer = -0.05;
+                                min = 0;
+                                max = 170;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models =  {models.models.main.Avatar.UpperBody.Body.BearPouch.SecurityAlarm.SecurityAlarmZPivot},
+
+                    z = {
+                        vertical = {
+                            min = -90;
+                            neutral = 0;
+                            max = 90;
+
+                            headZ = {
+                                multiplayer = -80;
+                                min = -90;
+                                max = 90;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.TailXPivot};
+                    x = {
+                        vertical = {
+                            min = -40;
+                            neutral = 0;
+                            max = 40;
+                            sneakOffset = 15;
+
+                            bodyY = {
+                                multiplayer = 40;
+                                min = -40;
+                                max = 40;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -40;
+                            neutral = 0;
+                            max = 40;
+
+                            bodyX = {
+                                multiplayer = 40;
+                                min = -40;
+                                max = 40;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.TailXPivot.TailYPivot};
+
+                    y = {
+                        vertical = {
+                            min = -40;
+                            neutral = 0;
+                            max = 40;
+
+                            bodyZ = {
+                                multiplayer = -80;
+                                min = -40;
+                                max = 40;
+                            };
+                        };
+                    };
+                };
             };
         }
 
@@ -470,6 +627,10 @@ BlueArchiveCharacter = {
                 models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve:setRot(leftArmRot * -1, 0, 0)
                 models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve:setOffsetPivot(0, 0, leftArmRot < 0 and 4 or 0)
             end
+
+            local wingRotOffset = math.map(vanilla_model.RIGHT_LEG:getOriginRot().x, -90, 90, 20, 0)
+            models.models.main.Avatar.UpperBody.Body.Wings.RightWing:setRot(0, -20 - wingRotOffset, 0)
+            models.models.main.Avatar.UpperBody.Body.Wings.LeftWing:setRot(0, 20 + wingRotOffset, 0)
         end)
     end;
 }

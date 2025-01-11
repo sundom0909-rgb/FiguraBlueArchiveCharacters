@@ -2700,7 +2700,7 @@
 			"to": [-4, 29.25, -1.25],
 			"autouv": 0,
 			"color": 0,
-			"origin": [-4, 28, -2],
+			"origin": [-4, 28.75, -2],
 			"faces": {
 				"north": {
 					"uv": [31, 35, 32.5, 42],
@@ -4667,7 +4667,21 @@
 											"locked": false,
 											"visibility": true,
 											"autouv": 0,
-											"children": ["f3c06fdf-9c1b-1df7-cc72-874862400089", "8c022e13-9081-f787-31fe-fe356685fea0", "43f25c5e-ecc7-8169-9045-2c7b9269893d"]
+											"children": [
+												{
+													"name": "SecurityAlarmZPivot",
+													"origin": [-4.75, 12.4, -2.55],
+													"color": 0,
+													"uuid": "ab26aefd-4e7d-5bc0-9fc6-9d61fdbc9d84",
+													"export": true,
+													"mirror_uv": false,
+													"isOpen": true,
+													"locked": false,
+													"visibility": true,
+													"autouv": 0,
+													"children": ["f3c06fdf-9c1b-1df7-cc72-874862400089", "8c022e13-9081-f787-31fe-fe356685fea0", "43f25c5e-ecc7-8169-9045-2c7b9269893d"]
+												}
+											]
 										}
 									]
 								},
