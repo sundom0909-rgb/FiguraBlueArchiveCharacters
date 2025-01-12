@@ -184,6 +184,11 @@
 		"models.models.ex_skill_1.Table.DrawingEffects.DrawingEffects2": {
 			"parentType": "Camera"
 		},
+		"models.models.ex_skill_1.SpinEffects": {
+			"visible": false,
+			"moveTo": "models.models.main.Avatar",
+			"primaryRenderType": "EMISSIVE_SOLID"
+		},
 		"models.models.placement_object.PlacementObject": {
 			"visible": false
 		},
