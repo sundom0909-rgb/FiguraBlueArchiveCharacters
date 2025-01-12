@@ -369,13 +369,13 @@ BlueArchiveCharacter = {
 
                 camera = {
                     start = {
-                        rot = vectors.vec3(0, 180, 0);
-                        pos = vectors.vec3(0, 28, -64);
+                        rot = vectors.vec3(0, -160, 0);
+                        pos = vectors.vec3(-2, 17, -19);
                     };
 
                     fin = {
-                        rot = vectors.vec3(0, 180, 0);
-                        pos = vectors.vec3(0, 28, -64);
+                        rot = vectors.vec3(10, -160, 0);
+                        pos = vectors.vec3(-7, 32.2, -15);
                     };
                 };
 
@@ -394,11 +394,6 @@ BlueArchiveCharacter = {
                     --Exスキルアニメーションを任意の位置で一時停止させるコードスニペット。デバッグ用。
                     --"<>"内を適切な数値に置き換えること。
                     onAnimationTick = function (self, tick)
-                        --[[
-                        for _, name in ipairs(self.exSkill[<ex_skill_index>]) do
-                            animations["models."..name]["ex_skill_<ex_skill_index>"]:pause()
-                        end
-                        ]]
                         if tick == 63 then
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.SketchBook:moveTo(models.models.ex_skill_1.Table)
                         elseif tick == 129 then
