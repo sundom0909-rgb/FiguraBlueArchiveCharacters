@@ -417,8 +417,6 @@ BlueArchiveCharacter = {
                         self.parent.faceParts:setEmotion("CENTER", "NORMAL", "ANXIOUS", 11, true)
                     end;
 
-                    --Exスキルアニメーションを任意の位置で一時停止させるコードスニペット。デバッグ用。
-                    --"<>"内を適切な数値に置き換えること。
                     onAnimationTick = function (self, tick)
                         if tick == 11 then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "ANXIOUS", 3, true)
