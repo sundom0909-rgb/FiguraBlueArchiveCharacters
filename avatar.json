@@ -10,7 +10,10 @@
 		"textures.for_modeling.leather_layer_2",
 		"textures.for_modeling.leather_layer_2_overlay",
 		"textures.for_modeling.trim",
-		"textures.for_modeling.trim_leggings"
+		"textures.for_modeling.trim_leggings",
+		"textures.for_modeling.oak_planks",
+		"textures.for_modeling.stripped_birch_log",
+		"textures.for_modeling.stripped_birch_log_top"
 	],
 	"autoScripts": [
 		"scripts/avatar.lua"
@@ -146,6 +149,25 @@
 		},
 		"models.models.gun.Gun": {
 			"moveTo": "models.models.main.Avatar.UpperBody.Body"
+		},
+		"models.models.ex_skill_1.Table": {
+			"visible": false
+		},
+		"models.models.ex_skill_1.SketchBook": {
+			"visible": false,
+			"moveTo": "models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom"
+		},
+		"models.models.ex_skill_1.Crayon1": {
+			"visible": false,
+			"moveTo": "models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom"
+		},
+		"models.models.ex_skill_1.Crayon2": {
+			"visible": false,
+			"moveTo": "models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom"
+		},
+		"models.models.ex_skill_1.Crayon3": {
+			"visible": false,
+			"moveTo": "models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom"
 		},
 		"models.models.placement_object.PlacementObject": {
 			"visible": false

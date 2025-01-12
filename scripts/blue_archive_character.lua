@@ -357,15 +357,15 @@ BlueArchiveCharacter = {
         instance.exSkill = {
             {
                 name = {
-                    en_us = "Ex Skill name";
-                    ja_jp = "Exスキル名";
+                    en_us = "Ibuki's Magic Time!";
+                    ja_jp = "イブキのお絵描きタイム！";
                 };
 
                 formationType = "STRIKER";
 
-                models = {};
+                models = {models.models.ex_skill_1.Table, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.SketchBook, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Crayon1, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Crayon2, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Crayon3};
 
-                animations = {"main"};
+                animations = {"main", "ex_skill_1"};
 
                 camera = {
                     start = {
@@ -379,17 +379,45 @@ BlueArchiveCharacter = {
                     };
                 };
 
-                --[[
                 callbacks = {
+                    onPreAnimation = function (self)
+                        if not self.exSkill[1].init then
+                            models.models.ex_skill_1.Table.TableTop:setPrimaryTexture("RESOURCE", "minecraft:textures/block/oak_planks.png")
+                            for i = 1, 4 do
+                                models.models.ex_skill_1.Table["TableFeet"..i.."_side"]:setPrimaryTexture("RESOURCE", "minecraft:textures/block/stripped_birch_log.png")
+                                models.models.ex_skill_1.Table["TableFeet"..i.."_bottom"]:setPrimaryTexture("RESOURCE", "minecraft:textures/block/stripped_birch_log_top.png")
+                            end
+                            self.exSkill[1].init = true
+                        end
+                    end;
+
                     --Exスキルアニメーションを任意の位置で一時停止させるコードスニペット。デバッグ用。
                     --"<>"内を適切な数値に置き換えること。
                     onAnimationTick = function (self, tick)
+                        --[[
                         for _, name in ipairs(self.exSkill[<ex_skill_index>]) do
                             animations["models."..name]["ex_skill_<ex_skill_index>"]:pause()
                         end
+                        ]]
+                        if tick == 63 then
+                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.SketchBook:moveTo(models.models.ex_skill_1.Table)
+                        elseif tick == 129 then
+                            models.models.ex_skill_1.Table.SketchBook:moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
+                        end
                     end;
+
+                    onPostAnimation = function (self, forcedStop)
+                        if models.models.ex_skill_1.Table.SketchBook ~= nil then
+                            models.models.ex_skill_1.Table.SketchBook:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
+                        elseif models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SketchBook ~= nil then
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SketchBook:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
+                        end
+                    end
                 };
-                ]]
+
+                ---このExスキルの初期化処理が行われたかどうか。
+                ---@type boolean
+                init = false;
             };
         }
 
@@ -619,13 +647,18 @@ BlueArchiveCharacter = {
                 models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve:setOffsetPivot(1.5, 0, 0)
                 models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve:setRot(0, 0, 60)
                 models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve:setOffsetPivot(-1.5, 0, 0)
-            else
+            elseif self.parent.exSkill.animationCount == -1 then
                 local rightArmRot = math.clamp(((models.models.main.Avatar.UpperBody.Arms.RightArm:getParentType() == "RightArm" and not (context == "PAPERDOLL" and self.parent.gun.currentGunPosition ~= "NONE")) and vanilla_model.RIGHT_ARM:getOriginRot().x or 0) + models.models.main.Avatar.UpperBody.Arms.RightArm:getTrueRot().x, -60, 60)
                 models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve:setRot(rightArmRot * -1, 0, 0)
                 models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve:setOffsetPivot(0, 0, rightArmRot < 0 and 4 or 0)
                 local leftArmRot = math.clamp(((models.models.main.Avatar.UpperBody.Arms.LeftArm:getParentType() == "LeftArm" and not (context == "PAPERDOLL" and self.parent.gun.currentGunPosition ~= "NONE")) and vanilla_model.LEFT_ARM:getOriginRot().x or 0) + models.models.main.Avatar.UpperBody.Arms.LeftArm:getTrueRot().x, -60, 60)
                 models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve:setRot(leftArmRot * -1, 0, 0)
                 models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve:setOffsetPivot(0, 0, leftArmRot < 0 and 4 or 0)
+            else
+                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve:setRot()
+                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve:setOffsetPivot(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve:getAnimRot().x >= 0 and 4 or 0)
+                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve:setRot()
+                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve:setOffsetPivot(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve:getAnimRot().x >= 0 and 4 or 0)
             end
 
             local wingRotOffset = math.map(vanilla_model.RIGHT_LEG:getOriginRot().x, -90, 90, 20, 0)
