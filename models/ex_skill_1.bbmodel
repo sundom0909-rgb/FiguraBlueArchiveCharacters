@@ -3841,6 +3841,1013 @@
 			},
 			"type": "cube",
 			"uuid": "9f20668d-3931-57cf-f874-137f93674ffd"
+		},
+		{
+			"name": "SketchBookEffect1",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [6.5, 2.75, 0],
+			"to": [11.5, 3.25, 0],
+			"autouv": 0,
+			"color": 0,
+			"origin": [0, 3, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 9, 1, 10],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "ff3ed512-a3da-66df-e59f-f315ac91fd60"
+		},
+		{
+			"name": "SketchBookEffect2",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [6.5, 2.75, 0],
+			"to": [11.5, 3.25, 0],
+			"autouv": 0,
+			"color": 0,
+			"rotation": [0, 0, 15],
+			"origin": [0, 3, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 9, 1, 10],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "b9020d07-5079-02af-8e45-79f7cf46b8d5"
+		},
+		{
+			"name": "SketchBookEffect3",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [6.5, 2.75, 0],
+			"to": [11.5, 3.25, 0],
+			"autouv": 0,
+			"color": 0,
+			"rotation": [0, 0, 30],
+			"origin": [0, 3, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 9, 1, 10],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "ec0f51db-5625-760e-4a53-fadb84fc5c72"
+		},
+		{
+			"name": "SketchBookEffect4",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [6.5, 2.75, 0],
+			"to": [11.5, 3.25, 0],
+			"autouv": 0,
+			"color": 0,
+			"rotation": [0, 0, 45],
+			"origin": [0, 3, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 9, 1, 10],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "f7f1794a-7d1d-83ac-3172-6ef5609bb70f"
+		},
+		{
+			"name": "SketchBookEffect5",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [6.5, 2.75, 0],
+			"to": [11.5, 3.25, 0],
+			"autouv": 0,
+			"color": 0,
+			"rotation": [0, 0, 60],
+			"origin": [0, 3, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 9, 1, 10],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "0bed56d6-9531-cec1-e5fe-9f292eeb54e4"
+		},
+		{
+			"name": "SketchBookEffect6",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [6.5, 2.75, 0],
+			"to": [11.5, 3.25, 0],
+			"autouv": 0,
+			"color": 0,
+			"rotation": [0, 0, 75],
+			"origin": [0, 3, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 9, 1, 10],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "220f585d-8113-abc1-c82d-89f79f780fcd"
+		},
+		{
+			"name": "SketchBookEffect7",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [6.5, 2.75, 0],
+			"to": [11.5, 3.25, 0],
+			"autouv": 0,
+			"color": 0,
+			"rotation": [0, 0, 90],
+			"origin": [0, 3, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 9, 1, 10],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "84120a17-544f-a84f-f15d-ab49df0c376f"
+		},
+		{
+			"name": "SketchBookEffect8",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [6.5, 2.75, 0],
+			"to": [11.5, 3.25, 0],
+			"autouv": 0,
+			"color": 0,
+			"rotation": [0, 0, 105],
+			"origin": [0, 3, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 9, 1, 10],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "dbd64e59-a132-b2e4-5b83-29fcd77d4c7e"
+		},
+		{
+			"name": "SketchBookEffect9",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [6.5, 2.75, 0],
+			"to": [11.5, 3.25, 0],
+			"autouv": 0,
+			"color": 0,
+			"rotation": [0, 0, 120],
+			"origin": [0, 3, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 9, 1, 10],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "aaa84952-6fbe-5d50-e29b-fefd186fb005"
+		},
+		{
+			"name": "SketchBookEffect10",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [6.5, 2.75, 0],
+			"to": [11.5, 3.25, 0],
+			"autouv": 0,
+			"color": 0,
+			"rotation": [0, 0, 135],
+			"origin": [0, 3, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 9, 1, 10],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "4e1eba53-8d66-87e2-0f5a-8173c2a727c8"
+		},
+		{
+			"name": "SketchBookEffect11",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [6.5, 2.75, 0],
+			"to": [11.5, 3.25, 0],
+			"autouv": 0,
+			"color": 0,
+			"rotation": [0, 0, 150],
+			"origin": [0, 3, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 9, 1, 10],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "24f6ba05-55a7-c49a-050c-c03969fe3ccb"
+		},
+		{
+			"name": "SketchBookEffect12",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [6.5, 2.75, 0],
+			"to": [11.5, 3.25, 0],
+			"autouv": 0,
+			"color": 0,
+			"rotation": [0, 0, 165],
+			"origin": [0, 3, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 9, 1, 10],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "3870eee6-7e69-a6c4-07d2-b8dcaa3c2715"
+		},
+		{
+			"name": "SketchBookEffect13",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [6.5, 2.75, 0],
+			"to": [11.5, 3.25, 0],
+			"autouv": 0,
+			"color": 0,
+			"rotation": [0, 0, -180],
+			"origin": [0, 3, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 9, 1, 10],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "bc8e1132-9dc5-94a1-78cb-1b34cf0f5b9a"
+		},
+		{
+			"name": "SketchBookEffect14",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [6.5, 2.75, 0],
+			"to": [11.5, 3.25, 0],
+			"autouv": 0,
+			"color": 0,
+			"rotation": [0, 0, -165],
+			"origin": [0, 3, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 9, 1, 10],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "12fac1ba-69f6-a082-122c-00efc8aa0f2e"
+		},
+		{
+			"name": "SketchBookEffect15",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [6.5, 2.75, 0],
+			"to": [11.5, 3.25, 0],
+			"autouv": 0,
+			"color": 0,
+			"rotation": [0, 0, -150],
+			"origin": [0, 3, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 9, 1, 10],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "7a638b1f-74a7-6ead-838b-879adde1bfb0"
+		},
+		{
+			"name": "SketchBookEffect16",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [6.5, 2.75, 0],
+			"to": [11.5, 3.25, 0],
+			"autouv": 0,
+			"color": 0,
+			"rotation": [0, 0, -135],
+			"origin": [0, 3, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 9, 1, 10],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "c7db17f8-75ce-3900-e85f-3e1210816d34"
+		},
+		{
+			"name": "SketchBookEffect17",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [6.5, 2.75, 0],
+			"to": [11.5, 3.25, 0],
+			"autouv": 0,
+			"color": 0,
+			"rotation": [0, 0, -120],
+			"origin": [0, 3, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 9, 1, 10],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "d923ab4e-b00e-bdb9-e8cc-dc7ba43c6cde"
+		},
+		{
+			"name": "SketchBookEffect18",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [6.5, 2.75, 0],
+			"to": [11.5, 3.25, 0],
+			"autouv": 0,
+			"color": 0,
+			"rotation": [0, 0, -105],
+			"origin": [0, 3, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 9, 1, 10],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "b60e13e8-d200-d96f-bc18-29fdcec67147"
+		},
+		{
+			"name": "SketchBookEffect19",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [6.5, 2.75, 0],
+			"to": [11.5, 3.25, 0],
+			"autouv": 0,
+			"color": 0,
+			"rotation": [0, 0, -90],
+			"origin": [0, 3, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 9, 1, 10],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "68b5e0e6-47eb-ad80-5d37-144aed012fae"
+		},
+		{
+			"name": "SketchBookEffect20",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [6.5, 2.75, 0],
+			"to": [11.5, 3.25, 0],
+			"autouv": 0,
+			"color": 0,
+			"rotation": [0, 0, -75],
+			"origin": [0, 3, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 9, 1, 10],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "3b776906-0822-567e-b207-d5f0eed0485c"
+		},
+		{
+			"name": "SketchBookEffect21",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [6.5, 2.75, 0],
+			"to": [11.5, 3.25, 0],
+			"autouv": 0,
+			"color": 0,
+			"rotation": [0, 0, -60],
+			"origin": [0, 3, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 9, 1, 10],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "3693336f-c402-4756-6eaa-f129c606dcdb"
+		},
+		{
+			"name": "SketchBookEffect22",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [6.5, 2.75, 0],
+			"to": [11.5, 3.25, 0],
+			"autouv": 0,
+			"color": 0,
+			"rotation": [0, 0, -45],
+			"origin": [0, 3, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 9, 1, 10],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "0a939ba5-0c01-e527-9408-4f86ed0866a5"
+		},
+		{
+			"name": "SketchBookEffect23",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [6.5, 2.75, 0],
+			"to": [11.5, 3.25, 0],
+			"autouv": 0,
+			"color": 0,
+			"rotation": [0, 0, -30],
+			"origin": [0, 3, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 9, 1, 10],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "6762828f-e1a4-59f2-9cf3-ce8fb80fef8c"
+		},
+		{
+			"name": "SketchBookEffect24",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [6.5, 2.75, 0],
+			"to": [11.5, 3.25, 0],
+			"autouv": 0,
+			"color": 0,
+			"rotation": [0, 0, -15],
+			"origin": [0, 3, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 9, 1, 10],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "6afdf6e9-ead0-03be-1ee6-f8a3921b49f4"
 		}
 	],
 	"outliner": [
@@ -3985,7 +4992,7 @@
 			"uuid": "5a300245-4df9-b3c7-0f75-5b8e37c7dd2f",
 			"export": true,
 			"mirror_uv": false,
-			"isOpen": false,
+			"isOpen": true,
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
@@ -4311,6 +5318,58 @@
 							]
 						}
 					]
+				},
+				{
+					"name": "SketchBookEffects",
+					"origin": [0, 3, 0],
+					"color": 0,
+					"uuid": "df969859-1950-3da6-d5dc-6d37a938a786",
+					"export": true,
+					"mirror_uv": false,
+					"isOpen": true,
+					"locked": false,
+					"visibility": true,
+					"autouv": 0,
+					"children": [
+						{
+							"name": "SketchBookEffects2",
+							"origin": [0, 3, 0],
+							"color": 0,
+							"uuid": "a96b05f0-dc30-28fe-31f7-aedaa3ec9147",
+							"export": true,
+							"mirror_uv": false,
+							"isOpen": true,
+							"locked": false,
+							"visibility": true,
+							"autouv": 0,
+							"children": [
+								"ff3ed512-a3da-66df-e59f-f315ac91fd60",
+								"b9020d07-5079-02af-8e45-79f7cf46b8d5",
+								"ec0f51db-5625-760e-4a53-fadb84fc5c72",
+								"f7f1794a-7d1d-83ac-3172-6ef5609bb70f",
+								"0bed56d6-9531-cec1-e5fe-9f292eeb54e4",
+								"220f585d-8113-abc1-c82d-89f79f780fcd",
+								"84120a17-544f-a84f-f15d-ab49df0c376f",
+								"dbd64e59-a132-b2e4-5b83-29fcd77d4c7e",
+								"aaa84952-6fbe-5d50-e29b-fefd186fb005",
+								"4e1eba53-8d66-87e2-0f5a-8173c2a727c8",
+								"24f6ba05-55a7-c49a-050c-c03969fe3ccb",
+								"3870eee6-7e69-a6c4-07d2-b8dcaa3c2715",
+								"bc8e1132-9dc5-94a1-78cb-1b34cf0f5b9a",
+								"12fac1ba-69f6-a082-122c-00efc8aa0f2e",
+								"7a638b1f-74a7-6ead-838b-879adde1bfb0",
+								"c7db17f8-75ce-3900-e85f-3e1210816d34",
+								"d923ab4e-b00e-bdb9-e8cc-dc7ba43c6cde",
+								"b60e13e8-d200-d96f-bc18-29fdcec67147",
+								"68b5e0e6-47eb-ad80-5d37-144aed012fae",
+								"3b776906-0822-567e-b207-d5f0eed0485c",
+								"3693336f-c402-4756-6eaa-f129c606dcdb",
+								"0a939ba5-0c01-e527-9408-4f86ed0866a5",
+								"6762828f-e1a4-59f2-9cf3-ce8fb80fef8c",
+								"6afdf6e9-ead0-03be-1ee6-f8a3921b49f4"
+							]
+						}
+					]
 				}
 			]
 		},
@@ -4435,7 +5494,7 @@
 			"saved": true,
 			"uuid": "74118814-1e27-637e-cda2-172fae867ac5",
 			"relative_path": "../../textures/ex_skill_1.png",
-			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAAAXNSR0IArs4c6QAABw5JREFUeF7t2SGLFHEAhvH/IAaT5cJhuGawGWxXPM8qGPSS0WDQaDzsWkW02vwEiyBisxlX8BNYjCIGGeGCIDfs5dvnt3Un7Pu87zz8Z2f68ObpfPnz73HjeG+8/HJ7PNo/Gps+F698mzZe4EsEEDg3BKb1ej3/fP76PwFc2L20GODP91+DAM5Nt34oAmcSmFar1bzzbkUAZ6JyAQLbR2DxBOARYPuKlgiBJQKnTgCPd35sJDUdHPoPwJYQ2BICp04AJwK4eWs53qePgwC2pHkxEBhjLJ8ACMA4EEgQWD4BbIjuBJDYhZARAtO1q3vz2/27/94CPLl/3TN+pHwxETi52V/cOZofPPw6Dl/dG+v3zwjALhCIEHCzR4oWE4HF14CwIIBAl4ATQLd7yREYBGAECIQJEEC4fNERIAAbQCBMgADC5YuOAAHYAAJhAgQQLl90BAjABhAIEyCAcPmiI0AANoBAmAABhMsXHQECsAEEwgQIIFy+6AgQgA0gECZAAOHyRUeAAGwAgTABAgiXLzoCBGADCIQJEEC4fNERIAAbQCBMgADC5YuOAAHYAAJhAgQQLl90BAjABhAIEyCAcPmiI0AANoBAmAABhMsXHQECsAEEwgQIIFy+6AgQgA0gECZAAOHyRUeAAGwAgTABAgiXLzoCBGADCIQJEEC4fNERIAAbQCBMgADC5YuOAAHYAAJhAgQQLl90BAjABhAIEyCAcPmiI0AANoBAmAABhMsXHQECsAEEwgQIIFy+6AgQgA0gECZAAOHyRUeAAGwAgTABAgiXLzoCBGADCIQJEEC4fNERIAAbQCBMgADC5YuOAAHYAAJhAgQQLl90BAjABhAIEyCAcPmiI0AANoBAmAABhMsXHQECsAEEwgQIIFy+6AgQgA0gECZAAOHyRUeAAGwAgTABAgiXLzoCBGADCIQJEEC4fNERIAAbQCBMgADC5YuOAAHYAAJhAgQQLl90BAjABhAIEyCAcPmiI0AANoBAmAABhMsXHQECsAEEwgQIIFy+6AgQgA0gECZAAOHyRUeAAGwAgTABAgiXLzoCBGADCIQJEEC4fNERIAAbQCBMgADC5YuOAAHYAAJhAgQQLl90BAjABhAIEyCAcPmiI0AANoBAmAABhMsXHQECsAEEwgQIIFy+6AgQgA0gECZAAOHyRUeAAGwAgTABAgiXLzoCBGADCIQJEEC4fNERIAAbQCBMgADC5YuOAAHYAAJhAgQQLl90BAjABhAIEyCAcPmiI0AANoBAmAABhMsXHQECsAEEwgQIIFy+6AgQgA0gECZAAOHyRUeAAGwAgTABAgiXLzoCBGADCIQJEEC4fNERIAAbQCBMgADC5YuOAAHYAAJhAgQQLl90BAjABhAIEyCAcPmiI0AANoBAmAABhMsXHQECsAEEwgQIIFy+6AgQgA0gECZAAOHyRUeAAGwAgTABAgiXLzoCBGADCIQJEEC4fNERIAAbQCBMgADC5YuOAAHYAAJhAgQQLl90BAjABhAIEyCAcPmiI0AANoBAmAABhMsXHQECsAEEwgQIIFy+6AgQgA0gECZAAOHyRUeAAGwAgTABAgiXLzoCBGADCIQJEEC4fNERIAAbQCBMgADC5YuOAAHYAAJhAgQQLl90BAjABhAIEyCAcPmiI0AANoBAmAABhMsXHQECsAEEwgQIIFy+6AgQgA0gECZAAOHyRUeAAGwAgTABAgiXLzoCBGADCIQJEEC4fNERIAAbQCBMgADC5YuOAAHYAAJhAgQQLl90BAjABhAIEyCAcPmiI0AANoBAmAABhMsXHQECsAEEwgQIIFy+6AgQgA0gECZAAOHyRUeAAGwAgTABAgiXLzoCBGADCIQJEEC4fNERIAAbQCBMgADC5YuOAAHYAAJhAgQQLl90BAjABhAIEyCAcPmiI0AANoBAmAABhMsXHQECsAEEwgQIIFy+6AgQgA0gECZAAOHyRUeAAGwAgTABAgiXLzoCBGADCIQJEEC4fNERIAAbQCBMgADC5YuOAAHYAAJhAgQQLl90BAjABhAIEyCAcPmiI0AANoBAmAABhMsXHQECsAEEwgQIIFy+6AgQgA0gECZAAOHyRUeAAGwAgTABAgiXLzoCBGADCIQJEEC4fNERIAAbQCBMgADC5YuOAAHYAAJhAgQQLl90BAjABhAIEyCAcPmiI0AANoBAmAABhMsXHQECsAEEwgQIIFy+6AgQgA0gECZAAOHyRUeAAGwAgTABAgiXLzoCBGADCIQJEEC4fNERIAAbQCBMgADC5YuOAAHYAAJhAgQQLl90BAjABhAIEyCAcPmiI0AANoBAmAABhMsXHQECsAEEwgQIIFy+6AgQgA0gECZAAOHyRUeAAGwAgTABAgiXLzoCBGADCIQJEEC4fNERIAAbQCBM4C8wZ2QBu54clgAAAABJRU5ErkJggg=="
+			"source": "data:image/png;base64,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"
 		},
 		{
 			"path": "C:\\Users\\gakut\\AppData\\Roaming\\ModrinthApp\\profiles\\Fabricバニラ\\figura\\avatars\\ブルーアーカイブ\\ベースアバター\\textures\\for_modeling\\stripped_birch_log.png",
@@ -6717,6 +7776,97 @@
 							],
 							"uuid": "50281b95-bdb6-96d2-d18f-334b95676f95",
 							"time": 6.55,
+							"color": -1,
+							"uniform": true,
+							"interpolation": "linear",
+							"bezier_linked": true,
+							"bezier_left_time": [-0.1, -0.1, -0.1],
+							"bezier_left_value": [0, 0, 0],
+							"bezier_right_time": [0.1, 0.1, 0.1],
+							"bezier_right_value": [0, 0, 0]
+						}
+					]
+				},
+				"a96b05f0-dc30-28fe-31f7-aedaa3ec9147": {
+					"name": "SketchBookEffects2",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "scale",
+							"data_points": [
+								{
+									"x": "0.5",
+									"y": "0.5",
+									"z": "0.5"
+								}
+							],
+							"uuid": "4196f319-0ce3-0c05-b1ac-29f3a41103c5",
+							"time": 2,
+							"color": -1,
+							"uniform": true,
+							"interpolation": "linear",
+							"bezier_linked": true,
+							"bezier_left_time": [-0.1, -0.1, -0.1],
+							"bezier_left_value": [0, 0, 0],
+							"bezier_right_time": [0.1, 0.1, 0.1],
+							"bezier_right_value": [0, 0, 0]
+						},
+						{
+							"channel": "scale",
+							"data_points": [
+								{
+									"x": "1",
+									"y": "1",
+									"z": "1"
+								}
+							],
+							"uuid": "bae26022-f41e-6985-795d-1d4906166354",
+							"time": 2.1,
+							"color": -1,
+							"uniform": true,
+							"interpolation": "linear",
+							"bezier_linked": true,
+							"bezier_left_time": [-0.1, -0.1, -0.1],
+							"bezier_left_value": [0, 0, 0],
+							"bezier_right_time": [0.1, 0.1, 0.1],
+							"bezier_right_value": [0, 0, 0]
+						},
+						{
+							"channel": "scale",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "91002a72-db88-2a91-a8ac-54451ec735b0",
+							"time": 1.95,
+							"color": -1,
+							"uniform": true,
+							"interpolation": "linear",
+							"bezier_linked": true,
+							"bezier_left_time": [-0.1, -0.1, -0.1],
+							"bezier_left_value": [0, 0, 0],
+							"bezier_right_time": [0.1, 0.1, 0.1],
+							"bezier_right_value": [0, 0, 0]
+						},
+						{
+							"channel": "scale",
+							"data_points": [
+								{
+									"x": "1.2",
+									"y": "1.2",
+									"z": "1.2"
+								},
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "1c19b43d-b32f-556c-b61b-0cf0ca8bff66",
+							"time": 2.95,
 							"color": -1,
 							"uniform": true,
 							"interpolation": "linear",

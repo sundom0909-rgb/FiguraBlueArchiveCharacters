@@ -157,6 +157,10 @@
 			"visible": false,
 			"moveTo": "models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom"
 		},
+		"models.models.ex_skill_1.SketchBook.SketchBookEffects": {
+			"parentType": "Camera",
+			"primaryRenderType": "EMISSIVE_SOLID"
+		},
 		"models.models.ex_skill_1.Crayon1": {
 			"visible": false,
 			"moveTo": "models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom"
