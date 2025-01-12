@@ -3,15 +3,28 @@
 ---| "SURPRISED" # 驚いた目（ダメージを受けたときなど）
 ---| "TIRED" # 疲れた目（死亡アニメーションなど）
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
+---| "CENTER" # 少し反対側を見る目
+---| "ANGRY" # 怒った目
+---| "UNEQUAL" # 不等号目
 
 ---@alias BlueArchiveCharacter.LeftEyeTextures
 ---| "NORMAL" # 通常
 ---| "SURPRISED" # 驚いた目（ダメージを受けたときなど）
 ---| "TIRED" # 疲れた目（死亡アニメーションなど）
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
+---| "CENTER" # 少し反対側を見る目
+---| "ANGRY_CENTER" # 怒りつつ少し反対側を見る目
+---| "UNEQUAL" # 不等号目
+---| "ANGRY" # 怒った目
 
 ---@alias BlueArchiveCharacter.MouthTextures
 ---| "NORMAL" # 通常
+---| "ANXIOUS" # 小さく空いている口
+---| "OPENED" # 全力の開け口
+---| "OPENED_SMALL" # 小さく開いている口
+---| "YUMMY" # 舌をペロッとしている口
+---| "SMILE" # にっこり
+---| "W" # W
 
 ---@alias BlueArchiveCharacter.GunHoldType
 ---| "NORMAL" # バニラの弓やクロスボウの構え方と同じ
@@ -291,6 +304,9 @@ BlueArchiveCharacter = {
                 SURPRISED = vectors.vec2(2, 0); --必須
                 TIRED = vectors.vec2(3, 0); --必須
                 CLOSED = vectors.vec2(4, 0); --必須
+                CENTER = vectors.vec2(5, 0);
+                ANGRY = vectors.vec2(7, 0);
+                UNEQUAL = vectors.vec2(9, 0);
             };
 
             leftEye = {
@@ -298,10 +314,19 @@ BlueArchiveCharacter = {
                 SURPRISED = vectors.vec2(1, 0); --必須
                 TIRED = vectors.vec2(2, 0); --必須
                 CLOSED = vectors.vec2(3, 0); --必須
+                CENTER = vectors.vec2(5, 0);
+                ANGRY_CENTER = vectors.vec2(7, 0);
+                UNEQUAL = vectors.vec2(8, 0);
+                ANGRY = vectors.vec2(-1, 1);
             };
 
             mouth = {
-
+                ANXIOUS = vectors.vec2(0, 0);
+                OPENED = vectors.vec2(1, 0);
+                OPENED_SMALL = vectors.vec2(2, 0);
+                YUMMY = vectors.vec2(3, 0);
+                SMILE = vectors.vec2(0, 1);
+                W = vectors.vec2(1, 1);
             };
         }
 
@@ -389,15 +414,37 @@ BlueArchiveCharacter = {
                             end
                             self.exSkill[1].init = true
                         end
+                        self.parent.faceParts:setEmotion("CENTER", "NORMAL", "ANXIOUS", 11, true)
                     end;
 
                     --Exスキルアニメーションを任意の位置で一時停止させるコードスニペット。デバッグ用。
                     --"<>"内を適切な数値に置き換えること。
                     onAnimationTick = function (self, tick)
-                        if tick == 63 then
+                        if tick == 11 then
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "ANXIOUS", 3, true)
+                        elseif tick == 14 then
+                            self.parent.faceParts:setEmotion("NORMAL", "CENTER", "OPENED", 9, true)
+                        elseif tick == 23 then
+                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY_CENTER", "W", 2, true)
+                        elseif tick == 25 then
+                            self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "W", 1, true)
+                        elseif tick == 26 then
+                            self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "OPENED", 37, true)
+                        elseif tick == 63 then
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.SketchBook:moveTo(models.models.ex_skill_1.Table)
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED_SMALL", 10, true)
+                        elseif tick == 73 then
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED_SMALL", 1, true)
+                        elseif tick == 74 then
+                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "YUMMY", 59, true)
                         elseif tick == 129 then
                             models.models.ex_skill_1.Table.SketchBook:moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
+                        elseif tick == 133 then
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "YUMMY", 1, true)
+                        elseif tick == 134 then
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 17, true)
+                        elseif tick == 151 then
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 44, true)
                         end
                     end;
 
