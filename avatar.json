@@ -169,6 +169,17 @@
 			"visible": false,
 			"moveTo": "models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom"
 		},
+		"models.models.ex_skill_1.NoticeEffects": {
+			"visible": false,
+			"moveTo": "models.models.main.Avatar.Head",
+			"parentType": "Camera"
+		},
+		"models.models.ex_skill_1.Table.DrawingEffects.DrawingEffects1": {
+			"parentType": "Camera"
+		},
+		"models.models.ex_skill_1.Table.DrawingEffects.DrawingEffects2": {
+			"parentType": "Camera"
+		},
 		"models.models.placement_object.PlacementObject": {
 			"visible": false
 		},
