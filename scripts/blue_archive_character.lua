@@ -430,6 +430,8 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "W", 1, true)
                         elseif tick == 26 then
                             self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "OPENED", 37, true)
+                        elseif tick == 58 then
+                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.SketchBook.SketchBookCanvas:setUVPixels(0, 24)
                         elseif tick == 63 then
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.SketchBook:moveTo(models.models.ex_skill_1.Table)
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED_SMALL", 10, true)
@@ -437,12 +439,26 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED_SMALL", 1, true)
                         elseif tick == 74 then
                             self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "YUMMY", 59, true)
+                        elseif tick == 80 then
+                            models.models.ex_skill_1.Table.SketchBook.SketchBookCanvas:setUVPixels(0, 48)
+                        elseif tick == 91 then
+                            models.models.ex_skill_1.Table.SketchBook.SketchBookCanvas:setUVPixels(0, 72)
+                        elseif tick == 99 then
+                            models.models.ex_skill_1.Table.SketchBook.SketchBookCanvas:setUVPixels(0, 96)
+                        elseif tick == 111 then
+                            models.models.ex_skill_1.Table.SketchBook.SketchBookCanvas:setUVPixels(0, 120)
                         elseif tick == 129 then
                             models.models.ex_skill_1.Table.SketchBook:moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
                         elseif tick == 133 then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "YUMMY", 1, true)
                         elseif tick == 134 then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 17, true)
+                        elseif tick == 147 then
+                            if math.random() >= 0.95 then
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SketchBook.SketchBookCanvas:setUVPixels(0, 168)
+                            else
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SketchBook.SketchBookCanvas:setUVPixels(0, 144)
+                            end
                         elseif tick == 151 then
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 44, true)
                         end
@@ -454,6 +470,7 @@ BlueArchiveCharacter = {
                         elseif models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SketchBook ~= nil then
                             models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SketchBook:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
                         end
+                        models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.SketchBook.SketchBookCanvas:setUVPixels()
                     end
                 };
 
