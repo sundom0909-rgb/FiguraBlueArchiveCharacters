@@ -579,13 +579,13 @@ BlueArchiveCharacter = {
 
                 camera = {
                     start = {
-                        rot = vectors.vec3(0, -160, 0);
-                        pos = vectors.vec3(-2, 17, -19);
+                        rot = vectors.vec3(0, -140, 0);
+                        pos = vectors.vec3(-28, 64, 260);
                     };
 
                     fin = {
-                        rot = vectors.vec3(10, -160, 0);
-                        pos = vectors.vec3(-7, 32.2, -15);
+                        rot = vectors.vec3(-15, -150, 0);
+                        pos = vectors.vec3(-30, 41, -1214.23);
                     };
                 };
 
@@ -606,6 +606,18 @@ BlueArchiveCharacter = {
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.SpyGlassAnchor:newItem("ex_skill_2_spyglass"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:spyglass"))
                             self.exSkill[2].init = true
                         end
+                        events.RENDER:register(function ()
+                            models.models.main.Avatar:setPos(models.models.ex_skill_2.Tank.TankBody:getAnimPos())
+                        end, "ex_skill_2_render")
+                    end;
+
+                    onAnimationTick = function (self, tick)
+
+                    end;
+
+                    onPostAnimation = function (self, forcedStop)
+                        events.RENDER:remove("ex_skill_2_render")
+                        models.models.main.Avatar:setPos()
                     end;
                 };
 
