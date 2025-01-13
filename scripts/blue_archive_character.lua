@@ -627,14 +627,34 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "O", 2, true)
                         elseif tick == 56 then
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "O", 20, true)
+                        elseif tick == 63 then
+                            models.models.ex_skill_2.Tank.TankBody.Turret.Iroha:setVisible(true)
+                        elseif tick == 72 then
+                            models.models.ex_skill_2.Tank.TankBody.Turret.Iroha.IrohaHead.IrohaFaceParts.IrohaEyes.IrohaEyeRight:setUVPixels(6, 0)
+                            models.models.ex_skill_2.Tank.TankBody.Turret.Iroha.IrohaHead.IrohaFaceParts.IrohaEyes.IrohaEyeLeft:setUVPixels(12, 0)
+                        elseif tick == 74 then
+                            models.models.ex_skill_2.Tank.TankBody.Turret.Iroha.IrohaHead.IrohaFaceParts.IrohaEyes.IrohaEyeRight:setUVPixels(0, 0)
+                            models.models.ex_skill_2.Tank.TankBody.Turret.Iroha.IrohaHead.IrohaFaceParts.IrohaEyes.IrohaEyeLeft:setUVPixels(18, 0)
+                            models.models.ex_skill_2.Tank.TankBody.Turret.Iroha.IrohaHead.IrohaFaceParts.IrohaMouth:setUVPixels(16, 0)
                         elseif tick == 76 then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", 1, true)
                         elseif tick == 77 then
                             self.parent.faceParts:setEmotion("NORMAL", "INVERTED", "OPENED", 26, true)
+                        elseif tick == 97 then
+                            models.models.ex_skill_2.Tank.TankBody.Turret.Iroha.IrohaHead.IrohaFaceParts.IrohaEyes.IrohaEyeRight:setUVPixels(0, 0)
+                            models.models.ex_skill_2.Tank.TankBody.Turret.Iroha.IrohaHead.IrohaFaceParts.IrohaEyes.IrohaEyeLeft:setUVPixels(18, 0)
+                            models.models.ex_skill_2.Tank.TankBody.Turret.Iroha.IrohaHead.IrohaFaceParts.IrohaMouth:setUVPixels(32, 0)
                         elseif tick == 103 then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "W", 40, true)
                         elseif tick == 143 then
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED_SMALL", 10, true)
+                        elseif tick == 144 then
+                            models.models.ex_skill_2.Tank.TankBody.Turret.Iroha.IrohaHead.IrohaFaceParts.IrohaEyes.IrohaEyeRight:setUVPixels(6, 0)
+                            models.models.ex_skill_2.Tank.TankBody.Turret.Iroha.IrohaHead.IrohaFaceParts.IrohaEyes.IrohaEyeLeft:setUVPixels(12, 0)
+                        elseif tick == 146 then
+                            models.models.ex_skill_2.Tank.TankBody.Turret.Iroha.IrohaHead.IrohaFaceParts.IrohaEyes.IrohaEyeRight:setUVPixels(18, 0)
+                            models.models.ex_skill_2.Tank.TankBody.Turret.Iroha.IrohaHead.IrohaFaceParts.IrohaEyes.IrohaEyeLeft:setUVPixels(0, 0)
+                            models.models.ex_skill_2.Tank.TankBody.Turret.Iroha.IrohaHead.IrohaFaceParts.IrohaMouth:setUVPixels(48, 0)
                         elseif tick == 153 then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED_SMALL", 1, true)
                         elseif tick == 154 then
@@ -645,6 +665,7 @@ BlueArchiveCharacter = {
                     onPostAnimation = function (self, forcedStop)
                         events.RENDER:remove("ex_skill_2_render")
                         models.models.main.Avatar:setPos()
+                        models.models.ex_skill_2.Tank.TankBody.Turret.Iroha:setVisible(false)
                     end;
                 };
 
