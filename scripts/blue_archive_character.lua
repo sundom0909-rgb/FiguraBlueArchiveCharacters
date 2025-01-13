@@ -25,6 +25,7 @@
 ---| "YUMMY" # 舌をペロッとしている口
 ---| "SMILE" # にっこり
 ---| "W" # W
+---| "SHOCK" # あんぐり口
 
 ---@alias BlueArchiveCharacter.GunHoldType
 ---| "NORMAL" # バニラの弓やクロスボウの構え方と同じ
@@ -327,6 +328,15 @@ BlueArchiveCharacter = {
                 YUMMY = vectors.vec2(3, 0);
                 SMILE = vectors.vec2(0, 1);
                 W = vectors.vec2(1, 1);
+                SHOCK = vectors.vec2(2, 1);
+            };
+
+            emotionSet = {
+                onDamage = {
+                    rightEye = "UNEQUAL";
+                    leftEye = "UNEQUAL";
+                    mouth = "SHOCK";
+                };
             };
         }
 
