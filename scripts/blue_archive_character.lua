@@ -500,7 +500,7 @@ BlueArchiveCharacter = {
                         elseif tick == 134 then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 17, true)
                         elseif tick == 146 and host:isHost() then
-                            models.models.ex_skill_1.FlowerEffectArea3.Transition:setScale(client:getScaledWindowSize():augmented(1))
+                            models.models.ex_skill_1.FlowerEffectArea3.Transition:setScale(client:getScaledWindowSize():augmented(0))
                             models.models.ex_skill_1.FlowerEffectArea3.Transition:setVisible(true)
                             events.RENDER:register(function ()
                                 models.models.ex_skill_1.FlowerEffectArea3.Transition:setOpacity(models.models.ex_skill_1.FlowerEffectArea3.TransitionOpacity:getAnimScale().x)
@@ -513,14 +513,14 @@ BlueArchiveCharacter = {
                             end
                         elseif tick == 148 and host:isHost() then
                             models.models.ex_skill_1.FlowerEffectArea3.ScreenFrame:setVisible(true)
-                            models.models.ex_skill_1.FlowerEffectArea3.ScreenFrame:setScale(client:getScaledWindowSize():augmented(1))
+                            models.models.ex_skill_1.FlowerEffectArea3.ScreenFrame:setScale(client:getScaledWindowSize():augmented(0))
                             models.models.ex_skill_1.FlowerEffectArea3.ScreenFrame:setOpacity(0.75)
                         elseif tick == 151 then
                             if host:isHost() then
                                 local windowSize = client:getScaledWindowSize()
                                 for i = 0, 7 do
                                     local velocity = vectors.rotateAroundAxis(i <= 1 and (20 + i * 10) or (i <= 3 and (-35 + (i - 2) * -10) or (-210 + 20 * (i - 4))), -120 - math.random() * 30, 0, 0, 0, 0, 1)
-                                    self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea3, math.random(1, 2), windowSize:copy():scale(-0.5):augmented(0):add(velocity), velocity, 30 * (math.random() >= 0.5 and 1 or -1), math.random() * 40 + 40, nil, 44, false, 0.85)
+                                    self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea3, math.random(1, 2), windowSize:copy():scale(-0.5):augmented(1):add(velocity), velocity, 30 * (math.random() >= 0.5 and 1 or -1), math.random() * 40 + 40, nil, 44, false, 0.85)
                                 end
                                 for i = 0, 5 do
                                     local velocity = vectors.rotateAroundAxis(60 * i, -120 - math.random() * 30, 0, 0, 0, 0, 1):mul(1, windowSize.y / windowSize.x, 1)

@@ -59,7 +59,7 @@ ExSkillSprite = {
                 self.sprite:setUVPixels(0, 11 * (self.index - 1) + 10)
                 self.sprite:setSize(vectors.vec2(1, 1):scale(self.size))
                 self.object:setPos(self.currentPos:copy())
-                self.sprite:setPos(vectors.vec2(1, 1):scale(self.size * 0.5):augmented(0))
+                self.sprite:setPos(vectors.vec2(1, 1):scale(self.size * 0.5):augmented(1))
             end;
 
             ---@param self ExSkillSprite
