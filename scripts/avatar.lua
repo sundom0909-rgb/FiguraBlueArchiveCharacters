@@ -30,6 +30,7 @@
 ---@field public deathAnimation DeathAnimation
 ---@field public hypixelZombies HypixelZombies
 ---@field public updateChecker UpdateChecker
+---@field public exSkillSpriteManager ExSkillSpriteManager
 ---@field public instantiate fun(class: table, super: table, ...: any) クラスをインスタンス化する
 
 Avatar = {
@@ -182,6 +183,11 @@ Avatar = {
 			instance.updateChecker:init()
 
 			--生徒固有クラスの読み込み
+
+			require("scripts.character_scripts.ex_skill_sprite")
+			require("scripts.character_scripts.ex_skill_sprite_manager")
+			instance.exSkillSpriteManager = ExSkillSpriteManager.new(instance)
+			instance.exSkillSpriteManager:init()
 
 			--SCRIPT_INITイベントを実行
 			instance.avatarEvents.SCRIPT_INIT:fire()
