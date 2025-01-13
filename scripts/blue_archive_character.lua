@@ -564,6 +564,31 @@ BlueArchiveCharacter = {
                 ---@type boolean
                 init = false;
             };
+
+            {
+                name = {
+                    en_us = "Happy Patrolling with Iroha!";
+                    ja_jp = "イロハ先輩とパトロール！";
+                };
+
+                formationType = "STRIKER";
+
+                models = {models.models.ex_skill_2.Tank, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.SpyGlassAnchor};
+
+                animations = {"main", "ex_skill_2"};
+
+                camera = {
+                    start = {
+                        rot = vectors.vec3(0, -160, 0);
+                        pos = vectors.vec3(-2, 17, -19);
+                    };
+
+                    fin = {
+                        rot = vectors.vec3(10, -160, 0);
+                        pos = vectors.vec3(-7, 32.2, -15);
+                    };
+                };
+            };
         }
 
         instance.costume = {
@@ -577,6 +602,7 @@ BlueArchiveCharacter = {
                     };
 
                     exSkill = 1;
+                    subExSkill = 2;
                 };
             };
 

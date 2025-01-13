@@ -205,6 +205,13 @@
 		"models.models.ex_skill_1.FlowerEffectArea3.ScreenFrame": {
 			"visible": false
 		},
+		"models.models.ex_skill_2.Tank": {
+			"visible": false
+		},
+		"models.models.ex_skill_2.SpyGlassAnchor": {
+			"visible": false,
+			"moveTo": "models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom"
+		},
 		"models.models.placement_object.PlacementObject": {
 			"visible": false
 		},
