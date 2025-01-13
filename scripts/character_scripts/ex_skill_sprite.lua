@@ -54,7 +54,7 @@ ExSkillSprite = {
             ---@param self ExSkillSprite
             onInit = function (self)
                 self.sprite:setTexture(textures["textures.ex_skill_1"])
-                self.sprite:setDimensions(256, 256)
+                self.sprite:setDimensions(16, 70)
                 self.sprite:setRegion(11, 11)
                 self.sprite:setUVPixels(0, 11 * (self.index - 1) + 10)
                 self.sprite:setSize(vectors.vec2(1, 1):scale(self.size))
