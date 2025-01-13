@@ -488,12 +488,12 @@ BlueArchiveCharacter = {
                         elseif tick == 133 then
                             if host:isHost() then
                                 local windowSize = client:getScaledWindowSize()
-                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea3, math.random(1, 3), vectors.vec3(-40, -40, 0), vectors.vec3(), -30, 120, models.models.ex_skill_1.FlowerEffectArea3.FlowerEffectArea3Scale, 17, false, 1)
-                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea3, math.random(1, 3), vectors.vec3(-80, -20, -1), vectors.vec3(), -30, 80, models.models.ex_skill_1.FlowerEffectArea3.FlowerEffectArea3Scale, 17, false, 1)
-                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea3, math.random(1, 3), vectors.vec3(windowSize.x * - 1 + 40, -10, 0), vectors.vec3(), -30, 120, models.models.ex_skill_1.FlowerEffectArea3.FlowerEffectArea3Scale, 17, false, 1)
-                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea3, math.random(1, 3), vectors.vec3(-50, windowSize.y * -1 + 20, 0), vectors.vec3(), -30, 120, models.models.ex_skill_1.FlowerEffectArea3.FlowerEffectArea3Scale, 17, false, 1)
-                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea3, math.random(1, 3), vectors.vec3(windowSize.x * -1 + 30, windowSize.y * -1 + 30, 0), vectors.vec3(), -30, 100, models.models.ex_skill_1.FlowerEffectArea3.FlowerEffectArea3Scale, 17, false, 1)
-                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea3, math.random(1, 3), vectors.vec3(windowSize.x * -1 + 90, windowSize.y * -1 + 10, 0), vectors.vec3(), -30, 60, models.models.ex_skill_1.FlowerEffectArea3.FlowerEffectArea3Scale, 17, false, 1)
+                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea3, math.random(1, 3), vectors.vec3(-40, -40, 1), vectors.vec3(), -30, 120, models.models.ex_skill_1.FlowerEffectArea3.FlowerEffectArea3Scale, 17, false, 1)
+                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea3, math.random(1, 3), vectors.vec3(-80, -20, 1), vectors.vec3(), -30, 80, models.models.ex_skill_1.FlowerEffectArea3.FlowerEffectArea3Scale, 17, false, 1)
+                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea3, math.random(1, 3), vectors.vec3(windowSize.x * - 1 + 40, -10, 1), vectors.vec3(), -30, 120, models.models.ex_skill_1.FlowerEffectArea3.FlowerEffectArea3Scale, 17, false, 1)
+                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea3, math.random(1, 3), vectors.vec3(-50, windowSize.y * -1 + 20, 1), vectors.vec3(), -30, 120, models.models.ex_skill_1.FlowerEffectArea3.FlowerEffectArea3Scale, 17, false, 1)
+                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea3, math.random(1, 3), vectors.vec3(windowSize.x * -1 + 30, windowSize.y * -1 + 30, 1), vectors.vec3(), -30, 100, models.models.ex_skill_1.FlowerEffectArea3.FlowerEffectArea3Scale, 17, false, 1)
+                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea3, math.random(1, 3), vectors.vec3(windowSize.x * -1 + 90, windowSize.y * -1 + 10, 1), vectors.vec3(), -30, 60, models.models.ex_skill_1.FlowerEffectArea3.FlowerEffectArea3Scale, 17, false, 1)
                             end
                             local anchorPos = player:getPos()
                             local bodyYaw = player:getBodyYaw()
@@ -579,7 +579,7 @@ BlueArchiveCharacter = {
 
                 models = {models.models.ex_skill_2.Tank, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.SpyGlassAnchor};
 
-                animations = {"main", "ex_skill_2"};
+                animations = {"main", "ex_skill_1", "ex_skill_2"};
 
                 camera = {
                     start = {
@@ -612,6 +612,9 @@ BlueArchiveCharacter = {
                         end
                         events.RENDER:register(function ()
                             models.models.main.Avatar:setPos(models.models.ex_skill_2.Tank.TankBody:getAnimPos())
+                            if host:isHost() then
+                                models.models.ex_skill_1.FlowerEffectArea3.ScreenFrame:setOpacity(models.models.ex_skill_1.FlowerEffectArea3.TransitionOpacity:getAnimScale().x)
+                            end
                         end, "ex_skill_2_render")
                         self.parent.faceParts:setEmotion("NORMAL", "UNEQUAL", "W", 30, true)
                     end;
@@ -645,6 +648,18 @@ BlueArchiveCharacter = {
                             models.models.ex_skill_2.Tank.TankBody.Turret.Iroha.IrohaHead.IrohaFaceParts.IrohaEyes.IrohaEyeLeft:setUVPixels(18, 0)
                             models.models.ex_skill_2.Tank.TankBody.Turret.Iroha.IrohaHead.IrohaFaceParts.IrohaMouth:setUVPixels(32, 0)
                         elseif tick == 103 then
+                            if host:isHost() then
+                                local windowSize = client:getScaledWindowSize()
+                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea3, 1, vectors.vec3(-60, -40, 1), vectors.vec3(), -60, 60, models.models.ex_skill_1.FlowerEffectArea3.FlowerEffectArea3Scale, 51, false, 1)
+                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea3, 1, vectors.vec3(-30, -90, 1), vectors.vec3(), -60, 30, models.models.ex_skill_1.FlowerEffectArea3.FlowerEffectArea3Scale, 51, false, 1)
+                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea3, 1, vectors.vec3(-50, windowSize.y * -1 + 30, 1), vectors.vec3(), -60, 40, models.models.ex_skill_1.FlowerEffectArea3.FlowerEffectArea3Scale, 51, false, 1)
+                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea3, 1, vectors.vec3(windowSize.x * -0.5, -30, 1), vectors.vec3(), -60, 30, models.models.ex_skill_1.FlowerEffectArea3.FlowerEffectArea3Scale, 51, false, 1)
+                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea3, 3, vectors.vec3(windowSize.x * -1 + 70, -50, 1), vectors.vec3(), -60, 40, models.models.ex_skill_1.FlowerEffectArea3.FlowerEffectArea3Scale, 51, false, 1)
+                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea3, 3, vectors.vec3(windowSize.x * -1 + 40, windowSize.y * -1 + 60, 1), vectors.vec3(), -60, 50, models.models.ex_skill_1.FlowerEffectArea3.FlowerEffectArea3Scale, 51, false, 1)
+                                models.models.ex_skill_1.FlowerEffectArea3.ScreenFrame:setScale(client:getScaledWindowSize():augmented(0))
+                                models.models.ex_skill_1.FlowerEffectArea3.ScreenFrame:setColor(1, 1, 0.7258)
+                                models.models.ex_skill_1.FlowerEffectArea3.ScreenFrame:setVisible(true)
+                            end
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "W", 40, true)
                         elseif tick == 143 then
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED_SMALL", 10, true)
@@ -659,6 +674,8 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED_SMALL", 1, true)
                         elseif tick == 154 then
                             self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "OPENED", 54, true)
+                        elseif tick == 160 then
+                            models.models.ex_skill_1.FlowerEffectArea3.ScreenFrame:setVisible(false)
                         end
                     end;
 
@@ -666,6 +683,12 @@ BlueArchiveCharacter = {
                         events.RENDER:remove("ex_skill_2_render")
                         models.models.main.Avatar:setPos()
                         models.models.ex_skill_2.Tank.TankBody.Turret.Iroha:setVisible(false)
+                        if host:isHost() then
+                            models.models.ex_skill_1.FlowerEffectArea3.ScreenFrame:setColor()
+                            if forcedStop then
+                                models.models.ex_skill_1.FlowerEffectArea3.ScreenFrame:setVisible(false)
+                            end
+                        end
                     end;
                 };
 
