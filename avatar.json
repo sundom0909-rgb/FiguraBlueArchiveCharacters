@@ -199,6 +199,12 @@
 		"models.models.ex_skill_1.FlowerEffectArea3": {
 			"parentType": "Gui"
 		},
+		"models.models.ex_skill_1.FlowerEffectArea3.Transition": {
+			"visible": false
+		},
+		"models.models.ex_skill_1.FlowerEffectArea3.ScreenFrame": {
+			"visible": false
+		},
 		"models.models.placement_object.PlacementObject": {
 			"visible": false
 		},

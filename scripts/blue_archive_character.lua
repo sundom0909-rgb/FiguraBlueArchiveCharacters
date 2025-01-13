@@ -473,12 +473,21 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "YUMMY", 1, true)
                         elseif tick == 134 then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 17, true)
+                        elseif tick == 146 and host:isHost() then
+                            models.models.ex_skill_1.FlowerEffectArea3.Transition:setScale(client:getScaledWindowSize():augmented(1))
+                            models.models.ex_skill_1.FlowerEffectArea3.Transition:setVisible(true)
+                            events.RENDER:register(function ()
+                                models.models.ex_skill_1.FlowerEffectArea3.Transition:setOpacity(models.models.ex_skill_1.FlowerEffectArea3.TransitionOpacity:getAnimScale().x)
+                            end, "ex_skill_1_render")
                         elseif tick == 147 then
                             if math.random() >= 0.95 then
                                 models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SketchBook.SketchBookCanvas:setUVPixels(0, 168)
                             else
                                 models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SketchBook.SketchBookCanvas:setUVPixels(0, 144)
                             end
+                        elseif tick == 148 and host:isHost() then
+                            models.models.ex_skill_1.FlowerEffectArea3.ScreenFrame:setVisible(true)
+                            models.models.ex_skill_1.FlowerEffectArea3.ScreenFrame:setScale(client:getScaledWindowSize():augmented(1))
                         elseif tick == 151 then
                             if host:isHost() then
                                 local windowSize = client:getWindowSize()
@@ -492,6 +501,9 @@ BlueArchiveCharacter = {
                                 end
                             end
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 44, true)
+                        elseif tick == 154 and host:isHost() then
+                            models.models.ex_skill_1.FlowerEffectArea3.Transition:setVisible(false)
+                            events.RENDER:remove("ex_skill_1_render")
                         end
 
                         if tick >= 24 and tick < 39 then
@@ -509,6 +521,14 @@ BlueArchiveCharacter = {
                             models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SketchBook:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
                         end
                         models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.SketchBook.SketchBookCanvas:setUVPixels()
+                        self.parent.exSkillSpriteManager:removeAll()
+                        if host:isHost() then
+                            models.models.ex_skill_1.FlowerEffectArea3.ScreenFrame:setVisible(false)
+                            if forcedStop then
+                                events.RENDER:remove("ex_skill_1_render")
+                                models.models.ex_skill_1.FlowerEffectArea3.Transition:setVisible(false)
+                            end
+                        end
                     end
                 };
 
