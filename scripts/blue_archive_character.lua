@@ -422,8 +422,12 @@ BlueArchiveCharacter = {
                     end;
 
                     onAnimationTick = function (self, tick)
-                        if tick == 11 then
+                        if tick == 10 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), player:getPos(), 1, 1.5)
+                        elseif tick == 11 then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "ANXIOUS", 3, true)
+                        elseif tick == 12 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), player:getPos(), 0.5, 1.6)
                         elseif tick == 14 then
                             self.parent.faceParts:setEmotion("NORMAL", "CENTER", "OPENED", 9, true)
                         elseif tick == 23 then
@@ -432,29 +436,41 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "W", 1, true)
                         elseif tick == 26 then
                             self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "OPENED", 37, true)
+                        elseif tick == 27 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), player:getPos(), 0.2, 0.85)
                         elseif tick == 39 then
                             for i = 0, 4 do
                                 self.parent.exSkillSpriteManager:spawn(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.SketchBook.SketchBookEffects, 4, vectors.rotateAroundAxis(i <= 2 and i * -25 - 10 or (i - 3) * -25 - 140, -4.5 + math.random() * -1.5, 0, -2, 0, 0, 1), vectors.vec3(), 0, math.random() * 1.5 + 0.5, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.SketchBook.SketchBookEffects.SketchBookEffects2, 20, false, 1)
                             end
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 1, 1.5)
                         elseif tick == 58 then
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.SketchBook.SketchBookCanvas:setUVPixels(0, 24)
                         elseif tick == 63 then
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.SketchBook:moveTo(models.models.ex_skill_1.Table)
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED_SMALL", 10, true)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.chiseled_bookshelf.insert"), player:getPos(), 1, 1)
                         elseif tick == 73 then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED_SMALL", 1, true)
                         elseif tick == 74 then
                             self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "YUMMY", 59, true)
+                        elseif tick == 79 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), player:getPos(), 0.5, 1.5)
                         elseif tick == 80 then
                             models.models.ex_skill_1.Table.SketchBook.SketchBookCanvas:setUVPixels(0, 48)
+                        elseif tick == 90 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), player:getPos(), 0.5, 1.5)
                         elseif tick == 91 then
                             models.models.ex_skill_1.Table.SketchBook.SketchBookCanvas:setUVPixels(0, 72)
+                        elseif tick == 96 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), player:getPos(), 0.5, 1.5)
                         elseif tick == 99 then
                             models.models.ex_skill_1.Table.SketchBook.SketchBookCanvas:setUVPixels(0, 96)
                         elseif tick == 111 then
                             models.models.ex_skill_1.Table.SketchBook.SketchBookCanvas:setUVPixels(0, 120)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), player:getPos(), 0.5, 1.5)
                         elseif tick == 129 then
                             models.models.ex_skill_1.Table.SketchBook:moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.chiseled_bookshelf.insert"), player:getPos(), 1, 1)
                         elseif tick == 133 then
                             if host:isHost() then
                                 local windowSize = client:getScaledWindowSize()
@@ -502,6 +518,7 @@ BlueArchiveCharacter = {
                                 end
                             end
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 44, true)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 1, 1)
                         elseif tick == 154 and host:isHost() then
                             models.models.ex_skill_1.FlowerEffectArea3.Transition:setVisible(false)
                             events.RENDER:remove("ex_skill_1_render")
