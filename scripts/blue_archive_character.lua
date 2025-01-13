@@ -16,6 +16,7 @@
 ---| "ANGRY_CENTER" # 怒りつつ少し反対側を見る目
 ---| "UNEQUAL" # 不等号目
 ---| "ANGRY" # 怒った目
+---| "INVERTED" # 反対側を見る目
 
 ---@alias BlueArchiveCharacter.MouthTextures
 ---| "NORMAL" # 通常
@@ -26,6 +27,7 @@
 ---| "SMILE" # にっこり
 ---| "W" # W
 ---| "SHOCK" # あんぐり口
+---| "O" # 丸い口
 
 ---@alias BlueArchiveCharacter.GunHoldType
 ---| "NORMAL" # バニラの弓やクロスボウの構え方と同じ
@@ -319,6 +321,7 @@ BlueArchiveCharacter = {
                 ANGRY_CENTER = vectors.vec2(7, 0);
                 UNEQUAL = vectors.vec2(8, 0);
                 ANGRY = vectors.vec2(-1, 1);
+                INVERTED = vectors.vec2(0, 1);
             };
 
             mouth = {
@@ -329,6 +332,7 @@ BlueArchiveCharacter = {
                 SMILE = vectors.vec2(0, 1);
                 W = vectors.vec2(1, 1);
                 SHOCK = vectors.vec2(2, 1);
+                O = vectors.vec2(3, 1);
             };
 
             emotionSet = {
@@ -609,10 +613,33 @@ BlueArchiveCharacter = {
                         events.RENDER:register(function ()
                             models.models.main.Avatar:setPos(models.models.ex_skill_2.Tank.TankBody:getAnimPos())
                         end, "ex_skill_2_render")
+                        self.parent.faceParts:setEmotion("NORMAL", "UNEQUAL", "W", 30, true)
                     end;
 
                     onAnimationTick = function (self, tick)
-
+                        if tick == 30 then
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "O", 20, true)
+                        elseif tick == 50 then
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "O", 2, true)
+                        elseif tick == 52 then
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "O", 2, true)
+                        elseif tick == 54 then
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "O", 2, true)
+                        elseif tick == 56 then
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "O", 20, true)
+                        elseif tick == 76 then
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", 1, true)
+                        elseif tick == 77 then
+                            self.parent.faceParts:setEmotion("NORMAL", "INVERTED", "OPENED", 26, true)
+                        elseif tick == 103 then
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "W", 40, true)
+                        elseif tick == 143 then
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED_SMALL", 10, true)
+                        elseif tick == 153 then
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED_SMALL", 1, true)
+                        elseif tick == 154 then
+                            self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "OPENED", 54, true)
+                        end
                     end;
 
                     onPostAnimation = function (self, forcedStop)
