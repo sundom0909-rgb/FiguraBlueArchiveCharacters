@@ -10,9 +10,11 @@
 ---@field package nextRot integer 次ティックのオブジェクトの角度
 ---@field package velocity Vector3 オブジェクトの速度
 ---@field package rotVelocity integer オブジェクトの角速度
----@field package size Vector2 スプライトの大きさ
+---@field package size number スプライトの大きさ
+---@field package scaleTracker? ModelPart スプライトの大きさの参照元のモデルパーツ
+---@field package speedFactor number 速度の変化係数
 ---@field package lifetimeCount integer オブジェクトの残り時間を計るカウンター
----@field public new fun(parent: Avatar, target: ModelPart, index: integer, pos: Vector3, velocity: Vector3, rotVelocity: Vector3, size: Vector2, lifetime: integer, shouldSeeCamera: boolean): ExSkillSprite コンストラクター
+---@field public new fun(parent: Avatar, target: ModelPart, index: integer, pos: Vector3, velocity: Vector3, rotVelocity: Vector3, size: number, scaleTracker?: ModelPart, lifetime: integer, shouldSeeCamera: boolean, speedFactor: number): ExSkillSprite コンストラクター
 
 ExSkillSprite = {
     ---コンストラクタ
@@ -22,11 +24,13 @@ ExSkillSprite = {
     ---@param pos Vector3 オブジェクトをスポーンさせる位置
     ---@param velocity Vector3 オブジェクトの移動速度
     ---@param rotVelocity number オブジェクトの角速度
-    ---@param size Vector2 スプライトの大きさ
+    ---@param size number スプライトの大きさ
+    ---@param scaleTracker? ModelPart スプライトの大きさの参照元のモデルパーツ
     ---@param lifetime integer このインスタンスを破棄するまでの時間
     ---@param shouldSeeCamera boolean カメラを見続けるべきかどうか
+    ---@param speedFactor number 速度の変化係数
     ---@return ExSkillSprite
-    new = function (parent, target, index, pos, velocity, rotVelocity, size, lifetime, shouldSeeCamera)
+    new = function (parent, target, index, pos, velocity, rotVelocity, size, scaleTracker, lifetime, shouldSeeCamera, speedFactor)
         ---@type ExSkillSprite
         local instance = Avatar.instantiate(ExSkillSprite, SpawnObject, parent)
 
@@ -41,7 +45,9 @@ ExSkillSprite = {
         instance.nextRot = 0
         instance.velocity = velocity:copy()
         instance.rotVelocity = rotVelocity
-        instance.size = size:copy()
+        instance.size = size ~= nil and size or 0
+        instance.scaleTracker = scaleTracker
+        instance.speedFactor = speedFactor
         instance.lifetimeCount = lifetime
 
         instance.callbacks = {
@@ -51,9 +57,9 @@ ExSkillSprite = {
                 self.sprite:setDimensions(255, 255)
                 self.sprite:setRegion(11, 11)
                 self.sprite:setUVPixels(0, 11 * (self.index - 1) + 10)
-                self.sprite:setSize(self.size)
+                self.sprite:setSize(vectors.vec2(1, 1):scale(self.size))
                 self.object:setPos(self.currentPos:copy())
-                self.sprite:setPos(self.size:copy():scale(0.5):augmented(0))
+                self.sprite:setPos(vectors.vec2(1, 1):scale(self.size * 0.5):augmented(0))
             end;
 
             ---@param self ExSkillSprite
@@ -72,9 +78,10 @@ ExSkillSprite = {
                     self.currentPos = self.nextPos:copy()
                     self.object:setPos(self.currentPos:copy())
                 end
-                if self.rotVelocity > 0 then
+                if self.rotVelocity ~= 0 or self.scaleTracker ~= nil then
+                    local trueScale = self.size * (self.scaleTracker ~= nil and self.scaleTracker:getAnimScale().x or 1)
                     self.currentRot = self.nextRot
-                    self.sprite:setPos(self.size.x / 2 * (math.cos(math.rad(self.currentRot + 45)) * math.sqrt(2)), self.size.y / 2 * (math.sin(math.rad(self.currentRot + 45)) * math.sqrt(2)), 0) --1, 1  -1, 1  -1, -1  1, -1
+                    self.sprite:setPos(trueScale / 2 * (math.cos(math.rad(self.currentRot + 45)) * math.sqrt(2)), trueScale / 2 * (math.sin(math.rad(self.currentRot + 45)) * math.sqrt(2)), 0)
                     self.sprite:setRot(0, 0, self.currentRot)
                 end
 
@@ -88,8 +95,11 @@ ExSkillSprite = {
                 if self.velocity:length() > 0 then
                     self.nextPos = self.currentPos:copy():add(self.velocity:copy():scale(0.05))
                 end
-                if self.rotVelocity > 0 then
+                if self.rotVelocity ~= 0 then
                     self.nextRot = self.currentRot + self.rotVelocity * 0.05
+                end
+                if self.speedFactor ~= 1 then
+                    self.velocity:scale(self.speedFactor)
                 end
             end;
 
@@ -98,10 +108,14 @@ ExSkillSprite = {
                 if self.velocity:length() > 0 then
                     self.object:setPos(self.nextPos:copy():sub(self.currentPos):scale(delta):add(self.currentPos))
                 end
-                if self.rotVelocity > 0 then
+                if self.rotVelocity ~= 0 or self.scaleTracker ~= nil then
                     local actualRot = (self.nextRot - self.currentRot) * delta + self.currentRot
-                    self.sprite:setPos(self.size.x / 2 * (math.cos(math.rad(actualRot + 45)) * math.sqrt(2)), self.size.y / 2 * (math.sin(math.rad(actualRot + 45)) * math.sqrt(2)), 0) --1, 1  -1, 1  -1, -1  1, -1
+                    local trueScale = self.size * (self.scaleTracker ~= nil and self.scaleTracker:getAnimScale().x or 1)
+                    self.sprite:setPos(trueScale / 2 * (math.cos(math.rad(actualRot + 45)) * math.sqrt(2)), trueScale / 2 * (math.sin(math.rad(actualRot + 45)) * math.sqrt(2)), 0)
                     self.sprite:setRot(0, 0, actualRot)
+                    if self.scaleTracker ~= nil then
+                        self.sprite:setScale(self.scaleTracker:getAnimScale().x, self.scaleTracker:getAnimScale().x, 1)
+                    end
                 end
             end;
         }

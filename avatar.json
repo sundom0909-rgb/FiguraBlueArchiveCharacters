@@ -189,6 +189,16 @@
 			"moveTo": "models.models.main.Avatar",
 			"primaryRenderType": "EMISSIVE_SOLID"
 		},
+		"models.models.ex_skill_1.FlowerEffectArea1": {
+			"moveTo": "models.models.main.Avatar.Head",
+			"parentType": "Camera"
+		},
+		"models.models.ex_skill_1.FlowerEffectArea2": {
+			"parentType": "World"
+		},
+		"models.models.ex_skill_1.FlowerEffectArea3": {
+			"parentType": "Gui"
+		},
 		"models.models.placement_object.PlacementObject": {
 			"visible": false
 		},

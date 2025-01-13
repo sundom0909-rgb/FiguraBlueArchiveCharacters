@@ -414,6 +414,10 @@ BlueArchiveCharacter = {
                             end
                             self.exSkill[1].init = true
                         end
+                        for i = 0, 5 do
+                            local offsetPos = vectors.rotateAroundAxis(180 / 5 * i * -1, -4, 0, 0, 0, 0, 1)
+                            self.parent.exSkillSpriteManager:spawn(models.models.main.Avatar.Head.FlowerEffectArea1, 1, offsetPos, offsetPos, math.random() * 60 - 30, math.random() * 2 + 3, models.models.main.Avatar.Head.FlowerEffectArea1.FlowerEffectArea1Scale, 25, false, 1)
+                        end
                         self.parent.faceParts:setEmotion("CENTER", "NORMAL", "ANXIOUS", 11, true)
                     end;
 
@@ -428,6 +432,10 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "W", 1, true)
                         elseif tick == 26 then
                             self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "OPENED", 37, true)
+                        elseif tick == 39 then
+                            for i = 0, 4 do
+                                self.parent.exSkillSpriteManager:spawn(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.SketchBook.SketchBookEffects, 4, vectors.rotateAroundAxis(i <= 2 and i * -25 - 10 or (i - 3) * -25 - 140, -4.5 + math.random() * -1.5, 0, -2, 0, 0, 1), vectors.vec3(), 0, math.random() * 1.5 + 0.5, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.SketchBook.SketchBookEffects.SketchBookEffects2, 20, false, 1)
+                            end
                         elseif tick == 58 then
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.SketchBook.SketchBookCanvas:setUVPixels(0, 24)
                         elseif tick == 63 then
@@ -448,6 +456,20 @@ BlueArchiveCharacter = {
                         elseif tick == 129 then
                             models.models.ex_skill_1.Table.SketchBook:moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
                         elseif tick == 133 then
+                            if host:isHost() then
+                                local windowSize = client:getScaledWindowSize()
+                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea3, math.random(1, 3), vectors.vec3(-40, -40, 0), vectors.vec3(), -30, 120, models.models.ex_skill_1.FlowerEffectArea3.FlowerEffectArea3Scale, 17, false, 1)
+                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea3, math.random(1, 3), vectors.vec3(-80, -20, -1), vectors.vec3(), -30, 80, models.models.ex_skill_1.FlowerEffectArea3.FlowerEffectArea3Scale, 17, false, 1)
+                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea3, math.random(1, 3), vectors.vec3(windowSize.x * - 1 + 40, -10, 0), vectors.vec3(), -30, 120, models.models.ex_skill_1.FlowerEffectArea3.FlowerEffectArea3Scale, 17, false, 1)
+                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea3, math.random(1, 3), vectors.vec3(-50, windowSize.y * -1 + 20, 0), vectors.vec3(), -30, 120, models.models.ex_skill_1.FlowerEffectArea3.FlowerEffectArea3Scale, 17, false, 1)
+                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea3, math.random(1, 3), vectors.vec3(windowSize.x * -1 + 30, windowSize.y * -1 + 30, 0), vectors.vec3(), -30, 100, models.models.ex_skill_1.FlowerEffectArea3.FlowerEffectArea3Scale, 17, false, 1)
+                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea3, math.random(1, 3), vectors.vec3(windowSize.x * -1 + 90, windowSize.y * -1 + 10, 0), vectors.vec3(), -30, 60, models.models.ex_skill_1.FlowerEffectArea3.FlowerEffectArea3Scale, 17, false, 1)
+                            end
+                            local anchorPos = player:getPos()
+                            local bodyYaw = player:getBodyYaw()
+                            for _ = 1, 8 do
+                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea2, math.random(1, 3), anchorPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 2 - 1, math.random() * 0.25 + 0.675, math.random() * 1 - 0.5, 0, 1, 0)):scale(16), vectors.vec3(0, 10, 0), math.random() * 60 - 30, 3,models.models.ex_skill_1.FlowerEffectArea3.FlowerEffectArea3Scale, 17, true, 1)
+                            end
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "YUMMY", 1, true)
                         elseif tick == 134 then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 17, true)
@@ -458,7 +480,25 @@ BlueArchiveCharacter = {
                                 models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SketchBook.SketchBookCanvas:setUVPixels(0, 144)
                             end
                         elseif tick == 151 then
+                            if host:isHost() then
+                                local windowSize = client:getWindowSize()
+                                for i = 0, 7 do
+                                    local velocity = vectors.rotateAroundAxis(i <= 1 and (20 + i * 10) or (i <= 3 and (-35 + (i - 2) * -10) or (-210 + 20 * (i - 4))), -450 + math.random() * -50, 0, 0, 0, 0, 1)
+                                    self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea3, math.random(1, 2), windowSize:copy():scale(-0.25):augmented(0), velocity, 30 * (math.random() >= 0.5 and 1 or -1), math.random() * 40 + 40, nil, 44, false, 0.85)
+                                end
+                                for i = 0, 5 do
+                                    local velocity = vectors.rotateAroundAxis(60 * i, -400 + math.random() * -100, 0, 0, 0, 0, 1):mul(1, windowSize.y / windowSize.x, 1)
+                                    self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea3, 4, windowSize:copy():scale(-0.25):augmented(1), velocity, 10 * (math.random() >= 0.5 and 1 or -1), i == 0 and 20 or (math.random() * 40 + 40), nil, 44, false, 0.85)
+                                end
+                            end
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 44, true)
+                        end
+
+                        if tick >= 24 and tick < 39 then
+                            for i = 1, 4 do
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.SpinEffects["SpinEffect"..i]["SpinEffect"..i.."_1"]["SpinEffect"..i.."Anchor1"])
+                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea2, 1, anchorPos:copy():scale(16), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.SpinEffects["SpinEffect"..i]["SpinEffect"..i.."_1"]["SpinEffect"..i.."Anchor2"]):sub(anchorPos):normalize():scale(30), 0, 2, nil, math.min(39 - tick, 8), true, 1)
+                            end
                         end
                     end;
 

@@ -1,7 +1,7 @@
 ---@class (exact) ExSkillSpriteManager : SpawnObjectManager Exスキル内で使用するスプライトのオブジェクトのマネージャークラス
 ---@field public objects ExSkillSprite[] インスタンスで制御するオブジェクト
----@field public getObject fun(self: ExSkillSpriteManager, target: ModelPart, index: integer, pos: Vector3, velocity: Vector3, rotVelocity: integer, size: Vector2, lifetime: integer, shouldSeeCamera: boolean): ExSkillSprite Exスキルフレームのパーティクルのインスタンスを生成して返す
----@field public spawn fun(self: ExSkillSpriteManager, target: ModelPart, index: integer, pos: Vector3, velocity: Vector3, rotVelocity: integer, size: Vector2, lifetime: integer, shouldSeeCamera: boolean) Exスキルフレームのパーティクルをスポーンさせる
+---@field public getObject fun(self: ExSkillSpriteManager, target: ModelPart, index: integer, pos: Vector3, velocity: Vector3, rotVelocity: integer, size: number, scaleTracker?: ModelPart, lifetime: integer, shouldSeeCamera: boolean, speedFactor: number): ExSkillSprite Exスキルフレームのパーティクルのインスタンスを生成して返す
+---@field public spawn fun(self: ExSkillSpriteManager, target: ModelPart, index: integer, pos: Vector3, velocity: Vector3, rotVelocity: integer, size: number, scaleTracker?: ModelPart, lifetime: integer, shouldSeeCamera: boolean, speedFactor: number) Exスキルフレームのパーティクルをスポーンさせる
 
 ExSkillSpriteManager = {
     ---コンストラクタ
@@ -23,12 +23,14 @@ ExSkillSpriteManager = {
     ---@param pos Vector3 オブジェクトをスポーンさせる位置
     ---@param velocity Vector3 オブジェクトの移動速度
     ---@param rotVelocity integer オブジェクトの角速度
-    ---@param size Vector2 スプライトの大きさ
+    ---@param size number スプライトの大きさ
+    ---@param scaleTracker? ModelPart スプライトの大きさの参照元のモデルパーツ
     ---@param lifetime integer このインスタンスを破棄するまでの時間
     ---@param shouldSeeCamera boolean カメラを見続けるべきかどうか
+    ---@param speedFactor number 速度の変化係数
     ---@return ExSkillSprite instance 生成したインスタンス
-    getObject = function (self, target, index, pos, velocity, rotVelocity, size, lifetime, shouldSeeCamera)
-        return ExSkillSprite.new(self.parent, target, index, pos, velocity, rotVelocity, size, lifetime, shouldSeeCamera)
+    getObject = function (self, target, index, pos, velocity, rotVelocity, size, scaleTracker, lifetime, shouldSeeCamera, speedFactor)
+        return ExSkillSprite.new(self.parent, target, index, pos, velocity, rotVelocity, size, scaleTracker, lifetime, shouldSeeCamera, speedFactor)
     end;
 
     ---Exスキルフレームのパーティクルをスポーンさせる。
@@ -38,10 +40,12 @@ ExSkillSpriteManager = {
     ---@param pos Vector3 オブジェクトをスポーンさせる位置
     ---@param velocity Vector3 オブジェクトの移動速度
     ---@param rotVelocity integer オブジェクトの角速度
-    ---@param size Vector2 スプライトの大きさ
+    ---@param size number スプライトの大きさ
+    ---@param scaleTracker? ModelPart スプライトの大きさの参照元のモデルパーツ
     ---@param lifetime integer このインスタンスを破棄するまでの時間
     ---@param shouldSeeCamera boolean カメラを見続けるべきかどうか
-    spawn = function (self, target, index, pos, velocity, rotVelocity, size, lifetime, shouldSeeCamera)
-        SpawnObjectManager.spawn(self, target, index, pos, velocity, rotVelocity, size, lifetime, shouldSeeCamera)
+    ---@param speedFactor number 速度の変化係数
+    spawn = function (self, target, index, pos, velocity, rotVelocity, size, scaleTracker, lifetime, shouldSeeCamera, speedFactor)
+        SpawnObjectManager.spawn(self, target, index, pos, velocity, rotVelocity, size, scaleTracker, lifetime, shouldSeeCamera, speedFactor)
     end;
 }
