@@ -1,7 +1,7 @@
 ---@class (exact) ExSkillSpriteManager : SpawnObjectManager Exスキル内で使用するスプライトのオブジェクトのマネージャークラス
 ---@field public objects ExSkillSprite[] インスタンスで制御するオブジェクト
----@field public getObject fun(self: ExSkillSpriteManager, target: ModelPart, index: integer, pos: Vector3, velocity: Vector3, rotVelocity: integer, size: Vector2, lifetime: integer): ExSkillSprite Exスキルフレームのパーティクルのインスタンスを生成して返す
----@field public spawn fun(self: ExSkillSpriteManager, target: ModelPart, index: integer, pos: Vector3, velocity: Vector3, rotVelocity: integer, size: Vector2, lifetime: integer) Exスキルフレームのパーティクルをスポーンさせる
+---@field public getObject fun(self: ExSkillSpriteManager, target: ModelPart, index: integer, pos: Vector3, velocity: Vector3, rotVelocity: integer, size: Vector2, lifetime: integer, shouldSeeCamera: boolean): ExSkillSprite Exスキルフレームのパーティクルのインスタンスを生成して返す
+---@field public spawn fun(self: ExSkillSpriteManager, target: ModelPart, index: integer, pos: Vector3, velocity: Vector3, rotVelocity: integer, size: Vector2, lifetime: integer, shouldSeeCamera: boolean) Exスキルフレームのパーティクルをスポーンさせる
 
 ExSkillSpriteManager = {
     ---コンストラクタ
@@ -25,9 +25,10 @@ ExSkillSpriteManager = {
     ---@param rotVelocity integer オブジェクトの角速度
     ---@param size Vector2 スプライトの大きさ
     ---@param lifetime integer このインスタンスを破棄するまでの時間
+    ---@param shouldSeeCamera boolean カメラを見続けるべきかどうか
     ---@return ExSkillSprite instance 生成したインスタンス
-    getObject = function (self, target, index, pos, velocity, rotVelocity, size, lifetime)
-        return ExSkillSprite.new(self.parent, target, index, pos, velocity, rotVelocity, size, lifetime)
+    getObject = function (self, target, index, pos, velocity, rotVelocity, size, lifetime, shouldSeeCamera)
+        return ExSkillSprite.new(self.parent, target, index, pos, velocity, rotVelocity, size, lifetime, shouldSeeCamera)
     end;
 
     ---Exスキルフレームのパーティクルをスポーンさせる。
@@ -39,7 +40,8 @@ ExSkillSpriteManager = {
     ---@param rotVelocity integer オブジェクトの角速度
     ---@param size Vector2 スプライトの大きさ
     ---@param lifetime integer このインスタンスを破棄するまでの時間
-    spawn = function (self, target, index, pos, velocity, rotVelocity, size, lifetime)
-        SpawnObjectManager.spawn(self, target, index, pos, velocity, rotVelocity, size, lifetime)
+    ---@param shouldSeeCamera boolean カメラを見続けるべきかどうか
+    spawn = function (self, target, index, pos, velocity, rotVelocity, size, lifetime, shouldSeeCamera)
+        SpawnObjectManager.spawn(self, target, index, pos, velocity, rotVelocity, size, lifetime, shouldSeeCamera)
     end;
 }

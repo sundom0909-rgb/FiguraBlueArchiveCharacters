@@ -12,7 +12,7 @@
 ---@field package rotVelocity integer オブジェクトの角速度
 ---@field package size Vector2 スプライトの大きさ
 ---@field package lifetimeCount integer オブジェクトの残り時間を計るカウンター
----@field public new fun(parent: Avatar, target: ModelPart, index: integer, pos: Vector3, velocity: Vector3, rotVelocity: Vector3, size: Vector2, lifetime: integer): ExSkillSprite コンストラクター
+---@field public new fun(parent: Avatar, target: ModelPart, index: integer, pos: Vector3, velocity: Vector3, rotVelocity: Vector3, size: Vector2, lifetime: integer, shouldSeeCamera: boolean): ExSkillSprite コンストラクター
 
 ExSkillSprite = {
     ---コンストラクタ
@@ -24,14 +24,15 @@ ExSkillSprite = {
     ---@param rotVelocity number オブジェクトの角速度
     ---@param size Vector2 スプライトの大きさ
     ---@param lifetime integer このインスタンスを破棄するまでの時間
+    ---@param shouldSeeCamera boolean カメラを見続けるべきかどうか
     ---@return ExSkillSprite
-    new = function (parent, target, index, pos, velocity, rotVelocity, size, lifetime)
+    new = function (parent, target, index, pos, velocity, rotVelocity, size, lifetime, shouldSeeCamera)
         ---@type ExSkillSprite
         local instance = Avatar.instantiate(ExSkillSprite, SpawnObject, parent)
 
         instance.target = target
         instance.object = instance.target:newPart(instance.uuid)
-        instance.subObject = instance.object:newPart(client.intUUIDToString(client.generateUUID()), "Camera")
+        instance.subObject = instance.object:newPart(client.intUUIDToString(client.generateUUID()), shouldSeeCamera and "Camera" or "None")
         instance.sprite = instance.subObject:newSprite(client.intUUIDToString(client.generateUUID()))
         instance.index = index
         instance.currentPos = pos:copy()
