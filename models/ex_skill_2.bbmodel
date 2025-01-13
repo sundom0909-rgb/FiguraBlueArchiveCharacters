@@ -8447,48 +8447,6 @@
 			"uuid": "ca0f7fbd-0f09-79de-a9c7-5d15e2ebf19e"
 		},
 		{
-			"name": "BaseAccessory7_1",
-			"box_uv": false,
-			"rescale": false,
-			"locked": false,
-			"render_order": "default",
-			"allow_mirror_modeling": true,
-			"from": [36, 23, -30],
-			"to": [44, 31, 47],
-			"autouv": 0,
-			"color": 0,
-			"origin": [-7, 33, -32],
-			"faces": {
-				"north": {
-					"uv": [0, 0, 16, 16],
-					"texture": 2
-				},
-				"east": {
-					"uv": [0, 0, 16, 154],
-					"rotation": 90,
-					"texture": 1
-				},
-				"south": {
-					"uv": [0, 0, 16, 16],
-					"texture": 2
-				},
-				"west": {
-					"uv": [0, 0, 0, 0],
-					"texture": null
-				},
-				"up": {
-					"uv": [0, 0, 16, 154],
-					"texture": 1
-				},
-				"down": {
-					"uv": [0, 0, 16, 154],
-					"texture": 1
-				}
-			},
-			"type": "cube",
-			"uuid": "475eaa4f-beb0-b641-8e51-27670ec29f27"
-		},
-		{
 			"name": "BaseAccessory7_2",
 			"box_uv": false,
 			"rescale": false,
@@ -8610,48 +8568,6 @@
 			},
 			"type": "cube",
 			"uuid": "87bdc4cd-f0d5-bb6b-187d-9635782c0c7d"
-		},
-		{
-			"name": "BaseAccessory8_1",
-			"box_uv": false,
-			"rescale": false,
-			"locked": false,
-			"render_order": "default",
-			"allow_mirror_modeling": true,
-			"from": [-44, 23, -30],
-			"to": [-36, 31, 47],
-			"autouv": 0,
-			"color": 0,
-			"origin": [7, 33, -32],
-			"faces": {
-				"north": {
-					"uv": [16, 0, 0, 16],
-					"texture": 2
-				},
-				"east": {
-					"uv": [0, 0, 0, 0],
-					"texture": null
-				},
-				"south": {
-					"uv": [16, 0, 0, 16],
-					"texture": 2
-				},
-				"west": {
-					"uv": [0, 154, 16, 0],
-					"rotation": 90,
-					"texture": 1
-				},
-				"up": {
-					"uv": [16, 0, 0, 154],
-					"texture": 1
-				},
-				"down": {
-					"uv": [16, 0, 0, 154],
-					"texture": 1
-				}
-			},
-			"type": "cube",
-			"uuid": "c4549b4a-1d0e-f671-cebf-0dfd2afa6014"
 		},
 		{
 			"name": "BaseAccessory8_2",
@@ -16536,7 +16452,7 @@
 			"uuid": "0f9d6663-9ef4-b7a1-b1e5-7f44499a304e",
 			"export": true,
 			"mirror_uv": false,
-			"isOpen": false,
+			"isOpen": true,
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
@@ -17596,16 +17512,11 @@
 							"uuid": "f92f410f-df63-0e7c-0d1c-035ab3d63691",
 							"export": true,
 							"mirror_uv": false,
-							"isOpen": false,
+							"isOpen": true,
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
-							"children": [
-								"475eaa4f-beb0-b641-8e51-27670ec29f27",
-								"07ebde04-1a0b-dee1-a36b-48e8f5e96dbb",
-								"aae8f349-100b-ca8d-5c61-26f1c08b155a",
-								"87bdc4cd-f0d5-bb6b-187d-9635782c0c7d"
-							]
+							"children": ["07ebde04-1a0b-dee1-a36b-48e8f5e96dbb", "aae8f349-100b-ca8d-5c61-26f1c08b155a", "87bdc4cd-f0d5-bb6b-187d-9635782c0c7d"]
 						},
 						{
 							"name": "BaseAccessory8",
@@ -17618,12 +17529,7 @@
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
-							"children": [
-								"c4549b4a-1d0e-f671-cebf-0dfd2afa6014",
-								"c7ea895b-ac0d-3d2c-d76a-b89d9eb84300",
-								"5796631a-f70d-14e2-b9f1-c7c6a1e0ecc9",
-								"f24ab891-08fd-85d9-5042-15dfa744e5ee"
-							]
+							"children": ["c7ea895b-ac0d-3d2c-d76a-b89d9eb84300", "5796631a-f70d-14e2-b9f1-c7c6a1e0ecc9", "f24ab891-08fd-85d9-5042-15dfa744e5ee"]
 						},
 						{
 							"name": "BaseAccessory9",
