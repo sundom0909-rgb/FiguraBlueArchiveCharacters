@@ -677,6 +677,22 @@ BlueArchiveCharacter = {
                         elseif tick == 160 then
                             models.models.ex_skill_1.FlowerEffectArea3.ScreenFrame:setVisible(false)
                         end
+
+                        if tick < 27 then
+                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Tank)
+                            for _ = 1, 5 do
+                                local offsetPos = vectors.vec3(math.random() * 7 - 3.5, 0, math.random() * 7 - 3.5)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), anchorPos:copy():add(offsetPos)):setScale(5):setVelocity(offsetPos:copy():scale(0.01):add(0, 0.025, 0))
+                            end
+                        elseif tick >= 154 then
+                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Tank)
+                            local bodyYaw = player:getBodyYaw()
+                            for _ = 1, 5 do
+                                local offsetPos = vectors.vec3(math.random() * 7 - 3.5, math.random() * 2, math.random() * 7 - 3.5)
+                                local velocity = vectors.rotateAroundAxis(bodyYaw * -1, offsetPos.x / -35, 0.025 + offsetPos.y * 0.1, 0, 0, 1, 0)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), anchorPos:copy():add(offsetPos)):setScale(5):setVelocity(offsetPos:copy():scale(0.01):add(velocity))
+                            end
+                        end
                     end;
 
                     onPostAnimation = function (self, forcedStop)
