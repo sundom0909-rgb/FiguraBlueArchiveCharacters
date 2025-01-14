@@ -613,6 +613,14 @@ BlueArchiveCharacter = {
                     ---ヒント表示をしたかどうか。
                     ---@type boolean
                     isTipShowed = false;
+
+                    ---イブキを搭乗させているかどうか。
+                    ---@type boolean
+                    hasIbuki = false;
+
+                    ---前ティックにイブキを搭乗させていたかどうか。
+                    ---@type boolean
+                    hadIbukiPrev = false;
                 };
             };
 
@@ -902,10 +910,15 @@ BlueArchiveCharacter = {
         events.TICK:register(function ()
             if not client:isPaused() then
                 local vehicle = player:getVehicle()
-                local passengers = vehicle:getPassengers()
-                local avatarVars = world.avatarVars()
-                local hasIbuki = passengers[2] ~= nil and passengers[2]:hasAvatar() and avatarVars[passengers[2]:getUUID()].fbac_ibuki
-                self.costume.costumes[1].isRidingTank = vehicle ~= nil and vehicle:getType() == "minecraft:camel" and vehicle:getControllingPassenger() ~= nil and vehicle:getControllingPassenger():getName() == player:getName() and (#passengers == 1 or hasIbuki) and self.parent.actionWheel.shouldReplaceVehicleModels and player:getHealth() > 0
+                self.costume.costumes[1].isRidingTank = false
+                self.costume.costumes[1].hasIbuki = false
+                if vehicle ~= nil then
+                    local passengers = vehicle:getPassengers()
+                    local controlledPassenger = vehicle:getControllingPassenger()
+                    local avatarVars = world.avatarVars()
+                    self.costume.costumes[1].hasIbuki = passengers[2] ~= nil and passengers[2]:hasAvatar() and avatarVars[passengers[2]:getUUID()].fbac_ibuki
+                    self.costume.costumes[1].isRidingTank = vehicle:getType() == "minecraft:camel" and controlledPassenger ~= nil and controlledPassenger:getName() == player:getName() and (#passengers == 1 or self.costume.costumes[1].hasIbuki) and self.parent.actionWheel.shouldReplaceVehicleModels and player:getHealth() > 0
+                end
                 if self.costume.costumes[1].isRidingTank ~= self.costume.costumes[1].isRidingTankPrev then
                     if self.costume.costumes[1].isRidingTank then
                         renderer:setRenderVehicle(false)
@@ -973,8 +986,19 @@ BlueArchiveCharacter = {
                                     end
                                     particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:large_smoke"), playerPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1 , math.random() * 5 - 2.5, math.random() * 3 - 1.5, math.random() * 7 - 3.5, 0, 1, 0)))
                                 end
+                                if self.costume.costumes[1].hasIbuki ~= self.costume.costumes[1].hadIbukiPrev then
+                                    if self.costume.costumes[1].hasIbuki then
+                                        animations["models.ex_skill_1"]["tank_ibuki_start"]:setSpeed(1)
+                                        animations["models.ex_skill_1"]["tank_ibuki_start"]:play()
+                                        sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.iron_trapdoor.open"), player:getPos(), 1, 1.5)
+                                    else
+                                        animations["models.ex_skill_1"]["tank_ibuki_start"]:setSpeed(-1)
+                                        sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.iron_trapdoor.close"), player:getPos(), 1, 1.5)
+                                    end
+                                end
                                 self.costume.costumes[1].tankTick = self.costume.costumes[1].isRidingTank and self.costume.costumes[1].tankTick + 1 or 0
                                 self.costume.costumes[1].isEngineActivePrev = isEngineActive
+                                self.costume.costumes[1].hadIbukiPrev = self.costume.costumes[1].hasIbuki
                             end
                         end, "tank_tick")
                         events.RENDER:register(function (delta)
@@ -1085,6 +1109,7 @@ BlueArchiveCharacter = {
                         self.costume.costumes[1].tankTick = 0
                         self.costume.costumes[1].shootTick = -1
                         self.costume.costumes[1].isEngineActivePrev = false
+                        self.costume.costumes[1].hadIbukiPrev = false
                     end
                 end
 
