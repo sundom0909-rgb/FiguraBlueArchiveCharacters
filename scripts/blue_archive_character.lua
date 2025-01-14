@@ -994,5 +994,7 @@ BlueArchiveCharacter = {
             models.models.main.Avatar.UpperBody.Body.Wings.RightWing:setRot(0, -20 - wingRotOffset, 0)
             models.models.main.Avatar.UpperBody.Body.Wings.LeftWing:setRot(0, 20 + wingRotOffset, 0)
         end)
+
+        avatar:store("fbac_ibuki", true)
     end;
 }
