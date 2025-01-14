@@ -1103,6 +1103,8 @@ BlueArchiveCharacter = {
                 self.costume.costumes[1].shootCooldown = math.max(self.costume.costumes[1].shootCooldown - 1, 0)
             end
         end)
+
+        avatar:store("fbac_iroha", true)
     end;
 }
 
