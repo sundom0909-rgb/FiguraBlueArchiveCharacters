@@ -708,8 +708,9 @@ BlueArchiveCharacter = {
                             end
                             if tick % 2 == 0 then
                                 local anchorPos2 = vectors.rotateAroundAxis(bodyYaw * -1, 0, 48, -20, 0, 1, 0):add(self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Tank):scale(16))
-                                local offsetPos = vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 48 - 24, math.random() * 16, 0, 0, 1, 0)
-                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea2, math.random() >= 0.5 and 1 or 3, anchorPos2:copy():add(offsetPos), vectors.rotateAroundAxis(bodyYaw * -1, offsetPos.x * 64, 16 + math.random() * 16, 350, 0, 1, 0), math.random() >= 0.5 and 90 or -90, 8, nil, 200, true, 1)
+                                local xOffset = math.random() * 48 - 24
+                                local offsetPos = vectors.rotateAroundAxis(bodyYaw * -1, xOffset, math.random() * 16, 0, 0, 1, 0)
+                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea2, math.random() >= 0.5 and 1 or 3, anchorPos2:copy():add(offsetPos), vectors.rotateAroundAxis(bodyYaw * -1, xOffset, 16 + math.random() * 16, 350, 0, 1, 0), math.random() >= 0.5 and 90 or -90, 8, nil, 200, true, 1)
                                 local soundPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Tank)
                                 local pitch = 0.2 + (tick - 154) / 370
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.piston.extend"), soundPos, 0.5, pitch)
