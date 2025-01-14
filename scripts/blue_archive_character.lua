@@ -902,7 +902,10 @@ BlueArchiveCharacter = {
         events.TICK:register(function ()
             if not client:isPaused() then
                 local vehicle = player:getVehicle()
-                self.costume.costumes[1].isRidingTank = vehicle ~= nil and vehicle:getType() == "minecraft:camel" and vehicle:getControllingPassenger() ~= nil and vehicle:getControllingPassenger():getName() == player:getName() and #vehicle:getPassengers() == 1 and self.parent.actionWheel.shouldReplaceVehicleModels and player:getHealth() > 0
+                local passengers = vehicle:getPassengers()
+                local avatarVars = world.avatarVars()
+                local hasIbuki = passengers[2] ~= nil and passengers[2]:hasAvatar() and avatarVars[passengers[2]:getUUID()].fbac_ibuki
+                self.costume.costumes[1].isRidingTank = vehicle ~= nil and vehicle:getType() == "minecraft:camel" and vehicle:getControllingPassenger() ~= nil and vehicle:getControllingPassenger():getName() == player:getName() and (#passengers == 1 or hasIbuki) and self.parent.actionWheel.shouldReplaceVehicleModels and player:getHealth() > 0
                 if self.costume.costumes[1].isRidingTank ~= self.costume.costumes[1].isRidingTankPrev then
                     if self.costume.costumes[1].isRidingTank then
                         renderer:setRenderVehicle(false)
