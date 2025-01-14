@@ -622,14 +622,22 @@ BlueArchiveCharacter = {
                     onAnimationTick = function (self, tick)
                         if tick == 30 then
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "O", 20, true)
+                        elseif tick == 31 or tick == 36 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.experience_orb.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.5, 1.5)
+                        elseif tick == 43 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.spyglass.use"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 1)
                         elseif tick == 50 then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "O", 2, true)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.5, 2)
                         elseif tick == 52 then
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "O", 2, true)
                         elseif tick == 54 then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "O", 2, true)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.5, 2)
                         elseif tick == 56 then
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "O", 20, true)
+                        elseif tick == 59 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.iron_trapdoor.open"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Tank.TankBody.Turret.Hatch1), 1, 0.5)
                         elseif tick == 63 then
                             models.models.ex_skill_2.Tank.TankBody.Turret.Iroha:setVisible(true)
                         elseif tick == 72 then
@@ -643,6 +651,7 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", 1, true)
                         elseif tick == 77 then
                             self.parent.faceParts:setEmotion("NORMAL", "INVERTED", "OPENED", 26, true)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.experience_orb.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.5, 2)
                         elseif tick == 97 then
                             models.models.ex_skill_2.Tank.TankBody.Turret.Iroha.IrohaHead.IrohaFaceParts.IrohaEyes.IrohaEyeRight:setUVPixels(0, 0)
                             models.models.ex_skill_2.Tank.TankBody.Turret.Iroha.IrohaHead.IrohaFaceParts.IrohaEyes.IrohaEyeLeft:setUVPixels(18, 0)
@@ -676,6 +685,8 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "OPENED", 54, true)
                         elseif tick == 160 then
                             models.models.ex_skill_1.FlowerEffectArea3.ScreenFrame:setVisible(false)
+                        elseif tick == 161 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 1.5):setAttenuation(2)
                         end
 
                         if tick < 27 then
@@ -683,6 +694,9 @@ BlueArchiveCharacter = {
                             for _ = 1, 5 do
                                 local offsetPos = vectors.vec3(math.random() * 7 - 3.5, 0, math.random() * 7 - 3.5)
                                 particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), anchorPos:copy():add(offsetPos)):setScale(5):setVelocity(offsetPos:copy():scale(0.01):add(0, 0.025, 0))
+                            end
+                            if tick % 7 == 0 then
+                                self.parent.exSkillSpriteManager:spawn(models.models.main.Avatar.Head.FlowerEffectArea1, 4, vectors.rotateAroundAxis(math.random() * -210 + 15, -12, 0, 0, 0, 0, 1), vectors.vec3(), 0, 6, nil, 14, false, 1)
                             end
                         elseif tick >= 154 then
                             local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Tank)
@@ -692,17 +706,25 @@ BlueArchiveCharacter = {
                                 local velocity = vectors.rotateAroundAxis(bodyYaw * -1, offsetPos.x / -35, 0.025 + offsetPos.y * 0.1, 0, 0, 1, 0)
                                 particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), anchorPos:copy():add(offsetPos)):setScale(5):setVelocity(offsetPos:copy():scale(0.01):add(velocity))
                             end
+                            if tick % 2 == 0 then
+                                local anchorPos2 = vectors.rotateAroundAxis(bodyYaw * -1, 0, 48, -20, 0, 1, 0):add(self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Tank):scale(16))
+                                local offsetPos = vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 48 - 24, math.random() * 16, 0, 0, 1, 0)
+                                self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea2, math.random() >= 0.5 and 1 or 3, anchorPos2:copy():add(offsetPos), vectors.rotateAroundAxis(bodyYaw * -1, offsetPos.x * 64, 16 + math.random() * 16, 350, 0, 1, 0), math.random() >= 0.5 and 90 or -90, 8, nil, 200, true, 1)
+                                local soundPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Tank)
+                                local pitch = 0.2 + (tick - 154) / 370
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.piston.extend"), soundPos, 0.5, pitch)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.piston.contract"), soundPos, 0.5, pitch)
+                            end
                         end
 
-                        if tick < 27 and tick % 7 == 0 then
-                            self.parent.exSkillSpriteManager:spawn(models.models.main.Avatar.Head.FlowerEffectArea1, 4, vectors.rotateAroundAxis(math.random() * -210 + 15, -12, 0, 0, 0, 0, 1), vectors.vec3(), 0, 6, nil, 14, false, 1)
+                        if tick < 16 and tick % 2 == 0 then
+                            local soundPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Tank)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.piston.extend"), soundPos, 0.25, 0.2)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.piston.contract"), soundPos, 0.25, 0.2)
                         end
 
-                        if tick >= 154 and tick % 2 == 0 then
-                            local bodyYaw = player:getBodyYaw()
-                            local anchorPos = vectors.rotateAroundAxis(bodyYaw * -1, 0, 48, -20, 0, 1, 0):add(self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Tank):scale(16))
-                            local offsetPos = vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 48 - 24, math.random() * 16, 0, 0, 1, 0)
-                            self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea2, math.random() >= 0.5 and 1 or 3, anchorPos:copy():add(offsetPos), vectors.rotateAroundAxis(bodyYaw * -1, offsetPos.x * 64, 16 + math.random() * 16, 350, 0, 1, 0), math.random() >= 0.5 and 90 or -90, 8, nil, 200, true, 1)
+                        if tick >= 104 and tick < 141 and (tick - 104) % 10 == 0 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 1.5)
                         end
                     end;
 
