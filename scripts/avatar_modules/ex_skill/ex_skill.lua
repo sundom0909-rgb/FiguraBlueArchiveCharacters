@@ -31,7 +31,7 @@ ExSkill = {
         ---@type ExSkill
         local instance = Avatar.instantiate(ExSkill, AvatarModule, parent)
 
-        instance.AUTO_PLAY = "SUB"
+        instance.AUTO_PLAY = "NONE"
 
         instance.frameParticleAmount = instance.parent.config:loadConfig("PRIVATE", "exSkillFrameParticleAmount", 1)
         instance.exSkillIndex = 1
