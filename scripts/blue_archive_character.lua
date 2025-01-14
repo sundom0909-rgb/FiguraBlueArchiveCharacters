@@ -577,7 +577,7 @@ BlueArchiveCharacter = {
 
                 formationType = "STRIKER";
 
-                models = {models.models.ex_skill_2.Tank, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.SpyGlassAnchor};
+                models = {models.models.ex_skill_2.Tank, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.SpyGlassAnchor, models.models.main.Avatar.Head.FlowerEffectArea1.NoticeEffects2};
 
                 animations = {"main", "ex_skill_1", "ex_skill_2"};
 
@@ -693,12 +693,24 @@ BlueArchiveCharacter = {
                                 particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), anchorPos:copy():add(offsetPos)):setScale(5):setVelocity(offsetPos:copy():scale(0.01):add(velocity))
                             end
                         end
+
+                        if tick < 27 and tick % 7 == 0 then
+                            self.parent.exSkillSpriteManager:spawn(models.models.main.Avatar.Head.FlowerEffectArea1, 4, vectors.rotateAroundAxis(math.random() * -210 + 15, -12, 0, 0, 0, 0, 1), vectors.vec3(), 0, 6, nil, 14, false, 1)
+                        end
+
+                        if tick >= 154 and tick % 2 == 0 then
+                            local bodyYaw = player:getBodyYaw()
+                            local anchorPos = vectors.rotateAroundAxis(bodyYaw * -1, 0, 48, -20, 0, 1, 0):add(self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Tank):scale(16))
+                            local offsetPos = vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 48 - 24, math.random() * 16, 0, 0, 1, 0)
+                            self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.FlowerEffectArea2, math.random() >= 0.5 and 1 or 3, anchorPos:copy():add(offsetPos), vectors.rotateAroundAxis(bodyYaw * -1, offsetPos.x * 64, 16 + math.random() * 16, 350, 0, 1, 0), math.random() >= 0.5 and 90 or -90, 8, nil, 200, true, 1)
+                        end
                     end;
 
                     onPostAnimation = function (self, forcedStop)
                         events.RENDER:remove("ex_skill_2_render")
                         models.models.main.Avatar:setPos()
                         models.models.ex_skill_2.Tank.TankBody.Turret.Iroha:setVisible(false)
+                        self.parent.exSkillSpriteManager:removeAll()
                         if host:isHost() then
                             models.models.ex_skill_1.FlowerEffectArea3.ScreenFrame:setColor()
                             if forcedStop then
