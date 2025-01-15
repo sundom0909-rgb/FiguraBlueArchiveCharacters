@@ -761,6 +761,26 @@ BlueArchiveCharacter = {
 
                     exSkill = 1;
                     subExSkill = 2;
+
+                    ---戦車に乗っているかどうか
+                    ---@type boolean
+                    isRidingTank = false;
+
+                    ---前ティックに戦車に乗っていたかどうか
+                    ---@type boolean
+                    isRidingTankPrev = false;
+
+                    ---前ティックに戦車のエンジンが起動していたかどうか
+                    ---@type boolean
+                    isEngineActivePrev = false;
+
+                    ---戦車に乗っているときのティックカウンター
+                    ---@type integer
+                    tankTick = 0;
+
+                    ---ラクダの向きのデータ
+                    ---@type number[]
+                    camelRotData = {0, 0};
                 };
             };
 
@@ -970,6 +990,84 @@ BlueArchiveCharacter = {
         --生徒固有初期化処理
         --Player APIにアクセスする場合は、ENTITY_INIT後に実行されるようにする必要がある。
 
+        events.TICK:register(function ()
+            if not client:isPaused() then
+                local vehicle = player:getVehicle()
+                self.costume.costumes[1].isRidingTank = false
+                if vehicle ~= nil then
+                    local passengers = vehicle:getPassengers()
+                    self.costume.costumes[1].isRidingTank = vehicle:getType() == "minecraft:camel" and passengers[1]:hasAvatar() and world.avatarVars()[passengers[1]:getUUID()].FBAC_Iroha ~= nil
+                end
+                if self.costume.costumes[1].isRidingTank ~= self.costume.costumes[1].isRidingTankPrev then
+                    if self.costume.costumes[1].isRidingTank then
+                        models.models.main.Avatar.LowerBody:setVisible(false)
+                        animations["models.main"].tank_start:play()
+                        animations["models.main"].tank_idle:play()
+
+                        events.TICK:register(function ()
+                            if not client:isPaused() and self.costume.costumes[1].isRidingTank then
+                                local camelRot = vehicle:getRot().y % 360
+                                table.insert(self.costume.costumes[1].camelRotData, camelRot)
+                                table.remove(self.costume.costumes[1].camelRotData, 1)
+                                local iroha = vehicle:getPassengers()[1]
+                                local avatarVars = world.avatarVars()
+                                local isEngineActive = avatarVars[iroha:getUUID()].isEngineActive and self.costume.costumes[1].tankTick >= 1
+                                if isEngineActive ~= self.costume.costumes[1].isEngineActivePrev then
+                                    if isEngineActive then
+                                        animations["models.main"].tank_idle_powered:play()
+                                        animations["models.main"].tank_idle_powered:setTime(avatarVars[iroha:getUUID()].engineAnimTime + 0.05)
+                                    else
+                                        animations["models.main"].tank_idle_powered:stop()
+                                    end
+                                end
+                                self.costume.costumes[1].tankTick = self.costume.costumes[1].tankTick + 1
+                                self.costume.costumes[1].isEngineActivePrev = isEngineActive
+                            end
+                        end, "tank_tick")
+
+                        events.RENDER:register(function (delta)
+                            if not client:isPaused() and self.costume.costumes[1].isRidingTank then
+                                local camelRot = math.abs(self.costume.costumes[1].camelRotData[1] - self.costume.costumes[1].camelRotData[2]) <= 180 and self.costume.costumes[1].camelRotData[2] + ((self.costume.costumes[1].camelRotData[2] - self.costume.costumes[1].camelRotData[1]) * delta) or self.costume.costumes[1].camelRotData[2]
+                                local rotOffset = (camelRot - 180) - (player:getRot(delta)[2] % 360 - 180)
+                                if rotOffset > 160 then
+                                    rotOffset = rotOffset - 360
+                                elseif rotOffset < -160 then
+                                    rotOffset = rotOffset + 360
+                                end
+                                local x = -16
+                                local z = -18
+                                if rotOffset < -50 and rotOffset >= -160 then
+                                    rotOffset = rotOffset - math.max(30 - (rotOffset * -1 - 50), 0)
+                                    local rot = 110 + (rotOffset + 50)
+                                    models.models.main.Avatar:setPos(math.cos(math.rad(rot)) * z + math.sin(math.rad(rot)) * -x, 11, math.sin(math.rad(rot)) * z + math.cos(math.rad(rot)) * x)
+                                    models.models.main.Avatar:setRot(0, 90 - rot * (90 / 110), 0)
+                                elseif rotOffset > 50 and rotOffset <= 160 then
+                                    rotOffset = rotOffset + math.max(30 - (rotOffset - 50), 0)
+                                    local rot = 110 - (rotOffset - 50)
+                                    models.models.main.Avatar:setPos(math.sin(math.rad(rot)) * -x + math.cos(math.rad(rot)) * -z, 11, math.cos(math.rad(rot)) * -x + math.sin(math.rad(rot)) * z)
+                                    models.models.main.Avatar:setRot(0, (90 - rot * (90 / 110)) * -1, 0)
+                                elseif math.abs(rotOffset) <= 50 then
+                                    models.models.main.Avatar:setPos(-x, 11, z)
+                                    models.models.main.Avatar:setRot()
+                                end
+                            end
+                        end, "tank_render")
+                    else
+                        events.TICK:remove("tank_tick")
+                        events.RENDER:remove("tank_render")
+                        models.models.main.Avatar:setPos()
+                        models.models.main.Avatar:setRot()
+                        models.models.main.Avatar.LowerBody:setVisible(true)
+                        animations["models.main"].tank_start:stop()
+                        animations["models.main"].tank_idle:stop()
+                        animations["models.main"].tank_idle_powered:stop()
+                        self.costume.costumes[1].tankTick = 0
+                    end
+                end
+                self.costume.costumes[1].isRidingTankPrev = self.costume.costumes[1].isRidingTank
+            end
+        end)
+
         events.RENDER:register(function (_, context)
             if context == "FIRST_PERSON" then
                 models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve:setRot(0, 0, -60)
@@ -995,6 +1093,6 @@ BlueArchiveCharacter = {
             models.models.main.Avatar.UpperBody.Body.Wings.LeftWing:setRot(0, 20 + wingRotOffset, 0)
         end)
 
-        avatar:store("fbac_ibuki", true)
+        avatar:store("FBAC_Ibuki", true)
     end;
 }
