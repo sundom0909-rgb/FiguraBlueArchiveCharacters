@@ -916,7 +916,7 @@ BlueArchiveCharacter = {
                     local passengers = vehicle:getPassengers()
                     local controlledPassenger = vehicle:getControllingPassenger()
                     local avatarVars = world.avatarVars()
-                    self.costume.costumes[1].hasIbuki = passengers[2] ~= nil and passengers[2]:hasAvatar() and avatarVars[passengers[2]:getUUID()].fbac_ibuki
+                    self.costume.costumes[1].hasIbuki = passengers[2] ~= nil and passengers[2]:hasAvatar() and avatarVars[passengers[2]:getUUID()].FBAC_Ibuki
                     self.costume.costumes[1].isRidingTank = vehicle:getType() == "minecraft:camel" and controlledPassenger ~= nil and controlledPassenger:getName() == player:getName() and (#passengers == 1 or self.costume.costumes[1].hasIbuki) and self.parent.actionWheel.shouldReplaceVehicleModels and player:getHealth() > 0
                 end
                 if self.costume.costumes[1].isRidingTank ~= self.costume.costumes[1].isRidingTankPrev then
@@ -935,6 +935,8 @@ BlueArchiveCharacter = {
                         self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 35, true)
                         sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.iron_trapdoor.open"), player:getPos(), 1, 0.5)
                         self.costume.costumes[1].tankVelocity = vectors.rotateAroundAxis(vehicle:getRot().y * -1, 0, 0, 1, 0, 1, 0)
+                        avatar:store("isEngineActive", false)
+                        avatar:store("engineAnimTime", 0)
                         events.TICK:register(function ()
                             if not client:isPaused() then
                                 local camelRot = vehicle:getRot().y % 360
@@ -949,9 +951,14 @@ BlueArchiveCharacter = {
                                 if isEngineActive and not self.costume.costumes[1].isEngineActivePrev then
                                     animations["models.main"]["tank_idle_powered"]:play()
                                     animations["models.ex_skill_1"]["tank_idle"]:play()
+                                    avatar:store("isEngineActive", true)
                                 elseif not isEngineActive and self.costume.costumes[1].isEngineActivePrev then
                                     animations["models.main"]["tank_idle_powered"]:stop()
                                     animations["models.ex_skill_1"]["tank_idle"]:stop()
+                                    avatar:store("isEngineActive", false)
+                                end
+                                if isEngineActive then
+                                    avatar:store("engineAnimTime", animations["models.main"]["tank_idle_powered"]:getTime())
                                 end
                                 animations["models.ex_skill_1"]["tank_move"]:setSpeed(self.parent.physics.velocityAverage[5][2] * 2.5)
                                 local beltOffset = math.floor(animations["models.ex_skill_1"]["tank_move"]:getTime() * 32) % 2
@@ -1106,6 +1113,8 @@ BlueArchiveCharacter = {
                         elseif self.parent.gun.currentGunPosition == "LEFT" then
                             self.parent.arms:setArmState(2, 1)
                         end
+                        avatar:store("isEngineActive", false)
+                        avatar:store("engineAnimTime", 0)
                         self.costume.costumes[1].tankTick = 0
                         self.costume.costumes[1].shootTick = -1
                         self.costume.costumes[1].isEngineActivePrev = false
@@ -1132,7 +1141,7 @@ BlueArchiveCharacter = {
             end
         end)
 
-        avatar:store("fbac_iroha", true)
+        avatar:store("FBAC_Iroha", true)
     end;
 }
 
