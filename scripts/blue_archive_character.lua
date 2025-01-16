@@ -1132,7 +1132,12 @@ BlueArchiveCharacter = {
                                         animations["models.main"].tank_idle_powered:stop()
                                     end
                                 end
-                                if self.costume.costumes[1].tankTick == 21 then
+                                if self.costume.costumes[1].tankTick == 1 then
+                                    for i = 0, 6 do
+                                        self.parent.exSkillSpriteManager:spawn(models.models.main.Avatar.Head.FlowerEffectArea1, 4, vectors.vec3(), vectors.rotateAroundAxis(i * -30, -100, 0, 0, 0, 0, 1), 0, 6, nil, 14, false, 0.7)
+                                    end
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 0.5, 1.5)
+                                elseif self.costume.costumes[1].tankTick == 21 then
                                     models.models.main.Avatar.Head:setRot(0, 65, 0)
                                     if self.parent.gun.currentGunPosition == "RIGHT" then
                                         self.parent.arms:setArmState(5, 6)
