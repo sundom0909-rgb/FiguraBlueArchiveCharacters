@@ -946,7 +946,26 @@ BlueArchiveCharacter = {
         }
 
         instance.deathAnimation = {
+            callbacks = {
+                onBeforeModelCopy = function ()
+                    models.models.main.Avatar:setVisible(true)
+                    models.models.main.Avatar:setPos()
+                    for _, modelPart in ipairs({models.models.main.Avatar, models.models.main.Avatar.Head, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve}) do
+                        modelPart:setRot()
+                    end
+                    models.models.main.Avatar.LowerBody:setVisible(true)
+                end;
 
+                onPhase1 = function (_, dummyAvatar)
+                    dummyAvatar.Head.HairTail:setRot(30, 0, 0)
+                end;
+
+                onPhase2 = function (_, dummyAvatar)
+                    dummyAvatar.Head.HairTail:setRot(-15, 0, 0)
+                    dummyAvatar.UpperBody.Body.BearPouch.SecurityAlarm:setRot(-7.5, 0, -10)
+                    dummyAvatar.LowerBody.Legs.RightLeg.RightLegBottom:setOffsetPivot(0, 0, -2)
+                end
+            };
         }
 
         instance.actionWheel = {
