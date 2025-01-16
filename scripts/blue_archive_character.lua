@@ -333,9 +333,6 @@ BlueArchiveCharacter = {
         instance.arms = {
             callbacks = {
                 onArmStateChanged = function (self, right, left)
-                    if self.costume.costumes[1].isRidingTank and self.costume.costumes[1].tankTick <= 35 then
-                        return {right = 0, left = 0}
-                    end
                     if self.costume.costumes[1].isRidingTank then
                         if self.costume.costumes[1].tankTick <= 35 then
                             return {right = 0, left = 0}
@@ -937,6 +934,7 @@ BlueArchiveCharacter = {
                         self.costume.costumes[1].tankVelocity = vectors.rotateAroundAxis(vehicle:getRot().y * -1, 0, 0, 1, 0, 1, 0)
                         avatar:store("isEngineActive", false)
                         avatar:store("engineAnimTime", 0)
+                        avatar:store("shootingStart", false)
                         events.TICK:register(function ()
                             if not client:isPaused() then
                                 local camelRot = vehicle:getRot().y % 360
@@ -1124,7 +1122,9 @@ BlueArchiveCharacter = {
 
                 if self.costume.costumes[1].shootTick >= 0 then
                     self.costume.costumes[1].shootTick = self.costume.costumes[1].shootTick + 1
-                    if self.costume.costumes[1].shootTick == 13 then
+                    if self.costume.costumes[1].shootTick == 2 then
+                        avatar:store("shootingStart", false)
+                    elseif self.costume.costumes[1].shootTick == 13 then
                         local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Tank.TankBody.Turret.Cannon.MuzzleAnchor1)
                         self.parent.shellManager:spawn(anchorPos, vectors.vec3(models.models.ex_skill_1.Tank.TankBody.Turret.Cannon:getRot().x * -1, player:getBodyYaw() * -1, 0))
                         for _ = 1, 10 do
@@ -1154,6 +1154,7 @@ function pings.tankShoot()
     events.RENDER:register(function (delta, ctx, matrix)
         models.models.ex_skill_1.Tank:setPos(0, models.models.ex_skill_1.Tank:getPos().y, models.models.ex_skill_1.ShootAnimAnchor:getAnimPos().z)
     end, "tank_shoot_render")
+    avatar:store("shootingStart", true)
     AvatarInstance.characterData.costume.costumes[1].shootTick = 0
     AvatarInstance.characterData.costume.costumes[1].shootCooldown = 100
 end
