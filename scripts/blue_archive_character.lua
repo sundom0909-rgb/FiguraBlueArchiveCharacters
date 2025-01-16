@@ -935,6 +935,7 @@ BlueArchiveCharacter = {
                         avatar:store("isEngineActive", false)
                         avatar:store("engineAnimTime", 0)
                         avatar:store("shootingStart", false)
+                        avatar:store("isTankDied", false)
                         events.TICK:register(function ()
                             if not client:isPaused() then
                                 local camelRot = vehicle:getRot().y % 360
@@ -1071,6 +1072,7 @@ BlueArchiveCharacter = {
                                         end
                                         sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.explode"), pos, 1, 1)
                                         self.parent.bubble:play("SWEAT", 20, vectors.vec2(), 40, false)
+                                        avatar:store("isTankDied", true)
                                     end
                                     return true
                                 end
@@ -1113,6 +1115,7 @@ BlueArchiveCharacter = {
                         end
                         avatar:store("isEngineActive", false)
                         avatar:store("engineAnimTime", 0)
+                        avatar:store("isTankDied", false)
                         self.costume.costumes[1].tankTick = 0
                         self.costume.costumes[1].shootTick = -1
                         self.costume.costumes[1].isEngineActivePrev = false
