@@ -345,7 +345,117 @@ BlueArchiveCharacter = {
         }
 
         instance.arms = {
+            callbacks = {
+                onArmStateChanged = function (self, right, left)
+                    if self.costume.costumes[1].isRidingTank then
+                        if self.costume.costumes[1].tankTick < 21 then
+                            return {right = 0, left = 0}
+                        else
+                            return {right = right == 1 and 5 or (right == 2 and 6 or (right == 0 and 4 or right)), left = left == 1 and 5 or (left == 2 and 6 or (left == 0 and 4 or left))}
+                        end
+                    end
+                end;
 
+                onAdditionalRightArmProcess = function (self, state)
+                    if state == 4 then
+                        --虎丸搭乗中
+                        events.TICK:register(function ()
+                            if self.costume.costumes[1].isRidingTank then
+                                local isLeftHanded = player:isLeftHanded()
+                                local activeHand = player:getActiveHand()
+                                models.models.main.Avatar.UpperBody.Arms.RightArm:setRot(player:getActiveItem().id ~= "minecraft:air" and ((activeHand == "MAIN_HAND" and not isLeftHanded) or (activeHand == "OFF_HAND" and isLeftHanded)) and 0 or 52.5, 0, 0)
+                            end
+                        end, "right_arm_tick")
+                    elseif state == 5 then
+                        --虎丸搭乗中の武器の構え
+                        events.TICK:register(function ()
+                            self.parent.arms:processArmWingCount()
+                            if player:isSwingingArm() and not player:isLeftHanded() and self.costume.costumes[1].shootTick == -1 then
+                                models.models.main.Avatar.UpperBody.Arms.RightArm:setParentType("RightArm")
+                            else
+                                models.models.main.Avatar.UpperBody.Arms.RightArm:setParentType("Body")
+                            end
+                            if player:getActiveItem().id == "minecraft:crossbow" then
+                                self.parent.arms:setArmState(3, 3)
+                            end
+                        end, "right_arm_tick")
+                        events.RENDER:register(function (delta)
+                            local lookDir = player:getLookDir()
+                            local dir = ((math.deg(math.atan2(lookDir.z, lookDir.x)) - 90) % 360 - player:getBodyYaw() % 360) % 360
+                            dir = dir > 180 and dir - 360 or dir
+                            local headRot = vanilla_model.HEAD:getOriginRot()
+                            models.models.main.Avatar.UpperBody.Arms.RightArm:setRot((player:isSwingingArm() and not player:isLeftHanded()) and vectors.vec3() or vectors.vec3(headRot.x + math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * 2.5 + 90 + (player:isCrouching() and 30 or 0), math.clamp(dir * -1 + 90, -70, 78), 0))
+                        end, "right_arm_render")
+                    elseif state == 6 then
+                        --虎丸搭乗中の武器を持っていない手
+                        events.TICK:register(function ()
+                            self.parent.arms:processArmWingCount()
+                            if player:isSwingingArm() and not player:isLeftHanded() and self.costume.costumes[1].shootTick == -1 then
+                                models.models.main.Avatar.UpperBody.Arms.RightArm:setParentType("RightArm")
+                            else
+                                models.models.main.Avatar.UpperBody.Arms.RightArm:setParentType("Body")
+                            end
+                        end, "right_arm_tick")
+                        events.RENDER:register(function (delta)
+                            local lookDir = player:getLookDir()
+                            local dir = ((math.deg(math.atan2(lookDir.z, lookDir.x)) - 120) % 360 - player:getBodyYaw() % 360) % 360
+                            dir = dir > 180 and dir - 360 or dir
+                            local headRot = vanilla_model.HEAD:getOriginRot()
+                            models.models.main.Avatar.UpperBody.Arms.RightArm:setRot((player:isSwingingArm() and player:isLeftHanded()) and vectors.vec3() or vectors.vec3(headRot.x + math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * 2.5 + 90 + (player:isCrouching() and 30 or 0), math.clamp(dir * -1 + 90, -70, 78), 0))
+                        end, "right_arm_render")
+                    end
+                end;
+
+                onAdditionalLeftArmProcess = function (self, state)
+                    if state == 4 then
+                        --虎丸搭乗中
+                        events.TICK:register(function ()
+                            if self.costume.costumes[1].isRidingTank then
+                                local isLeftHanded = player:isLeftHanded()
+                                local activeHand = player:getActiveHand()
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm:setRot(player:getActiveItem().id ~= "minecraft:air" and ((activeHand == "MAIN_HAND" and isLeftHanded) or (activeHand == "OFF_HAND" and not isLeftHanded)) and 0 or 52.5, 0, 0)
+                            end
+                        end, "left_arm_tick")
+                    elseif state == 5 then
+                        --虎丸搭乗中の武器の構え
+                        events.TICK:register(function ()
+                            self.parent.arms:processArmWingCount()
+                            if player:isSwingingArm() and player:isLeftHanded() and self.costume.costumes[1].shootTick == -1 then
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm:setParentType("LeftArm")
+                            else
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm:setParentType("Body")
+                            end
+                            if player:getActiveItem().id == "minecraft:crossbow" then
+                                self.parent.arms:setArmState(3, 3)
+                            end
+                        end, "right_arm_tick")
+                        events.RENDER:register(function (delta)
+                            local lookDir = player:getLookDir()
+                            local dir = ((math.deg(math.atan2(lookDir.z, lookDir.x)) - 90) % 360 - player:getBodyYaw() % 360) % 360
+                            dir = dir > 180 and dir - 360 or dir
+                            local headRot = vanilla_model.HEAD:getOriginRot()
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm:setRot(((player:isSwingingArm() and player:isLeftHanded()) or self.costume.costumes[1].shootTick >= 0) and vectors.vec3() or vectors.vec3(headRot.x + math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * 2.5 + 90, math.clamp(dir * -1 + 90, -70, 90), 0))
+                        end, "left_arm_render")
+                    elseif state == 6 then
+                        --虎丸搭乗中の武器を持っていない手
+                        events.TICK:register(function ()
+                            self.parent.arms:processArmWingCount()
+                            if player:isSwingingArm() and player:isLeftHanded() and self.costume.costumes[1].shootTick == -1 then
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm:setParentType("LeftArm")
+                            else
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm:setParentType("Body")
+                            end
+                        end, "left_arm_tick")
+                        events.RENDER:register(function (delta)
+                            local lookDir = player:getLookDir()
+                            local dir = ((math.deg(math.atan2(lookDir.z, lookDir.x)) - 60) % 360 - player:getBodyYaw() % 360) % 360
+                            dir = dir > 180 and dir - 360 or dir
+                            local headRot = vanilla_model.HEAD:getOriginRot()
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm:setRot((player:isSwingingArm() and player:isLeftHanded()) and vectors.vec3() or vectors.vec3(headRot.x + math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * 2.5 + 90 + (player:isCrouching() and 30 or 0), math.clamp(dir * -1 + 90, -70, 90), 0))
+                        end, "left_arm_render")
+                    end
+                end;
+            };
         }
 
         instance.skirt = {
@@ -778,9 +888,9 @@ BlueArchiveCharacter = {
                     ---@type integer
                     tankTick = 0;
 
-                    ---ラクダの向きのデータ
-                    ---@type number[]
-                    camelRotData = {0, 0};
+                    ---砲弾を撃つ際のティックカウンター
+                    ---@type integer
+                    shootTick = -1;
                 };
             };
 
@@ -1000,15 +1110,17 @@ BlueArchiveCharacter = {
                 end
                 if self.costume.costumes[1].isRidingTank ~= self.costume.costumes[1].isRidingTankPrev then
                     if self.costume.costumes[1].isRidingTank then
-                        models.models.main.Avatar.LowerBody:setVisible(false)
+                        self.parent.arms:setArmState(0, 0)
+                        self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "OPENED", 21, true)
                         animations["models.main"].tank_start:play()
-                        animations["models.main"].tank_idle:play()
 
                         events.TICK:register(function ()
                             if not client:isPaused() and self.costume.costumes[1].isRidingTank then
-                                local camelRot = vehicle:getRot().y % 360
-                                table.insert(self.costume.costumes[1].camelRotData, camelRot)
-                                table.remove(self.costume.costumes[1].camelRotData, 1)
+                                if self.parent.faceParts.blinkCount == 0 and self.parent.faceParts.emotionCount == 0 then
+                                    self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "W", 2, true)
+                                else
+                                    self.parent.faceParts:setEmotion("NORMAL", "INVERTED", "W", 1)
+                                end
                                 local iroha = vehicle:getPassengers()[1]
                                 local avatarVars = world.avatarVars()
                                 local isEngineActive = avatarVars[iroha:getUUID()].isEngineActive and self.costume.costumes[1].tankTick >= 1
@@ -1020,47 +1132,67 @@ BlueArchiveCharacter = {
                                         animations["models.main"].tank_idle_powered:stop()
                                     end
                                 end
+                                if self.costume.costumes[1].tankTick == 21 then
+                                    models.models.main.Avatar.Head:setRot(0, 65, 0)
+                                    if self.parent.gun.currentGunPosition == "RIGHT" then
+                                        self.parent.arms:setArmState(5, 6)
+                                    elseif self.parent.gun.currentGunPosition == "LEFT" then
+                                        self.parent.arms:setArmState(6, 5)
+                                    else
+                                        self.parent.arms:setArmState(4, 4)
+                                    end
+                                end
                                 self.costume.costumes[1].tankTick = self.costume.costumes[1].tankTick + 1
                                 self.costume.costumes[1].isEngineActivePrev = isEngineActive
                             end
                         end, "tank_tick")
 
-                        events.RENDER:register(function (delta)
+                        events.RENDER:register(function (delta, context)
                             if not client:isPaused() and self.costume.costumes[1].isRidingTank then
-                                local camelRot = math.abs(self.costume.costumes[1].camelRotData[1] - self.costume.costumes[1].camelRotData[2]) <= 180 and self.costume.costumes[1].camelRotData[2] + ((self.costume.costumes[1].camelRotData[2] - self.costume.costumes[1].camelRotData[1]) * delta) or self.costume.costumes[1].camelRotData[2]
-                                local rotOffset = (camelRot - 180) - (player:getRot(delta)[2] % 360 - 180)
-                                if rotOffset > 160 then
-                                    rotOffset = rotOffset - 360
-                                elseif rotOffset < -160 then
-                                    rotOffset = rotOffset + 360
-                                end
-                                local x = -16
-                                local z = -18
-                                if rotOffset < -50 and rotOffset >= -160 then
-                                    rotOffset = rotOffset - math.max(30 - (rotOffset * -1 - 50), 0)
-                                    local rot = 110 + (rotOffset + 50)
-                                    models.models.main.Avatar:setPos(math.cos(math.rad(rot)) * z + math.sin(math.rad(rot)) * -x, 11, math.sin(math.rad(rot)) * z + math.cos(math.rad(rot)) * x)
-                                    models.models.main.Avatar:setRot(0, 90 - rot * (90 / 110), 0)
-                                elseif rotOffset > 50 and rotOffset <= 160 then
-                                    rotOffset = rotOffset + math.max(30 - (rotOffset - 50), 0)
-                                    local rot = 110 - (rotOffset - 50)
-                                    models.models.main.Avatar:setPos(math.sin(math.rad(rot)) * -x + math.cos(math.rad(rot)) * -z, 11, math.cos(math.rad(rot)) * -x + math.sin(math.rad(rot)) * z)
-                                    models.models.main.Avatar:setRot(0, (90 - rot * (90 / 110)) * -1, 0)
-                                elseif math.abs(rotOffset) <= 50 then
-                                    models.models.main.Avatar:setPos(-x, 11, z)
+                                local bodyYaw = player:getBodyYaw(delta)
+                                local heightOffset = (player:getPos(delta):sub(vehicle:getPos(delta)):length() - 1.51017) * -1.35 - 0.1
+                                if context == "MINECRAFT_GUI" or context == "FIGURA_GUI" or context == "PAPERDOLL" or context == "FIRST_PERSON" then
+                                    models.models.main.Avatar:setParentType("None")
+                                    models.models.main.Avatar:setPos()
                                     models.models.main.Avatar:setRot()
+                                    models.models.main.Avatar.LowerBody:setVisible(true)
+                                else
+                                    models.models.main.Avatar:setParentType("WORLD")
+                                    models.models.main.Avatar:setPos(vectors.rotateAroundAxis(bodyYaw * -1, -0.85, 0.7 + heightOffset, 1.1, 0, 1, 0):add(player:getPos(delta)):scale(16))
+                                    models.models.main.Avatar:setRot(0, bodyYaw * -1 + 90, 0)
+                                    models.models.main.Avatar.LowerBody:setVisible(false)
+                                end
+                                if renderer:isFirstPerson() then
+                                    self.parent.cameraManager.setCameraPivot(vectors.rotateAroundAxis(bodyYaw * -1, -0.85, 0.675 + heightOffset, 1.1, 0, 1, 0))
+                                    renderer:setEyeOffset(vectors.rotateAroundAxis(bodyYaw * -1, -0.85, 1 + heightOffset, 1.1, 0, 1, 0))
+                                else
+                                    self.parent.cameraManager.setCameraPivot(vectors.rotateAroundAxis(bodyYaw * -1, -0.85, 0.5 + heightOffset, 1.1, 0, 1, 0))
+                                    renderer:setEyeOffset(vectors.rotateAroundAxis(bodyYaw * -1, -0.85, 1, 1.1 + heightOffset, 0, 1, 0))
                                 end
                             end
                         end, "tank_render")
                     else
                         events.TICK:remove("tank_tick")
                         events.RENDER:remove("tank_render")
+                        models.models.main.Avatar:setVisible(true)
+                        models.models.main.Avatar:setParentType("None")
                         models.models.main.Avatar:setPos()
-                        models.models.main.Avatar:setRot()
+                        for _, modelPart in ipairs({models.models.main.Avatar, models.models.main.Avatar.Head}) do
+                            modelPart:setRot()
+                        end
                         models.models.main.Avatar.LowerBody:setVisible(true)
-                        animations["models.main"].tank_start:stop()
-                        animations["models.main"].tank_idle:stop()
-                        animations["models.main"].tank_idle_powered:stop()
+                        for _, animName in ipairs({"tank_start", "tank_idle_powered"}) do
+                            animations["models.main"][animName]:stop()
+                        end
+                        self.parent.cameraManager.setCameraPivot()
+                        renderer:setEyeOffset()
+                        if self.parent.gun.currentGunPosition == "RIGHT" then
+                            self.parent.arms:setArmState(1, 2)
+                        elseif self.parent.gun.currentGunPosition == "LEFT" then
+                            self.parent.arms:setArmState(2, 1)
+                        else
+                            self.parent.arms:setArmState(0, 0)
+                        end
                         self.costume.costumes[1].tankTick = 0
                     end
                 end
@@ -1075,10 +1207,11 @@ BlueArchiveCharacter = {
                 models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve:setRot(0, 0, 60)
                 models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve:setOffsetPivot(-1.5, 0, 0)
             elseif self.parent.exSkill.animationCount == -1 then
-                local rightArmRot = math.clamp(((models.models.main.Avatar.UpperBody.Arms.RightArm:getParentType() == "RightArm" and not (context == "PAPERDOLL" and self.parent.gun.currentGunPosition ~= "NONE")) and vanilla_model.RIGHT_ARM:getOriginRot().x or 0) + models.models.main.Avatar.UpperBody.Arms.RightArm:getTrueRot().x, -60, 60)
+                local isInTank = self.costume.costumes[1].isRidingTank and self.costume.costumes[1].tankTick >= 21
+                local rightArmRot = math.clamp(((models.models.main.Avatar.UpperBody.Arms.RightArm:getParentType() == "RightArm" and not (context == "PAPERDOLL" and self.parent.gun.currentGunPosition ~= "NONE")) and vanilla_model.RIGHT_ARM:getOriginRot().x or 0) + models.models.main.Avatar.UpperBody.Arms.RightArm:getTrueRot().x, -60, isInTank and 20 or 60)
                 models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve:setRot(rightArmRot * -1, 0, 0)
                 models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve:setOffsetPivot(0, 0, rightArmRot < 0 and 4 or 0)
-                local leftArmRot = math.clamp(((models.models.main.Avatar.UpperBody.Arms.LeftArm:getParentType() == "LeftArm" and not (context == "PAPERDOLL" and self.parent.gun.currentGunPosition ~= "NONE")) and vanilla_model.LEFT_ARM:getOriginRot().x or 0) + models.models.main.Avatar.UpperBody.Arms.LeftArm:getTrueRot().x, -60, 60)
+                local leftArmRot = math.clamp(((models.models.main.Avatar.UpperBody.Arms.LeftArm:getParentType() == "LeftArm" and not (context == "PAPERDOLL" and self.parent.gun.currentGunPosition ~= "NONE")) and vanilla_model.LEFT_ARM:getOriginRot().x or 0) + models.models.main.Avatar.UpperBody.Arms.LeftArm:getTrueRot().x, -60, isInTank and 20 or 60)
                 models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve:setRot(leftArmRot * -1, 0, 0)
                 models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve:setOffsetPivot(0, 0, leftArmRot < 0 and 4 or 0)
             else

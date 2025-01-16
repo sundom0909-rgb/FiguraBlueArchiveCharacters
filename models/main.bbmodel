@@ -13326,46 +13326,6 @@
 			}
 		},
 		{
-			"uuid": "d6bfee62-e947-d36a-728e-76a77c5e3cc1",
-			"name": "tank_idle",
-			"loop": "hold",
-			"override": false,
-			"length": 0,
-			"snapping": 20,
-			"selected": true,
-			"anim_time_update": "",
-			"blend_weight": "",
-			"start_delay": "",
-			"loop_delay": "",
-			"animators": {
-				"e98e96cf-993b-878e-02b8-777c368bb888": {
-					"name": "Avatar",
-					"type": "bone",
-					"keyframes": [
-						{
-							"channel": "rotation",
-							"data_points": [
-								{
-									"x": "0",
-									"y": "90",
-									"z": "0"
-								}
-							],
-							"uuid": "af1de627-e5bc-264e-524a-1a086e0e0ece",
-							"time": 0,
-							"color": -1,
-							"interpolation": "linear",
-							"bezier_linked": true,
-							"bezier_left_time": [-0.1, -0.1, -0.1],
-							"bezier_left_value": [0, 0, 0],
-							"bezier_right_time": [0.1, 0.1, 0.1],
-							"bezier_right_value": [0, 0, 0]
-						}
-					]
-				}
-			}
-		},
-		{
 			"uuid": "0e3f2d60-f35d-b577-3f1b-666450bdaabb",
 			"name": "tank_idle_powered",
 			"loop": "loop",
