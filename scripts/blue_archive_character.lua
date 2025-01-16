@@ -891,13 +891,35 @@ BlueArchiveCharacter = {
                     ---砲弾を撃つ際のティックカウンター
                     ---@type integer
                     shootTick = -1;
+
+                    ---前ティックに虎丸が爆散したかどうか
+                    ---@type boolean
+                    isTankDiedPrev = false;
                 };
             };
 
         }
 
         instance.bubble = {
-
+            callbacks = {
+                onPlay = function (self, type, duration, showInGui)
+                    if type == "GOOD" then
+                        --self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", duration, true)
+                    elseif type == "HEART" then
+                        --self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", duration, true)
+                    elseif type == "NOTE" then
+                        --self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "SMILE", duration, true)
+                    elseif type == "QUESTION" then
+                        --self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMALL", duration, true)
+                    elseif type == "SWEAT" then
+                        if showInGui then
+                            --self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SIGH", duration, true)
+                        else
+                            self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "SHOCK", 60, true)
+                        end
+                    end
+                end;
+            };
         }
 
         instance.headBlock = {
@@ -1116,7 +1138,7 @@ BlueArchiveCharacter = {
 
                         events.TICK:register(function ()
                             if not client:isPaused() and self.costume.costumes[1].isRidingTank then
-                                if self.parent.faceParts.blinkCount == 0 and self.parent.faceParts.emotionCount == 0 and self.costume.costumes[1].shootTick == -1 then
+                                if self.parent.faceParts.blinkCount == 0 and self.parent.faceParts.emotionCount == 0 and self.costume.costumes[1].shootTick == -1 and not self.costume.costumes[1].isTankDied then
                                     self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "W", 2, true)
                                 else
                                     self.parent.faceParts:setEmotion("NORMAL", "INVERTED", "W", 1)
@@ -1162,9 +1184,14 @@ BlueArchiveCharacter = {
                                     end
                                     self.costume.costumes[1].shootTick = -1
                                 end
+                                local isTankDied = avatarVars[irohaUUID].isTankDied
+                                if isTankDied and not self.costume.costumes[1].isTankDiedPrev then
+                                    self.parent.bubble:play("SWEAT", 20, vectors.vec2(), 40, false)
+                                end
                                 self.costume.costumes[1].tankTick = self.costume.costumes[1].tankTick + 1
                                 self.costume.costumes[1].isEngineActivePrev = isEngineActive
                                 self.costume.costumes[1].shootTick = self.costume.costumes[1].shootTick >= 0 and self.costume.costumes[1].shootTick + 1 or -1
+                                self.costume.costumes[1].isTankDiedPrev = isTankDied
                             end
                         end, "tank_tick")
 
@@ -1219,6 +1246,7 @@ BlueArchiveCharacter = {
                         end
                         self.costume.costumes[1].tankTick = 0
                         self.costume.costumes[1].shootTick = -1
+                        self.costume.costumes[1].isTankDiedPrev = false
                     end
                 end
                 self.costume.costumes[1].isRidingTankPrev = self.costume.costumes[1].isRidingTank
