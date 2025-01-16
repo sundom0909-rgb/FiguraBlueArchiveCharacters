@@ -904,16 +904,16 @@ BlueArchiveCharacter = {
             callbacks = {
                 onPlay = function (self, type, duration, showInGui)
                     if type == "GOOD" then
-                        --self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", duration, true)
+                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", duration, true)
                     elseif type == "HEART" then
-                        --self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", duration, true)
+                        self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "W", duration, true)
                     elseif type == "NOTE" then
-                        --self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "SMILE", duration, true)
+                        self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "OPENED", duration, true)
                     elseif type == "QUESTION" then
-                        --self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMALL", duration, true)
+                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "ANXIOUS", duration, true)
                     elseif type == "SWEAT" then
                         if showInGui then
-                            --self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SIGH", duration, true)
+                            self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "SHOCK", duration, true)
                         else
                             self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "SHOCK", 60, true)
                         end
