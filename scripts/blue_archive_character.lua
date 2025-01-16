@@ -1116,18 +1116,18 @@ BlueArchiveCharacter = {
 
                         events.TICK:register(function ()
                             if not client:isPaused() and self.costume.costumes[1].isRidingTank then
-                                if self.parent.faceParts.blinkCount == 0 and self.parent.faceParts.emotionCount == 0 then
+                                if self.parent.faceParts.blinkCount == 0 and self.parent.faceParts.emotionCount == 0 and self.costume.costumes[1].shootTick == -1 then
                                     self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "W", 2, true)
                                 else
                                     self.parent.faceParts:setEmotion("NORMAL", "INVERTED", "W", 1)
                                 end
-                                local iroha = vehicle:getPassengers()[1]
+                                local irohaUUID = vehicle:getPassengers()[1]:getUUID()
                                 local avatarVars = world.avatarVars()
-                                local isEngineActive = avatarVars[iroha:getUUID()].isEngineActive and self.costume.costumes[1].tankTick >= 1
+                                local isEngineActive = avatarVars[irohaUUID].isEngineActive and self.costume.costumes[1].tankTick >= 1
                                 if isEngineActive ~= self.costume.costumes[1].isEngineActivePrev then
                                     if isEngineActive then
                                         animations["models.main"].tank_idle_powered:play()
-                                        animations["models.main"].tank_idle_powered:setTime(avatarVars[iroha:getUUID()].engineAnimTime + 0.05)
+                                        animations["models.main"].tank_idle_powered:setTime(avatarVars[irohaUUID].engineAnimTime + 0.05)
                                     else
                                         animations["models.main"].tank_idle_powered:stop()
                                     end
@@ -1147,8 +1147,24 @@ BlueArchiveCharacter = {
                                         self.parent.arms:setArmState(4, 4)
                                     end
                                 end
+                                if avatarVars[irohaUUID].shootingStart then
+                                    animations["models.main"].tank_shoot:play()
+                                    self.parent.arms:setArmState(0, 0)
+                                    self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "OPENED", 36, true)
+                                    self.costume.costumes[1].shootTick = 0
+                                elseif self.costume.costumes[1].shootTick == 36 then
+                                    if self.parent.gun.currentGunPosition == "RIGHT" then
+                                        self.parent.arms:setArmState(5, 6)
+                                    elseif self.parent.gun.currentGunPosition == "LEFT" then
+                                        self.parent.arms:setArmState(6, 5)
+                                    else
+                                        self.parent.arms:setArmState(4, 4)
+                                    end
+                                    self.costume.costumes[1].shootTick = -1
+                                end
                                 self.costume.costumes[1].tankTick = self.costume.costumes[1].tankTick + 1
                                 self.costume.costumes[1].isEngineActivePrev = isEngineActive
+                                self.costume.costumes[1].shootTick = self.costume.costumes[1].shootTick >= 0 and self.costume.costumes[1].shootTick + 1 or -1
                             end
                         end, "tank_tick")
 
@@ -1173,6 +1189,9 @@ BlueArchiveCharacter = {
                                 else
                                     self.parent.cameraManager.setCameraPivot(vectors.rotateAroundAxis(bodyYaw * -1, -0.85, 0.5 + heightOffset, 1.1, 0, 1, 0))
                                     renderer:setEyeOffset(vectors.rotateAroundAxis(bodyYaw * -1, -0.85, 1, 1.1 + heightOffset, 0, 1, 0))
+                                end
+                                if self.costume.costumes[1].shootTick >= 0 then
+                                    models.models.main.Avatar:setPos(vectors.rotateAroundAxis(bodyYaw * -1 + 180, models.models.main.TankShootAnimAnchor:getAnimPos(), 0, 1, 0):add(models.models.main.Avatar:getPos()))
                                 end
                             end
                         end, "tank_render")
@@ -1199,6 +1218,7 @@ BlueArchiveCharacter = {
                             self.parent.arms:setArmState(0, 0)
                         end
                         self.costume.costumes[1].tankTick = 0
+                        self.costume.costumes[1].shootTick = -1
                     end
                 end
                 self.costume.costumes[1].isRidingTankPrev = self.costume.costumes[1].isRidingTank
