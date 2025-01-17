@@ -819,6 +819,12 @@ BlueArchiveCharacter = {
                             end
                         end
 
+                        if tick < 27 or tick >= 154 then
+                            for _, modelPart in ipairs({models.models.ex_skill_2.Tank.RightCrawler.RightCrawlerBelt, models.models.ex_skill_2.Tank.LeftCrawler.LeftCrawlerBelt}) do
+                                modelPart:setUVPixels(0, (tick % 2))
+                            end
+                        end
+
                         if tick < 16 and tick % 2 == 0 then
                             local soundPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Tank)
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.piston.extend"), soundPos, 0.25, 0.2)
@@ -890,7 +896,7 @@ BlueArchiveCharacter = {
             };
 
             callbacks = {
-                onArmorChange = function (self, parts, isVisible)
+                onArmorChange = function (_, parts, isVisible)
                     if parts == "HELMET" then
                         if isVisible then
                             models.models.main.Avatar.Head.Hat:setVisible(false)
