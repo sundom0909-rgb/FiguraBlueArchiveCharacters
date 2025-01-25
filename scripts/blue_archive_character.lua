@@ -1306,6 +1306,7 @@ BlueArchiveCharacter = {
                     for _, modelPart in ipairs({models.models.main.Avatar.Head.CMaidH, models.models.main.Avatar.UpperBody.Body.CMaidB}) do
                         modelPart:setVisible(false)
                     end
+                    self.costume.costumes[2].shouldAdjustLegsPrev = false
                 end;
 
                 onArmorChange = function (self, parts, isVisible)
