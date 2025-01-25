@@ -1145,6 +1145,7 @@ BlueArchiveCharacter = {
         end)
 
         avatar:store("FBAC_Iroha", true)
+        avatar:store("shouldReplaceVehicleModels", false)
     end;
 }
 
