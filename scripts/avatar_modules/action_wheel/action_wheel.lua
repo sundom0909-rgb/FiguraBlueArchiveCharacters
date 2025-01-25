@@ -186,7 +186,6 @@ ActionWheel = {
                 if self.parent.characterData.actionWheel.isVehicleOptionEnabled then
                     pings.actionWheelSetShouldReplaceVehicleModels(true)
                     action:setHoverColor(0.33, 1, 0.33)
-                    avatar:store("shouldReplaceVehicleModels", true)
                     self.parent.config:saveConfig("PRIVATE", "replaceVehicleModels", true)
                 else
                     print(self.parent.locale:getLocale("action_wheel.main.action_6.unavailable"))
@@ -195,7 +194,6 @@ ActionWheel = {
             end):setOnUntoggle(function (_, action)
                 pings.actionWheelSetShouldReplaceVehicleModels(false)
                 action:setHoverColor(1, 0.33, 0.33)
-                avatar:store("shouldReplaceVehicleModels", false)
                 self.parent.config:saveConfig("PRIVATE", "replaceVehicleModels", false)
             end)
             if not self.parent.characterData.actionWheel.isVehicleOptionEnabled then
@@ -207,7 +205,6 @@ ActionWheel = {
                 local action = self.mainPage:getAction(6)
                 action:setToggled(true)
                 action:setHoverColor(0.33, 1, 0.33)
-                avatar:store("shouldReplaceVehicleModels", true)
             end
 
             --アクション7. アップデートの確認
@@ -319,4 +316,5 @@ end
 ---@param enabled boolean 乗り物モデルの置き換えを有効化するかどうか
 function pings.actionWheelSetShouldReplaceVehicleModels(enabled)
     AvatarInstance.actionWheel.shouldReplaceVehicleModels = enabled
+    avatar:store("shouldReplaceVehicleModels", enabled)
 end
