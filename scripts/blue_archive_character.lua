@@ -1159,7 +1159,9 @@ BlueArchiveCharacter = {
                 self.costume.costumes[1].isRidingTank = false
                 if vehicle ~= nil then
                     local passengers = vehicle:getPassengers()
-                    self.costume.costumes[1].isRidingTank = vehicle:getType() == "minecraft:camel" and passengers[1]:hasAvatar() and world.avatarVars()[passengers[1]:getUUID()].FBAC_Iroha ~= nil
+                    local irohaUUID = passengers[1]:getUUID()
+                    local avatarVars = world.avatarVars()
+                    self.costume.costumes[1].isRidingTank = vehicle:getType() == "minecraft:camel" and passengers[1]:hasAvatar() and avatarVars[irohaUUID].FBAC_Iroha ~= nil and avatarVars[irohaUUID].shouldReplaceVehicleModels
                 end
                 if self.costume.costumes[1].isRidingTank ~= self.costume.costumes[1].isRidingTankPrev then
                     if self.costume.costumes[1].isRidingTank then
