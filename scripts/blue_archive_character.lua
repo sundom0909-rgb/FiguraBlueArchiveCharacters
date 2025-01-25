@@ -1129,6 +1129,81 @@ BlueArchiveCharacter = {
                         };
                     };
                 };
+
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.BackRibbon.BackRibbonBottom};
+
+                    x = {
+                        vertical = {
+                            min = -150;
+                            neutral = 0;
+                            max = 0;
+
+                            bodyX = {
+                                multiplayer = -80;
+                                min = -65;
+                                max = 0;
+                            };
+
+                            bodyY = {
+                                multiplayer = 160;
+                                min = -150;
+                                max = 0;
+                            };
+
+                            bodyRot = {
+                                multiplayer = 0.1;
+                                min = -65;
+                                max = 0;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.BackRibbon.BackRibbonBottom.BackRibbonBottomRight};
+
+                    z = {
+                        vertical = {
+                            min = -85;
+                            neutral = 0;
+                            max = 70;
+
+                            bodyZ = {
+                                multiplayer = -80;
+                                min = -85;
+                                max = 70;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.BackRibbon.BackRibbonBottom.BackRibbonBottomLeft};
+
+                    z = {
+                        vertical = {
+                            min = -70;
+                            neutral = 0;
+                            max = 85;
+
+                            bodyZ = {
+                                multiplayer = -80;
+                                min = -70;
+                                max = 85;
+                            };
+                        };
+                    };
+                };
+            };
+
+            callbacks = {
+                onPhysicPerformed = function (_, model)
+                    if model == models.models.main.Avatar.UpperBody.Body.BackRibbon.BackRibbonBottom.BackRibbonBottomRight or model == models.models.main.Avatar.UpperBody.Body.BackRibbon.BackRibbonBottom.BackRibbonBottomLeft then
+                        model:setOffsetPivot(model:getRot().z < 0 and 1 or 0, 0, 0)
+                    end
+                end;
             };
         }
 
