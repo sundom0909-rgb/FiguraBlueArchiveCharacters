@@ -431,7 +431,154 @@ BlueArchiveCharacter = {
 
         instance.physics = {
             physicData = {
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.Hairs.BackHair},
 
+                    x = {
+                        vertical = {
+                            min = -150;
+                            neutral = -10;
+                            max = -10;
+
+                            bodyX = {
+                                multiplayer = -80;
+                                min = -90;
+                                max = -10;
+                            };
+
+                            bodyY = {
+                                multiplayer = 80;
+                                min = -150;
+                                max = -10;
+                            };
+
+                            bodyRot = {
+                                multiplayer = 0.05;
+                                min = -90;
+                                max = -10;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -90;
+                            neutral = -10;
+                            max = -10;
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.Hairs.FrontHair};
+
+                    x = {
+                        vertical = {
+                            min = 5;
+                            neutral = 5;
+                            max = 150;
+                            sneakOffset = 30;
+
+                            bodyX = {
+                                multiplayer = -80;
+                                min = 5;
+                                max = 90;
+                            };
+
+                            bodyY = {
+                                multiplayer = -80;
+                                min = 5;
+                                max = 150;
+                            };
+
+                            bodyRot = {
+                                multiplayer = -0.05;
+                                min = 5;
+                                max = 90;
+                            };
+                        };
+
+                        horizontal = {
+                            min = 5;
+                            neutral = 90;
+                            max = 150;
+
+                            bodyX = {
+                                multiplayer = -80;
+                                min = 5;
+                                max = 150;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.Tail};
+
+                    x = {
+                        vertical = {
+                            min = -70;
+                            neutral = 60;
+                            max = 60;
+                            sneakOffset = 30;
+
+                            bodyX = {
+                                multiplayer = -80;
+                                min = 0;
+                                max = 60;
+                            };
+
+                            bodyY = {
+                                multiplayer = 80;
+                                min = -70;
+                                max = 60;
+                            };
+
+                            bodyRot = {
+                                multiplayer = 0.05;
+                                min = 0;
+                                max = 60;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -70;
+                            neutral = 0;
+                            max = 60;
+                            sneakOffset = 30;
+
+                            bodyX = {
+                                multiplayer = 160;
+                                min = -70;
+                                max = 60;
+                            };
+                        };
+                    };
+
+                    y = {
+                        vertical = {
+                            min = -50;
+                            neutral = 0;
+                            max = 50;
+
+                            bodyZ = {
+                                multiplayer = -160;
+                                min = -50;
+                                max = 50;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -50;
+                            neutral = 0;
+                            max = 50;
+
+                            bodyRot = {
+                                multiplayer = 0.05;
+                                min = -50;
+                                max = 50;
+                            };
+                        };
+                    };
+                };
             };
         }
 
@@ -455,5 +602,26 @@ BlueArchiveCharacter = {
 
         --生徒固有初期化処理
         --Player APIにアクセスする場合は、ENTITY_INIT後に実行されるようにする必要がある。
+
+        events.RENDER:register(function (_, context)
+            if context == "FIRST_PERSON" then
+                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve:setRot(0, 0, -60)
+                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve:setOffsetPivot(1.5, 0, 0)
+                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve:setRot(0, 0, 60)
+                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve:setOffsetPivot(-1.5, 0, 0)
+            elseif self.parent.exSkill.animationCount == -1 then
+                local rightArmRot = math.clamp(((models.models.main.Avatar.UpperBody.Arms.RightArm:getParentType() == "RightArm" and not (context == "PAPERDOLL" and self.parent.gun.currentGunPosition ~= "NONE")) and vanilla_model.RIGHT_ARM:getOriginRot().x or 0) + models.models.main.Avatar.UpperBody.Arms.RightArm:getTrueRot().x, -60, 60)
+                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve:setRot(rightArmRot * -1, 0, 0)
+                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve:setOffsetPivot(0, 0, rightArmRot < 0 and 4 or 0)
+                local leftArmRot = math.clamp(((models.models.main.Avatar.UpperBody.Arms.LeftArm:getParentType() == "LeftArm" and not (context == "PAPERDOLL" and self.parent.gun.currentGunPosition ~= "NONE")) and vanilla_model.LEFT_ARM:getOriginRot().x or 0) + models.models.main.Avatar.UpperBody.Arms.LeftArm:getTrueRot().x, -60, 60)
+                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve:setRot(leftArmRot * -1, 0, 0)
+                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve:setOffsetPivot(0, 0, leftArmRot < 0 and 4 or 0)
+            else
+                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve:setRot()
+                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve:setOffsetPivot(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve:getAnimRot().x >= 0 and 4 or 0)
+                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve:setRot()
+                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve:setOffsetPivot(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve:getAnimRot().x >= 0 and 4 or 0)
+            end
+        end)
     end;
 }

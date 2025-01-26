@@ -5809,6 +5809,7 @@
 								{
 									"name": "Tail",
 									"origin": [0, 14.5, 2],
+									"rotation": [60, 0, 0],
 									"color": 0,
 									"uuid": "76795d2b-406c-9cdc-d4c7-a4bfd81dd5d0",
 									"export": true,
@@ -5876,7 +5877,7 @@
 												"7bce2f2c-e263-5125-3de2-0fa30b35a51c",
 												{
 													"name": "RightSleeve",
-													"origin": [5, 16, 2],
+													"origin": [5.5, 12, -2],
 													"color": 0,
 													"uuid": "72952684-b746-d240-c821-786e8da1e217",
 													"export": true,
@@ -5938,7 +5939,7 @@
 												"414d4970-b84d-654b-8d34-c8c004ffcab8",
 												{
 													"name": "LeftSleeve",
-													"origin": [-5, 16, 2],
+													"origin": [-5.5, 12, -2],
 													"color": 0,
 													"uuid": "9fe535e4-a541-d9c7-035d-8b08d5fea90d",
 													"export": true,
@@ -6177,7 +6178,7 @@
 			"override": true,
 			"length": 1.55,
 			"snapping": 20,
-			"selected": true,
+			"selected": false,
 			"anim_time_update": "",
 			"blend_weight": "",
 			"start_delay": "",
