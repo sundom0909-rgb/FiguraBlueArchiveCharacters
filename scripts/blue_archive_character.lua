@@ -415,6 +415,20 @@ BlueArchiveCharacter = {
 
         instance.headBlock = {
             includeModels = {models.models.main.Avatar.UpperBody.Body.Hairs};
+
+            callbacks = {
+                onBeforeModelCopy = function ()
+                    if models.models.main.Avatar.Head.Allay ~= nil then
+                        models.models.main.Avatar.Head.Allay:setVisible(false)
+                    end
+                end;
+
+                onAfterModelCopy = function ()
+                    if models.models.main.Avatar.Head.Allay ~= nil then
+                        models.models.main.Avatar.Head.Allay:setVisible(true)
+                    end
+                end;
+            };
         }
 
         instance.portrait = {

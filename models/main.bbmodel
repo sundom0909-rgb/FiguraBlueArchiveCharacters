@@ -5059,7 +5059,7 @@
 							"uuid": "db381b6c-e0d3-6ca8-6433-4371d36cc6c6",
 							"export": true,
 							"mirror_uv": false,
-							"isOpen": true,
+							"isOpen": false,
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
@@ -5117,7 +5117,7 @@
 							"uuid": "e8809cb5-a507-86d8-da91-c79b1d4d233e",
 							"export": true,
 							"mirror_uv": false,
-							"isOpen": true,
+							"isOpen": false,
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
@@ -5170,7 +5170,7 @@
 							"uuid": "e6ecdbb9-5929-f091-d8b5-bc8c41f9ea11",
 							"export": true,
 							"mirror_uv": false,
-							"isOpen": true,
+							"isOpen": false,
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
@@ -5291,6 +5291,19 @@
 									]
 								}
 							]
+						},
+						{
+							"name": "AllayAnchor",
+							"origin": [0, 32, 3],
+							"color": 0,
+							"uuid": "7d35009a-d757-1740-1126-72d9d43df2a1",
+							"export": true,
+							"mirror_uv": false,
+							"isOpen": true,
+							"locked": false,
+							"visibility": true,
+							"autouv": 0,
+							"children": []
 						}
 					]
 				},
