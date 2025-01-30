@@ -314,25 +314,25 @@ BlueArchiveCharacter = {
         }
 
         instance.gun = {
-            scale = 1.2;
+            scale = 0.5;
 
             gunPosition = {
                 hold = {
                     type = "NORMAL";
+
+                    firstPersonPos = {
+                        right = vectors.vec3(-0.5, -1, -3);
+                        left = vectors.vec3(0.5, -1, -3);
+                    };
+
+                    thirdPersonPos = {
+                        right = vectors.vec3(0, -1, -5);
+                        left = vectors.vec3(0, -1, -5);
+                    };
                 };
 
                 put = {
-                    type = "BODY";
-
-                    pos = {
-                        right = vectors.vec3(4.5, -3, 4);
-                        left = vectors.vec3(-4.5, -3, 4);
-                    };
-
-                    rot = {
-                        right = vectors.vec3(-90, 0, 0);
-                        left = vectors.vec3(-90, 0, 0);
-                    };
+                    type = "HIDDEN";
                 };
             };
 
