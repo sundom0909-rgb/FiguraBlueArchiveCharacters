@@ -357,15 +357,15 @@ BlueArchiveCharacter = {
         instance.exSkill = {
             {
                 name = {
-                    en_us = "Ex Skill name";
-                    ja_jp = "Exスキル名";
+                    en_us = "Garden of Slumber";
+                    ja_jp = "まどろみの庭";
                 };
 
                 formationType = "STRIKER";
 
                 models = {};
 
-                animations = {"main"};
+                animations = {"main", "ex_skill_1"};
 
                 camera = {
                     start = {
@@ -379,17 +379,70 @@ BlueArchiveCharacter = {
                     };
                 };
 
-                --[[
                 callbacks = {
-                    --Exスキルアニメーションを任意の位置で一時停止させるコードスニペット。デバッグ用。
-                    --"<>"内を適切な数値に置き換えること。
+                    onPreAnimation = function (self)
+                        if not self.exSkill[1].init then
+                            if models.models.main.Avatar.Head.Allay ~= nil then
+                                models.models.main.Avatar.Head.Allay:moveTo(models.models.ex_skill_1)
+                                models.models.main.Avatar.Head:removeChild(models.models.ex_skill_1.Allay)
+                            end
+                            for i = 2, 7 do
+                                models.models.ex_skill_1.AnimAllays["Allay"..i]["Allay"..i.."Head"]:addChild(models.models.ex_skill_1.Allay.AllayHead.AllayHead:copy("Allay"..i.."Head"))
+                                for j = 1, 2 do
+                                    models.models.ex_skill_1.AnimAllays["Allay"..i]["Allay"..i.."Body"]:addChild(models.models.ex_skill_1.Allay.AllayBody["AllayBody"..j]:copy("Allay"..i.."Body"..j))
+                                end
+                                models.models.ex_skill_1.AnimAllays["Allay"..i]["Allay"..i.."Body"]["Allay"..i.."RA"]:addChild(models.models.ex_skill_1.Allay.AllayBody.AllayRA.AllayRA:copy("Allay"..i.."RA"))
+                                models.models.ex_skill_1.AnimAllays["Allay"..i]["Allay"..i.."Body"]["Allay"..i.."LA"]:addChild(models.models.ex_skill_1.Allay.AllayBody.AllayLA.AllayLA:copy("Allay"..i.."LA"))
+                                models.models.ex_skill_1.AnimAllays["Allay"..i]["Allay"..i.."Body"]["Allay"..i.."RightWing"]:addChild(models.models.ex_skill_1.Allay.AllayBody.AllayRightWing.AllayRightWing:copy("Allay"..i.."RightWing"))
+                                models.models.ex_skill_1.AnimAllays["Allay"..i]["Allay"..i.."Body"]["Allay"..i.."LeftWing"]:addChild(models.models.ex_skill_1.Allay.AllayBody.AllayLeftWing.AllayLeftWing:copy("Allay"..i.."LeftWing"))
+                            end
+                            models.models.ex_skill_1.AnimAllays:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/allay/allay.png")
+                            self.exSkill[1].init= true
+                        end
+                    end;
+
                     onAnimationTick = function (self, tick)
+                        --[[
                         for _, name in ipairs(self.exSkill[<ex_skill_index>]) do
                             animations["models."..name]["ex_skill_<ex_skill_index>"]:pause()
                         end
+                        ]]
+                        if tick == 38 then
+                            for _, modelPart in ipairs({models.models.ex_skill_1.Bench, models.models.ex_skill_1.Allay, models.models.ex_skill_1.AnimAllays, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Book, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Cushion}) do
+                                modelPart:setVisible(true)
+                            end
+                        elseif tick == 114 then
+                            models.models.ex_skill_1.Allay:setVisible(false)
+                            for i = 2, 7 do
+                                models.models.ex_skill_1.AnimAllays["Allay"..i]:setVisible(false)
+                            end
+                        elseif tick == 153 then
+                            for _, modelPart in ipairs({models.models.ex_skill_1.Allay, models.models.ex_skill_1.AnimAllays.Allay2}) do
+                                modelPart:setVisible(true)
+                            end
+                        elseif tick == 160 then
+                            models.models.ex_skill_1.AnimAllays.Allay3:setVisible(true)
+                        end
+                    end;
+
+                    onPostAnimation = function (self, forcedStop)
+                        for i = 4, 7 do
+                            models.models.ex_skill_1.AnimAllays["Allay"..i]:setVisible(true)
+                        end
+                        for _, modelPart in ipairs({models.models.ex_skill_1.Bench, models.models.ex_skill_1.AnimAllays, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Book, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Cushion}) do
+                            modelPart:setVisible(false)
+                        end
+                        if forcedStop then
+                            for i = 2, 3 do
+                                models.models.ex_skill_1.AnimAllays["Allay"..i]:setVisible(true)
+                            end
+                        end
                     end;
                 };
-                ]]
+
+                ---このExスキルの初期化処理が行われたかどうか。
+                ---@type boolean
+                init = false;
             };
         }
 

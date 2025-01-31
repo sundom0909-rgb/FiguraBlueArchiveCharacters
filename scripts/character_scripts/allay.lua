@@ -134,9 +134,11 @@ Allay = {
                     for _, animName in ipairs({"allay_fly_start", "allay_fly_loop"}) do
                         animations["models.ex_skill_1"][animName]:setSpeed()
                     end
-                    models.models.main.Avatar.Head.Allay:moveTo(models.models.ex_skill_1)
-                    models.models.main.Avatar.Head:removeChild(models.models.ex_skill_1.Allay)
-                    models.models.ex_skill_1.Allay:setVisible(true)
+                    if models.models.main.Avatar.Head.Allay ~= nil then
+                        models.models.main.Avatar.Head.Allay:moveTo(models.models.ex_skill_1)
+                        models.models.main.Avatar.Head:removeChild(models.models.ex_skill_1.Allay)
+                    end
+                    models.models.ex_skill_1.Allay:setVisible(false)
                     models.models.ex_skill_1.Allay:setParentType("None")
                     models.models.ex_skill_1.Allay:setPos()
                     models.models.ex_skill_1.Allay:setRot()
