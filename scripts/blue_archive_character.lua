@@ -5,6 +5,7 @@
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
 ---| "CENTER" # 少し反対側を見る目
 ---| "NARROW" # 少し閉じた目
+---| "CLOSED2" # 閉じた目2
 
 ---@alias BlueArchiveCharacter.LeftEyeTextures
 ---| "NORMAL" # 通常
@@ -13,12 +14,15 @@
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
 ---| "CENTER" # 少し反対側を見る目
 ---| "NARROW_CENTER" # 少し閉じつつ反対側を見る目
+---| "CLOSED2" # 閉じた目2
 
 ---@alias BlueArchiveCharacter.MouthTextures
 ---| "NORMAL" # 通常
 ---| "CLOSED" # 閉じた口
 ---| "SMALL" # 小さく開いた口
 ---| "OPENED" # 開いた口
+---| "SMILE" # にっこり
+---| "ANXIOUS" # への口
 
 ---@alias BlueArchiveCharacter.GunHoldType
 ---| "NORMAL" # バニラの弓やクロスボウの構え方と同じ
@@ -300,6 +304,7 @@ BlueArchiveCharacter = {
                 CLOSED = vectors.vec2(4, 0); --必須
                 CENTER = vectors.vec2(5, 0);
                 NARROW = vectors.vec2(7, 0);
+                CLOSED2 = vectors.vec2(9, 0);
             };
 
             leftEye = {
@@ -309,12 +314,15 @@ BlueArchiveCharacter = {
                 CLOSED = vectors.vec2(3, 0); --必須
                 CENTER = vectors.vec2(5, 0);
                 NARROW_CENTER = vectors.vec2(7, 0);
+                CLOSED2 = vectors.vec2(8, 0);
             };
 
             mouth = {
                 CLOSED = vectors.vec2(0, 0);
                 SMALL = vectors.vec2(1, 0);
                 OPENED = vectors.vec2(2, 0);
+                SMILE = vectors.vec2(3, 0);
+                ANXIOUS = vectors.vec2(3, 1);
             };
         }
 
@@ -650,7 +658,29 @@ BlueArchiveCharacter = {
         }
 
         instance.bubble = {
+            callbacks = {
+                onPlay = function(self, type, duration)
+                    if duration > 0 then
+                        if type == "GOOD" then
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", duration, true)
+                        elseif type == "HEART" then
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", duration, true)
+                        elseif type == "NOTE" then
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", duration, true)
+                        elseif type == "QUESTION" then
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "ANXIOUS", duration, true)
+                        elseif type == "SWEAT" then
+                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", duration, true)
+                        end
+                    end
+                end;
 
+                onStop = function(self, _, forcedStop)
+                    if forcedStop then
+                        self.parent.faceParts:resetEmotion()
+                    end
+                end;
+            };
         }
 
         instance.headBlock = {
