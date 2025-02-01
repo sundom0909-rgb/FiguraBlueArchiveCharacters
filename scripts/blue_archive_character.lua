@@ -387,8 +387,8 @@ BlueArchiveCharacter = {
                     };
 
                     fin = {
-                        rot = vectors.vec3(-2.5, -115, 0);
-                        pos = vectors.vec3(29.7, 23.3, 59);
+                        rot = vectors.vec3(-2.5, 65, 0);
+                        pos = vectors.vec3(-29.7, 23.3, -59);
                     };
                 };
 
