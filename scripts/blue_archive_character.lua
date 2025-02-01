@@ -545,7 +545,7 @@ BlueArchiveCharacter = {
                         particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:cherry_leaves"), player:getPos():add(vectors.rotateAroundAxis( player:getBodyYaw() * -1, 3, 5, -4, 0, 1, 0)):add(math.random() * 5 - 2.5, 0, math.random() * 5 - 2.5))
                     end;
 
-                    onPostAnimation = function (self, forcedStop)
+                    onPostAnimation = function (_, forcedStop)
                         if host:isHost() then
                             events.RENDER:remove("ex_skill_1_render")
                             models.models.ex_skill_1.Gui.Frame:setUVPixels()
@@ -676,7 +676,38 @@ BlueArchiveCharacter = {
         }
 
         instance.deathAnimation = {
+            callbacks = {
+                onBeforeModelCopy = function ()
+                    if models.models.main.Avatar.Head.Allay ~= nil then
+                        models.models.main.Avatar.Head.Allay:setVisible(false)
+                    end
+                end;
 
+                onAfterModelCopy = function ()
+                    if models.models.main.Avatar.Head.Allay ~= nil then
+                        models.models.main.Avatar.Head.Allay:setVisible(true)
+                    end
+                end;
+
+                onPhase1 = function (_, dummyAvatar)
+                    dummyAvatar.UpperBody.Body.Hairs.FrontHair:setRot(35, 0, 0)
+                    dummyAvatar.UpperBody.Body.Hairs.BackHair:setRot()
+                    dummyAvatar.UpperBody.Body.Skirt:setRot(45, 0, 0)
+                    dummyAvatar.UpperBody.Body.Tail:setRot(10, 0, 0)
+                    for _, modelPart in ipairs({dummyAvatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve, dummyAvatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve}) do
+                        modelPart:setRot()
+                        modelPart:setOffsetPivot()
+                    end
+                end;
+
+                onPhase2 = function (_, dummyAvatar, costume)
+                    dummyAvatar.UpperBody.Body.Hairs.FrontHair:setRot(15, 0, 0)
+                    dummyAvatar.UpperBody.Body.Hairs.BackHair:setRot(-20, 0, 0)
+                    dummyAvatar.UpperBody.Body.Skirt:setRot(25, 0, 0)
+                    dummyAvatar.UpperBody.Body.Tail:setRot(80, 0, -10)
+                    dummyAvatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve:setRot(-40, 0, 0)
+                end;
+            };
         }
 
         instance.actionWheel = {
