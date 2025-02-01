@@ -376,7 +376,7 @@ BlueArchiveCharacter = {
 
                 formationType = "STRIKER";
 
-                models = {models.models.main.Avatar.Head.NoticeEffects, models.models.ex_skill_1.Gui};
+                models = {models.models.ex_skill_1.Bench, models.models.main.Avatar.Head.NoticeEffects, models.models.ex_skill_1.Gui};
 
                 animations = {"main", "ex_skill_1"};
 
@@ -480,7 +480,7 @@ BlueArchiveCharacter = {
                             if host:isHost() then
                                 models.models.ex_skill_1.WindowAnchor:setVisible(false)
                             end
-                            for _, modelPart in ipairs({models.models.ex_skill_1.Bench, models.models.ex_skill_1.Allay, models.models.ex_skill_1.AnimAllays, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Book, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Cushion}) do
+                            for _, modelPart in ipairs({models.models.ex_skill_1.Allay, models.models.ex_skill_1.AnimAllays, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Book, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Cushion}) do
                                 modelPart:setVisible(true)
                             end
                             self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 65, true)
@@ -515,7 +515,7 @@ BlueArchiveCharacter = {
                             end
                             local bodyYaw = player:getBodyYaw()
                             for _ = 1, 20 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head):add(0, 0.25, 0)):setVelocity(vectors.rotateAroundAxis(math.random() * 120 - 60, vectors.rotateAroundAxis(bodyYaw * -1 - 30 + math.random() * 300, 0, 0, math.random() * 0.05 + 0.05, 0, 1, 0), 1, 0, 0)):setGravity(0):setLifetime(70)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head):add(0, 0.25, 0)):setVelocity(vectors.rotateAroundAxis(math.random() * 120 - 60, vectors.rotateAroundAxis(bodyYaw * -1 + 30 - math.random() * 240, 0, 0, math.random() * 0.05 + 0.05, 0, 1, 0), 1, 0, 0)):setGravity(0):setLifetime(70)
                             end
                         elseif tick == 151 then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMALL", 2, true)
@@ -542,7 +542,7 @@ BlueArchiveCharacter = {
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.allay.ambient_with_item"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Bench), 0.15, 1)
                         end
 
-                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:cherry_leaves"), player:getPos():add(vectors.rotateAroundAxis( player:getBodyYaw() * -1, 3, 5, -4, 0, 1, 0)):add(math.random() * 5 - 2.5, 0, math.random() * 5 - 2.5))
+                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:cherry_leaves"), player:getPos():add(vectors.rotateAroundAxis( player:getBodyYaw() * -1, -3, 5, 4, 0, 1, 0)):add(math.random() * 5 - 2.5, 0, math.random() * 5 - 2.5))
                     end;
 
                     onPostAnimation = function (_, forcedStop)
@@ -553,7 +553,7 @@ BlueArchiveCharacter = {
                         for i = 4, 7 do
                             models.models.ex_skill_1.AnimAllays["Allay"..i]:setVisible(true)
                         end
-                        for _, modelPart in ipairs({models.models.ex_skill_1.Bench, models.models.ex_skill_1.AnimAllays, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Book, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Cushion}) do
+                        for _, modelPart in ipairs({models.models.ex_skill_1.AnimAllays, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Book, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Cushion}) do
                             modelPart:setVisible(false)
                         end
                         for i = 1, 3 do
