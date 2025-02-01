@@ -67,7 +67,7 @@ Allay = {
                                         self.nextRot = self.currentRot
                                         models.models.main.Avatar.Head.Allay:setRot(0, player:getBodyYaw() * -1 + 180, 0)
                                         events.RENDER:register(function (delta)
-                                            if not client:isPaused() and self.isAllayEnabled then
+                                            if not client:isPaused() and self.isAllayEnabled and models.models.main.Avatar.Head.Allay ~= nil then
                                                 local pos = self.nextPos:copy():sub(self.currentPos):scale(delta):add(self.currentPos)
                                                 local playerPos = player:getPos(delta):add(0, 1.5, 0)
                                                 local headRot = 0
