@@ -168,6 +168,12 @@
 		"models.models.ex_skill_1.WindowAnchor": {
 			"visible": false
 		},
+		"models.models.ex_skill_1.NoticeEffects": {
+			"moveTo": "models.models.main.Avatar.Head",
+			"parentType": "Camera",
+			"primaryRenderType": "EMISSIVE_SOLID",
+			"visible": false
+		},
 		"models.models.bubble.Camera.AvatarBubble": {
 			"visible": false
 		},

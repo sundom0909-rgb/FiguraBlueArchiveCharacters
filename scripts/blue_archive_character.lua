@@ -376,7 +376,7 @@ BlueArchiveCharacter = {
 
                 formationType = "STRIKER";
 
-                models = {};
+                models = {models.models.main.Avatar.Head.NoticeEffects};
 
                 animations = {"main", "ex_skill_1"};
 
@@ -494,6 +494,9 @@ BlueArchiveCharacter = {
                         elseif tick == 133 then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMALL", 2, true)
                         elseif tick == 135 then
+                            for i = 1, 3 do
+                                models.models.main.Avatar.Head.NoticeEffects["NoticeEffect"..i]["NoticeEffect"..i.."Pivot"]:setOffsetPivot(-4, 0, 0)
+                            end
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMALL", 16, true)
                         elseif tick == 151 then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMALL", 2, true)
@@ -522,6 +525,9 @@ BlueArchiveCharacter = {
                         end
                         for _, modelPart in ipairs({models.models.ex_skill_1.Bench, models.models.ex_skill_1.AnimAllays, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Book, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Cushion}) do
                             modelPart:setVisible(false)
+                        end
+                        for i = 1, 3 do
+                            models.models.main.Avatar.Head.NoticeEffects["NoticeEffect"..i]["NoticeEffect"..i.."Pivot"]:setOffsetPivot()
                         end
                         if forcedStop then
                             for i = 2, 3 do
