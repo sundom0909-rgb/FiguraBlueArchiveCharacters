@@ -369,13 +369,13 @@ BlueArchiveCharacter = {
 
                 camera = {
                     start = {
-                        rot = vectors.vec3(0, 180, 0);
-                        pos = vectors.vec3(0, 28, -64);
+                        rot = vectors.vec3(25, -25, 0);
+                        pos = vectors.vec3(-39.3, 53.3, 79);
                     };
 
                     fin = {
-                        rot = vectors.vec3(0, 180, 0);
-                        pos = vectors.vec3(0, 28, -64);
+                        rot = vectors.vec3(-2.5, -115, 0);
+                        pos = vectors.vec3(29.7, 23.3, 59);
                     };
                 };
 
@@ -402,11 +402,6 @@ BlueArchiveCharacter = {
                     end;
 
                     onAnimationTick = function (self, tick)
-                        --[[
-                        for _, name in ipairs(self.exSkill[<ex_skill_index>]) do
-                            animations["models."..name]["ex_skill_<ex_skill_index>"]:pause()
-                        end
-                        ]]
                         if tick == 38 then
                             for _, modelPart in ipairs({models.models.ex_skill_1.Bench, models.models.ex_skill_1.Allay, models.models.ex_skill_1.AnimAllays, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Book, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Cushion}) do
                                 modelPart:setVisible(true)

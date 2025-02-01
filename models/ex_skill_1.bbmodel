@@ -2111,7 +2111,7 @@
 					"uuid": "0aabd134-e473-adcb-460a-4e21bd2e1112",
 					"export": true,
 					"mirror_uv": false,
-					"isOpen": false,
+					"isOpen": true,
 					"locked": false,
 					"visibility": true,
 					"autouv": 0,
@@ -2136,7 +2136,7 @@
 							"uuid": "b6e46415-14d5-9c39-0352-003cc0e871c8",
 							"export": true,
 							"mirror_uv": false,
-							"isOpen": false,
+							"isOpen": true,
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
@@ -5957,9 +5957,9 @@
 							"channel": "rotation",
 							"data_points": [
 								{
-									"x": 29.99999,
-									"y": "62.5",
-									"z": 0.00001
+									"x": -10.61824,
+									"y": 30.88664,
+									"z": -49.68228
 								}
 							],
 							"uuid": "1442cae6-05b4-119f-7f39-7600d01c2dec",
@@ -6280,9 +6280,9 @@
 							"channel": "position",
 							"data_points": [
 								{
-									"x": 49,
+									"x": 47,
 									"y": 18.75,
-									"z": 74.75
+									"z": 74.25
 								}
 							],
 							"uuid": "61c719f5-16c8-2da5-19ba-325f468ebdf8",
@@ -6362,7 +6362,7 @@
 							"channel": "rotation",
 							"data_points": [
 								{
-									"x": "-42.5",
+									"x": -30,
 									"y": 0,
 									"z": 0
 								}
