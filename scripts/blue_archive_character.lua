@@ -3,15 +3,22 @@
 ---| "SURPRISED" # 驚いた目（ダメージを受けたときなど）
 ---| "TIRED" # 疲れた目（死亡アニメーションなど）
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
+---| "CENTER" # 少し反対側を見る目
+---| "NARROW" # 少し閉じた目
 
 ---@alias BlueArchiveCharacter.LeftEyeTextures
 ---| "NORMAL" # 通常
 ---| "SURPRISED" # 驚いた目（ダメージを受けたときなど）
 ---| "TIRED" # 疲れた目（死亡アニメーションなど）
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
+---| "CENTER" # 少し反対側を見る目
+---| "NARROW_CENTER" # 少し閉じつつ反対側を見る目
 
 ---@alias BlueArchiveCharacter.MouthTextures
 ---| "NORMAL" # 通常
+---| "CLOSED" # 閉じた口
+---| "SMALL" # 小さく開いた口
+---| "OPENED" # 開いた口
 
 ---@alias BlueArchiveCharacter.GunHoldType
 ---| "NORMAL" # バニラの弓やクロスボウの構え方と同じ
@@ -291,6 +298,8 @@ BlueArchiveCharacter = {
                 SURPRISED = vectors.vec2(2, 0); --必須
                 TIRED = vectors.vec2(3, 0); --必須
                 CLOSED = vectors.vec2(4, 0); --必須
+                CENTER = vectors.vec2(5, 0);
+                NARROW = vectors.vec2(7, 0);
             };
 
             leftEye = {
@@ -298,10 +307,14 @@ BlueArchiveCharacter = {
                 SURPRISED = vectors.vec2(1, 0); --必須
                 TIRED = vectors.vec2(2, 0); --必須
                 CLOSED = vectors.vec2(3, 0); --必須
+                CENTER = vectors.vec2(5, 0);
+                NARROW_CENTER = vectors.vec2(7, 0);
             };
 
             mouth = {
-
+                CLOSED = vectors.vec2(0, 0);
+                SMALL = vectors.vec2(1, 0);
+                OPENED = vectors.vec2(2, 0);
             };
         }
 
@@ -399,22 +412,43 @@ BlueArchiveCharacter = {
                             models.models.ex_skill_1.AnimAllays:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/allay/allay.png")
                             self.exSkill[1].init= true
                         end
+                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 13, true)
                     end;
 
                     onAnimationTick = function (self, tick)
-                        if tick == 38 then
+                        if tick == 13 then
+                            self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 14, true)
+                        elseif tick == 27 then
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 9, true)
+                        elseif tick == 38 then
                             for _, modelPart in ipairs({models.models.ex_skill_1.Bench, models.models.ex_skill_1.Allay, models.models.ex_skill_1.AnimAllays, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Book, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Cushion}) do
                                 modelPart:setVisible(true)
                             end
+                            self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 65, true)
+                        elseif tick == 103 then
+                            self.parent.faceParts:setEmotion("NORMAL", "CENTER", "CLOSED", 3, true)
+                        elseif tick == 106 then
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "CLOSED", 2, true)
+                        elseif tick == 108 then
+                            self.parent.faceParts:setEmotion("NORMAL", "CENTER", "SMALL", 6, true)
                         elseif tick == 114 then
                             models.models.ex_skill_1.Allay:setVisible(false)
                             for i = 2, 7 do
                                 models.models.ex_skill_1.AnimAllays["Allay"..i]:setVisible(false)
                             end
+                            self.parent.faceParts:setEmotion("CENTER", "NORMAL", "SMALL", 19, true)
+                        elseif tick == 133 then
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMALL", 2, true)
+                        elseif tick == 135 then
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMALL", 16, true)
+                        elseif tick == 151 then
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMALL", 2, true)
                         elseif tick == 153 then
                             for _, modelPart in ipairs({models.models.ex_skill_1.Allay, models.models.ex_skill_1.AnimAllays.Allay2}) do
                                 modelPart:setVisible(true)
                             end
+                            self.parent.faceParts:setEmotion("NARROW", "NARROW_CENTER", "OPENED", 63, true)
+                            --self.parent.faceParts:setEmotion("NORMAL", "CENTER", "OPENED", 63, true)
                         elseif tick == 160 then
                             models.models.ex_skill_1.AnimAllays.Allay3:setVisible(true)
                         end
