@@ -37,7 +37,7 @@ Allay = {
                 if self.isAllayEnabled then
                     --アレイ制御を有効化
                     events.TICK:register(function ()
-                        if not client:isPaused() and self.isAllayEnabled then
+                        if not client:isPaused() and self.isAllayEnabled and models.models.main.Avatar.Head.Allay ~= nil then
                             local playerPose = player:getPose()
                             if (player:getVelocity():length() < 0.001 or player:getVehicle() ~= nil) and playerPose ~= "FALL_FLYING" and playerPose ~= "SWIMMING" and playerPose ~= "SLEEPING" then
                                 if self.perchCount <= 10 and self.perchCount > 0 then
