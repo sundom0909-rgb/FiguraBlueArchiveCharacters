@@ -512,6 +512,8 @@ BlueArchiveCharacter = {
                                 particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.AnimAllays["Allay"..i])):setScale(0.25):setColor(0.25, 1, 1):setGravity(0)
                             end
                         end
+
+                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:cherry_leaves"), player:getPos():add(vectors.rotateAroundAxis( player:getBodyYaw() * -1, 3, 5, -4, 0, 1, 0)):add(math.random() * 5 - 2.5, 0, math.random() * 5 - 2.5))
                     end;
 
                     onPostAnimation = function (self, forcedStop)
