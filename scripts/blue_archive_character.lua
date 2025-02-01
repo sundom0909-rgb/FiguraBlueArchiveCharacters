@@ -376,7 +376,7 @@ BlueArchiveCharacter = {
 
                 formationType = "STRIKER";
 
-                models = {models.models.main.Avatar.Head.NoticeEffects};
+                models = {models.models.main.Avatar.Head.NoticeEffects, models.models.ex_skill_1.Gui};
 
                 animations = {"main", "ex_skill_1"};
 
@@ -460,6 +460,9 @@ BlueArchiveCharacter = {
                         end
                         if host:isHost() then
                             models.models.ex_skill_1.WindowAnchor:setVisible(true)
+                            events.RENDER:register(function ()
+                                models.models.ex_skill_1.Gui.Frame:setOpacity(models.models.ex_skill_1.Gui.FrameOpacity:getAnimScale().x)
+                            end, "ex_skill_1_render")
                         end
                         self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 13, true)
                     end;
@@ -479,6 +482,8 @@ BlueArchiveCharacter = {
                                 modelPart:setVisible(true)
                             end
                             self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 65, true)
+                        elseif tick == 64 and host:isHost() then
+                            models.models.ex_skill_1.Gui.Frame:setScale(client:getScaledWindowSize():augmented(1))
                         elseif tick == 103 then
                             self.parent.faceParts:setEmotion("NORMAL", "CENTER", "CLOSED", 3, true)
                         elseif tick == 106 then
@@ -498,6 +503,14 @@ BlueArchiveCharacter = {
                                 models.models.main.Avatar.Head.NoticeEffects["NoticeEffect"..i]["NoticeEffect"..i.."Pivot"]:setOffsetPivot(-4, 0, 0)
                             end
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMALL", 16, true)
+                        elseif tick == 146 then
+                            if host:isHost() then
+                                models.models.ex_skill_1.Gui.Frame:setUVPixels(16, 0)
+                            end
+                            local bodyYaw = player:getBodyYaw()
+                            for _ = 1, 20 do
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head):add(0, 0.25, 0)):setVelocity(vectors.rotateAroundAxis(math.random() * 120 - 60, vectors.rotateAroundAxis(bodyYaw * -1 - 30 + math.random() * 300, 0, 0, math.random() * 0.05 + 0.05, 0, 1, 0), 1, 0, 0)):setGravity(0):setLifetime(70)
+                            end
                         elseif tick == 151 then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMALL", 2, true)
                         elseif tick == 153 then
@@ -520,6 +533,10 @@ BlueArchiveCharacter = {
                     end;
 
                     onPostAnimation = function (self, forcedStop)
+                        if host:isHost() then
+                            events.RENDER:remove("ex_skill_1_render")
+                            models.models.ex_skill_1.Gui.Frame:setUVPixels()
+                        end
                         for i = 4, 7 do
                             models.models.ex_skill_1.AnimAllays["Allay"..i]:setVisible(true)
                         end
@@ -530,11 +547,11 @@ BlueArchiveCharacter = {
                             models.models.main.Avatar.Head.NoticeEffects["NoticeEffect"..i]["NoticeEffect"..i.."Pivot"]:setOffsetPivot()
                         end
                         if forcedStop then
-                            for i = 2, 3 do
-                                models.models.ex_skill_1.AnimAllays["Allay"..i]:setVisible(true)
-                            end
                             if host:isHost() then
                                 models.models.ex_skill_1.WindowAnchor:setVisible(false)
+                            end
+                            for i = 2, 3 do
+                                models.models.ex_skill_1.AnimAllays["Allay"..i]:setVisible(true)
                             end
                         end
                     end;
