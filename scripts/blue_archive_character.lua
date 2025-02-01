@@ -590,6 +590,63 @@ BlueArchiveCharacter = {
                 };
             };
 
+            callbacks = {
+                onArmorChange = function (self, parts, isVisible)
+                    if parts == "HELMET" and self.parent.allay.perchCount <= 0 and models.models.main.Avatar.Head.Allay ~= nil then
+                        models.models.main.Avatar.Head.Allay:setPos(0, isVisible and 33 or 32, 3)
+                    elseif parts == "CHEST_PLATE" then
+                        if isVisible then
+                            models.models.main.Avatar.UpperBody.Body.Hairs.FrontHair:setPos(0, 0, -1)
+                            models.models.main.Avatar.UpperBody.Body.Hairs.BackHair:setPos(0, 0, 1)
+                        else
+                            for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.Hairs.FrontHair, models.models.main.Avatar.UpperBody.Body.Hairs.BackHair}) do
+                                modelPart:setPos()
+                            end
+                        end
+                    elseif parts == "LEGGINGS" then
+                        if isVisible then
+                            models.models.main.Avatar.UpperBody.Body.Skirt:setVisible(false)
+                            self.physics.physicData[1].x.vertical.neutral = 0
+                            self.physics.physicData[1].x.vertical.max = 0
+                            self.physics.physicData[1].x.vertical.bodyX.max = 0
+                            self.physics.physicData[1].x.vertical.bodyY.max = 0
+                            self.physics.physicData[1].x.vertical.bodyRot.max = 0
+                            self.physics.physicData[1].x.horizontal.neutral = 0
+                            self.physics.physicData[1].x.horizontal.max = 0
+                        else
+                            models.models.main.Avatar.UpperBody.Body.Skirt:setVisible(true)
+                            self.physics.physicData[1].x.vertical.neutral = -10
+                            self.physics.physicData[1].x.vertical.max = -10
+                            self.physics.physicData[1].x.vertical.bodyX.max = -10
+                            self.physics.physicData[1].x.vertical.bodyY.max = -10
+                            self.physics.physicData[1].x.vertical.bodyRot.max = -10
+                            self.physics.physicData[1].x.horizontal.neutral = -10
+                            self.physics.physicData[1].x.horizontal.max = -10
+                        end
+                    end
+
+                    if self.parent.armor.isArmorVisible.chestplate or self.parent.armor.isArmorVisible.leggings then
+                        self.physics.physicData[2].x.vertical.min = 0
+                        self.physics.physicData[2].x.vertical.neutral = 0
+                        self.physics.physicData[2].x.vertical.bodyX.min = 0
+                        self.physics.physicData[2].x.vertical.bodyY.min = 0
+                        self.physics.physicData[2].x.vertical.bodyRot.min = 0
+                        self.physics.physicData[2].x.horizontal.min = 0
+                        self.physics.physicData[2].x.horizontal.neutral = 0
+                        self.physics.physicData[2].x.horizontal.bodyX.min = 0
+
+                    else
+                        self.physics.physicData[2].x.vertical.min = 5
+                        self.physics.physicData[2].x.vertical.neutral = 5
+                        self.physics.physicData[2].x.vertical.bodyX.min = 5
+                        self.physics.physicData[2].x.vertical.bodyY.min = 5
+                        self.physics.physicData[2].x.vertical.bodyRot.min = 5
+                        self.physics.physicData[2].x.horizontal.min = 5
+                        self.physics.physicData[2].x.horizontal.neutral = 5
+                        self.physics.physicData[2].x.horizontal.bodyX.min = 5
+                    end
+                end;
+            };
         }
 
         instance.bubble = {

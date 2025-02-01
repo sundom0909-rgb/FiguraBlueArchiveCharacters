@@ -1,7 +1,7 @@
 ---@class (exact) Allay : AvatarModule お供のアレイを制御するクラス
 ---@field package isAllayEnabled boolean アレイ制御が有効かどうか
 ---@field package wasAllayEnabledPrev boolean 前ティックにアレイ制御が有効だったかどうか
----@field package perchCount integer アレイが頭に止まるまでのカウンター
+---@field public perchCount integer アレイが頭に止まるまでのカウンター
 ---@field package currentPos Vector3 アレイの現在の位置
 ---@field package nextPos Vector3 アレイの次ティックの位置
 ---@field package currentRot number アレイの現在の角度
@@ -49,7 +49,7 @@ Allay = {
                                     animations["models.ex_skill_1"].allay_fly_loop:stop()
                                     animations["models.ex_skill_1"].allay_perch_loop:play()
                                     models.models.main.Avatar.Head.Allay:setParentType("None")
-                                    models.models.main.Avatar.Head.Allay:setPos(0, 32, 3)
+                                    models.models.main.Avatar.Head.Allay:setPos(0, self.parent.armor.isArmorVisible.helmet and 33 or 32, 3)
                                     models.models.main.Avatar.Head.Allay:setRot()
                                 end
                                 self.perchCount = self.perchCount - 1
