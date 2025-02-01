@@ -126,7 +126,7 @@ WhaleFloat = {
                             local lookDir = player:getLookDir()
                             if player:getVelocity():length() < 0.01 and self.lookDirPrev:copy():sub(lookDir):length() == 0 and not player:isSwingingArm() and self.parent.playerUtils.damageStatus == "NONE" and player:getActiveItem().id == "minecraft:air" then
                                 self.whaleFloatAfkCount = self.whaleFloatAfkCount + 1
-                                if self.whaleFloatAfkCount == 60 then
+                                if self.whaleFloatAfkCount == 2400 then
                                     self.isAfk = true
                                     for _, animationModel in ipairs({"models.main", "models.costume_swimsuit", "models.ex_skill_2"}) do
                                         animations[animationModel]["float_afk"]:setSpeed(1)
@@ -134,7 +134,7 @@ WhaleFloat = {
                                     end
                                     self.parent.arms:setArmState(0, 0)
                                     self.parent.physics:disable()
-                                elseif self.whaleFloatAfkCount >= 90 then
+                                elseif self.whaleFloatAfkCount >= 2430 then
                                     self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "YAWN", 1, false)
                                 end
                             else
