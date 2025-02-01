@@ -505,6 +505,13 @@ BlueArchiveCharacter = {
                         elseif tick == 160 then
                             models.models.ex_skill_1.AnimAllays.Allay3:setVisible(true)
                         end
+
+                        if tick >= 101 and tick < 114 then
+                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Allay)):setScale(0.25):setColor(0.25, 1, 1):setGravity(0)
+                            for i = 2, 7 do
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.AnimAllays["Allay"..i])):setScale(0.25):setColor(0.25, 1, 1):setGravity(0)
+                            end
+                        end
                     end;
 
                     onPostAnimation = function (self, forcedStop)
