@@ -410,17 +410,71 @@ BlueArchiveCharacter = {
                                 models.models.ex_skill_1.AnimAllays["Allay"..i]["Allay"..i.."Body"]["Allay"..i.."LeftWing"]:addChild(models.models.ex_skill_1.Allay.AllayBody.AllayLeftWing.AllayLeftWing:copy("Allay"..i.."LeftWing"))
                             end
                             models.models.ex_skill_1.AnimAllays:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/allay/allay.png")
+                            if host:isHost() then
+                                for i = 1, 4 do
+                                    models.models.ex_skill_1.WindowAnchor:newBlock("ex_skill_1_block_"..i):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:smooth_quartz_stairs", "[facing=south]")):setPos((i - 1) * 16 - 32, -40, -32)
+                                end
+                                for i = 1, 2 do
+                                    for j = 1, 4 do
+                                        models.models.ex_skill_1.WindowAnchor:newBlock("ex_skill_1_block_"..((i - 1) * 4 + (j - 1) + 5)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:smooth_quartz")):setPos((i - 1) * 80 + -48, (j - 1) * 16 - 40, -24)
+                                    end
+                                end
+                                for i = 1, 6 do
+                                    models.models.ex_skill_1.WindowAnchor:newBlock("ex_skill_1_block_"..(i + 12)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:smooth_quartz")):setPos((i - 1) * 16 + -48, 24, -24)
+                                end
+                                for i = 1, 2 do
+                                    for j = 1, 5 do
+                                        for k = 1, 5 do
+                                            models.models.ex_skill_1.WindowAnchor:newBlock("ex_skill_1_block_"..((i - 1) * 25 + (j - 1) * 5 + (k - 1) + 19)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:polished_andesite")):setPos((i - 1) * 112 - 64, (k - 1) * 16 - 40, (j - 1) * 16 - 24)
+                                        end
+                                    end
+                                end
+                                for i = 1, 6 do
+                                    for j = 1, 5 do
+                                        models.models.ex_skill_1.WindowAnchor:newBlock("ex_skill_1_block_"..((i - 1) * 5 + (j - 1) + 69)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:polished_andesite")):setPos((i - 1) * 16 - 48, (j - 1) * 16 - 40, 40)
+                                    end
+                                end
+                                for i = 1, 8 do
+                                    for j = 1, 5 do
+                                        models.models.ex_skill_1.WindowAnchor:newBlock("ex_skill_1_block_"..((i - 1) * 5 + (j - 1) + 99)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:spruce_planks")):setPos((i - 1) * 16 - 64, -56, (j - 1) * 16 - 24)
+                                    end
+                                end
+                                for i = 1, 8 do
+                                    for j = 1, 5 do
+                                        models.models.ex_skill_1.WindowAnchor:newBlock("ex_skill_1_block_"..((i - 1) * 5 + (j - 1) + 139)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:polished_andesite")):setPos((i - 1) * 16 - 64, 40, (j - 1) * 16 - 24)
+                                    end
+                                end
+                                for i = 1, 2 do
+                                    for j = 1, 3 do
+                                        models.models.ex_skill_1.WindowAnchor.WindowFrameAnchor1:newBlock("ex_skill_1_block_"..((i - 1) * 3 + (j - 1) + 179)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:glass_pane", "[east=true,west=true]")):setPos((i - 1) * 16, (j - 1) * 16, -8)
+                                    end
+                                end
+                                for i = 1, 2 do
+                                    for j = 1, 3 do
+                                        models.models.ex_skill_1.WindowAnchor.WindowFrameAnchor2:newBlock("ex_skill_1_block_"..((i - 1) * 3 + (j - 1) + 186)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:glass_pane", "[east=true,west=true]")):setPos((i - 1) * 16 - 32, (j - 1) * 16, -8)
+                                    end
+                                end
+                                models.models.ex_skill_1.WindowAnchor:newBlock("ex_skill_1_block_192"):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:potted_azure_bluet")):setPos(-24, -24, -28)
+                            end
                             self.exSkill[1].init= true
+                        end
+                        if host:isHost() then
+                            models.models.ex_skill_1.WindowAnchor:setVisible(true)
                         end
                         self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 13, true)
                     end;
 
                     onAnimationTick = function (self, tick)
-                        if tick == 13 then
+                        if tick == 1 and host:isHost() then
+                            models.models.ex_skill_1.Allay:setVisible(true)
+                        elseif tick == 13 then
                             self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 14, true)
                         elseif tick == 27 then
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 9, true)
                         elseif tick == 38 then
+                            if host:isHost() then
+                                models.models.ex_skill_1.WindowAnchor:setVisible(false)
+                            end
                             for _, modelPart in ipairs({models.models.ex_skill_1.Bench, models.models.ex_skill_1.Allay, models.models.ex_skill_1.AnimAllays, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Book, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Cushion}) do
                                 modelPart:setVisible(true)
                             end
@@ -448,7 +502,6 @@ BlueArchiveCharacter = {
                                 modelPart:setVisible(true)
                             end
                             self.parent.faceParts:setEmotion("NARROW", "NARROW_CENTER", "OPENED", 63, true)
-                            --self.parent.faceParts:setEmotion("NORMAL", "CENTER", "OPENED", 63, true)
                         elseif tick == 160 then
                             models.models.ex_skill_1.AnimAllays.Allay3:setVisible(true)
                         end
@@ -464,6 +517,9 @@ BlueArchiveCharacter = {
                         if forcedStop then
                             for i = 2, 3 do
                                 models.models.ex_skill_1.AnimAllays["Allay"..i]:setVisible(true)
+                            end
+                            if host:isHost() then
+                                models.models.ex_skill_1.WindowAnchor:setVisible(false)
                             end
                         end
                     end;
