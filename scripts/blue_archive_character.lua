@@ -1324,7 +1324,7 @@ BlueArchiveCharacter = {
                             models.models.main.Avatar.UpperBody.Body.CBattleB:setVisible(false)
                         else
                             models.models.main.Avatar.UpperBody.Body.Hairs.BackHair:setPos()
-                            models.models.main.Avatar.UpperBody.Body.CBattleB:setVisible(true)
+                            models.models.main.Avatar.UpperBody.Body.CBattleB:setVisible(self.parent.costume.currentCostume == 4)
                         end
                     elseif parts == "LEGGINGS" then
                         models.models.main.Avatar.UpperBody.Body.Skirt:setVisible(self.parent.costume.currentCostume <= 2 and not isVisible)
