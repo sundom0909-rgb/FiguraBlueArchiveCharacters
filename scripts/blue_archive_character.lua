@@ -472,6 +472,8 @@ BlueArchiveCharacter = {
                             models.models.ex_skill_1.Allay:setVisible(true)
                         elseif tick == 13 then
                             self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 14, true)
+                        elseif tick == 20 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.allay.ambient_with_item"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Allay), 0.15, 1)
                         elseif tick == 27 then
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 9, true)
                         elseif tick == 38 then
@@ -484,6 +486,8 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 65, true)
                         elseif tick == 64 and host:isHost() then
                             models.models.ex_skill_1.Gui.Frame:setScale(client:getScaledWindowSize():augmented(1))
+                        elseif tick == 101 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.bat.takeoff"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Bench), 0.15, 1.5)
                         elseif tick == 103 then
                             self.parent.faceParts:setEmotion("NORMAL", "CENTER", "CLOSED", 3, true)
                         elseif tick == 106 then
@@ -498,6 +502,8 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("CENTER", "NORMAL", "SMALL", 19, true)
                         elseif tick == 133 then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMALL", 2, true)
+                        elseif tick == 134 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 1.5)
                         elseif tick == 135 then
                             for i = 1, 3 do
                                 models.models.main.Avatar.Head.NoticeEffects["NoticeEffect"..i]["NoticeEffect"..i.."Pivot"]:setOffsetPivot(-4, 0, 0)
@@ -513,6 +519,7 @@ BlueArchiveCharacter = {
                             end
                         elseif tick == 151 then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMALL", 2, true)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.5, 1.5)
                         elseif tick == 153 then
                             for _, modelPart in ipairs({models.models.ex_skill_1.Allay, models.models.ex_skill_1.AnimAllays.Allay2}) do
                                 modelPart:setVisible(true)
@@ -520,6 +527,8 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("NARROW", "NARROW_CENTER", "OPENED", 63, true)
                         elseif tick == 160 then
                             models.models.ex_skill_1.AnimAllays.Allay3:setVisible(true)
+                        elseif tick == 163 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.allay.ambient_with_item"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.AnimAllays.Allay3), 0.15, 1)
                         end
 
                         if tick >= 101 and tick < 114 then
@@ -527,6 +536,10 @@ BlueArchiveCharacter = {
                             for i = 2, 7 do
                                 particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.AnimAllays["Allay"..i])):setScale(0.25):setColor(0.25, 1, 1):setGravity(0)
                             end
+                        end
+
+                        if tick >= 38 and tick < 101 and math.random() >= 0.95 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.allay.ambient_with_item"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Bench), 0.15, 1)
                         end
 
                         particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:cherry_leaves"), player:getPos():add(vectors.rotateAroundAxis( player:getBodyYaw() * -1, 3, 5, -4, 0, 1, 0)):add(math.random() * 5 - 2.5, 0, math.random() * 5 - 2.5))
