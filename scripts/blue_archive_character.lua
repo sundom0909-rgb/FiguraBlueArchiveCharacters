@@ -712,6 +712,8 @@ BlueArchiveCharacter = {
                 end;
 
                 onPhase1 = function (_, dummyAvatar)
+                    dummyAvatar.Head.Ears.RightEar:setRot(-60, -20, 0)
+                    dummyAvatar.Head.Ears.LeftEar:setRot(-60, 20, 0)
                     dummyAvatar.UpperBody.Body.Hairs.FrontHair:setRot(35, 0, 0)
                     dummyAvatar.UpperBody.Body.Hairs.BackHair:setRot()
                     dummyAvatar.UpperBody.Body.Skirt:setRot(45, 0, 0)
