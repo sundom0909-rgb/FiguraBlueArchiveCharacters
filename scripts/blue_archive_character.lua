@@ -882,7 +882,7 @@ BlueArchiveCharacter = {
                     {"key_name.tank_shoot", "Main gun aim, fire", "主砲照準、発射"};
                     {"tank_shoot.in_cool_down_pre", "Please wait ", "あと"};
                     {"tank_shoot.in_cool_down_post", " more seconds to shoot a shell.", "秒待ってください。"};
-                    {"tank_shoot.tip_pre", "9§l[TIP]§r Press ", "§9§l[TIP]§r "};
+                    {"tank_shoot.tip_pre", "§9§l[TIP]§r Press ", "§9§l[TIP]§r "};
                     {"tank_shoot.tip_post", " key to shoot a shell!", "キーを押すと砲弾を発射します！"};
                 }
 
