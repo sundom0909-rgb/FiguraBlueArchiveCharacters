@@ -431,7 +431,154 @@ BlueArchiveCharacter = {
 
         instance.physics = {
             physicData = {
+                {
+                    models = {models.models.main.Avatar.Head.SideTail};
 
+                    x = {
+                        vertical = {
+                            min = -90;
+                            neutral = 0;
+                            max = 90;
+
+                            headRotMultiplayer = -1;
+
+                            headX = {
+                                multiplayer = -80;
+                                min = -90;
+                                max = 90;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -45;
+                            neutral = 45;
+                            max = 45;
+
+                            headX = {
+                                multiplayer = -40;
+                                min = -45;
+                                max = 45;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.Head.SideTail.SideTail};
+
+                    z = {
+                        vertical = {
+                            min = -60;
+                            neutral = 0;
+                            max = 0;
+
+                            headZ = {
+                                multiplayer = -40;
+                                min = -60;
+                                max = 0;
+                            };
+
+                            headRot = {
+                                multiplayer = 0.025;
+                                min = -60;
+                                max = 0;
+                            };
+
+                            bodyY = {
+                                multiplayer = 80;
+                                min = -60;
+                                max = 0;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.Hairs.FrontHair};
+
+                    x = {
+                        vertical = {
+                            min = 0;
+                            neutral = 0;
+                            max = 80;
+                            sneakOffset = 30;
+
+                            bodyX = {
+                                multiplayer = -80;
+                                min = 0;
+                                max = 80;
+                            };
+
+                            bodyY = {
+                                multiplayer = -80;
+                                min = 0;
+                                max = 80;
+                            };
+
+                            bodyRot = {
+                                multiplayer = -0.05;
+                                min = 0;
+                                max = 80;
+                            };
+                        };
+
+                        horizontal = {
+                            min = 0;
+                            neutral = 80;
+                            max = 80;
+
+                            bodyX = {
+                                multiplayer = -160;
+                                min = 0;
+                                max = 80;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.Hairs.BackHair};
+
+                    x = {
+                        vertical = {
+                            min = -80;
+                            neutral = 0;
+                            max = 0;
+
+                            bodyX = {
+                                multiplayer = -40;
+                                min = -80;
+                                max = 0;
+                            };
+
+                            bodyY = {
+                                multiplayer = 80;
+                                min = -80;
+                                max = 0;
+                            };
+
+                            bodyRot = {
+                                multiplayer = 0.025;
+                                min = -80;
+                                max = 0;
+                            };
+                        };
+                    };
+                };
+            };
+
+            callbacks = {
+                onPhysicPerformed = function (_, model)
+                    if model == models.models.main.Avatar.UpperBody.Body.Hairs.BackHair then
+                        if player:isCrouching() then
+                            local rot = model:getRot().x
+                            model:setRot(math.min(rot + 30, 0))
+                            model.BackHairBottom:setRot(math.max(rot + 30, 0))
+                        else
+                            model.BackHairBottom:setRot()
+                        end
+                    end
+                end;
             };
         }
 

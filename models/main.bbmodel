@@ -1206,7 +1206,7 @@
 			"to": [-4, 30, -2],
 			"autouv": 0,
 			"color": 0,
-			"origin": [0, 24, 0],
+			"origin": [-4.5, 29.5, -2.75],
 			"faces": {
 				"north": {
 					"uv": [19, 31, 20.5, 43],
@@ -2849,7 +2849,7 @@
 									"children": [
 										{
 											"name": "FrontHair",
-											"origin": [0, 20, -5],
+											"origin": [0, 24, -2],
 											"color": 0,
 											"uuid": "5ce171a1-d30f-da12-edc1-52240fc9ad36",
 											"export": true,
@@ -2874,25 +2874,39 @@
 											"children": [
 												"8efeffb2-3648-12a5-4504-caca38a1ab98",
 												"972f2682-a16a-b2cb-015e-acde43352295",
-												"7e4de9f6-eae0-8ad5-1e51-00f3718ad0e3",
-												"24ef5b55-8bdb-bde1-09bc-eb8321839a36",
-												"31eb42cb-e4b6-c712-0ae3-d20aa1544e90",
-												"edaa79d2-df1b-1a39-3b6e-dd25820436c0",
-												"9076dd15-c03f-447c-1931-f243e9468f38",
-												"8444c713-7be6-297c-d1dd-c8f2be77f36c",
-												"64d9af9a-3dc7-87c9-7716-2fc0d94655fe",
-												"785b0f8f-69e0-4a64-78a3-2a25676fa1b8",
-												"5741429a-3e7a-7279-b6ba-53c5b7b1c8e4",
-												"02bf2c53-01e9-a670-8623-18d554a68df8",
-												"d99bd100-0ff4-1a71-0031-8e0af441d70a",
-												"8996d250-aeea-18b6-89b3-d7ff4020244f",
-												"33452efe-8310-a767-2c8c-ea82f7b7fd4f",
-												"df476255-85ba-a324-b2e0-bacabc0c4015",
-												"e33e1461-e60f-49a8-6301-638c752f32af",
-												"75609b21-cb1d-6864-ffca-6971b8284cb6",
-												"94551f04-0f72-2918-18d1-cdf14059e020",
-												"b08b16c5-4aea-1861-554d-54c3ac1f0a49",
-												"0c3e3b75-d1eb-87b5-96b7-c2ba3efef64e"
+												{
+													"name": "BackHairBottom",
+													"origin": [0, 12, 2.5],
+													"color": 0,
+													"uuid": "a925ab9a-2d53-a477-e9cb-ffa3c27bd442",
+													"export": true,
+													"mirror_uv": false,
+													"isOpen": true,
+													"locked": false,
+													"visibility": true,
+													"autouv": 0,
+													"children": [
+														"7e4de9f6-eae0-8ad5-1e51-00f3718ad0e3",
+														"24ef5b55-8bdb-bde1-09bc-eb8321839a36",
+														"31eb42cb-e4b6-c712-0ae3-d20aa1544e90",
+														"edaa79d2-df1b-1a39-3b6e-dd25820436c0",
+														"9076dd15-c03f-447c-1931-f243e9468f38",
+														"8444c713-7be6-297c-d1dd-c8f2be77f36c",
+														"64d9af9a-3dc7-87c9-7716-2fc0d94655fe",
+														"785b0f8f-69e0-4a64-78a3-2a25676fa1b8",
+														"5741429a-3e7a-7279-b6ba-53c5b7b1c8e4",
+														"02bf2c53-01e9-a670-8623-18d554a68df8",
+														"d99bd100-0ff4-1a71-0031-8e0af441d70a",
+														"8996d250-aeea-18b6-89b3-d7ff4020244f",
+														"33452efe-8310-a767-2c8c-ea82f7b7fd4f",
+														"df476255-85ba-a324-b2e0-bacabc0c4015",
+														"e33e1461-e60f-49a8-6301-638c752f32af",
+														"75609b21-cb1d-6864-ffca-6971b8284cb6",
+														"94551f04-0f72-2918-18d1-cdf14059e020",
+														"b08b16c5-4aea-1861-554d-54c3ac1f0a49",
+														"0c3e3b75-d1eb-87b5-96b7-c2ba3efef64e"
+													]
+												}
 											]
 										}
 									]
