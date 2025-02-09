@@ -314,7 +314,7 @@ BlueArchiveCharacter = {
                             local headRot = vanilla_model.HEAD:getOriginRot()
                             local rotY = headRot.y % 360
                             rotY = rotY > 180 and 0 or rotY
-                            models.models.main.Avatar.UpperBody.Arms.RightArm:setRot(player:isSwingingArm() and not player:isLeftHanded() and vectors.vec3() or vectors.vec3(math.max(headRot.x + math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * 2.5 - 40 + (player:isCrouching() and 30 or 0), -40), rotY, 0))
+                            models.models.main.Avatar.UpperBody.Arms.RightArm:setRot(player:isSwingingArm() and not player:isLeftHanded() and vectors.vec3() or vectors.vec3(math.max(headRot.x - 40 + (player:isCrouching() and 30 or 0), -40) + math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * 2.5, rotY, 0))
                         end, "right_arm_render")
                     elseif state == 2 then
                         events.RENDER:remove("right_arm_render")
@@ -322,7 +322,7 @@ BlueArchiveCharacter = {
                             local headRot = vanilla_model.HEAD:getOriginRot()
                             local isSwingingArm = player:isSwingingArm() and not player:isLeftHanded()
                             models.models.main.Avatar.UpperBody.Arms.RightArm:setParentType((isSwingingArm or context == "FIRST_PERSON") and "RightArm" or "Body")
-                            models.models.main.Avatar.UpperBody.Arms.RightArm:setRot(isSwingingArm and vectors.vec3() or vectors.vec3(math.max(headRot.x + math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * 2.5 + 50 + (player:isCrouching() and 30 or 0), 40), math.min(math.map((headRot.y + 180) % 360 - 180, -50, 50, -21, 78) + 30, 65), 0))
+                            models.models.main.Avatar.UpperBody.Arms.RightArm:setRot(isSwingingArm and vectors.vec3() or vectors.vec3(math.max(headRot.x + 50 + (player:isCrouching() and 30 or 0), 40), math.min(math.map((headRot.y + 180) % 360 - 180, -50, 50, -21, 78) + 30, 65) + math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * 2.5, 0))
                         end, "right_arm_render")
                     end
                 end;
@@ -334,7 +334,7 @@ BlueArchiveCharacter = {
                             local headRot = vanilla_model.HEAD:getOriginRot()
                             local rotY = headRot.y % 360
                             rotY = rotY < 180 and 0 or rotY
-                            models.models.main.Avatar.UpperBody.Arms.LeftArm:setRot(player:isSwingingArm() and player:isLeftHanded() and vectors.vec3() or vectors.vec3(math.max(headRot.x + math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * -2.5 - 40 + (player:isCrouching() and 30 or 0), -40), rotY, 0))
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm:setRot(player:isSwingingArm() and player:isLeftHanded() and vectors.vec3() or vectors.vec3(math.max(headRot.x - 40 + (player:isCrouching() and 30 or 0), -40) + math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * -2.5, rotY, 0))
                         end, "left_arm_render")
                     elseif state == 2 then
                         events.RENDER:remove("left_arm_render")
@@ -342,7 +342,7 @@ BlueArchiveCharacter = {
                             local headRot = vanilla_model.HEAD:getOriginRot()
                             local isSwingingArm = player:isSwingingArm() and player:isLeftHanded()
                             models.models.main.Avatar.UpperBody.Arms.LeftArm:setParentType((isSwingingArm or context == "FIRST_PERSON") and "LeftArm" or "Body")
-                            models.models.main.Avatar.UpperBody.Arms.LeftArm:setRot(isSwingingArm and vectors.vec3() or vectors.vec3(math.max(headRot.x + math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * -2.5 + 50 + (player:isCrouching() and 30 or 0), 40), math.max(math.map((headRot.y + 180) % 360 - 180, -50, 50, -78, 21) - 30, -65), 0))
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm:setRot(isSwingingArm and vectors.vec3() or vectors.vec3(math.max(headRot.x + 50 + (player:isCrouching() and 30 or 0), 40), math.max(math.map((headRot.y + 180) % 360 - 180, -50, 50, -78, 21) - 30, -65) + math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * -2.5, 0))
                         end, "left_arm_render")
                     end
                 end;
