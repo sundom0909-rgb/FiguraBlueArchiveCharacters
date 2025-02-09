@@ -314,7 +314,7 @@ BlueArchiveCharacter = {
         }
 
         instance.gun = {
-            scale = 1.2;
+            scale = 2.2;
 
             gunPosition = {
                 hold = {
@@ -325,19 +325,19 @@ BlueArchiveCharacter = {
                     type = "BODY";
 
                     pos = {
-                        right = vectors.vec3(4.5, -3, 4);
-                        left = vectors.vec3(-4.5, -3, 4);
+                        right = vectors.vec3(0, 1.5, 6);
+                        left = vectors.vec3(0, 1.5, 6);
                     };
 
                     rot = {
-                        right = vectors.vec3(-90, 0, 0);
-                        left = vectors.vec3(-90, 0, 0);
+                        right = vectors.vec3(0, -90, -45);
+                        left = vectors.vec3(0, 90, 45);
                     };
                 };
             };
 
             sound = {
-                name = "minecraft:entity.iron_golem.hurt";
+                name = "minecraft:entity.blaze.hurt";
                 pitch = 2;
             };
         }
