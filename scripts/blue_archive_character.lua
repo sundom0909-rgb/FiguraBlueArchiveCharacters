@@ -390,8 +390,8 @@ BlueArchiveCharacter = {
                     };
 
                     rot = {
-                        right = vectors.vec3(0, -90, -45);
-                        left = vectors.vec3(0, 90, 45);
+                        right = vectors.vec3(0, -90, -32.5);
+                        left = vectors.vec3(0, 90, 32.5);
                     };
                 };
             };
