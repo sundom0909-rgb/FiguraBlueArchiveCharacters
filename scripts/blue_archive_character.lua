@@ -528,7 +528,7 @@ BlueArchiveCharacter = {
 
                     z = {
                         vertical = {
-                            min = -60;
+                            min = -170;
                             neutral = 0;
                             max = 0;
 
@@ -546,7 +546,7 @@ BlueArchiveCharacter = {
 
                             bodyY = {
                                 multiplayer = 80;
-                                min = -60;
+                                min = -170;
                                 max = 0;
                             };
                         };
@@ -601,7 +601,7 @@ BlueArchiveCharacter = {
 
                     x = {
                         vertical = {
-                            min = -80;
+                            min = -170;
                             neutral = 0;
                             max = 0;
 
@@ -613,7 +613,7 @@ BlueArchiveCharacter = {
 
                             bodyY = {
                                 multiplayer = 80;
-                                min = -80;
+                                min = -170;
                                 max = 0;
                             };
 
