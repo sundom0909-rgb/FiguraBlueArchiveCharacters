@@ -50,14 +50,32 @@ RailGun = {
 
             --弦引きの検出
             local activeItem = player:getActiveItem()
-            if activeItem.id == "minecraft:bow" and self.chargeState == "NONE" then
+            local isLeftHanded = player:isLeftHanded()
+            local heldItems = {player:getHeldItem(isLeftHanded), player:getHeldItem(not isLeftHanded)}
+            local hasChargedCrossbow = (heldItems[1].id == "minecraft:crossbow" and heldItems[1].tag.Charged == 1 and self.parent.gun.currentGunPosition == "RIGHT") or (heldItems[2].id == "minecraft:crossbow" and heldItems[2].tag.Charged == 1 and self.parent.gun.currentGunPosition == "LEFT")
+            if (activeItem.id == "minecraft:bow" or activeItem.id == "minecraft:crossbow") and self.chargeState == "NONE" then
                 --チャージ開始
                 self.chargeState = self.isSpecialCharge and "STRONG" or "WEAK"
-                self.animationLength = 20
-            elseif activeItem.id ~= "minecraft:bow" and (self.chargeState == "WEAK" or self.chargeState == "STRONG") then
+                if activeItem.id == "minecraft:bow" then
+                    self.animationLength = 20
+                else
+                    local quickChargeLevel = 0
+                    if activeItem.tag.Enchantments ~= nil then
+                        for _, enchant in ipairs(activeItem.tag.Enchantments) do
+                            if enchant.id == "minecraft:quick_charge" then
+                                quickChargeLevel = enchant.lvl
+                                break
+                            end
+                        end
+                    end
+                    self.animationLength = quickChargeLevel <= 5 and 25 - quickChargeLevel * 5 or math.huge
+                end
+            elseif hasChargedCrossbow and self.chargeState == "NONE" then
+                self.chargeState = self.isSpecialCharge and "STRONG" or "WEAK"
+                self.animationLength = 0
+            elseif activeItem.id ~= "minecraft:bow" and activeItem.id ~= "minecraft:crossbow" and not hasChargedCrossbow and (self.chargeState == "WEAK" or self.chargeState == "STRONG") then
                 --チャージ終了
                 self.chargeState = "NONE"
-                self.isSpecialCharge = false
                 self.animationLength = 0
             end
 
@@ -142,6 +160,7 @@ RailGun = {
         events.ON_PLAY_SOUND:register(function (id, pos, _, pitch, _, _, path)
             if id == self.parent.characterData.gun.sound.name and pitch == self.parent.characterData.gun.sound.pitch and path == nil and math.abs(pos:copy():sub(player:getPos()):length() - player:getVelocity():length()) < 1 and self.chargePercent >= 1.95 then
                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.blaze.death"), player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0, 0, 0.5, 0, 1, 0)), 1, 2)
+                self.isSpecialCharge = false
             end
         end)
 
