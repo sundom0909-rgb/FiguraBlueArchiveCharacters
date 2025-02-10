@@ -307,6 +307,14 @@ BlueArchiveCharacter = {
 
         instance.arms = {
             callbacks = {
+                onArmStateChanged = function (self, right, left)
+                    if right == 3 and self.parent.gun.currentGunPosition == "RIGHT" then
+                        return {right = 1}
+                    elseif left == 3 and self.parent.gun.currentGunPosition == "LEFT" then
+                        return {left = 1}
+                    end
+                end;
+
                 onAdditionalRightArmProcess = function (self, state)
                     if state == 1 then
                         events.RENDER:remove("right_arm_render")
