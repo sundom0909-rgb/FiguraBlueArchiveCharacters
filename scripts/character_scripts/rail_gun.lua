@@ -5,6 +5,8 @@
 ---@field package chargePercent number レールガンのチャージ割合（"WEAK"の場合は100%まで、"STRING"の場合は200%まで）
 ---@field package currentRot number[] レールガン回転パーツの現在の角度：1. マズル1, 2. マズル2, 3. マズル3, 4. エネルギー発生部
 ---@field package nextRot number[] レールガン回転パーツの次ティックの角度：1. マズル1, 2. マズル2, 3. マズル3, 4. エネルギー発生部
+---@field package isChargeSoundPlayed boolean エネルギーチャージ音を再生したかどうか
+---@field package fullChargeSound Sound|nil エネルギーフルチャージ時の音のオブジェクト
 ---@field package gunPositionPrev Gun.GunPosition 前ティックの銃の持ち位置
 
 ---@alias RailGun.ChargeState
@@ -26,6 +28,8 @@ RailGun = {
         instance.chargePercent = 0
         instance.currentRot = {0, 0, 0, 0}
         instance.nextRot = {0, 0, 0, 0}
+        instance.isChargeSoundPlayed = false
+        instance.fullChargeSound = nil
         instance.gunPositionPrev = "NONE"
 
         return instance
@@ -134,6 +138,22 @@ RailGun = {
                 local offsetPos = axisX:copy():scale(math.random() * 2 - 1):add(axisY:copy():scale(math.random() * 2 - 1)):add(axisZ:copy():scale(math.random() * 1))
                 particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), anchorPos:copy():add(offsetPos)):setScale(0.1):setVelocity(offsetPos:copy():scale(-0.1)):setGravity(0):setLifetime(8)
             end
+
+            --音の演出
+            if self.chargePercent >= 1.25 and not self.isChargeSoundPlayed then
+                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.beacon.activate"), player:getPos(), 1, 2)
+                self.fullChargeSound = sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.beacon.ambient"), player:getPos(), 1, 2, true)
+                self.isChargeSoundPlayed = true
+            elseif self.chargePercent < 1.25 then
+                self.isChargeSoundPlayed = false
+                if self.fullChargeSound ~= nil then
+                    self.fullChargeSound:stop()
+                    self.fullChargeSound = nil
+                end
+            end
+            if self.fullChargeSound ~= nil then
+                self.fullChargeSound:setPos(player:getPos())
+            end
         end)
 
         events.RENDER:register(function (delta)
@@ -188,7 +208,7 @@ RailGun = {
                 local axisY = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.GunY):sub(gunPos):normalize()
                 local axisZ = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.GunZ):sub(gunPos):normalize()
                 local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.MuzzleAnchor)
-                for _ = 1, 20 do
+                for _ = 1, 50 do
                     particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), anchorPos):setVelocity(axisX:copy():scale(math.random() * 0.25 - 0.125):add(axisY:copy():scale(math.random() * 0.25 - 0.125)):add(axisZ:copy():scale(math.random() * 2))):setScale(3):setGravity(0):setLifetime(20)
                 end
                 self.isSpecialCharge = false
