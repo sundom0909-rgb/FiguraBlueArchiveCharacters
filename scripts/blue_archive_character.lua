@@ -439,17 +439,23 @@ BlueArchiveCharacter = {
                     };
                 };
 
-                --[[
                 callbacks = {
                     --Exスキルアニメーションを任意の位置で一時停止させるコードスニペット。デバッグ用。
                     --"<>"内を適切な数値に置き換えること。
                     onAnimationTick = function (self, tick)
+                        --[[
                         for _, name in ipairs(self.exSkill[<ex_skill_index>]) do
                             animations["models."..name]["ex_skill_<ex_skill_index>"]:pause()
                         end
+                        ]]
+                    end;
+
+                    onPostAnimation = function (self, forcedStop)
+                        if not forcedStop then
+                            self.parent.railGun.isSpecialCharge = true
+                        end
                     end;
                 };
-                ]]
             };
         }
 

@@ -1,4 +1,16 @@
 ---@class (exact) RailGun : AvatarModule アリスの武器を制御するクラス
+---@field package chargeState RailGun.ChargeState 武器のチャージ状態
+---@field public isSpecialCharge boolean オーバーチャージ状態かどうか
+---@field package animationLength integer アニメーションの長さ
+---@field package chargePercent number レールガンのチャージ割合（"WEAK"の場合は100%まで、"STRING"の場合は200%まで）
+---@field package currentRot number[] レールガン回転パーツの現在の角度：1. マズル1, 2. マズル2, 3. マズル3, 4. エネルギー発生部
+---@field package nextRot number[] レールガン回転パーツの次ティックの角度：1. マズル1, 2. マズル2, 3. マズル3, 4. エネルギー発生部
+---@field package gunPositionPrev Gun.GunPosition 前ティックの銃の持ち位置
+
+---@alias RailGun.ChargeState
+---| "NONE" # チャージなし
+---| "WEAK" # 弱いチャージ（通常の射出時）
+---| "STRONG" # 強いチャージ（Exスキル再生直後の射出時）
 
 RailGun = {
     ---コンストラクタ
@@ -8,72 +20,185 @@ RailGun = {
         ---@type RailGun
         local instance = Avatar.instantiate(RailGun, AvatarModule, parent)
 
+        instance.chargeState = "NONE"
+        instance.isSpecialCharge = false
+        instance.animationLength = 0
+        instance.chargePercent = 0
+        instance.currentRot = {0, 0, 0, 0}
+        instance.nextRot = {0, 0, 0, 0}
+        instance.gunPositionPrev = "NONE"
+
         return instance
     end;
 
     ---初期化関数
-    ---@param self PlayerUtils
+    ---@param self RailGun
     init = function (self)
         AvatarModule.init(self)
 
+        events.TICK:register(function ()
+            if self.parent.gun.currentGunPosition ~= self.gunPositionPrev then
+                if self.parent.gun.currentGunPosition == "RIGHT" or self.parent.gun.currentGunPosition == "LEFT" then
+                    --レールガンを持ったとき
+                    models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(true)
+                else
+                    --レールガンをしまったとき
+                    models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(false)
+                end
+                self.gunPositionPrev = self.parent.gun.currentGunPosition
+            end
+
+            --弦引きの検出
+            local activeItem = player:getActiveItem()
+            if activeItem.id == "minecraft:bow" and self.chargeState == "NONE" then
+                --チャージ開始
+                self.chargeState = self.isSpecialCharge and "STRONG" or "WEAK"
+                self.animationLength = 20
+            elseif activeItem.id ~= "minecraft:bow" and (self.chargeState == "WEAK" or self.chargeState == "STRONG") then
+                --チャージ終了
+                self.chargeState = "NONE"
+                self.isSpecialCharge = false
+                self.animationLength = 0
+            end
+
+            --レールガンのアニメーション制御
+            for i = 1, 4 do
+                self.currentRot[i] = self.nextRot[i]
+            end
+            self.nextRot[1] = self.currentRot[1] + math.max(self.chargePercent - 1.75, 0) * 640
+            self.nextRot[2] = self.currentRot[2] + math.max(self.chargePercent - 1.5, 0) * 320
+            self.nextRot[3] = self.currentRot[3] + math.max(self.chargePercent - 1.25, 0) * 213
+            self.nextRot[4] = self.currentRot[4] + self.chargePercent * 80
+
+            if self.chargeState == "WEAK" and self.chargePercent <= 1 then
+                self.chargePercent = math.min(self.chargePercent + 20 / self.animationLength * 0.05, 1)
+            elseif self.chargeState == "STRONG" then
+                self.chargePercent = math.min(self.chargePercent + 20 / self.animationLength * 0.1, 2)
+            else
+                self.chargePercent = math.max(self.chargePercent - 0.05, 0)
+            end
+
+            --ディスプレイの表示
+            if self.parent.gun.currentGunPosition ~= "NONE" then
+                for _, spriteName in ipairs({"displayR_meter", "displayL_meter"}) do
+                    models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:getTask(spriteName):setUVPixels(69, math.floor(self.chargePercent * 6) * 5)
+                end
+                for _, spriteName in ipairs({"displayR_arrow_1", "displayL_arrow_1"}) do
+                    models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:getTask(spriteName):setUVPixels(63, self.chargePercent >= 1.25 and 3 or 0)
+                end
+                for _, spriteName in ipairs({"displayR_arrow_2", "displayL_arrow_2"}) do
+                    models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:getTask(spriteName):setUVPixels(63, self.chargePercent >= 1.75 and 3 or 0)
+                end
+                for _, spriteName in ipairs({"displayR_arrow_3", "displayL_arrow_3"}) do
+                    models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:getTask(spriteName):setUVPixels(63, self.chargePercent >= 2 and 3 or 0)
+                end
+            end
+        end)
+
+        events.RENDER:register(function (delta)
+            --回転部の回転
+            for i = 1, 3 do
+                models.models.main.Avatar.UpperBody.Body.Gun["Muzzle"..i]:setRot(0, 0, self.currentRot[i] + (self.nextRot[i] - self.currentRot[i]) * delta)
+            end
+            models.models.main.Avatar.UpperBody.Body.Gun.Engine:setRot(0, 0, self.currentRot[4] + (self.nextRot[4] - self.currentRot[4]) * delta)
+
+            --デルタ値を考慮したチャージパーセントの計算
+            local truePercent = 0
+            if self.chargeState == "WEAK" and self.chargePercent <= 1 then
+                truePercent = math.min(self.chargePercent + 20 / self.animationLength * 0.05 * delta, 1)
+            elseif self.chargeState == "STRONG" then
+                truePercent = math.min(self.chargePercent + 20 / self.animationLength * 0.1 * delta, 2)
+            else
+                truePercent = math.max(self.chargePercent - 0.05 * delta, 0)
+            end
+
+            --殻が開くギミック
+            models.models.main.Avatar.UpperBody.Body.Gun.UpperOuter1:setPos(0, math.clamp(truePercent * 4 - 4, 0, 0.5), 0)
+            models.models.main.Avatar.UpperBody.Body.Gun.LowerOuter1:setPos(0, math.clamp(truePercent * -4 + 4, -0.5, 0), 0)
+            models.models.main.Avatar.UpperBody.Body.Gun.UpperOuter1.UpperOuter2:setPos(0, math.clamp(truePercent * 4 - 6.5, 0, 0.5), 0)
+            models.models.main.Avatar.UpperBody.Body.Gun.LowerOuter1.LowerOuter2:setPos(0, math.clamp(truePercent * -4 + 6.5, -0.5, 0), 0)
+            models.models.main.Avatar.UpperBody.Body.Gun.UpperOuter1.UpperOuter2.UpperOuter3:setPos(0, math.clamp(truePercent * 4 - 7.5, 0, 0.5), 0)
+            models.models.main.Avatar.UpperBody.Body.Gun.LowerOuter1.LowerOuter2.LowerOuter3:setPos(0, math.clamp(truePercent * -4 + 7.5, -0.5, 0), 0)
+
+            --マズルチャージ
+            models.models.main.Avatar.UpperBody.Body.Gun.Muzzle1.Muzzle1Emissives.Muzzle1Emissive1:setColor(truePercent <= 1.75 and (vectors.vec3(0.004, 0.929, 1) * math.min(truePercent, 1)) or (vectors.vec3(0.004, 0.929, 1) + vectors.vec3(0.988, -0.011, -0.004) * (truePercent - 1.75) * 4))
+            models.models.main.Avatar.UpperBody.Body.Gun.Muzzle1.Muzzle1Emissives.Muzzle1Emissive2:setColor(truePercent <= 1 and (vectors.vec3(0.004, 0.929, 1) * truePercent) or (vectors.vec3(0.004, 0.929, 1) + vectors.vec3(0.988, -0.011, -0.004) * (truePercent - 1)))
+            models.models.main.Avatar.UpperBody.Body.Gun.Muzzle2.Muzzle2Emissives:setColor(truePercent <= 1.5 and (vectors.vec3(0.004, 0.929, 1) * math.min(truePercent, 1)) or (vectors.vec3(0.004, 0.929, 1) + vectors.vec3(0.988, -0.011, -0.004) * math.min(truePercent - 1.5, 0.5) * 2))
+            models.models.main.Avatar.UpperBody.Body.Gun.Muzzle3.Muzzle3Emissives:setColor(truePercent <= 1.25 and (vectors.vec3(0.004, 0.929, 1) * math.min(truePercent, 1)) or (vectors.vec3(0.004, 0.929, 1) + vectors.vec3(0.988, -0.011, -0.004) * math.min(truePercent - 1.25, 0.75) * 1.3333))
+            models.models.main.Avatar.UpperBody.Body.Gun.GunBodyEmissive1:setUVPixels(0, truePercent * 18 + 0)
+            models.models.main.Avatar.UpperBody.Body.Gun.GunBodyEmissive2:setUVPixels( math.floor(math.max(truePercent - 1, 0) * 6) * 2, 0)
+
+            --ディスプレイの表示
+            if self.parent.gun.currentGunPosition ~= "NONE" then
+                local digits = {math.floor(truePercent) % 10, math.floor(truePercent * 10) % 10, math.floor(truePercent * 100) % 10}
+                for _, spriteName in ipairs({"displayR_digit_", "displayL_digit_"}) do
+                    for i = 1, 3 do
+                        models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:getTask(spriteName..i):setUVPixels((digits[i] % 5) * 3 + 80, math.floor(digits[i] / 5) * 5)
+                    end
+                end
+            end
+        end)
+
+        events.ON_PLAY_SOUND:register(function (id, pos, _, pitch, _, _, path)
+            if id == self.parent.characterData.gun.sound.name and pitch == self.parent.characterData.gun.sound.pitch and path == nil and math.abs(pos:copy():sub(player:getPos()):length() - player:getVelocity():length()) < 1 and self.chargePercent >= 1.95 then
+                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.blaze.death"), player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0, 0, 0.5, 0, 1, 0)), 1, 2)
+            end
+        end)
+
         --ディスプレイのスプライトを配置
+        local displayParent = models.models.main.Avatar.UpperBody.Body.Gun:newPart("DisplayContents")
+        displayParent:setVisible(false)
         for i = 1, 3 do
-            local displayRDigit = models.models.main.Avatar.UpperBody.Body.Gun:newSprite("displayR_digit_"..i)
+            local displayRDigit = displayParent:newSprite("displayR_digit_"..i)
             displayRDigit:setTexture(textures["textures.gun"])
             displayRDigit:setDimensions(textures["textures.gun"]:getDimensions())
             displayRDigit:setRegion(3, 5)
-            displayRDigit:setUVPixels(80, 0)
             displayRDigit:setPos(1.51, -0.55, 7.55 + (i - 1) * -0.215)
             displayRDigit:setRot(0, -90, 0)
             displayRDigit:setScale(0.06, 0.06, 1)
             displayRDigit:setSize(3, 5)
             displayRDigit:setRenderType("EMISSIVE_SOLID")
-            local displayRArrow = models.models.main.Avatar.UpperBody.Body.Gun:newSprite("displayR_arrow_"..i)
+            local displayRArrow = displayParent:newSprite("displayR_arrow_"..i)
             displayRArrow:setTexture(textures["textures.gun"])
             displayRArrow:setDimensions(textures["textures.gun"]:getDimensions())
             displayRArrow:setRegion(3, 3)
-            displayRArrow:setUVPixels(63, 0)
             displayRArrow:setPos(1.51, -0.3, 7.55 + (i - 1) * -0.125)
             displayRArrow:setRot(0, -90, 0)
             displayRArrow:setScale(0.03, 0.03, 1)
             displayRArrow:setSize(3, 3)
             displayRArrow:setRenderType("EMISSIVE_SOLID")
-            local displayLDigit = models.models.main.Avatar.UpperBody.Body.Gun:newSprite("displayL_digit_"..i)
+            local displayLDigit = displayParent:newSprite("displayL_digit_"..i)
             displayLDigit:setTexture(textures["textures.gun"])
             displayLDigit:setDimensions(textures["textures.gun"]:getDimensions())
             displayLDigit:setRegion(3, 5)
-            displayLDigit:setUVPixels(80, 0)
-            displayLDigit:setPos(-1.51, -0.55, 6.675 + (i - 1) * -0.215)
+            displayLDigit:setPos(-1.51, -0.55, 6.225 + (i - 1) * 0.225)
             displayLDigit:setRot(0, 90, 0)
             displayLDigit:setScale(0.06, 0.06, 1)
             displayLDigit:setSize(3, 5)
             displayLDigit:setRenderType("EMISSIVE_SOLID")
-            local displayLArrow = models.models.main.Avatar.UpperBody.Body.Gun:newSprite("displayL_arrow_"..i)
+            local displayLArrow = displayParent:newSprite("displayL_arrow_"..i)
             displayLArrow:setTexture(textures["textures.gun"])
             displayLArrow:setDimensions(textures["textures.gun"]:getDimensions())
             displayLArrow:setRegion(3, 3)
-            displayLArrow:setUVPixels(63, 0)
-            displayLArrow:setPos(-1.51, -0.3, 6.85 + (i - 1) * -0.125)
+            displayLArrow:setPos(-1.51, -0.3, 6.6 + (i - 1) * 0.125)
             displayLArrow:setRot(0, 90, 0)
             displayLArrow:setScale(0.03, 0.03, 1)
             displayLArrow:setSize(3, 3)
             displayLArrow:setRenderType("EMISSIVE_SOLID")
         end
-        local displayRMeter = models.models.main.Avatar.UpperBody.Body.Gun:newSprite("displayR_meter")
+        local displayRMeter = displayParent:newSprite("displayR_meter")
         displayRMeter:setTexture(textures["textures.gun"])
         displayRMeter:setDimensions(textures["textures.gun"]:getDimensions())
         displayRMeter:setRegion(11, 5)
-        displayRMeter:setUVPixels(69, 0)
         displayRMeter:setPos(1.51, -0.55, 6.9)
         displayRMeter:setRot(0, -90, 0)
         displayRMeter:setScale(0.06, 0.06, 1)
         displayRMeter:setSize(11, 5)
         displayRMeter:setRenderType("EMISSIVE_SOLID")
-        local displayLMeter = models.models.main.Avatar.UpperBody.Body.Gun:newSprite("displayL_meter")
+        local displayLMeter = displayParent:newSprite("displayL_meter")
         displayLMeter:setTexture(textures["textures.gun"])
         displayLMeter:setDimensions(textures["textures.gun"]:getDimensions())
         displayLMeter:setRegion(11, 5)
-        displayLMeter:setUVPixels(69, 0)
         displayLMeter:setPos(-1.51, -0.55, 6.9)
         displayLMeter:setRot(0, 90, 0)
         displayLMeter:setScale(0.06, 0.06, 1)
