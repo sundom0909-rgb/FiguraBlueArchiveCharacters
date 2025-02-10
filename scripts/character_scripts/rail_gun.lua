@@ -111,6 +111,29 @@ RailGun = {
                     models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:getTask(spriteName):setUVPixels(63, self.chargePercent >= 2 and 3 or 0)
                 end
             end
+
+            --パーティクルによる演出
+            if self.chargePercent >= 1.25 then
+                local gunPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun)
+                local axisX = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.GunX):sub(gunPos):normalize()
+                local axisY = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.GunY):sub(gunPos):normalize()
+                local axisZ = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.GunZ):sub(gunPos):normalize()
+                for i = 0, 1 do
+                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.Engine):add(axisZ:copy():scale(0.18 * i - 0.09))):setScale(0.25):setVelocity(vectors.rotateAroundAxis(math.random() * 360, axisY:copy():scale(0.1), axisZ)):setColor(0.965, 0.576, 0.243):setLifetime(math.random(2, 4))
+                end
+                for _ = 1, 4 do
+                    local plane = math.random(1, 4)
+                    local sparkParticle = particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), 0, 0, 0):setColor(0.624, 0.996, 1)
+                    if plane <= 2 then
+                        sparkParticle:setPos(self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.ParticleAnchor1):add(axisX:copy():scale(math.random() * -0.5)):add(axisZ:copy():scale(math.random() * -1.125)):add(0, plane == 2 and 1.125 or 0))
+                    else
+                        sparkParticle:setPos(self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.ParticleAnchor1):add(axisX:copy():scale(plane == 4 and -0.5 or 0)):add(axisZ:copy():scale(math.random() * -1.125)):add(0, math.random() * 1.125))
+                    end
+                end
+                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.MuzzleAnchor)
+                local offsetPos = axisX:copy():scale(math.random() * 2 - 1):add(axisY:copy():scale(math.random() * 2 - 1)):add(axisZ:copy():scale(math.random() * 1))
+                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), anchorPos:copy():add(offsetPos)):setScale(0.1):setVelocity(offsetPos:copy():scale(-0.1)):setGravity(0):setLifetime(8)
+            end
         end)
 
         events.RENDER:register(function (delta)
@@ -160,6 +183,14 @@ RailGun = {
         events.ON_PLAY_SOUND:register(function (id, pos, _, pitch, _, _, path)
             if id == self.parent.characterData.gun.sound.name and pitch == self.parent.characterData.gun.sound.pitch and path == nil and math.abs(pos:copy():sub(player:getPos()):length() - player:getVelocity():length()) < 1 and self.chargePercent >= 1.95 then
                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.blaze.death"), player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0, 0, 0.5, 0, 1, 0)), 1, 2)
+                local gunPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun)
+                local axisX = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.GunX):sub(gunPos):normalize()
+                local axisY = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.GunY):sub(gunPos):normalize()
+                local axisZ = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.GunZ):sub(gunPos):normalize()
+                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.MuzzleAnchor)
+                for _ = 1, 20 do
+                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), anchorPos):setVelocity(axisX:copy():scale(math.random() * 0.25 - 0.125):add(axisY:copy():scale(math.random() * 0.25 - 0.125)):add(axisZ:copy():scale(math.random() * 2))):setScale(3):setGravity(0):setLifetime(20)
+                end
                 self.isSpecialCharge = false
             end
         end)
