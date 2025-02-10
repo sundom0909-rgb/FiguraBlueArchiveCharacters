@@ -41,167 +41,171 @@ RailGun = {
         AvatarModule.init(self)
 
         events.TICK:register(function ()
-            if self.parent.gun.currentGunPosition ~= self.gunPositionPrev then
-                if self.parent.gun.currentGunPosition == "RIGHT" or self.parent.gun.currentGunPosition == "LEFT" then
-                    --レールガンを持ったとき
-                    models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(true)
-                else
-                    --レールガンをしまったとき
-                    models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(false)
+            if not client:isPaused() then
+                if self.parent.gun.currentGunPosition ~= self.gunPositionPrev then
+                    if self.parent.gun.currentGunPosition == "RIGHT" or self.parent.gun.currentGunPosition == "LEFT" then
+                        --レールガンを持ったとき
+                        models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(true)
+                    else
+                        --レールガンをしまったとき
+                        models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(false)
+                    end
+                    self.gunPositionPrev = self.parent.gun.currentGunPosition
                 end
-                self.gunPositionPrev = self.parent.gun.currentGunPosition
-            end
 
-            --弦引きの検出
-            local activeItem = player:getActiveItem()
-            local isLeftHanded = player:isLeftHanded()
-            local heldItems = {player:getHeldItem(isLeftHanded), player:getHeldItem(not isLeftHanded)}
-            local hasChargedCrossbow = (heldItems[1].id == "minecraft:crossbow" and heldItems[1].tag.Charged == 1 and self.parent.gun.currentGunPosition == "RIGHT") or (heldItems[2].id == "minecraft:crossbow" and heldItems[2].tag.Charged == 1 and self.parent.gun.currentGunPosition == "LEFT")
-            if (activeItem.id == "minecraft:bow" or activeItem.id == "minecraft:crossbow") and self.chargeState == "NONE" then
-                --チャージ開始
-                self.chargeState = self.isSpecialCharge and "STRONG" or "WEAK"
-                if activeItem.id == "minecraft:bow" then
-                    self.animationLength = 20
-                else
-                    local quickChargeLevel = 0
-                    if activeItem.tag.Enchantments ~= nil then
-                        for _, enchant in ipairs(activeItem.tag.Enchantments) do
-                            if enchant.id == "minecraft:quick_charge" then
-                                quickChargeLevel = enchant.lvl
-                                break
+                --弦引きの検出
+                local activeItem = player:getActiveItem()
+                local isLeftHanded = player:isLeftHanded()
+                local heldItems = {player:getHeldItem(isLeftHanded), player:getHeldItem(not isLeftHanded)}
+                local hasChargedCrossbow = (heldItems[1].id == "minecraft:crossbow" and heldItems[1].tag.Charged == 1 and self.parent.gun.currentGunPosition == "RIGHT") or (heldItems[2].id == "minecraft:crossbow" and heldItems[2].tag.Charged == 1 and self.parent.gun.currentGunPosition == "LEFT")
+                if (activeItem.id == "minecraft:bow" or activeItem.id == "minecraft:crossbow") and self.chargeState == "NONE" then
+                    --チャージ開始
+                    self.chargeState = self.isSpecialCharge and "STRONG" or "WEAK"
+                    if activeItem.id == "minecraft:bow" then
+                        self.animationLength = 20
+                    else
+                        local quickChargeLevel = 0
+                        if activeItem.tag.Enchantments ~= nil then
+                            for _, enchant in ipairs(activeItem.tag.Enchantments) do
+                                if enchant.id == "minecraft:quick_charge" then
+                                    quickChargeLevel = enchant.lvl
+                                    break
+                                end
                             end
                         end
+                        self.animationLength = quickChargeLevel <= 5 and 25 - quickChargeLevel * 5 or math.huge
                     end
-                    self.animationLength = quickChargeLevel <= 5 and 25 - quickChargeLevel * 5 or math.huge
+                elseif hasChargedCrossbow and self.chargeState == "NONE" then
+                    self.chargeState = self.isSpecialCharge and "STRONG" or "WEAK"
+                    self.animationLength = 0
+                elseif activeItem.id ~= "minecraft:bow" and activeItem.id ~= "minecraft:crossbow" and not hasChargedCrossbow and (self.chargeState == "WEAK" or self.chargeState == "STRONG") then
+                    --チャージ終了
+                    self.chargeState = "NONE"
+                    self.animationLength = 0
                 end
-            elseif hasChargedCrossbow and self.chargeState == "NONE" then
-                self.chargeState = self.isSpecialCharge and "STRONG" or "WEAK"
-                self.animationLength = 0
-            elseif activeItem.id ~= "minecraft:bow" and activeItem.id ~= "minecraft:crossbow" and not hasChargedCrossbow and (self.chargeState == "WEAK" or self.chargeState == "STRONG") then
-                --チャージ終了
-                self.chargeState = "NONE"
-                self.animationLength = 0
-            end
 
-            --レールガンのアニメーション制御
-            for i = 1, 4 do
-                self.currentRot[i] = self.nextRot[i]
-            end
-            self.nextRot[1] = self.currentRot[1] + math.max(self.chargePercent - 1.75, 0) * 640
-            self.nextRot[2] = self.currentRot[2] + math.max(self.chargePercent - 1.5, 0) * 320
-            self.nextRot[3] = self.currentRot[3] + math.max(self.chargePercent - 1.25, 0) * 213
-            self.nextRot[4] = self.currentRot[4] + self.chargePercent * 80
+                --レールガンのアニメーション制御
+                for i = 1, 4 do
+                    self.currentRot[i] = self.nextRot[i]
+                end
+                self.nextRot[1] = self.currentRot[1] + math.max(self.chargePercent - 1.75, 0) * 640
+                self.nextRot[2] = self.currentRot[2] + math.max(self.chargePercent - 1.5, 0) * 320
+                self.nextRot[3] = self.currentRot[3] + math.max(self.chargePercent - 1.25, 0) * 213
+                self.nextRot[4] = self.currentRot[4] + self.chargePercent * 80
 
-            if self.chargeState == "WEAK" and self.chargePercent <= 1 then
-                self.chargePercent = math.min(self.chargePercent + 20 / self.animationLength * 0.05, 1)
-            elseif self.chargeState == "STRONG" then
-                self.chargePercent = math.min(self.chargePercent + 20 / self.animationLength * 0.1, 2)
-            else
-                self.chargePercent = math.max(self.chargePercent - 0.05, 0)
-            end
+                if self.chargeState == "WEAK" and self.chargePercent <= 1 then
+                    self.chargePercent = math.min(self.chargePercent + 20 / self.animationLength * 0.05, 1)
+                elseif self.chargeState == "STRONG" then
+                    self.chargePercent = math.min(self.chargePercent + 20 / self.animationLength * 0.1, 2)
+                else
+                    self.chargePercent = math.max(self.chargePercent - 0.05, 0)
+                end
 
-            --ディスプレイの表示
-            if self.parent.gun.currentGunPosition ~= "NONE" then
-                for _, spriteName in ipairs({"displayR_meter", "displayL_meter"}) do
-                    models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:getTask(spriteName):setUVPixels(69, math.floor(self.chargePercent * 6) * 5)
-                end
-                for _, spriteName in ipairs({"displayR_arrow_1", "displayL_arrow_1"}) do
-                    models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:getTask(spriteName):setUVPixels(63, self.chargePercent >= 1.25 and 3 or 0)
-                end
-                for _, spriteName in ipairs({"displayR_arrow_2", "displayL_arrow_2"}) do
-                    models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:getTask(spriteName):setUVPixels(63, self.chargePercent >= 1.75 and 3 or 0)
-                end
-                for _, spriteName in ipairs({"displayR_arrow_3", "displayL_arrow_3"}) do
-                    models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:getTask(spriteName):setUVPixels(63, self.chargePercent >= 2 and 3 or 0)
-                end
-            end
-
-            --パーティクルによる演出
-            if self.chargePercent >= 1.25 then
-                local gunPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun)
-                local axisX = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.GunX):sub(gunPos):normalize()
-                local axisY = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.GunY):sub(gunPos):normalize()
-                local axisZ = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.GunZ):sub(gunPos):normalize()
-                for i = 0, 1 do
-                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.Engine):add(axisZ:copy():scale(0.18 * i - 0.09))):setScale(0.25):setVelocity(vectors.rotateAroundAxis(math.random() * 360, axisY:copy():scale(0.1), axisZ)):setColor(0.965, 0.576, 0.243):setLifetime(math.random(2, 4))
-                end
-                for _ = 1, 4 do
-                    local plane = math.random(1, 4)
-                    local sparkParticle = particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), 0, 0, 0):setColor(0.624, 0.996, 1)
-                    if plane <= 2 then
-                        sparkParticle:setPos(self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.ParticleAnchor1):add(axisX:copy():scale(math.random() * -0.5)):add(axisZ:copy():scale(math.random() * -1.125)):add(0, plane == 2 and 1.125 or 0))
-                    else
-                        sparkParticle:setPos(self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.ParticleAnchor1):add(axisX:copy():scale(plane == 4 and -0.5 or 0)):add(axisZ:copy():scale(math.random() * -1.125)):add(0, math.random() * 1.125))
+                --ディスプレイの表示
+                if self.parent.gun.currentGunPosition ~= "NONE" then
+                    for _, spriteName in ipairs({"displayR_meter", "displayL_meter"}) do
+                        models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:getTask(spriteName):setUVPixels(69, math.floor(self.chargePercent * 6) * 5)
+                    end
+                    for _, spriteName in ipairs({"displayR_arrow_1", "displayL_arrow_1"}) do
+                        models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:getTask(spriteName):setUVPixels(63, self.chargePercent >= 1.25 and 3 or 0)
+                    end
+                    for _, spriteName in ipairs({"displayR_arrow_2", "displayL_arrow_2"}) do
+                        models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:getTask(spriteName):setUVPixels(63, self.chargePercent >= 1.75 and 3 or 0)
+                    end
+                    for _, spriteName in ipairs({"displayR_arrow_3", "displayL_arrow_3"}) do
+                        models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:getTask(spriteName):setUVPixels(63, self.chargePercent >= 2 and 3 or 0)
                     end
                 end
-                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.MuzzleAnchor)
-                local offsetPos = axisX:copy():scale(math.random() * 2 - 1):add(axisY:copy():scale(math.random() * 2 - 1)):add(axisZ:copy():scale(math.random() * 1))
-                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), anchorPos:copy():add(offsetPos)):setScale(0.1):setVelocity(offsetPos:copy():scale(-0.1)):setGravity(0):setLifetime(8)
-            end
 
-            --音の演出
-            if self.chargePercent >= 1.25 and not self.isChargeSoundPlayed then
-                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.beacon.activate"), player:getPos(), 1, 2)
-                self.fullChargeSound = sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.beacon.ambient"), player:getPos(), 1, 2, true)
-                self.isChargeSoundPlayed = true
-            elseif self.chargePercent < 1.25 then
-                self.isChargeSoundPlayed = false
+                --パーティクルによる演出
+                if self.chargePercent >= 1.25 then
+                    local gunPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun)
+                    local axisX = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.GunX):sub(gunPos):normalize()
+                    local axisY = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.GunY):sub(gunPos):normalize()
+                    local axisZ = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.GunZ):sub(gunPos):normalize()
+                    for i = 0, 1 do
+                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.Engine):add(axisZ:copy():scale(0.18 * i - 0.09))):setScale(0.25):setVelocity(vectors.rotateAroundAxis(math.random() * 360, axisY:copy():scale(0.1), axisZ)):setColor(0.965, 0.576, 0.243):setLifetime(math.random(2, 4))
+                    end
+                    for _ = 1, 4 do
+                        local plane = math.random(1, 4)
+                        local sparkParticle = particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), 0, 0, 0):setColor(0.624, 0.996, 1)
+                        if plane <= 2 then
+                            sparkParticle:setPos(self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.ParticleAnchor1):add(axisX:copy():scale(math.random() * -0.5)):add(axisZ:copy():scale(math.random() * -1.125)):add(0, plane == 2 and 1.125 or 0))
+                        else
+                            sparkParticle:setPos(self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.ParticleAnchor1):add(axisX:copy():scale(plane == 4 and -0.5 or 0)):add(axisZ:copy():scale(math.random() * -1.125)):add(0, math.random() * 1.125))
+                        end
+                    end
+                    local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.MuzzleAnchor)
+                    local offsetPos = axisX:copy():scale(math.random() * 2 - 1):add(axisY:copy():scale(math.random() * 2 - 1)):add(axisZ:copy():scale(math.random() * 1))
+                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), anchorPos:copy():add(offsetPos)):setScale(0.1):setVelocity(offsetPos:copy():scale(-0.1)):setGravity(0):setLifetime(8)
+                end
+
+                --音の演出
+                if self.chargePercent >= 1.25 and not self.isChargeSoundPlayed then
+                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.beacon.activate"), player:getPos(), 1, 2)
+                    self.fullChargeSound = sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.beacon.ambient"), player:getPos(), 1, 2, true)
+                    self.isChargeSoundPlayed = true
+                elseif self.chargePercent < 1.25 then
+                    self.isChargeSoundPlayed = false
+                    if self.fullChargeSound ~= nil then
+                        self.fullChargeSound:stop()
+                        self.fullChargeSound = nil
+                    end
+                end
                 if self.fullChargeSound ~= nil then
-                    self.fullChargeSound:stop()
-                    self.fullChargeSound = nil
+                    self.fullChargeSound:setPos(player:getPos())
                 end
-            end
-            if self.fullChargeSound ~= nil then
-                self.fullChargeSound:setPos(player:getPos())
             end
         end)
 
         events.RENDER:register(function (delta)
-            --回転部の回転
-            for i = 1, 3 do
-                models.models.main.Avatar.UpperBody.Body.Gun["Muzzle"..i]:setRot(0, 0, self.currentRot[i] + (self.nextRot[i] - self.currentRot[i]) * delta)
-            end
-            models.models.main.Avatar.UpperBody.Body.Gun.Engine:setRot(0, 0, self.currentRot[4] + (self.nextRot[4] - self.currentRot[4]) * delta)
+            if not client:isPaused() then
+                --回転部の回転
+                for i = 1, 3 do
+                    models.models.main.Avatar.UpperBody.Body.Gun["Muzzle"..i]:setRot(0, 0, self.currentRot[i] + (self.nextRot[i] - self.currentRot[i]) * delta)
+                end
+                models.models.main.Avatar.UpperBody.Body.Gun.Engine:setRot(0, 0, self.currentRot[4] + (self.nextRot[4] - self.currentRot[4]) * delta)
 
-            --デルタ値を考慮したチャージパーセントの計算
-            local truePercent = 0
-            if self.chargeState == "WEAK" and self.chargePercent <= 1 then
-                truePercent = math.min(self.chargePercent + 20 / self.animationLength * 0.05 * delta, 1)
-            elseif self.chargeState == "STRONG" then
-                truePercent = math.min(self.chargePercent + 20 / self.animationLength * 0.1 * delta, 2)
-            else
-                truePercent = math.max(self.chargePercent - 0.05 * delta, 0)
-            end
+                --デルタ値を考慮したチャージパーセントの計算
+                local truePercent = 0
+                if self.chargeState == "WEAK" and self.chargePercent <= 1 then
+                    truePercent = math.min(self.chargePercent + 20 / self.animationLength * 0.05 * delta, 1)
+                elseif self.chargeState == "STRONG" then
+                    truePercent = math.min(self.chargePercent + 20 / self.animationLength * 0.1 * delta, 2)
+                else
+                    truePercent = math.max(self.chargePercent - 0.05 * delta, 0)
+                end
 
-            --殻が開くギミック
-            models.models.main.Avatar.UpperBody.Body.Gun.UpperOuter1:setPos(0, math.clamp(truePercent * 4 - 4, 0, 0.5), 0)
-            models.models.main.Avatar.UpperBody.Body.Gun.LowerOuter1:setPos(0, math.clamp(truePercent * -4 + 4, -0.5, 0), 0)
-            models.models.main.Avatar.UpperBody.Body.Gun.UpperOuter1.UpperOuter2:setPos(0, math.clamp(truePercent * 4 - 6.5, 0, 0.5), 0)
-            models.models.main.Avatar.UpperBody.Body.Gun.LowerOuter1.LowerOuter2:setPos(0, math.clamp(truePercent * -4 + 6.5, -0.5, 0), 0)
-            models.models.main.Avatar.UpperBody.Body.Gun.UpperOuter1.UpperOuter2.UpperOuter3:setPos(0, math.clamp(truePercent * 4 - 7.5, 0, 0.5), 0)
-            models.models.main.Avatar.UpperBody.Body.Gun.LowerOuter1.LowerOuter2.LowerOuter3:setPos(0, math.clamp(truePercent * -4 + 7.5, -0.5, 0), 0)
+                --殻が開くギミック
+                models.models.main.Avatar.UpperBody.Body.Gun.UpperOuter1:setPos(0, math.clamp(truePercent * 4 - 4, 0, 0.5), 0)
+                models.models.main.Avatar.UpperBody.Body.Gun.LowerOuter1:setPos(0, math.clamp(truePercent * -4 + 4, -0.5, 0), 0)
+                models.models.main.Avatar.UpperBody.Body.Gun.UpperOuter1.UpperOuter2:setPos(0, math.clamp(truePercent * 4 - 6.5, 0, 0.5), 0)
+                models.models.main.Avatar.UpperBody.Body.Gun.LowerOuter1.LowerOuter2:setPos(0, math.clamp(truePercent * -4 + 6.5, -0.5, 0), 0)
+                models.models.main.Avatar.UpperBody.Body.Gun.UpperOuter1.UpperOuter2.UpperOuter3:setPos(0, math.clamp(truePercent * 4 - 7.5, 0, 0.5), 0)
+                models.models.main.Avatar.UpperBody.Body.Gun.LowerOuter1.LowerOuter2.LowerOuter3:setPos(0, math.clamp(truePercent * -4 + 7.5, -0.5, 0), 0)
 
-            --マズルチャージ
-            models.models.main.Avatar.UpperBody.Body.Gun.Muzzle1.Muzzle1Emissives.Muzzle1Emissive1:setColor(truePercent <= 1.75 and (vectors.vec3(0.004, 0.929, 1) * math.min(truePercent, 1)) or (vectors.vec3(0.004, 0.929, 1) + vectors.vec3(0.988, -0.011, -0.004) * (truePercent - 1.75) * 4))
-            models.models.main.Avatar.UpperBody.Body.Gun.Muzzle1.Muzzle1Emissives.Muzzle1Emissive2:setColor(truePercent <= 1 and (vectors.vec3(0.004, 0.929, 1) * truePercent) or (vectors.vec3(0.004, 0.929, 1) + vectors.vec3(0.988, -0.011, -0.004) * (truePercent - 1)))
-            models.models.main.Avatar.UpperBody.Body.Gun.Muzzle2.Muzzle2Emissives:setColor(truePercent <= 1.5 and (vectors.vec3(0.004, 0.929, 1) * math.min(truePercent, 1)) or (vectors.vec3(0.004, 0.929, 1) + vectors.vec3(0.988, -0.011, -0.004) * math.min(truePercent - 1.5, 0.5) * 2))
-            models.models.main.Avatar.UpperBody.Body.Gun.Muzzle3.Muzzle3Emissives:setColor(truePercent <= 1.25 and (vectors.vec3(0.004, 0.929, 1) * math.min(truePercent, 1)) or (vectors.vec3(0.004, 0.929, 1) + vectors.vec3(0.988, -0.011, -0.004) * math.min(truePercent - 1.25, 0.75) * 1.3333))
-            models.models.main.Avatar.UpperBody.Body.Gun.GunBodyEmissive1:setUVPixels(0, truePercent * 18 + 0)
-            models.models.main.Avatar.UpperBody.Body.Gun.GunBodyEmissive2:setUVPixels( math.floor(math.max(truePercent - 1, 0) * 6) * 2, 0)
+                --マズルチャージ
+                models.models.main.Avatar.UpperBody.Body.Gun.Muzzle1.Muzzle1Emissives.Muzzle1Emissive1:setColor(truePercent <= 1.75 and (vectors.vec3(0.004, 0.929, 1) * math.min(truePercent, 1)) or (vectors.vec3(0.004, 0.929, 1) + vectors.vec3(0.988, -0.011, -0.004) * (truePercent - 1.75) * 4))
+                models.models.main.Avatar.UpperBody.Body.Gun.Muzzle1.Muzzle1Emissives.Muzzle1Emissive2:setColor(truePercent <= 1 and (vectors.vec3(0.004, 0.929, 1) * truePercent) or (vectors.vec3(0.004, 0.929, 1) + vectors.vec3(0.988, -0.011, -0.004) * (truePercent - 1)))
+                models.models.main.Avatar.UpperBody.Body.Gun.Muzzle2.Muzzle2Emissives:setColor(truePercent <= 1.5 and (vectors.vec3(0.004, 0.929, 1) * math.min(truePercent, 1)) or (vectors.vec3(0.004, 0.929, 1) + vectors.vec3(0.988, -0.011, -0.004) * math.min(truePercent - 1.5, 0.5) * 2))
+                models.models.main.Avatar.UpperBody.Body.Gun.Muzzle3.Muzzle3Emissives:setColor(truePercent <= 1.25 and (vectors.vec3(0.004, 0.929, 1) * math.min(truePercent, 1)) or (vectors.vec3(0.004, 0.929, 1) + vectors.vec3(0.988, -0.011, -0.004) * math.min(truePercent - 1.25, 0.75) * 1.3333))
+                models.models.main.Avatar.UpperBody.Body.Gun.GunBodyEmissive1:setUVPixels(0, truePercent * 18 + 0)
+                models.models.main.Avatar.UpperBody.Body.Gun.GunBodyEmissive2:setUVPixels( math.floor(math.max(truePercent - 1, 0) * 6) * 2, 0)
 
-            --ディスプレイの表示
-            if self.parent.gun.currentGunPosition ~= "NONE" then
-                local digits = {math.floor(truePercent) % 10, math.floor(truePercent * 10) % 10, math.floor(truePercent * 100) % 10}
-                for _, spriteName in ipairs({"displayR_digit_", "displayL_digit_"}) do
-                    for i = 1, 3 do
-                        models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:getTask(spriteName..i):setUVPixels((digits[i] % 5) * 3 + 80, math.floor(digits[i] / 5) * 5)
+                --ディスプレイの表示
+                if self.parent.gun.currentGunPosition ~= "NONE" then
+                    local digits = {math.floor(truePercent) % 10, math.floor(truePercent * 10) % 10, math.floor(truePercent * 100) % 10}
+                    for _, spriteName in ipairs({"displayR_digit_", "displayL_digit_"}) do
+                        for i = 1, 3 do
+                            models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:getTask(spriteName..i):setUVPixels((digits[i] % 5) * 3 + 80, math.floor(digits[i] / 5) * 5)
+                        end
                     end
                 end
             end
         end)
 
         events.ON_PLAY_SOUND:register(function (id, pos, _, pitch, _, _, path)
-            if id == self.parent.characterData.gun.sound.name and pitch == self.parent.characterData.gun.sound.pitch and path == nil and math.abs(pos:copy():sub(player:getPos()):length() - player:getVelocity():length()) < 1 and self.chargePercent >= 1.95 then
+            if id == self.parent.characterData.gun.sound.name and pitch == self.parent.characterData.gun.sound.pitch and path == nil and math.abs(pos:copy():sub(player:getPos()):length() - player:getVelocity():length()) < 1 and self.chargePercent >= 1.95 and not client:isPaused() then
                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.blaze.death"), player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0, 0, 0.5, 0, 1, 0)), 1, 2)
                 local gunPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun)
                 local axisX = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.GunX):sub(gunPos):normalize()
