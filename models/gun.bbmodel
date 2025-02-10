@@ -2221,7 +2221,7 @@
 			"uuid": "8194c6ac-bb4d-e78c-9e4a-d418387fe209"
 		},
 		{
-			"name": "Muzzle1Emissives1",
+			"name": "Muzzle2Emissives1",
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
@@ -2262,7 +2262,7 @@
 			"uuid": "3fea7d26-04cf-d146-f00a-d5f5285e59a4"
 		},
 		{
-			"name": "Muzzle1Emissives2",
+			"name": "Muzzle2Emissives2",
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
@@ -2303,7 +2303,7 @@
 			"uuid": "92799012-a306-1c8f-7b28-ec40f886f731"
 		},
 		{
-			"name": "Muzzle1Emissives3",
+			"name": "Muzzle2Emissives3",
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
@@ -2345,7 +2345,7 @@
 			"uuid": "2a46a085-97f0-7a5f-e03c-ff7ab6265662"
 		},
 		{
-			"name": "Muzzle1Emissives4",
+			"name": "Muzzle2Emissives4",
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
@@ -2470,7 +2470,7 @@
 			"uuid": "190ea971-2067-b009-6947-c3c1b684f116"
 		},
 		{
-			"name": "Muzzle3Emissives3",
+			"name": "Muzzle3Emissives1",
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
@@ -2511,7 +2511,7 @@
 			"uuid": "ab917185-d7d5-d703-fbb1-23ebb8748ae5"
 		},
 		{
-			"name": "Muzzle1Emissives4",
+			"name": "Muzzle3Emissives2",
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
@@ -2552,7 +2552,7 @@
 			"uuid": "5f209523-4132-baca-53c6-0d8ad8e1e447"
 		},
 		{
-			"name": "Muzzle1Emissives5",
+			"name": "Muzzle3Emissives3",
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
@@ -2594,7 +2594,7 @@
 			"uuid": "b24cb891-3bce-0c1a-ce9d-0c692c2b0a92"
 		},
 		{
-			"name": "Muzzle1Emissives6",
+			"name": "Muzzle3Emissives4",
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
@@ -4817,7 +4817,7 @@
 					"uuid": "88b0adda-ffc1-172f-7d25-22aadc75cf12",
 					"export": true,
 					"mirror_uv": false,
-					"isOpen": true,
+					"isOpen": false,
 					"locked": false,
 					"visibility": true,
 					"autouv": 0,
@@ -4988,14 +4988,14 @@
 					"uuid": "43ea4ab0-29e3-0f95-a603-4fd5178e7f87",
 					"export": true,
 					"mirror_uv": false,
-					"isOpen": false,
+					"isOpen": true,
 					"locked": false,
 					"visibility": true,
 					"autouv": 0,
 					"children": [
 						"05bbf713-8aab-f7a7-a8bc-cbe073f077d5",
 						{
-							"name": "Muzzle1Emissives2",
+							"name": "Muzzle2Emissives",
 							"origin": [0, 2.25, -3.60025],
 							"color": 0,
 							"uuid": "18c2219c-dcb6-ea42-a161-b5c7648d3f6a",
@@ -5021,14 +5021,14 @@
 					"uuid": "88d53927-7600-5cb9-290d-c483e290279d",
 					"export": true,
 					"mirror_uv": false,
-					"isOpen": false,
+					"isOpen": true,
 					"locked": false,
 					"visibility": true,
 					"autouv": 0,
 					"children": [
 						"190ea971-2067-b009-6947-c3c1b684f116",
 						{
-							"name": "Muzzle1Emissives3",
+							"name": "Muzzle3Emissives",
 							"origin": [0, 2.25, -3.60025],
 							"color": 0,
 							"uuid": "a0446fd1-6493-207b-7048-ccfb3f4c2f00",
