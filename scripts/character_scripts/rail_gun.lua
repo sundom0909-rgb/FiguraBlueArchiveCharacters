@@ -41,7 +41,6 @@ RailGun = {
         AvatarModule.init(self)
 
         events.TICK:register(function ()
-            --print(self.chargeState)
             if not client:isPaused() then
                 if self.parent.gun.currentGunPosition ~= self.gunPositionPrev then
                     if self.parent.gun.currentGunPosition == "RIGHT" or self.parent.gun.currentGunPosition == "LEFT" then
@@ -119,26 +118,34 @@ RailGun = {
                 end
 
                 --パーティクルによる演出
-                if self.chargePercent >= 1.25 then
+                local isFirstPerson = renderer:isFirstPerson()
+                if self.chargePercent >= 1.25 and (not isFirstPerson or self.parent.gun.shouldShowWeaponInFirstPerson) then
                     local gunPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun)
                     local axisX = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.GunX):sub(gunPos):normalize()
                     local axisY = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.GunY):sub(gunPos):normalize()
                     local axisZ = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.GunZ):sub(gunPos):normalize()
-                    for i = 0, 1 do
-                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.Engine):add(axisZ:copy():scale(0.18 * i - 0.09))):setScale(0.25):setVelocity(vectors.rotateAroundAxis(math.random() * 360, axisY:copy():scale(0.1), axisZ)):setColor(0.965, 0.576, 0.243):setLifetime(math.random(2, 4))
-                    end
-                    for _ = 1, 4 do
-                        local plane = math.random(1, 4)
-                        local sparkParticle = particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), 0, 0, 0):setColor(0.624, 0.996, 1)
-                        if plane <= 2 then
-                            sparkParticle:setPos(self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.ParticleAnchor1):add(axisX:copy():scale(math.random() * -0.5)):add(axisZ:copy():scale(math.random() * -1.125)):add(0, plane == 2 and 1.125 or 0))
-                        else
-                            sparkParticle:setPos(self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.ParticleAnchor1):add(axisX:copy():scale(plane == 4 and -0.5 or 0)):add(axisZ:copy():scale(math.random() * -1.125)):add(0, math.random() * 1.125))
+                    if not isFirstPerson then
+                        for i = 0, 1 do
+                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.Engine):add(axisZ:copy():scale(0.18 * i - 0.09))):setScale(0.25):setVelocity(vectors.rotateAroundAxis(math.random() * 360, axisY:copy():scale(0.1), axisZ)):setColor(0.965, 0.576, 0.243):setLifetime(math.random(2, 4))
                         end
                     end
-                    local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.MuzzleAnchor)
-                    local offsetPos = axisX:copy():scale(math.random() * 2 - 1):add(axisY:copy():scale(math.random() * 2 - 1)):add(axisZ:copy():scale(math.random() * 1))
-                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), anchorPos:copy():add(offsetPos)):setScale(0.1):setVelocity(offsetPos:copy():scale(-0.1)):setGravity(0):setLifetime(8)
+                    local lookDir = player:getLookDir()
+                    local lookYaw = math.deg(math.atan2(lookDir.z, lookDir.x)) * -1 + 90
+                    local lookPitch = math.deg(math.asin(lookDir.y)) * -1
+                    local playerAnchor = player:getPos():add(0, player:getEyeHeight(), 0)
+                    local anchorPos2 = isFirstPerson and playerAnchor:copy():add(vectors.rotateAroundAxis(lookYaw, vectors.rotateAroundAxis(lookPitch, self.parent.gun.currentGunPosition == "RIGHT" and -0.04 or 0.35, -0.3, 0.2, 1, 0, 0), 0, 1, 0)) or self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.ParticleAnchor1)
+                    for _ = 1, 4 do
+                        local plane = math.random(1, 4)
+                        local sparkParticle = particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), 0, 0, 0):setScale(isFirstPerson and 0.1 or 1):setColor(0.624, 0.996, 1)
+                        if plane <= 2 then
+                            sparkParticle:setPos(anchorPos2:copy():add(isFirstPerson and vectors.rotateAroundAxis(lookYaw, vectors.rotateAroundAxis(lookPitch, math.random() * -0.3, plane == 2 and 0.3 or 0, math.random() * -0.15, 1, 0, 0), 0, 1, 0) or axisX:copy():scale(math.random() * -0.5):add(axisZ:copy():scale(math.random() * -1.125)):add(0, plane == 2 and 1.125 or 0, 0)))
+                        else
+                            sparkParticle:setPos(anchorPos2:copy():add(isFirstPerson and vectors.rotateAroundAxis(lookYaw, vectors.rotateAroundAxis(lookPitch, plane == 4 and -0.3 or 0, math.random() * 0.3, math.random() * -1, 1, 0, 0), 0, 1, 0) or axisX:copy():scale(plane == 4 and -0.5 or 0):add(axisZ:copy():scale(math.random() * -1.125)):add(0, math.random() * 1.125, 0)))
+                        end
+                    end
+
+                    local offsetPos = isFirstPerson and vectors.rotateAroundAxis(lookYaw, vectors.rotateAroundAxis(lookPitch, math.random() * 2 - 1, math.random() * 2 - 1, math.random() * 1, 1, 0, 0), 0, 1, 0) or axisX:copy():scale(math.random() * 2 - 1):add(axisY:copy():scale(math.random() * 2 - 1)):add(axisZ:copy():scale(math.random() * 1))
+                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), isFirstPerson and playerAnchor:copy():add(vectors.rotateAroundAxis(lookYaw, vectors.rotateAroundAxis(lookPitch, self.parent.gun.currentGunPosition == "RIGHT" and -0.35 or 0.35, -0.2, 0.4, 1, 0, 0), 0, 1, 0)):add(offsetPos) or self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.MuzzleAnchor):copy():add(offsetPos)):setScale(0.1):setVelocity(offsetPos:copy():scale(-0.1)):setGravity(0):setLifetime(8)
                 end
 
                 --音の演出
@@ -212,9 +219,13 @@ RailGun = {
                 local axisX = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.GunX):sub(gunPos):normalize()
                 local axisY = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.GunY):sub(gunPos):normalize()
                 local axisZ = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.GunZ):sub(gunPos):normalize()
-                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.MuzzleAnchor)
+                local lookDir = player:getLookDir()
+                local lookYaw = math.deg(math.atan2(lookDir.z, lookDir.x)) * -1 + 90
+                local isFirstPerson = renderer:isFirstPerson()
+                local anchorPos = isFirstPerson and player:getPos():add(vectors.rotateAroundAxis(lookYaw, self.parent.gun.currentGunPosition == "RIGHT" and -1 or 1, 1, 0, 0, 1, 0)) or self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.MuzzleAnchor)
+                local lookPitch = math.deg(math.asin(lookDir.y)) * -1
                 for _ = 1, 50 do
-                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), anchorPos):setVelocity(axisX:copy():scale(math.random() * 0.25 - 0.125):add(axisY:copy():scale(math.random() * 0.25 - 0.125)):add(axisZ:copy():scale(math.random() * 2))):setScale(3):setGravity(0):setLifetime(20)
+                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), anchorPos):setVelocity(isFirstPerson and vectors.rotateAroundAxis(lookYaw, vectors.rotateAroundAxis(lookPitch, math.random() * 0.25 - 0.125, math.random() * 0.25 - 0.125, math.random() * 2, 1, 0, 0), 0, 1, 0) or axisX:copy():scale(math.random() * 0.25 - 0.125):add(axisY:copy():scale(math.random() * 0.25 - 0.125)):add(axisZ:copy():scale(math.random() * 2))):setScale(3):setGravity(0):setLifetime(20)
                 end
                 self.isSpecialCharge = false
             end
