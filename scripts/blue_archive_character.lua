@@ -265,7 +265,7 @@ BlueArchiveCharacter = {
 
         instance.basic = {
             firstName = {
-                en_us = "Aris";
+                en_us = "Arisu";
                 ja_jp = "アリス";
             };
 
