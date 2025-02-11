@@ -425,15 +425,15 @@ BlueArchiveCharacter = {
         instance.exSkill = {
             {
                 name = {
-                    en_us = "Ex Skill name";
-                    ja_jp = "Exスキル名";
+                    en_us = "I'm breaking the world's rules!";
+                    ja_jp = "世界の 法則が 崩壊します！";
                 };
 
                 formationType = "STRIKER";
 
                 models = {};
 
-                animations = {"main"};
+                animations = {"main", "gun"};
 
                 camera = {
                     start = {
@@ -448,6 +448,13 @@ BlueArchiveCharacter = {
                 };
 
                 callbacks = {
+                    onPreAnimation = function (self)
+                        self.parent.railGun.chargePercent = 0
+                        self.parent.railGun.chargeState = "STRONG"
+                        self.parent.railGun.animationLength = 35
+                        models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(true)
+                    end;
+
                     --Exスキルアニメーションを任意の位置で一時停止させるコードスニペット。デバッグ用。
                     --"<>"内を適切な数値に置き換えること。
                     onAnimationTick = function (self, tick)
@@ -456,9 +463,19 @@ BlueArchiveCharacter = {
                             animations["models."..name]["ex_skill_<ex_skill_index>"]:pause()
                         end
                         ]]
+                        if tick == 0 then
+                            models.models.main.Avatar.UpperBody.Body.Gun:setPos()
+                            models.models.main.Avatar.UpperBody.Body.Gun:setRot()
+                        end
                     end;
 
                     onPostAnimation = function (self, forcedStop)
+                        if self.parent.gun.currentGunPosition == "NONE" then
+                            local isLeftHanded = player:isLeftHanded()
+                            models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(self.gun.gunPosition.put.pos[isLeftHanded and "left" or "right"]))
+                            models.models.main.Avatar.UpperBody.Body.Gun:setRot(self.gun.gunPosition.put.rot[isLeftHanded and "left" or "right"])
+                            models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(false)
+                        end
                         if not forcedStop then
                             self.parent.railGun.isSpecialCharge = true
                         end

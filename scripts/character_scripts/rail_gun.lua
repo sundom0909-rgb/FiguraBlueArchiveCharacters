@@ -1,8 +1,8 @@
 ---@class (exact) RailGun : AvatarModule アリスの武器を制御するクラス
----@field package chargeState RailGun.ChargeState 武器のチャージ状態
+---@field public chargeState RailGun.ChargeState 武器のチャージ状態
 ---@field public isSpecialCharge boolean オーバーチャージ状態かどうか
----@field package animationLength integer アニメーションの長さ
----@field package chargePercent number レールガンのチャージ割合（"WEAK"の場合は100%まで、"STRING"の場合は200%まで）
+---@field public animationLength integer アニメーションの長さ
+---@field public chargePercent number レールガンのチャージ割合（"WEAK"の場合は100%まで、"STRING"の場合は200%まで）
 ---@field package currentRot number[] レールガン回転パーツの現在の角度：1. マズル1, 2. マズル2, 3. マズル3, 4. エネルギー発生部
 ---@field package nextRot number[] レールガン回転パーツの次ティックの角度：1. マズル1, 2. マズル2, 3. マズル3, 4. エネルギー発生部
 ---@field package isChargeSoundPlayed boolean エネルギーチャージ音を再生したかどうか
@@ -41,12 +41,13 @@ RailGun = {
         AvatarModule.init(self)
 
         events.TICK:register(function ()
+            --print(self.chargeState)
             if not client:isPaused() then
                 if self.parent.gun.currentGunPosition ~= self.gunPositionPrev then
                     if self.parent.gun.currentGunPosition == "RIGHT" or self.parent.gun.currentGunPosition == "LEFT" then
                         --レールガンを持ったとき
                         models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(true)
-                    else
+                    elseif self.parent.exSkill.animationCount == -1 then
                         --レールガンをしまったとき
                         models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(false)
                     end
@@ -78,7 +79,7 @@ RailGun = {
                 elseif hasChargedCrossbow and self.chargeState == "NONE" then
                     self.chargeState = self.isSpecialCharge and "STRONG" or "WEAK"
                     self.animationLength = 0
-                elseif activeItem.id ~= "minecraft:bow" and activeItem.id ~= "minecraft:crossbow" and not hasChargedCrossbow and (self.chargeState == "WEAK" or self.chargeState == "STRONG") then
+                elseif activeItem.id ~= "minecraft:bow" and activeItem.id ~= "minecraft:crossbow" and not hasChargedCrossbow and (self.chargeState == "WEAK" or self.chargeState == "STRONG") and self.parent.exSkill.animationCount == -1 then
                     --チャージ終了
                     self.chargeState = "NONE"
                     self.animationLength = 0
@@ -102,7 +103,7 @@ RailGun = {
                 end
 
                 --ディスプレイの表示
-                if self.parent.gun.currentGunPosition ~= "NONE" then
+                if self.parent.gun.currentGunPosition ~= "NONE" or self.parent.exSkill.animationCount >= 0 then
                     for _, spriteName in ipairs({"displayR_meter", "displayL_meter"}) do
                         models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:getTask(spriteName):setUVPixels(69, math.floor(self.chargePercent * 6) * 5)
                     end
@@ -193,7 +194,7 @@ RailGun = {
                 models.models.main.Avatar.UpperBody.Body.Gun.GunBodyEmissive2:setUVPixels( math.floor(math.max(truePercent - 1, 0) * 6) * 2, 0)
 
                 --ディスプレイの表示
-                if self.parent.gun.currentGunPosition ~= "NONE" then
+                if self.parent.gun.currentGunPosition ~= "NONE" or self.parent.exSkill.animationCount >= 0 then
                     local digits = {math.floor(truePercent) % 10, math.floor(truePercent * 10) % 10, math.floor(truePercent * 100) % 10}
                     for _, spriteName in ipairs({"displayR_digit_", "displayL_digit_"}) do
                         for i = 1, 3 do
