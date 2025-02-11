@@ -126,7 +126,7 @@ RailGun = {
                     local axisZ = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.GunZ):sub(gunPos):normalize()
                     if not isFirstPerson then
                         for i = 0, 1 do
-                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.Engine):add(axisZ:copy():scale(0.18 * i - 0.09))):setScale(0.25):setVelocity(vectors.rotateAroundAxis(math.random() * 360, axisY:copy():scale(0.1), axisZ)):setColor(0.965, 0.576, 0.243):setLifetime(math.random(2, 4))
+                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.Engine):add(axisZ:copy():scale(0.18 * i - 0.09))):setScale(0.25):setVelocity(vectors.rotateAroundAxis(math.random() * 360, axisY:copy():scale(0.1), axisZ)):setColor(0.996, 0.859, 0.365):setLifetime(math.random(2, 4))
                         end
                     end
                     local lookDir = player:getLookDir()
@@ -136,7 +136,7 @@ RailGun = {
                     local anchorPos2 = isFirstPerson and playerAnchor:copy():add(vectors.rotateAroundAxis(lookYaw, vectors.rotateAroundAxis(lookPitch, self.parent.gun.currentGunPosition == "RIGHT" and -0.04 or 0.35, -0.3, 0.2, 1, 0, 0), 0, 1, 0)) or self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.ParticleAnchor1)
                     for _ = 1, 4 do
                         local plane = math.random(1, 4)
-                        local sparkParticle = particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), 0, 0, 0):setScale(isFirstPerson and 0.1 or 1):setColor(0.624, 0.996, 1)
+                        local sparkParticle = particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), 0, 0, 0):setScale(isFirstPerson and 0.1 or 0.5):setColor(0.624, 0.996, 1):setLifetime(1)
                         if plane <= 2 then
                             sparkParticle:setPos(anchorPos2:copy():add(isFirstPerson and vectors.rotateAroundAxis(lookYaw, vectors.rotateAroundAxis(lookPitch, math.random() * -0.3, plane == 2 and 0.3 or 0, math.random() * -0.15, 1, 0, 0), 0, 1, 0) or axisX:copy():scale(math.random() * -0.5):add(axisZ:copy():scale(math.random() * -1.125)):add(0, plane == 2 and 1.125 or 0, 0)))
                         else

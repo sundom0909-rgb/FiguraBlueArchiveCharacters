@@ -272,7 +272,7 @@ BlueArchiveCharacter = {
 
         instance.basic = {
             firstName = {
-                en_us = "Arisu";
+                en_us = "Aris";
                 ja_jp = "アリス";
             };
 
@@ -444,9 +444,9 @@ BlueArchiveCharacter = {
 
                 formationType = "STRIKER";
 
-                models = {};
+                models = {models.models.main.Avatar.UpperBody.Body.Gun.LightEffect, models.models.ex_skill_1.BodySignages, models.models.ex_skill_1.Gui};
 
-                animations = {"main", "gun"};
+                animations = {"main", "gun", "ex_skill_1"};
 
                 camera = {
                     start = {
@@ -462,6 +462,32 @@ BlueArchiveCharacter = {
 
                 callbacks = {
                     onPreAnimation = function (self)
+                        if not self.exSkill[1].init then
+                            models.models.ex_skill_1.SideHUDs.SideHUDBackground:setOpacity(0.5)
+                            models.models.ex_skill_1.SideHUDs.SideHUDContents:newText("ex_skill_1_text_1"):setText("§bARIS"):setPos(0.05, 1.75, 0):setRot(0, -90, 0):setScale(0.075, 0.075, 1):setAlignment("CENTER"):setShadow(true):setLight(15)
+                            models.models.ex_skill_1.SideHUDs.SideHUDContents:newText("ex_skill_1_text_2"):setText("Model complexity:"):setPos(0.05, 1.1, 2.5):setRot(0, -90, 0):setScale(0.05, 0.05, 1):setAlignment("LEFT"):setShadow(true):setLight(15)
+                            models.models.ex_skill_1.SideHUDs.SideHUDContents:newText("ex_skill_1_text_3"):setText("§e> §cnil"):setPos(0.05, 0.65, 2.3):setRot(0, -90, 0):setScale(0.05, 0.05, 1):setAlignment("LEFT"):setShadow(true):setLight(15)
+                            models.models.ex_skill_1.SideHUDs.SideHUDContents:newText("ex_skill_1_text_4"):setText("Tick instructions:"):setPos(0.05, 0.1, 2.5):setRot(0, -90, 0):setScale(0.05, 0.05, 1):setAlignment("LEFT"):setShadow(true):setLight(15)
+                            models.models.ex_skill_1.SideHUDs.SideHUDContents:newText("ex_skill_1_text_5"):setText("§e> §cnil"):setPos(0.05, -0.35, 2.3):setRot(0, -90, 0):setScale(0.05, 0.05, 1):setAlignment("LEFT"):setShadow(true):setLight(15)
+                            models.models.ex_skill_1.SideHUDs.SideHUDContents:newText("ex_skill_1_text_6"):setText("Render instructions:"):setPos(0.05, -0.9, 2.5):setRot(0, -90, 0):setScale(0.05, 0.05, 1):setAlignment("LEFT"):setShadow(true):setLight(15)
+                            models.models.ex_skill_1.SideHUDs.SideHUDContents:newText("ex_skill_1_text_7"):setText("§e> §cnil"):setPos(0.05, -1.35, 2.3):setRot(0, -90, 0):setScale(0.05, 0.05, 1):setAlignment("LEFT"):setShadow(true):setLight(15)
+                            self.exSkill[1].init = true
+                        end
+                        if host:isHost() then
+                            events.RENDER:register(function (delta, context)
+                                models.models.ex_skill_1.Gui.ScreenFilter:setOpacity(models.models.ex_skill_1.Gui.ScreenFilterOpacity:getAnimScale().x)
+                                if models.models.ex_skill_1.CameraBackground:getVisible() then
+                                    local opacity = models.models.ex_skill_1.CameraBackground.BackgroundOpacity:getAnimScale().x
+                                    models.models.ex_skill_1.CameraBackground:setOpacity(opacity)
+                                    models.models.ex_skill_1.CameraBackground:setColor(vectors.vec3(1, 1, 1):scale(opacity))
+                                    local backgroundPos = vectors.rotateAroundAxis(player:getBodyYaw(delta) + 180, renderer:getCameraOffsetPivot():copy():add(0, 1.62, 0):add(client:getCameraDir():copy():scale(1.65)), 0, 1, 0):scale(16 / 0.9375)
+                                    models.models.ex_skill_1.CameraBackground:setOffsetPivot(backgroundPos)
+                                    models.models.ex_skill_1.CameraBackground.Background:setPos(backgroundPos)
+                                    local windowSize = client:getWindowSize()
+                                    models.models.ex_skill_1.CameraBackground.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(40))
+                                end
+                            end, "ex_skill_1_render")
+                        end
                         self.parent.railGun.chargePercent = 0
                         self.parent.railGun.chargeState = "STRONG"
                         self.parent.railGun.animationLength = 35
@@ -473,25 +499,85 @@ BlueArchiveCharacter = {
                         if tick == 0 then
                             models.models.main.Avatar.UpperBody.Body.Gun:setPos()
                             models.models.main.Avatar.UpperBody.Body.Gun:setRot()
+                        elseif tick == 13 then
+                            models.models.main.Avatar.UpperBody.Body.Gun.LightEffect:setOffsetPivot(0, 0, -1)
+                        elseif tick == 16 then
+                            local gunPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun)
+                            local axisZ = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.GunZ):sub(gunPos):normalize()
+                            for _ = 1, 50 do
+                                local anchorPos = gunPos:copy():add(axisZ:copy():scale(math.random() * 0.6 - 0.1))
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setVelocity(vectors.rotateAroundAxis(math.random() * 360, 0, 0.1, 0, axisZ)):setColor(0.996, 0.859, 0.365)
+                            end
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.chest.locked"), player:getPos(), 0.25, 2)
+                        elseif tick == 26 or tick == 30 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.chest.locked"), player:getPos(), 0.25, 2)
+                        elseif tick == 51 then
+                            for _, modelPart in ipairs({models.models.main.Avatar.Head.EyeHUDs, models.models.ex_skill_1.SideHUDs}) do
+                                modelPart:setVisible(true)
+                            end
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.beacon.activate"), player:getPos(), 0.25, 5)
+                        elseif tick == 57 then
+                            models.models.ex_skill_1.SideHUDs.SideHUDContents:setVisible(true)
                         elseif tick == 65 then
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED", 7, true)
+                        elseif tick == 68 and host:isHost() then
+                            models.models.ex_skill_1.Gui.ScreenFilter:setScale(client:getScaledWindowSize():augmented(1))
+                            models.models.ex_skill_1.CameraBackground:setVisible(true)
+                        elseif tick == 70 then
+                            models.models.main.Avatar.Head.EyeHUDs.LeftEyeHUDs:setVisible(false)
                         elseif tick == 72 then
                             self.parent.faceParts:setEmotion("STARE", "STARE", "CLOSED", 28, true)
+                            models.models.main.Avatar.Head.EyeLights:setColor(vectors.vec3(1, 1, 1):scale(client:hasShaderPack() and 0.75 or 1))
+                            models.models.main.Avatar.Head.EyeLights:setVisible(true)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 1, 1.5)
+                        elseif tick == 76 and host:isHost() then
+                            models.models.ex_skill_1.CameraBackground:setVisible(false)
+                        end
+
+                        if tick >= 57 and tick < 70 then
+                            local modelComplexity = avatar:getComplexity()
+                            local modelComplexityPercent = modelComplexity / avatar:getMaxComplexity()
+                            models.models.ex_skill_1.SideHUDs.SideHUDContents:getTask("ex_skill_1_text_3"):setText("§e> §"..(modelComplexityPercent > 0.9 and "c" or (modelComplexityPercent > 0.75 and "e" or "a"))..modelComplexity)
+                            local tickCount = avatar:getTickCount()
+                            local tickCountPercent = tickCount / avatar:getMaxTickCount()
+                            models.models.ex_skill_1.SideHUDs.SideHUDContents:getTask("ex_skill_1_text_5"):setText("§e> §"..(tickCountPercent > 0.9 and "c" or (tickCountPercent > 0.75 and "e" or "a"))..tickCount)
+                            local renderCount = avatar:getRenderCount()
+                            local renderCountPercent = renderCount / avatar:getMaxRenderCount()
+                            models.models.ex_skill_1.SideHUDs.SideHUDContents:getTask("ex_skill_1_text_7"):setText("§e> §"..(renderCountPercent > 0.9 and "c" or (renderCountPercent > 0.75 and "e" or "a"))..renderCount)
+                        elseif tick >= 70 then
+                            for _ = 1, 2 do
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:end_rod"), player:getPos():add(math.random() * 1.2 - 0.6, math.random() * 2, math.random() * 1.2 - 0.6)):setScale(0.25):setVelocity(0, 0.1, 0):setColor(0.988, 0.522, 1)
+                            end
                         end
                     end;
 
                     onPostAnimation = function (self, forcedStop)
+                        if host:isHost() then
+                            events.RENDER:remove("ex_skill_1_render")
+                            if forcedStop then
+                                models.models.ex_skill_1.CameraBackground:setVisible(false)
+                            end
+                        end
                         if self.parent.gun.currentGunPosition == "NONE" then
                             local isLeftHanded = player:isLeftHanded()
                             models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(self.gun.gunPosition.put.pos[isLeftHanded and "left" or "right"]))
                             models.models.main.Avatar.UpperBody.Body.Gun:setRot(self.gun.gunPosition.put.rot[isLeftHanded and "left" or "right"])
                             models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(false)
                         end
+                        for _, modelPart in ipairs({models.models.main.Avatar.Head.EyeHUDs, models.models.ex_skill_1.SideHUDs, models.models.ex_skill_1.SideHUDs.SideHUDContents, models.models.main.Avatar.Head.EyeLights}) do
+                            modelPart:setVisible(false)
+                        end
+                        models.models.main.Avatar.Head.EyeHUDs.LeftEyeHUDs:setVisible(true)
+                        models.models.main.Avatar.UpperBody.Body.Gun.LightEffect:setOffsetPivot()
                         if not forcedStop then
                             self.parent.railGun.isSpecialCharge = true
                         end
                     end;
                 };
+
+                ---このExスキルの初期化処理が行われたかどうか
+                ---@type boolean
+                init = false;
             };
         }
 

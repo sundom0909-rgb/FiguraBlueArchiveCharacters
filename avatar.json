@@ -1,6 +1,6 @@
 {
-	"name": "Arisu",
-	"description": "Arisu Tendo from Blue Archive",
+	"name": "Aris",
+	"description": "Aris Tendo from Blue Archive",
 	"author": "Gakuto1112",
 	"version": "0.1.4",
 	"color": "a3e0fb",
@@ -159,11 +159,43 @@
 		"models.models.gun.Gun.GunBodyEmissive2": {
 			"primaryRenderType": "EMISSIVE_SOLID"
 		},
+		"models.models.gun.Gun.LightEffect": {
+			"visible": false,
+			"primaryRenderType": "EMISSIVE_SOLID"
+		},
 		"models.models.placement_object.PlacementObject": {
 			"visible": false
 		},
 		"models.models.ex_skill_frame.Particles": {
 			"visible": false
+		},
+		"models.models.ex_skill_1.EyeLights": {
+			"visible": false,
+			"moveTo": "models.models.main.Avatar.Head",
+			"primaryRenderType": "EMISSIVE_SOLID"
+		},
+		"models.models.ex_skill_1.EyeHUDs": {
+			"visible": false,
+			"moveTo": "models.models.main.Avatar.Head",
+			"primaryRenderType": "CUTOUT_EMISSIVE_SOLID"
+		},
+		"models.models.ex_skill_1.SideHUDs": {
+			"visible": false,
+			"primaryRenderType": "CUTOUT_EMISSIVE_SOLID"
+		},
+		"models.models.ex_skill_1.SideHUDs.SideHUDContents": {
+			"visible": false
+		},
+		"models.models.ex_skill_1.BodySignages": {
+			"visible": false,
+			"primaryRenderType": "CUTOUT_EMISSIVE_SOLID"
+		},
+		"models.models.ex_skill_1.Gui": {
+			"visible": false
+		},
+		"models.models.ex_skill_1.CameraBackground": {
+			"visible": false,
+			"primaryRenderType": "CUTOUT_EMISSIVE_SOLID"
 		},
 		"models.models.bubble.Camera.AvatarBubble": {
 			"visible": false
