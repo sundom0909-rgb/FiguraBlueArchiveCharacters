@@ -3,15 +3,22 @@
 ---| "SURPRISED" # 驚いた目（ダメージを受けたときなど）
 ---| "TIRED" # 疲れた目（死亡アニメーションなど）
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
+---| "NARROW" # 少し閉じた目
+---| "CLOSED2" # 閉じた目2
+---| "STARE" # 凝視目（Exスキル1の最後の目）
 
 ---@alias BlueArchiveCharacter.LeftEyeTextures
 ---| "NORMAL" # 通常
 ---| "SURPRISED" # 驚いた目（ダメージを受けたときなど）
 ---| "TIRED" # 疲れた目（死亡アニメーションなど）
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
+---| "NARROW" # 少し閉じた目
+---| "CLOSED2" # 閉じた目2
+---| "STARE" # 凝視目（Exスキル1の最後の目）
 
 ---@alias BlueArchiveCharacter.MouthTextures
 ---| "NORMAL" # 通常
+---| "CLOSED" # 閉じた口
 
 ---@alias BlueArchiveCharacter.GunHoldType
 ---| "NORMAL" # バニラの弓やクロスボウの構え方と同じ
@@ -291,6 +298,9 @@ BlueArchiveCharacter = {
                 SURPRISED = vectors.vec2(2, 0); --必須
                 TIRED = vectors.vec2(3, 0); --必須
                 CLOSED = vectors.vec2(4, 0); --必須
+                NARROW = vectors.vec2(5, 0);
+                CLOSED2 = vectors.vec2(7, 0);
+                STARE = vectors.vec2(8, 0);
             };
 
             leftEye = {
@@ -298,10 +308,13 @@ BlueArchiveCharacter = {
                 SURPRISED = vectors.vec2(1, 0); --必須
                 TIRED = vectors.vec2(2, 0); --必須
                 CLOSED = vectors.vec2(3, 0); --必須
+                NARROW = vectors.vec2(5, 0);
+                CLOSED2 = vectors.vec2(6, 0);
+                STARE = vectors.vec2(7, 0);
             };
 
             mouth = {
-
+                CLOSED = vectors.vec2(0, 0);
             };
         }
 
@@ -453,12 +466,17 @@ BlueArchiveCharacter = {
                         self.parent.railGun.chargeState = "STRONG"
                         self.parent.railGun.animationLength = 35
                         models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(true)
+                        self.parent.faceParts:setEmotion("NARROW", "NARROW", "CLOSED", 65, true)
                     end;
 
                     onAnimationTick = function (self, tick)
                         if tick == 0 then
                             models.models.main.Avatar.UpperBody.Body.Gun:setPos()
                             models.models.main.Avatar.UpperBody.Body.Gun:setRot()
+                        elseif tick == 65 then
+                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED", 7, true)
+                        elseif tick == 72 then
+                            self.parent.faceParts:setEmotion("STARE", "STARE", "CLOSED", 28, true)
                         end
                     end;
 
