@@ -1257,7 +1257,7 @@ BlueArchiveCharacter = {
                                 if isEngineActive ~= self.costume.costumes[1].isEngineActivePrev then
                                     if isEngineActive then
                                         animations["models.main"].tank_idle_powered:play()
-                                        animations["models.main"].tank_idle_powered:setTime(avatarVars[irohaUUID].engineAnimTime + 0.05)
+                                        animations["models.main"].tank_idle_powered:setTime(avatarVars[irohaUUID].engineAnimTime)
                                     else
                                         animations["models.main"].tank_idle_powered:stop()
                                     end
