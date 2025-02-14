@@ -876,6 +876,7 @@ BlueArchiveCharacter = {
                     models.models.ex_skill_1.Tank.TankBody.BaseBase1:newBlock("toramaru_log_"..(i * 10 + j)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:oak_log").."[axis=z]"):setPos(36 + i * -80, -2, j * 8 - 41):setScale(0.5)
                 end
             end
+            avatar:store("shouldReplaceVehicleModels", self.parent.actionWheel.shouldReplaceVehicleModels)
 
             if host:isHost() then
                 local localeStrings = {
@@ -1145,7 +1146,6 @@ BlueArchiveCharacter = {
         end)
 
         avatar:store("FBAC_Iroha", true)
-        avatar:store("shouldReplaceVehicleModels", false)
     end;
 }
 
