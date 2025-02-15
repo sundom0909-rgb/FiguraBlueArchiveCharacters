@@ -346,7 +346,7 @@ BlueArchiveCharacter = {
                 onAdditionalLeftArmProcess = function (self, state)
                     if state == 1 then
                         events.RENDER:remove("left_arm_render")
-                        events.RENDER:register(function (delta, context)
+                        events.RENDER:register(function (delta)
                             local headRot = vanilla_model.HEAD:getOriginRot()
                             local rotY = headRot.y % 360
                             rotY = rotY < 180 and 0 or rotY
@@ -464,10 +464,19 @@ BlueArchiveCharacter = {
                             models.models.ex_skill_1.SideHUDs.SideHUDContents:newText("ex_skill_1_text_5"):setText("§e> §cnil"):setPos(0.05, -0.35, 2.3):setRot(0, -90, 0):setScale(0.05, 0.05, 1):setAlignment("LEFT"):setShadow(true):setLight(15)
                             models.models.ex_skill_1.SideHUDs.SideHUDContents:newText("ex_skill_1_text_6"):setText("Render instructions:"):setPos(0.05, -0.9, 2.5):setRot(0, -90, 0):setScale(0.05, 0.05, 1):setAlignment("LEFT"):setShadow(true):setLight(15)
                             models.models.ex_skill_1.SideHUDs.SideHUDContents:newText("ex_skill_1_text_7"):setText("§e> §cnil"):setPos(0.05, -1.35, 2.3):setRot(0, -90, 0):setScale(0.05, 0.05, 1):setAlignment("LEFT"):setShadow(true):setLight(15)
+                            ---@diagnostic disable-next-line: discard-returns
+                            models:newPart("script_ex_skill_1")
+                            models.script_ex_skill_1:addChild(models.models.main.Avatar:copy("exSkill1Outline"))
+                            models.script_ex_skill_1.exSkill1Outline:setVisible(false)
+                            models.script_ex_skill_1.exSkill1Outline:setOffsetPivot(0, 16, 0)
+                            models.script_ex_skill_1.exSkill1Outline:setScale(1.35, 1.3, 1.35)
+                            models.script_ex_skill_1.exSkill1Outline:setPrimaryTexture("CUSTOM", textures["textures.ex_skill_1_white"])
+                            models.script_ex_skill_1.exSkill1Outline:setPrimaryRenderType("EMISSIVE_SOLID")
+                            models.script_ex_skill_1.exSkill1Outline:setColor(0.988, 0.522, 1)
                             self.exSkill[1].init = true
                         end
-                        if host:isHost() then
-                            events.RENDER:register(function (delta, context)
+                        events.RENDER:register(function (delta, context)
+                            if host:isHost() then
                                 models.models.ex_skill_1.Gui.ScreenFilter:setOpacity(models.models.ex_skill_1.Gui.ScreenFilterOpacity:getAnimScale().x)
                                 if models.models.ex_skill_1.CameraBackground:getVisible() then
                                     local opacity = models.models.ex_skill_1.CameraBackground.BackgroundOpacity:getAnimScale().x
@@ -479,8 +488,13 @@ BlueArchiveCharacter = {
                                     local windowSize = client:getWindowSize()
                                     models.models.ex_skill_1.CameraBackground.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(40))
                                 end
-                            end, "ex_skill_1_render")
-                        end
+                            end
+                            if models.script_ex_skill_1.exSkill1Outline:getVisible() then
+                                local animRot = models.models.main.Avatar:getAnimRot()
+                                models.script_ex_skill_1.exSkill1Outline:setPos(vectors.rotateAroundAxis(player:getBodyYaw(delta) + 180, player:getPos(delta):add(0, 1, 0):sub(client:getCameraPos()):normalize(), 0, 1, 0):scale(10))
+                                models.script_ex_skill_1.exSkill1Outline:setRot(animRot)
+                            end
+                        end, "ex_skill_1_render")
                         self.parent.railGun.chargePercent = 0
                         self.parent.railGun.chargeState = "STRONG"
                         self.parent.railGun.animationLength = 35
@@ -523,6 +537,7 @@ BlueArchiveCharacter = {
                             models.models.main.Avatar.Head.EyeLights:setColor(vectors.vec3(1, 1, 1):scale(client:hasShaderPack() and 0.75 or 1))
                             models.models.main.Avatar.Head.EyeLights:setVisible(true)
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 1, 1.5)
+                            models.script_ex_skill_1.exSkill1Outline:setVisible(true)
                         elseif tick == 76 and host:isHost() then
                             models.models.ex_skill_1.CameraBackground:setVisible(false)
                         end
@@ -538,8 +553,11 @@ BlueArchiveCharacter = {
                             local renderCountPercent = renderCount / avatar:getMaxRenderCount()
                             models.models.ex_skill_1.SideHUDs.SideHUDContents:getTask("ex_skill_1_text_7"):setText("§e> §"..(renderCountPercent > 0.9 and "c" or (renderCountPercent > 0.75 and "e" or "a"))..renderCount)
                         elseif tick >= 70 then
+                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.script_ex_skill_1.exSkill1Outline)
+                            local particleVec = player:getPos():add(0, 1, 0):sub(anchorPos):normalize()
+                            local particleRot = math.deg(math.atan2(particleVec.z, particleVec.x))
                             for _ = 1, 2 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:end_rod"), player:getPos():add(math.random() * 1.2 - 0.6, math.random() * 2, math.random() * 1.2 - 0.6)):setScale(0.25):setVelocity(0, 0.1, 0):setColor(0.988, 0.522, 1)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:end_rod"), anchorPos:copy():add(vectors.rotateAroundAxis(particleRot + 90, math.random() * 2.4 - 1.2, math.random() * 2, 0, 0, 1, 0))):setScale(0.25):setVelocity(0, 0.1, 0):setColor(0.988, 0.522, 1)
                             end
                         end
                     end;
@@ -557,7 +575,7 @@ BlueArchiveCharacter = {
                             models.models.main.Avatar.UpperBody.Body.Gun:setRot(self.gun.gunPosition.put.rot[isLeftHanded and "left" or "right"])
                             models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(false)
                         end
-                        for _, modelPart in ipairs({models.models.main.Avatar.Head.EyeHUDs, models.models.ex_skill_1.SideHUDs, models.models.ex_skill_1.SideHUDs.SideHUDContents, models.models.main.Avatar.Head.EyeLights}) do
+                        for _, modelPart in ipairs({models.models.main.Avatar.Head.EyeHUDs, models.models.ex_skill_1.SideHUDs, models.models.ex_skill_1.SideHUDs.SideHUDContents, models.models.main.Avatar.Head.EyeLights, models.script_ex_skill_1.exSkill1Outline}) do
                             modelPart:setVisible(false)
                         end
                         models.models.main.Avatar.Head.EyeHUDs.LeftEyeHUDs:setVisible(true)
