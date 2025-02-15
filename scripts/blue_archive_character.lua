@@ -719,7 +719,7 @@ BlueArchiveCharacter = {
                                 for _, modelPart in ipairs({models.models.ex_skill_2.Gui.UI.MomoiUI.GunIcon, models.models.ex_skill_2.Gui.UI.MomoiUI.Bullets}) do
                                     modelPart:setVisible(false)
                                 end
-                                models.models.ex_skill_2.Gui.UI.MomoiUI:setVisible(true)
+                                models.models.ex_skill_2.Gui:setVisible(true)
                                 models.models.ex_skill_2.Gui.UI:addChild(self.parent.modelUtils:copyModel(models.models.ex_skill_2.Gui.UI.MomoiUI, "MidoriUI"))
                                 for _, modelPart in ipairs({models.models.ex_skill_2.Gui.UI.MomoiUI.GunIcon, models.models.ex_skill_2.Gui.UI.MomoiUI.Bullets}) do
                                     modelPart:setVisible(true)
