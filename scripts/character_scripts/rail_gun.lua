@@ -98,7 +98,11 @@ RailGun = {
                 elseif self.chargeState == "STRONG" then
                     self.chargePercent = math.min(self.chargePercent + 20 / self.animationLength * 0.1, 2)
                 else
-                    self.chargePercent = math.max(self.chargePercent - 0.05, 0)
+                    if self.parent.gun.currentGunPosition == "NONE" then
+                        self.chargePercent = 0
+                    else
+                        self.chargePercent = math.max(self.chargePercent - 0.05, 0)
+                    end
                 end
 
                 --ディスプレイの表示
