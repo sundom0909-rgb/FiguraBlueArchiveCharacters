@@ -635,7 +635,20 @@ BlueArchiveCharacter = {
         }
 
         instance.deathAnimation = {
+            callbacks = {
+                onPhase1 = function (_, dummyAvatar)
+                    dummyAvatar.Head.SideTail:setRot(30, 0, -10)
+                    dummyAvatar.UpperBody.Body.Hairs.BackHair:setRot(-10, 0, 0)
+                    dummyAvatar.UpperBody.Body.Hairs.BackHair.BackHairBottom:setRot(-80, 0, 0)
+                    dummyAvatar.UpperBody.Body.Hairs.BackHair.BackHairBottom:setOffsetPivot(0, 0, -1)
+                end;
 
+                onPhase2 = function (_, dummyAvatar)
+                    dummyAvatar.Head.SideTail:setRot(-20, 0, -5)
+                    dummyAvatar.UpperBody.Body.Hairs.BackHair:setRot(-12.5, 0, -15)
+                    dummyAvatar.UpperBody.Body.Hairs.BackHair.BackHairBottom:setRot()
+                end;
+            };
         }
 
         instance.actionWheel = {
