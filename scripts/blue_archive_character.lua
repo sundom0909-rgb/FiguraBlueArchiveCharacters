@@ -557,7 +557,7 @@ BlueArchiveCharacter = {
                             local particleVec = player:getPos():add(0, 1, 0):sub(anchorPos):normalize()
                             local particleRot = math.deg(math.atan2(particleVec.z, particleVec.x))
                             for _ = 1, 2 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:end_rod"), anchorPos:copy():add(vectors.rotateAroundAxis(particleRot + 90, math.random() * 2.4 - 1.2, math.random() * 2, 0, 0, 1, 0))):setScale(0.25):setVelocity(0, 0.1, 0):setColor(0.988, 0.522, 1)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:end_rod"), anchorPos:copy():add(vectors.rotateAroundAxis(particleRot * -1 + 90, math.random() * 2.4 - 1.2, math.random() * 2, 0, 0, 1, 0))):setScale(0.25):setVelocity(0, 0.1, 0):setColor(0.988, 0.522, 1)
                             end
                         end
                     end;
