@@ -788,6 +788,11 @@ BlueArchiveCharacter = {
                         self.exSkill[2].glowColor = specialItemValue < 0.8 and vectors.vec3(1, 0.984, 0.4) or (specialItemValue < 0.9 and vectors.vec3(0.686, 0.992, 0.804) or vectors.vec3(0.631, 0.984, 0.91))
                         models.models.ex_skill_2.Wall.SpecialItemGroup.GlowEffects:setColor(self.exSkill[2].glowColor)
                         local paintingResources = {"minecraft:textures/painting/pointer.png", "minecraft:textures/painting/pigscene.png", "minecraft:textures/painting/burning_skull.png"}
+                        if client:getVersion() >= "1.21" then
+                            for _, paintingName in ipairs({"minecraft:textures/painting/orb.png", "minecraft:textures/painting/unpacked.png"}) do
+                                table.insert(paintingResources, paintingName)
+                            end
+                        end
                         models.models.ex_skill_2.Wall.Paintings.MainPainting.Painting_Front:setPrimaryTexture("RESOURCE", paintingResources[math.ceil(math.random() * #paintingResources)])
                         --[[
                             local paintingVarients = {"minecraft:pointer", "minecraft:pigscene", "minecraft:burning_skull"}
