@@ -606,6 +606,20 @@ BlueArchiveCharacter = {
                 };
             };
 
+            callbacks = {
+                onArmorChange = function (_, parts, isVisible)
+                    if parts == "CHEST_PLATE" then
+                        if isVisible then
+                            models.models.main.Avatar.UpperBody.Body.Hairs.FrontHair:setPos(0, 0, -1)
+                            models.models.main.Avatar.UpperBody.Body.Hairs.BackHair:setPos(0, 0, 1)
+                        else
+                            for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.Hairs.FrontHair, models.models.main.Avatar.UpperBody.Body.Hairs.BackHair}) do
+                                modelPart:setPos()
+                            end
+                        end
+                    end
+                end;
+            };
         }
 
         instance.bubble = {
