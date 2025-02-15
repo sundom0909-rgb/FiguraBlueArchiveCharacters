@@ -32,10 +32,6 @@
 ---| "SMILE_SMALL" # 小さくニッコリ
 ---| "OPENED_SMALL" # 小さく開いた口
 
----@alias BlueArchiveCharacter.GunHoldType
----| "NORMAL" # バニラの弓やクロスボウの構え方と同じ
----| "CUSTOM" # BBアニメーション"[models.main][gun_hold_right]"と"[models.main][gun_hold_left]"で構え方を定義する
-
 ---@alias BlueArchiveCharacter.GunPutType
 ---| "BODY" # アバターのBodyに銃を移動させる
 ---| "HIDDEN" # 銃を隠す
@@ -156,7 +152,6 @@
 ---@field public put BlueArchiveCharacter.GunPutPositionSet 銃をしまっているとき
 
 ---@class (exact) BlueArchiveCharacter.GunHoldPositionSet 構えているときの銃のモデルの位置や向きのデータセット
----@field public type BlueArchiveCharacter.GunHoldType 銃の構え方の種類
 ---@field public firstPersonPos? BlueArchiveCharacter.Vector3RightLeftSet 一人称視点での銃の位置
 ---@field public firstPersonRot? BlueArchiveCharacter.Vector3RightLeftSet 一人称視点での銃の方向
 ---@field public thirdPersonPos? BlueArchiveCharacter.Vector3RightLeftSet 三人称視点での銃の位置
@@ -370,8 +365,6 @@ BlueArchiveCharacter = {
 
             gunPosition = {
                 hold = {
-                    type = "NORMAL";
-
                     firstPersonPos = {
                         right = vectors.vec3(-0.5, 3, -8);
                         left = vectors.vec3(0.5, 3, -8);
