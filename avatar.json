@@ -198,6 +198,10 @@
 			"visible": false,
 			"primaryRenderType": "CUTOUT_EMISSIVE_SOLID"
 		},
+		"models.models.ex_skill_2.Broom": {
+			"visible": false,
+			"moveTo": "models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom"
+		},
 		"models.models.costume_maid.CMaidH": {
 			"visible": false,
 			"moveTo": "models.models.main.Avatar.Head"

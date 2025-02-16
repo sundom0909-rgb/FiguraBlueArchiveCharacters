@@ -475,7 +475,7 @@ BlueArchiveCharacter = {
                             models.script_ex_skill_1.exSkill1Outline:setColor(0.988, 0.522, 1)
                             self.exSkill[1].init = true
                         end
-                        events.RENDER:register(function (delta, context)
+                        events.RENDER:register(function (delta)
                             if host:isHost() then
                                 models.models.ex_skill_1.Gui.ScreenFilter:setOpacity(models.models.ex_skill_1.Gui.ScreenFilterOpacity:getAnimScale().x)
                                 if models.models.ex_skill_1.CameraBackground:getVisible() then
@@ -590,6 +590,73 @@ BlueArchiveCharacter = {
                 ---@type boolean
                 init = false;
             };
+
+            {
+                name = {
+                    ja_jp = "アリス、お掃除します！";
+                    en_us = "Aris, clean up!";
+                };
+
+                formationType = "STRIKER";
+
+                models = {models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom};
+
+                animations = {"main", "gun", "costume_maid", "ex_skill_2"};
+
+                camera = {
+                    start = {
+                        rot = vectors.vec3();
+                        pos = vectors.vec3();
+                    };
+
+                    fin = {
+                        rot = vectors.vec3();
+                        pos = vectors.vec3();
+                    };
+                };
+
+                callbacks = {
+                    onPreAnimation = function (self)
+                        if not self.exSkill[1].init then
+                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom.BroomBase:setPrimaryTexture("RESOURCE", "minecraft:textures/block/oak_planks.png")
+                            self.exSkill[1].init = true
+                        end
+                    end;
+
+                    onAnimationTick = function (self, tick)
+                        if tick == 0 then
+                            models.models.main.Avatar.UpperBody.Body.Gun:setPos()
+                            models.models.main.Avatar.UpperBody.Body.Gun:setRot()
+                            models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(false)
+                        elseif tick == 92 then
+                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom:moveTo(models.models.main.Avatar.UpperBody.Body)
+                            self.parent.railGun.chargePercent = 0
+                            self.parent.railGun.chargeState = "STRONG"
+                            self.parent.railGun.animationLength = 20
+                            models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(true)
+                        end
+                    end;
+
+                    onPostAnimation = function (self, forcedStop)
+                        if models.models.main.Avatar.UpperBody.Body.Broom ~= nil then
+                            models.models.main.Avatar.UpperBody.Body.Broom:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
+                        end
+                        if self.parent.gun.currentGunPosition == "NONE" then
+                            local isLeftHanded = player:isLeftHanded()
+                            models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(self.gun.gunPosition.put.pos[isLeftHanded and "left" or "right"]))
+                            models.models.main.Avatar.UpperBody.Body.Gun:setRot(self.gun.gunPosition.put.rot[isLeftHanded and "left" or "right"])
+                            models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(false)
+                        end
+                        if not forcedStop then
+                            self.parent.railGun.isSpecialCharge = true
+                        end
+                    end;
+                };
+
+                ---このExスキルの初期化処理が行われたかどうか
+                ---@type boolean
+                init = false;
+            };
         }
 
         instance.costume = {
@@ -613,7 +680,7 @@ BlueArchiveCharacter = {
                         ja_jp = "メイド";
                     };
 
-                    exSkill = 1;
+                    exSkill = 2;
                 };
             };
 
