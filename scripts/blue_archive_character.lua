@@ -366,7 +366,7 @@ BlueArchiveCharacter = {
         }
 
         instance.skirt = {
-
+            skirtModels = {models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1};
         }
 
         instance.gun = {
