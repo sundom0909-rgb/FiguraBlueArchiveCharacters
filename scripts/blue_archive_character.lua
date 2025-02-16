@@ -891,6 +891,254 @@ BlueArchiveCharacter = {
                         };
                     };
                 };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.CMaidB.BackRibbon.RibbonRight};
+
+                    y = {
+                        vertical = {
+                            min = -70;
+                            neutral = 0;
+                            max = 0;
+
+                            bodyX = {
+                                multiplayer = -40;
+                                min = -70;
+                                max = 0;
+                            };
+
+                            bodyRot = {
+                                multiplayer = 0.025;
+                                min = -70;
+                                max = 0;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -70;
+                            neutral = 0;
+                            max = 0;
+
+                            bodyY = {
+                                multiplayer = 40;
+                                min = -70;
+                                max = 0;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.CMaidB.BackRibbon.RibbonRight.RibbonRightZPivot};
+
+                    z = {
+                        vertical = {
+                            min = -20;
+                            neutral = 0;
+                            max = 20;
+
+                            bodyY = {
+                                multiplayer = -20;
+                                min = -20;
+                                max = 20;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -20;
+                            neutral = 0;
+                            max = 20;
+
+                            bodyX = {
+                                multiplayer = -20;
+                                min = -20;
+                                max = 20;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.CMaidB.BackRibbon.RibbonLeft};
+
+                    y = {
+                        vertical = {
+                            min = 0;
+                            neutral = 0;
+                            max = 70;
+
+                            bodyX = {
+                                multiplayer = 40;
+                                min = 0;
+                                max = 70;
+                            };
+
+                            bodyRot = {
+                                multiplayer = -0.025;
+                                min = 0;
+                                max = 70;
+                            };
+                        };
+
+                        horizontal = {
+                            min = 0;
+                            neutral = 0;
+                            max = 70;
+
+                            bodyY = {
+                                multiplayer = -40;
+                                min = 0;
+                                max = 70;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.CMaidB.BackRibbon.RibbonLeft.RibbonLeftZPivot};
+
+                    z = {
+                        vertical = {
+                            min = -20;
+                            neutral = 0;
+                            max = 20;
+
+                            bodyY = {
+                                multiplayer = 20;
+                                min = -20;
+                                max = 20;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -20;
+                            neutral = 0;
+                            max = 20;
+
+                            bodyX = {
+                                multiplayer = 20;
+                                min = -20;
+                                max = 20;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.CMaidB.BackRibbon.RibbonBottomRight, models.models.main.Avatar.UpperBody.Body.CMaidB.BackRibbon.RibbonBottomLeft};
+
+                    x = {
+                        vertical = {
+                            min = -140;
+                            neutral = 0;
+                            max = 0;
+                            sneakOffset = 30;
+
+                            bodyX = {
+                                multiplayer = -80;
+                                min = -60;
+                                max = 0;
+                            };
+
+                            bodyY = {
+                                multiplayer = 80;
+                                min = -140;
+                                max = 0;
+                            };
+
+                            bodyRot = {
+                                multiplayer = 0.05;
+                                min = -60;
+                                max = 0;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -140;
+                            neutral = 0;
+                            max = 0;
+
+                            bodyY = {
+                                multiplayer = 80;
+                                min = -60;
+                                max = 0;
+                            };
+                        };
+                    };
+                };
+
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.CMaidB.BackRibbon.RibbonBottomRight.RibbonBottomRightZPivot};
+
+                    z = {
+                        vertical = {
+                            min = -22.5;
+                            neutral = 0;
+                            max = 15;
+
+                            bodyX = {
+                                multiplayer = 10;
+                                min = -22.5;
+                                max = 15;
+                            };
+
+                            bodyRot = {
+                                multiplayer = -0.025;
+                                min = -22.5;
+                                max = 15;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -22.5;
+                            neutral = 0;
+                            max = 10;
+
+                            bodyX = {
+                                multiplayer = 10;
+                                min = -22.5;
+                                max = 15;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.CMaidB.BackRibbon.RibbonBottomLeft.RibbonBottomLeftZPivot};
+
+                    z = {
+                        vertical = {
+                            min = -15;
+                            neutral = 0;
+                            max = 22.5;
+
+                            bodyX = {
+                                multiplayer = -10;
+                                min = -15;
+                                max = 22.5;
+                            };
+
+                            bodyRot = {
+                                multiplayer = 0.025;
+                                min = -15;
+                                max = 22.5;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -22.5;
+                            neutral = 0;
+                            max = 10;
+
+                            bodyX = {
+                                multiplayer = 10;
+                                min = -22.5;
+                                max = 15;
+                            };
+                        };
+                    };
+                };
             };
 
             callbacks = {
