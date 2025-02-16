@@ -1290,11 +1290,25 @@
 					"visibility": true,
 					"autouv": 0,
 					"children": [
-						"1dbbd23c-e7f0-1ee0-fac6-5c2467f74954",
-						"06aef4ae-e425-f5b0-d012-4e05ae68e964",
-						"2b1211dd-0e37-c8a3-1b17-bd301668ed80",
-						"5bbdf9cb-67e1-21f9-ed77-6d9f425d429c",
-						"0b76d4bc-f90d-4f85-7af9-155ebd6a811e"
+						{
+							"name": "HairTailZPivot",
+							"origin": [0, 28, 5],
+							"color": 0,
+							"uuid": "de35ba6a-8c48-decc-6434-9e233cf1c857",
+							"export": true,
+							"mirror_uv": false,
+							"isOpen": true,
+							"locked": false,
+							"visibility": true,
+							"autouv": 0,
+							"children": [
+								"1dbbd23c-e7f0-1ee0-fac6-5c2467f74954",
+								"06aef4ae-e425-f5b0-d012-4e05ae68e964",
+								"2b1211dd-0e37-c8a3-1b17-bd301668ed80",
+								"5bbdf9cb-67e1-21f9-ed77-6d9f425d429c",
+								"0b76d4bc-f90d-4f85-7af9-155ebd6a811e"
+							]
+						}
 					]
 				},
 				{

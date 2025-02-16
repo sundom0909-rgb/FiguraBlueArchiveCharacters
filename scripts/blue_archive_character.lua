@@ -664,7 +664,7 @@ BlueArchiveCharacter = {
         }
 
         instance.headBlock = {
-            includeModels = {models.models.main.Avatar.UpperBody.Body.Hairs};
+            includeModels = {models.models.main.Avatar.UpperBody.Body.Hairs, models.models.main.Avatar.UpperBody.Body.CMaidB.FrontHair};
         }
 
         instance.portrait = {
@@ -757,7 +757,7 @@ BlueArchiveCharacter = {
                 };
 
                 {
-                    models = {models.models.main.Avatar.UpperBody.Body.Hairs.FrontHair};
+                    models = {models.models.main.Avatar.UpperBody.Body.Hairs.FrontHair, models.models.main.Avatar.UpperBody.Body.CMaidB.FrontHair};
 
                     x = {
                         vertical = {
@@ -828,6 +828,69 @@ BlueArchiveCharacter = {
                         };
                     };
                 };
+
+                {
+                    models = {models.models.main.Avatar.Head.CMaidH.HairTail};
+
+                    x = {
+                        vertical = {
+                            min = -170;
+                            neutral = 0;
+                            max = 5;
+                            sneakOffset = -20;
+
+                            headRotMultiplayer = -1;
+
+                            headX = {
+                                multiplayer = -40;
+                                min = -90;
+                                max = 5;
+                            };
+
+                            headRot = {
+                                multiplayer = 0.025;
+                                min = -90;
+                                max = 0;
+                            };
+
+                            bodyY = {
+                                multiplayer = 80;
+                                min = -170;
+                                max = 0;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -135;
+                            neutral = -30;
+                            max = -25;
+
+                            headX = {
+                                multiplayer = -40;
+                                min = -45;
+                                max = -25;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.Head.CMaidH.HairTail.HairTailZPivot};
+
+                    z = {
+                        vertical = {
+                            min = -80;
+                            neutral = 0;
+                            max = 80;
+
+                            headZ = {
+                                multiplayer = -40;
+                                min = -80;
+                                max = 80;
+                            };
+                        };
+                    };
+                };
             };
 
             callbacks = {
@@ -840,6 +903,13 @@ BlueArchiveCharacter = {
                         else
                             model.BackHairBottom:setRot()
                         end
+                    elseif model == models.models.main.Avatar.Head.CMaidH.HairTail then
+                        local modelRot = model:getRot()
+                        local headRotY = math.deg(math.asin(player:getLookDir().y))
+                        if headRotY < 0 then
+                            modelRot.x = math.min(modelRot.x, 30)
+                        end
+                        model:setRot(modelRot)
                     end
                 end;
             };
