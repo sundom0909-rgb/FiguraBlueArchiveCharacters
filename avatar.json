@@ -197,6 +197,14 @@
 			"visible": false,
 			"primaryRenderType": "CUTOUT_EMISSIVE_SOLID"
 		},
+		"models.models.costume_maid.CMaidH": {
+			"visible": false,
+			"moveTo": "models.models.main.Avatar.Head"
+		},
+		"models.models.costume_maid.CMaidB": {
+			"visible": false,
+			"moveTo": "models.models.main.Avatar.UpperBody.Body"
+		},
 		"models.models.bubble.Camera.AvatarBubble": {
 			"visible": false
 		},
