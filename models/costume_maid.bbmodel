@@ -1359,7 +1359,7 @@
 					"uuid": "23b1179f-2161-ef5b-d112-af9bb2fa1bc7",
 					"export": true,
 					"mirror_uv": false,
-					"isOpen": false,
+					"isOpen": true,
 					"locked": false,
 					"visibility": true,
 					"autouv": 0,
@@ -1567,34 +1567,6 @@
 			"uuid": "ee56eafa-c838-d574-5b30-cc1b4df7dd75",
 			"relative_path": "../../textures/costume_maid.png",
 			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFEAAAAcCAYAAAAZSVOEAAAAAXNSR0IArs4c6QAABPpJREFUaEPtmPtvFUUUx8/27n3s3nv7sg38oMZEDAbSxBjDH+Af4E+CMdaCaAgGKlFslFpaC6UFb3kkVqmlIn2gxhpi9Hd/ksQQ1MKVVpLGxF80MaJp72PvM2PO3J1ld9iZu/clETq/nJk9s7Ozn/meObOrbH/xTfLFbAyKxSL4fD7AgnUs2N7R00fr9S5z545ZQ4ZCQSWTyRJ2AdtY56/Z2+OxGbj8w1VQVZXeVigUqJW1W9pbIRAIQC6XoxYLq6PFIvOLfApCXJgbp5N2K+jH67I+6Pfaj/WtFeKJ9z6BK4uLUmhNTU2OV4q2Nt+bEJnq7MrjlejWZ/TEefgpfh1U1W8qMW8q0d52aqO5rQUCwSDksllqqRLNOlqqRIlf5LvrSqwW4tHj0xC/sQSq34SWNyHa2vl83qHUjg0d6xDtan137Bxcu4ZKFO+Jfr8fvl74wJLjzlcHSMOU6CVpNGpPrFaJh0c/gqWfl6QQg6EQXPr0zG2I+wZJMBiEbDYLaLGwOlosMr/IRx+QSCRIJBKBZDIJdqsoCvWXSz61JJZqIR46dhZWlm9K90R/IOiA+FLvEEGw2UwG0FKIZh0thSjxi3wKIcQ6WvCKRKjRaJTum17U6iWL89m5Woh43zPb9xHZnojPsofzyweGGwORqVAGiVeoW5vBLhf29TriIMRnu98gBUwetmQiq7d1tkmV1jAluoW5DKJXxdZ6TkSIO3oOEszAmECwlKu3NgpivZSIsCduFaG3Q6X7aM/eATI7OeJ6iJf5vC4C9ntuV19FENs62yGkhSBjZKil2d6so8Ui84t8ZfdEr0rEfm8fPwtG2gBN1+CP336HRkN8fvdbJJ/Lgd/8hCtXb9/wAIQ0DTKGQW0JYqmOtgRR7Bf5LKVggsFszFtR5nYL6bHJz8BIp0HTdfh1eUX6iXXhw6OViO6OvhjOL7xyqCKIDz76kLXIOCBb8Errql8FPRKmc0onU2BBE71RJRBj0wtgpNKghXW49edf0lU9OXSgZojde/orgvjwY49Yi1wCV1pwUX20b4/rdnT4zMckHInQ+1LJJAh/PGAHVKWXzMxC/tTMJUinUqCHw7D29xqcHOx1Hf/gkfdJSA86VvPm4i/w5fwpR3/Mvvw1O3k+OzMfy9ibn3jc8QyfT7UWmYIzF1xUP/L6btf5D09cIOGoCTGRrK8SRybmrBAp5ItSiHqzDvbVXL56o2KIfHZmEFmW3vzkFscz8BORLTINRXPBK637VB84IMpiiu2P5UKafdn0x6YIC5FvZj+HlZUrsGnTNvqIePxbpavraYIW2/xqxr+/LoQoCtt8Lu841vAQtzy11fGyQ/t3OZT1zvgUse9tWkR39C8WijC0f6fjnuGJGcJfK7snMpAy2AgZD9uDp88TFiKx/tfAMJKKpkUIWv7+kcl5R0gsfvcjuB2cMZxFEPEl7RnZgmhm7K3buhxQBvZ2S7ev0xe/IqlEkg6DSlv7Z9UbRMO4/UfZ/qKaVvq7XAlEXCUWIvxq1ZRFBDfz2ZmHeHF6TAqtXnNSeIirq2t07I0bOx0TEB2BvECu12T5cXiF8hDnp0b/W4gMXktLM51LJUpsFKT/y7h3KJFNfB2i9yVUZP8SRSHsffj7o6drdmZg2dHl/kBR/VtSJeLxxD6EKFnczSRS/Ss2/s51JdaB8boS6wFR9pPB7ddYHZ55zw3xL2KEsq3gv/dMAAAAAElFTkSuQmCC"
-		}
-	],
-	"animations": [
-		{
-			"uuid": "e7e83f43-b662-56ee-0f85-7ffbcaf2a66d",
-			"name": "ex_skill_1",
-			"loop": "once",
-			"override": true,
-			"length": 5,
-			"snapping": 20,
-			"selected": false,
-			"anim_time_update": "",
-			"blend_weight": "",
-			"start_delay": "",
-			"loop_delay": ""
-		},
-		{
-			"uuid": "32fa508f-6231-249d-8d16-a70232d41da2",
-			"name": "halo_sleep",
-			"loop": "hold",
-			"override": false,
-			"length": 0.25,
-			"snapping": 20,
-			"selected": false,
-			"anim_time_update": "",
-			"blend_weight": "",
-			"start_delay": "",
-			"loop_delay": ""
 		}
 	],
 	"reference_images": [
