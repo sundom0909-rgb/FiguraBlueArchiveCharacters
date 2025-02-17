@@ -15,10 +15,14 @@
 ---| "NARROW" # 少し閉じた目
 ---| "CLOSED2" # 閉じた目2
 ---| "STARE" # 凝視目（Exスキル1の最後の目）
+---| "CENTER" # 少し反対側を見る目
 
 ---@alias BlueArchiveCharacter.MouthTextures
 ---| "NORMAL" # 通常
 ---| "CLOSED" # 閉じた口
+---| "SMILE" # にっこり
+---| "SMALL" # 小さく開いた口
+---| "OPENED" # 開いた口
 
 ---@alias BlueArchiveCharacter.GunPutType
 ---| "BODY" # アバターのBodyに銃を移動させる
@@ -306,10 +310,14 @@ BlueArchiveCharacter = {
                 NARROW = vectors.vec2(5, 0);
                 CLOSED2 = vectors.vec2(6, 0);
                 STARE = vectors.vec2(7, 0);
+                CENTER = vectors.vec2(8, 0);
             };
 
             mouth = {
                 CLOSED = vectors.vec2(0, 0);
+                SMILE = vectors.vec2(1, 0);
+                SMALL =  vectors.vec2(2, 0);
+                OPENED = vectors.vec2(3, 0);
             };
         }
 
@@ -617,10 +625,11 @@ BlueArchiveCharacter = {
 
                 callbacks = {
                     onPreAnimation = function (self)
-                        if not self.exSkill[1].init then
+                        if not self.exSkill[2].init then
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom.BroomBase:setPrimaryTexture("RESOURCE", "minecraft:textures/block/oak_planks.png")
-                            self.exSkill[1].init = true
+                            self.exSkill[2].init = true
                         end
+                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 66, true)
                     end;
 
                     onAnimationTick = function (self, tick)
@@ -628,12 +637,22 @@ BlueArchiveCharacter = {
                             models.models.main.Avatar.UpperBody.Body.Gun:setPos()
                             models.models.main.Avatar.UpperBody.Body.Gun:setRot()
                             models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(false)
+                        elseif tick == 66 then
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 4, true)
+                        elseif tick == 70 then
+                            self.parent.faceParts:setEmotion("NORMAL", "CENTER", "SMALL", 15, true)
+                        elseif tick == 85 then
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMALL", 2, true)
+                        elseif tick == 87 then
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 19, true)
                         elseif tick == 92 then
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom:moveTo(models.models.main.Avatar.UpperBody.Body)
                             self.parent.railGun.chargePercent = 0
                             self.parent.railGun.chargeState = "STRONG"
                             self.parent.railGun.animationLength = 20
                             models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(true)
+                        elseif tick == 106 then
+                            self.parent.faceParts:setEmotion("NORMAL", "CENTER", "OPENED", 41, true)
                         end
                     end;
 
