@@ -385,6 +385,7 @@ BlueArchiveCharacter = {
                             end
                         end, "right_arm_render")
                     elseif state == 2 then
+                        events.TICK:remove("right_arm_tick")
                         events.TICK:register(function ()
                             if self.parent.bicycle.bicycleEnabled and animations["models.main"]["bicycle_idle"]:getTime() * 4 > 0 then
                                 self.parent.arms:setArmState(6, nil)
@@ -392,16 +393,19 @@ BlueArchiveCharacter = {
                         end, "right_arm_tick")
                     elseif state == 4 then
                         --ドローンに掴まる腕
+                        events.RENDER:remove("right_arm_render")
                         events.RENDER:register(function (_, context)
                             models.models.main.Avatar.UpperBody.Arms.RightArm:setParentType(context == "FIRST_PERSON" and "RightArm" or "Body")
                         end, "right_arm_render")
                     elseif state == 5 then
                         --ドローンぶら下がり
                         local isHoldingItem = false
+                        events.TICK:remove("right_arm_tick")
                         events.TICK:register(function ()
                             self.parent.arms:processArmWingCount()
                             isHoldingItem = (player:isLeftHanded() and player:getHeldItem(true).id or player:getHeldItem(false).id) ~= "minecraft:air"
                         end, "right_arm_tick")
+                        events.RENDER:remove("right_arm_render")
                         events.RENDER:register(function (delta, context)
                             local isLeftHanded = player:isLeftHanded()
                             local activeHand = player:getActiveHand()
@@ -412,12 +416,14 @@ BlueArchiveCharacter = {
                         end, "right_arm_render")
                     elseif state == 6 then
                         --自転車
+                        events.TICK:remove("right_arm_tick")
                         events.TICK:register(function ()
                             self.parent.arms:processArmWingCount()
                             if animations["models.main"]["bicycle_idle"]:getTime() * 4 == 0 then
                                 self.parent.arms:setArmState(Gun.CurrentGunPosition == "LEFT" and 2 or 8, nil)
                             end
                         end, "right_arm_tick")
+                        events.RENDER:remove("right_arm_render")
                         events.RENDER:register(function (delta, context)
                             local isLeftHanded = player:isLeftHanded()
                             local activeHand = player:getActiveHand()
@@ -430,6 +436,7 @@ BlueArchiveCharacter = {
                         end, "right_arm_render")
                     elseif state == 7 then
                         --自転車で銃を持っているとき
+                        events.TICK:remove("right_arm_tick")
                         events.TICK:register(function ()
                             self.parent.arms:processArmWingCount()
                             if player:isSwingingArm() and not player:isLeftHanded() then
@@ -441,6 +448,7 @@ BlueArchiveCharacter = {
                                 self.parent.arms:setArmState(3, 3)
                             end
                         end, "right_arm_tick")
+                        events.RENDER:remove("right_arm_render")
                         events.RENDER:register(function (delta)
                             local headRot = vanilla_model.HEAD:getOriginRot()
                             local bicycleIdleFactor = 1 - animations["models.main"]["bicycle_idle"]:getTime() * 4
@@ -448,6 +456,7 @@ BlueArchiveCharacter = {
                         end, "right_arm_render")
                     elseif state == 8 then
                         --自転車で待機中
+                        events.TICK:remove("right_arm_tick")
                         events.TICK:register(function ()
                             if animations["models.main"]["bicycle_idle"]:getTime() * 4 > 0 then
                                 self.parent.arms:setArmState(6, nil)
@@ -471,6 +480,7 @@ BlueArchiveCharacter = {
                             end
                         end, "left_arm_render")
                     elseif state == 2 then
+                        events.TICK:remove("left_arm_tick")
                         events.TICK:register(function ()
                             if self.parent.bicycle.bicycleEnabled and animations["models.main"]["bicycle_idle"]:getTime() * 4 > 0 then
                                 self.parent.arms:setArmState(nil, 6)
@@ -478,16 +488,19 @@ BlueArchiveCharacter = {
                         end, "left_arm_tick")
                     elseif state == 4 then
                         --ドローンに掴まる腕
+                        events.RENDER:remove("left_arm_render")
                         events.RENDER:register(function (_, context)
                             models.models.main.Avatar.UpperBody.Arms.LeftArm:setParentType(context == "FIRST_PERSON" and "LeftArm" or "Body")
                         end, "left_arm_render")
                     elseif state == 5 then
                         --ドローンぶら下がり
                         local isHoldingItem = false
+                        events.TICK:remove("left_arm_tick")
                         events.TICK:register(function ()
                             self.parent.arms:processArmWingCount()
                             isHoldingItem = (player:isLeftHanded() and player:getHeldItem(false).id or player:getHeldItem(true).id) ~= "minecraft:air"
                         end, "left_arm_tick")
+                        events.RENDER:remove("left_arm_render")
                         events.RENDER:register(function (delta, context)
                             local isLeftHanded = player:isLeftHanded()
                             local activeHand = player:getActiveHand()
@@ -498,12 +511,14 @@ BlueArchiveCharacter = {
                         end, "left_arm_render")
                     elseif state == 6 then
                         --自転車
+                        events.TICK:remove("left_arm_tick")
                         events.TICK:register(function ()
                             self.parent.arms:processArmWingCount()
                             if animations["models.main"]["bicycle_idle"]:getTime() * 4 == 0 then
                                 self.parent.arms:setArmState(nil, Gun.CurrentGunPosition == "RIGHT" and 2 or 8)
                             end
                         end, "left_arm_tick")
+                        events.RENDER:remove("left_arm_render")
                         events.RENDER:register(function (delta, context)
                             local isLeftHanded = player:isLeftHanded()
                             local activeHand = player:getActiveHand()
@@ -516,6 +531,7 @@ BlueArchiveCharacter = {
                         end, "left_arm_render")
                     elseif state == 7 then
                         --自転車で銃を持っているとき
+                        events.TICK:remove("left_arm_tick")
                         events.TICK:register(function ()
                             self.parent.arms:processArmWingCount()
                             if player:isSwingingArm() and player:isLeftHanded() then
@@ -527,6 +543,7 @@ BlueArchiveCharacter = {
                                 self.parent.arms:setArmState(3, 3)
                             end
                         end, "left_arm_tick")
+                        events.RENDER:remove("left_arm_render")
                         events.RENDER:register(function (delta)
                             local headRot = vanilla_model.HEAD:getOriginRot()
                             local bicycleIdleFactor = 1 - animations["models.main"]["bicycle_idle"]:getTime() * 4
@@ -534,6 +551,7 @@ BlueArchiveCharacter = {
                         end, "left_arm_render")
                     elseif state == 8 then
                         --自転車で待機中
+                        events.TICK:remove("left_arm_tick")
                         events.TICK:register(function ()
                             if animations["models.main"]["bicycle_idle"]:getTime() * 4 > 0 then
                                 self.parent.arms:setArmState(nil, 6)
