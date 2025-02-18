@@ -354,6 +354,7 @@ BlueArchiveCharacter = {
                 onAdditionalRightArmProcess = function (self, state)
                     if state == 4 then
                         --虎丸搭乗中
+                        events.TICK:remove("right_arm_tick")
                         events.TICK:register(function ()
                             if self.costume.costumes[1].isRidingTank then
                                 local isLeftHanded = player:isLeftHanded()
@@ -363,6 +364,7 @@ BlueArchiveCharacter = {
                         end, "right_arm_tick")
                     elseif state == 5 then
                         --虎丸搭乗中の武器の構え
+                        events.TICK:remove("right_arm_tick")
                         events.TICK:register(function ()
                             self.parent.arms:processArmWingCount()
                             if player:isSwingingArm() and not player:isLeftHanded() and self.costume.costumes[1].shootTick == -1 then
@@ -374,6 +376,7 @@ BlueArchiveCharacter = {
                                 self.parent.arms:setArmState(3, 3)
                             end
                         end, "right_arm_tick")
+                        events.RENDER:remove("right_arm_render")
                         events.RENDER:register(function (delta)
                             local lookDir = player:getLookDir()
                             local dir = ((math.deg(math.atan2(lookDir.z, lookDir.x)) - 90) % 360 - player:getBodyYaw() % 360) % 360
@@ -383,6 +386,7 @@ BlueArchiveCharacter = {
                         end, "right_arm_render")
                     elseif state == 6 then
                         --虎丸搭乗中の武器を持っていない手
+                        events.TICK:remove("right_arm_tick")
                         events.TICK:register(function ()
                             self.parent.arms:processArmWingCount()
                             if player:isSwingingArm() and not player:isLeftHanded() and self.costume.costumes[1].shootTick == -1 then
@@ -391,6 +395,7 @@ BlueArchiveCharacter = {
                                 models.models.main.Avatar.UpperBody.Arms.RightArm:setParentType("Body")
                             end
                         end, "right_arm_tick")
+                        events.RENDER:remove("right_arm_render")
                         events.RENDER:register(function (delta)
                             local lookDir = player:getLookDir()
                             local dir = ((math.deg(math.atan2(lookDir.z, lookDir.x)) - 120) % 360 - player:getBodyYaw() % 360) % 360
@@ -404,6 +409,7 @@ BlueArchiveCharacter = {
                 onAdditionalLeftArmProcess = function (self, state)
                     if state == 4 then
                         --虎丸搭乗中
+                        events.TICK:remove("left_arm_tick")
                         events.TICK:register(function ()
                             if self.costume.costumes[1].isRidingTank then
                                 local isLeftHanded = player:isLeftHanded()
@@ -413,6 +419,7 @@ BlueArchiveCharacter = {
                         end, "left_arm_tick")
                     elseif state == 5 then
                         --虎丸搭乗中の武器の構え
+                        events.TICK:remove("left_arm_tick")
                         events.TICK:register(function ()
                             self.parent.arms:processArmWingCount()
                             if player:isSwingingArm() and player:isLeftHanded() and self.costume.costumes[1].shootTick == -1 then
@@ -423,7 +430,8 @@ BlueArchiveCharacter = {
                             if player:getActiveItem().id == "minecraft:crossbow" then
                                 self.parent.arms:setArmState(3, 3)
                             end
-                        end, "right_arm_tick")
+                        end, "left_arm_tick")
+                        events.RENDER:remove("left_arm_render")
                         events.RENDER:register(function (delta)
                             local lookDir = player:getLookDir()
                             local dir = ((math.deg(math.atan2(lookDir.z, lookDir.x)) - 90) % 360 - player:getBodyYaw() % 360) % 360
@@ -433,6 +441,7 @@ BlueArchiveCharacter = {
                         end, "left_arm_render")
                     elseif state == 6 then
                         --虎丸搭乗中の武器を持っていない手
+                        events.TICK:remove("left_arm_tick")
                         events.TICK:register(function ()
                             self.parent.arms:processArmWingCount()
                             if player:isSwingingArm() and player:isLeftHanded() and self.costume.costumes[1].shootTick == -1 then
@@ -441,6 +450,7 @@ BlueArchiveCharacter = {
                                 models.models.main.Avatar.UpperBody.Arms.LeftArm:setParentType("Body")
                             end
                         end, "left_arm_tick")
+                        events.RENDER:remove("left_arm_render")
                         events.RENDER:register(function (delta)
                             local lookDir = player:getLookDir()
                             local dir = ((math.deg(math.atan2(lookDir.z, lookDir.x)) - 60) % 360 - player:getBodyYaw() % 360) % 360
