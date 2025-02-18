@@ -378,6 +378,7 @@ BlueArchiveCharacter = {
                             end
                         end, "right_arm_render")
                     elseif state == 2 then
+                        events.TICK:remove("right_arm_tick")
                         events.TICK:register(function ()
                             local isLeftHanded = player:isLeftHanded()
                             if ((player:getHeldItem().id == "minecraft:shield" and not isLeftHanded) or (player:getHeldItem(true).id == "minecraft:shield" and isLeftHanded)) and self.parent.arms.armState.right == 2 then
@@ -392,6 +393,7 @@ BlueArchiveCharacter = {
                             end
                         end, "right_arm_render")
                     elseif state == 4 then
+                        events.TICK:remove("right_arm_tick")
                         events.TICK:register(function ()
                             self.parent.arms:processArmSwingCount()
                             local isLeftHanded = player:isLeftHanded()
@@ -399,12 +401,14 @@ BlueArchiveCharacter = {
                                 self.parent.arms:setArmState(2, nil)
                             end
                         end, "right_arm_tick")
+                        events.RENDER:remove("right_arm_render")
                         events.RENDER:register(function (delta, context)
                             local isSwingingArm = player:isSwingingArm() and not player:isLeftHanded()
                             models.models.main.Avatar.UpperBody.Arms.RightArm:setParentType((isSwingingArm or context == "FIRST_PERSON") and "RightArm" or "Body")
                             models.models.main.Avatar.UpperBody.Arms.RightArm:setRot(isSwingingArm and vectors.vec3() or vectors.vec3(math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * 2.5 + 40, 30, 0))
                         end, "right_arm_render")
                     elseif state == 5 then
+                        events.TICK:remove("right_arm_tick")
                         events.TICK:register(function ()
                             if self.parent.arms.armState.left == 5 then
                                 local activeHand = player:getActiveHand()
@@ -423,6 +427,7 @@ BlueArchiveCharacter = {
                             end
                         end, "left_arm_render")
                     elseif state == 2 then
+                        events.TICK:remove("left_arm_tick")
                         events.TICK:register(function ()
                             local isLeftHanded = player:isLeftHanded()
                             if ((player:getHeldItem().id == "minecraft:shield" and isLeftHanded) or (player:getHeldItem(true).id == "minecraft:shield" and not isLeftHanded)) and self.parent.arms.armState.left == 2 then
@@ -437,6 +442,7 @@ BlueArchiveCharacter = {
                             end
                         end, "left_arm_render")
                     elseif state == 4 then
+                        events.TICK:remove("left_arm_tick")
                         events.TICK:register(function ()
                             self.parent.arms:processArmSwingCount()
                             local isLeftHanded = player:isLeftHanded()
@@ -444,19 +450,21 @@ BlueArchiveCharacter = {
                                 self.parent.arms:setArmState(nil, 2)
                             end
                         end, "left_arm_tick")
+                        events.RENDER:remove("left_arm_render")
                         events.RENDER:register(function (delta, context)
                             local isSwingingArm = player:isSwingingArm() and player:isLeftHanded()
                             models.models.main.Avatar.UpperBody.Arms.LeftArm:setParentType((isSwingingArm or context == "FIRST_PERSON") and "LeftArm" or "Body")
                             models.models.main.Avatar.UpperBody.Arms.LeftArm:setRot(isSwingingArm and vectors.vec3() or vectors.vec3(math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * -2.5 + 40, -30, 0))
                         end, "left_arm_render")
                     elseif state == 5 then
+                        events.TICK:remove("left_arm_tick")
                         events.TICK:register(function ()
                             if self.parent.arms.armState.left == 5 then
                                 local activeHand = player:getActiveHand()
                                 local isLeftHanded = player:isLeftHanded()
                                 models.models.main.Avatar.UpperBody.Arms.LeftArm:setRot(player:getActiveItem().id ~= "minecraft:air" and ((activeHand == "OFF_HAND" and not isLeftHanded) or (activeHand == "MAIN_HAND" and isLeftHanded)) and vectors.vec3() or vectors.vec3(20, 0, -20))
                             end
-                        end)
+                        end, "left_arm_tick")
                     end
                 end
             };
