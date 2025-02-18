@@ -340,6 +340,7 @@ BlueArchiveCharacter = {
                 onAdditionalRightArmProcess = function (self, state)
                     if state == 4 then
                         --虎丸搭乗中の武器の構え
+                        events.TICK:remove("right_arm_tick")
                         events.TICK:register(function ()
                             self.parent.arms:processArmWingCount()
                             if player:isSwingingArm() and not player:isLeftHanded() and self.costume.costumes[1].shootTick == -1 then
@@ -351,6 +352,7 @@ BlueArchiveCharacter = {
                                 self.parent.arms:setArmState(3, 3)
                             end
                         end, "right_arm_tick")
+                        events.RENDER:remove("right_arm_render")
                         events.RENDER:register(function (delta)
                             local headRot = vanilla_model.HEAD:getOriginRot()
                             models.models.main.Avatar.UpperBody.Arms.RightArm:setRot(((player:isSwingingArm() and not player:isLeftHanded()) or self.costume.costumes[1].shootTick >= 0) and vectors.vec3() or vectors.vec3(headRot.x + math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * 2.5 + 90, 70, 0))
@@ -358,12 +360,14 @@ BlueArchiveCharacter = {
                     elseif state == 5 then
                         --虎丸搭乗中の武器を持っていない手
                         local isHolding = false
+                        events.TICK:remove("right_arm_tick")
                         events.TICK:register(function ()
                             self.parent.arms:processArmWingCount()
                             local heldItem = player:getHeldItem(not player:isLeftHanded())
                             isHolding = player:getActiveItem().id == "minecraft:bow" or (heldItem.id == "minecraft:crossbow" and heldItem.tag.Charged ~= nil and heldItem.tag.Charged == 1)
                             models.models.main.Avatar.UpperBody.Arms.RightArm:setParentType((isHolding or self.costume.costumes[1].shootTick >= 0) and "Body" or "RightArm")
                         end, "right_arm_tick")
+                        events.RENDER:remove("right_arm_render")
                         events.RENDER:register(function (delta)
                             models.models.main.Avatar.UpperBody.Arms.RightArm:setRot(isHolding and vectors.vec3(math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * 2.5 + 35, 0, 0) or vectors.vec3())
                         end, "right_arm_render")
@@ -373,6 +377,7 @@ BlueArchiveCharacter = {
                 onAdditionalLeftArmProcess = function (self, state)
                     if state == 4 then
                         --虎丸搭乗中の武器の構え
+                        events.TICK:remove("left_arm_tick")
                         events.TICK:register(function ()
                             self.parent.arms:processArmWingCount()
                             if player:isSwingingArm() and player:isLeftHanded() and self.costume.costumes[1].shootTick == -1 then
@@ -383,23 +388,26 @@ BlueArchiveCharacter = {
                             if player:getActiveItem().id == "minecraft:crossbow" then
                                 self.parent.arms:setArmState(3, 3)
                             end
-                        end, "right_arm_tick")
+                        end, "left_arm_tick")
+                        events.RENDER:remove("left_arm_render")
                         events.RENDER:register(function (delta)
                             local headRot = vanilla_model.HEAD:getOriginRot()
                             models.models.main.Avatar.UpperBody.Arms.LeftArm:setRot(((player:isSwingingArm() and player:isLeftHanded()) or self.costume.costumes[1].shootTick >= 0) and vectors.vec3() or vectors.vec3(headRot.x + math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * 2.5 + 90, 90, 0))
-                        end, "right_arm_render")
+                        end, "left_arm_render")
                     elseif state == 5 then
                         --虎丸搭乗中の武器を持っていない手
                         local isHolding = false
+                        events.TICK:remove("left_arm_tick")
                         events.TICK:register(function ()
                             self.parent.arms:processArmWingCount()
                             local heldItem = player:getHeldItem(player:isLeftHanded())
                             isHolding = player:getActiveItem().id == "minecraft:bow" or (heldItem.id == "minecraft:crossbow" and heldItem.tag.Charged ~= nil and heldItem.tag.Charged == 1)
                             models.models.main.Avatar.UpperBody.Arms.LeftArm:setParentType((isHolding or self.costume.costumes[1].shootTick >= 0) and "Body" or "LeftArm")
-                        end, "right_arm_tick")
+                        end, "left_arm_tick")
+                        events.RENDER:remove("left_arm_render")
                         events.RENDER:register(function (delta)
                             models.models.main.Avatar.UpperBody.Arms.LeftArm:setRot(isHolding and vectors.vec3(math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * 2.5 + 35, 0, 0) or vectors.vec3())
-                        end, "right_arm_render")
+                        end, "left_arm_render")
                     end
                 end
             };
