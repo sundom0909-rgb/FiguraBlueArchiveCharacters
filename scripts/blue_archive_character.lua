@@ -328,11 +328,13 @@ BlueArchiveCharacter = {
                 onAdditionalRightArmProcess = function (self, state)
                     if state == 4 then
                         models.models.main.Avatar.UpperBody.Arms.RightArm:setParentType("Body")
+                        events.TICK:remove("right_arm_tick")
                         events.TICK:register(function ()
                             if self.costume.costumes[1].medicalBoxPos == 0 then
                                 self.parent.arms:setArmState(0, 0)
                             end
                         end, "right_arm_tick")
+                        events.RENDER:remove("right_arm_render")
                         events.RENDER:register(function (delta)
                             local swingPos = (player:getSwingTime() + (player:isSwingingArm() and delta or 0)) / player:getSwingDuration()
                             for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Arms.RightArm, models.models.main.Avatar.UpperBody.Arms.LeftArm}) do
