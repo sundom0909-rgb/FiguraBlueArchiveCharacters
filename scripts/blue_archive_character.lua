@@ -441,7 +441,7 @@ BlueArchiveCharacter = {
                             if host:isHost() then
                                 models.models.ex_skill_1.CameraBackground:setVisible(true)
                                 local windowSize = client:getWindowSize()
-                                models.models.ex_skill_1.CameraBackground.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(45))
+                                models.models.ex_skill_1.CameraBackground.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(55))
                                 events.RENDER:register(function (delta, context)
                                     models.models.ex_skill_1.CameraBackground:setVisible(context == "RENDER")
                                     local backgroundPos = vectors.rotateAroundAxis(player:getBodyYaw(delta) + 180, renderer:getCameraOffsetPivot():copy():add(0, 1.62, 0):add(client:getCameraDir():copy():scale(1.75)), 0, 1, 0):scale(16 / 0.9375)
@@ -498,7 +498,7 @@ BlueArchiveCharacter = {
                             local particleAnchor5Pos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Stall.ExSkill1ParticleAnchor5)
                             for i = 0, 11 do
                                 local particleRot = i * (math.pi / 6)
-                                particles:newParticle(self.parent.compatibilityUtils.getBlockParticleId(self.parent.compatibilityUtils:checkBlock("minecraft:dirt")), particleAnchor5Pos:copy():add(math.cos(particleRot) * 0.6, 0, math.sin(particleRot) * 0.6))
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:block").." "..self.parent.compatibilityUtils:checkBlock("minecraft:dirt"), particleAnchor5Pos:copy():add(math.cos(particleRot) * 0.6, 0, math.sin(particleRot) * 0.6))
                             end
                         end
                         if tick % math.ceil((animations["models.main"]["ex_skill_1"]:getLength() * 20 - tick) / 20) == 0 then
@@ -644,12 +644,12 @@ BlueArchiveCharacter = {
                         if tick <= 5 then
                             local particleAnchor1Pos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce):add(0, 1.5, 0)
                             for _ = 1, 2 do
-                                particles:newParticle(self.parent.compatibilityUtils.getBlockParticleId(self.parent.compatibilityUtils:checkBlock("minecraft:snow")), particleAnchor1Pos):setPower(0.25):setLifetime(10)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:block", self.parent.compatibilityUtils:checkBlock("minecraft:snow")), particleAnchor1Pos):setPower(0.25):setLifetime(10)
                             end
                         elseif tick <= 26 then
                             local particleAnchor1Pos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce):add(0, 1.5, 0)
                             for _ = 1, 4 do
-                                particles:newParticle(self.parent.compatibilityUtils.getBlockParticleId(self.parent.compatibilityUtils:checkBlock("minecraft:light_blue_concrete")), particleAnchor1Pos):setPower(0):setLifetime(10)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:block", self.parent.compatibilityUtils:checkBlock("minecraft:light_blue_concrete")), particleAnchor1Pos):setPower(0):setLifetime(10)
                             end
                         end
                         if (tick >= 33 and tick <= 41) or (tick >= 50 and tick <= 61) then
@@ -657,7 +657,7 @@ BlueArchiveCharacter = {
                             local anchorPos = self.parent.modelUtils.getModelWorldPos(tick < 50 and root.WaveParticleAnchor1 or root.WaveParticleAnchor3)
                             local particleRot = self.parent.modelUtils.getModelWorldPos(tick < 50 and root.WaveParticleAnchor2 or root.WaveParticleAnchor4):sub(anchorPos)
                             for _ = 0, 15 do
-                                particles:newParticle(self.parent.compatibilityUtils.getDustParticleId(vectors.vec3(1000000000, 1000000000, 1000000000), 1), anchorPos):setScale(0.5):setColor(math.random() * 0.5 + 0.5, 1, 1):setVelocity(math.random() * 0.1 - 0.05, math.random() * 0.1 + 0.05, math.random() * 0.1 - 0.05):setGravity(0.5):setLifetime(20)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1000000000 1000000000 1000000000 1"), anchorPos):setScale(0.5):setColor(math.random() * 0.5 + 0.5, 1, 1):setVelocity(math.random() * 0.1 - 0.05, math.random() * 0.1 + 0.05, math.random() * 0.1 - 0.05):setGravity(0.5):setLifetime(20)
                                 anchorPos:add(particleRot)
                             end
                         end
