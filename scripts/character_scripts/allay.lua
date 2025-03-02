@@ -39,7 +39,7 @@ Allay = {
                     events.TICK:register(function ()
                         if not client:isPaused() and self.isAllayEnabled and models.models.main.Avatar.Head.Allay ~= nil then
                             local playerPose = player:getPose()
-                            if (player:getVelocity():length() < 0.001 or player:getVehicle() ~= nil) and playerPose ~= "FALL_FLYING" and playerPose ~= "SWIMMING" and playerPose ~= "SLEEPING" then
+                            if (not player:isMoving() or player:getVehicle() ~= nil) and playerPose ~= "FALL_FLYING" and playerPose ~= "SWIMMING" and playerPose ~= "SLEEPING" then
                                 if self.perchCount <= 10 and self.perchCount > 0 then
                                     if self.perchCount == 10 then
                                         animations["models.ex_skill_1"].allay_fly_start:setSpeed(-1)
