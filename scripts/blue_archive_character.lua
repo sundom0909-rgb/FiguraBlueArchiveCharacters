@@ -341,14 +341,16 @@ BlueArchiveCharacter = {
                         --虎丸搭乗中の武器の構え
                         events.TICK:remove("right_arm_tick")
                         events.TICK:register(function ()
-                            self.parent.arms:processArmWingCount()
-                            if player:isSwingingArm() and not player:isLeftHanded() and self.costume.costumes[1].shootTick == -1 then
-                                models.models.main.Avatar.UpperBody.Arms.RightArm:setParentType("RightArm")
-                            else
-                                models.models.main.Avatar.UpperBody.Arms.RightArm:setParentType("Body")
-                            end
-                            if player:getActiveItem().id == "minecraft:crossbow" then
-                                self.parent.arms:setArmState(3, 3)
+                            if self.parent.arms.armState.right == 4 then
+                                self.parent.arms:processArmWingCount()
+                                if player:isSwingingArm() and not player:isLeftHanded() and self.costume.costumes[1].shootTick == -1 then
+                                    models.models.main.Avatar.UpperBody.Arms.RightArm:setParentType("RightArm")
+                                else
+                                    models.models.main.Avatar.UpperBody.Arms.RightArm:setParentType("Body")
+                                end
+                                if player:getActiveItem().id == "minecraft:crossbow" then
+                                    self.parent.arms:setArmState(3, 3)
+                                end
                             end
                         end, "right_arm_tick")
                         events.RENDER:remove("right_arm_render")
@@ -378,14 +380,16 @@ BlueArchiveCharacter = {
                         --虎丸搭乗中の武器の構え
                         events.TICK:remove("left_arm_tick")
                         events.TICK:register(function ()
-                            self.parent.arms:processArmWingCount()
-                            if player:isSwingingArm() and player:isLeftHanded() and self.costume.costumes[1].shootTick == -1 then
-                                models.models.main.Avatar.UpperBody.Arms.LeftArm:setParentType("LeftArm")
-                            else
-                                models.models.main.Avatar.UpperBody.Arms.LeftArm:setParentType("Body")
-                            end
-                            if player:getActiveItem().id == "minecraft:crossbow" then
-                                self.parent.arms:setArmState(3, 3)
+                            if self.parent.arms.armState.left == 4 then
+                                self.parent.arms:processArmWingCount()
+                                if player:isSwingingArm() and player:isLeftHanded() and self.costume.costumes[1].shootTick == -1 then
+                                    models.models.main.Avatar.UpperBody.Arms.LeftArm:setParentType("LeftArm")
+                                else
+                                    models.models.main.Avatar.UpperBody.Arms.LeftArm:setParentType("Body")
+                                end
+                                if player:getActiveItem().id == "minecraft:crossbow" then
+                                    self.parent.arms:setArmState(3, 3)
+                                end
                             end
                         end, "left_arm_tick")
                         events.RENDER:remove("left_arm_render")
@@ -1031,7 +1035,7 @@ BlueArchiveCharacter = {
 
                                 local bodyYaw = player:getBodyYaw(delta)
                                 if renderer:isFirstPerson() then
-                                    renderer:setCameraPos(-0.75, 0, 0)
+                                    renderer:setCameraPos(0.75, 0, 0)
                                     self.parent.cameraManager.setCameraPivot(vectors.vec3(math.sin(math.rad(bodyYaw)) * 0.2, 1 + heightOffset, math.cos(math.rad(bodyYaw)) * -0.2))
                                     renderer:setEyeOffset(vectors.rotateAroundAxis(bodyYaw * -1, 0.8, 1 + heightOffset, 0.2, 0, 1, 0))
                                 else
