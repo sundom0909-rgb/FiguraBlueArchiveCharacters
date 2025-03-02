@@ -2726,7 +2726,7 @@
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
-			"selected": false,
+			"selected": true,
 			"children": [
 				{
 					"name": "Head",
@@ -12951,7 +12951,7 @@
 			"override": true,
 			"length": 6.35,
 			"snapping": 20,
-			"selected": false,
+			"selected": true,
 			"anim_time_update": "",
 			"blend_weight": "",
 			"start_delay": "",
@@ -13161,6 +13161,25 @@
 							"time": 3.9,
 							"color": -1,
 							"interpolation": "step"
+						},
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "-138.66",
+									"y": "7.5",
+									"z": "-951"
+								}
+							],
+							"uuid": "36db4df0-afbd-480f-c2c9-62d348a3a34f",
+							"time": 3.85,
+							"color": -1,
+							"interpolation": "bezier",
+							"bezier_linked": true,
+							"bezier_left_time": [-0.1, -0.1, -0.60057],
+							"bezier_left_value": [0, 0, 0],
+							"bezier_right_time": [0.1, 0.1, 0.60057],
+							"bezier_right_value": [0, 0, 0]
 						}
 					]
 				},
