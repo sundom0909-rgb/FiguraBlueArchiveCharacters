@@ -1,6 +1,6 @@
 {
 	"meta": {
-		"format_version": "4.9",
+		"format_version": "4.10",
 		"model_format": "free",
 		"box_uv": false
 	},
@@ -21,6 +21,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-1, -1, 1],
@@ -62,6 +63,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-0.5, 1, 1.25],
@@ -103,6 +105,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-0.5, 1, 2.75],
@@ -144,6 +147,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-1.5, -1.5, 0],
@@ -185,6 +189,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-4, 32, -3],
@@ -227,6 +232,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-4, 32, -3],
@@ -269,6 +275,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-4, 12, -2],
@@ -312,6 +319,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [4, 18, -2],
@@ -355,6 +363,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-7, 18, -2],
@@ -398,6 +407,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [4, 29, -3],
@@ -439,6 +449,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [1.125, 19.05, -3],
@@ -480,6 +491,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-2.25, 19.05, -3],
@@ -529,6 +541,7 @@
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
+			"selected": false,
 			"children": [
 				{
 					"name": "Hat",
@@ -542,6 +555,7 @@
 					"locked": false,
 					"visibility": true,
 					"autouv": 0,
+					"selected": false,
 					"children": ["2e4fcf22-03ed-ec79-d889-c086f7fc9943", "36107d8f-6037-35e1-a54a-f53d3853a82c"]
 				},
 				{
@@ -555,6 +569,7 @@
 					"locked": false,
 					"visibility": true,
 					"autouv": 0,
+					"selected": false,
 					"children": ["696ecbe8-486e-d409-5248-eb5bf0a6fc05"]
 				}
 			]
@@ -570,6 +585,7 @@
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
+			"selected": false,
 			"children": ["752c2ac9-cd96-0e08-707a-f1520f360349", "750ab380-8c4c-7b43-8c1b-1fb8662aa90d", "4e9be020-3fad-8340-dea6-0836cab50f33"]
 		},
 		{
@@ -583,6 +599,7 @@
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
+			"selected": false,
 			"children": ["190ed69b-e306-122e-2a0d-a5bd7f2905a2"]
 		},
 		{
@@ -596,6 +613,7 @@
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
+			"selected": false,
 			"children": ["df0520df-9102-0612-696f-5fc959e6b33d"]
 		},
 		{
@@ -609,6 +627,7 @@
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
+			"selected": false,
 			"children": [
 				"8b47234a-9700-3da5-47db-8f75a6aab837",
 				"c2175bbe-2cfe-5bd6-da67-98c3b6cd21ee",
@@ -624,15 +643,18 @@
 			"folder": "",
 			"namespace": "",
 			"id": "1",
+			"group": "",
 			"width": 24,
 			"height": 42,
 			"uv_width": 24,
 			"uv_height": 42,
 			"particle": false,
+			"use_as_default": false,
 			"layers_enabled": false,
 			"sync_to_project": "",
 			"render_mode": "default",
 			"render_sides": "auto",
+			"pbr_channel": "color",
 			"frame_time": 1,
 			"frame_order_type": "loop",
 			"frame_order": "",
@@ -641,7 +663,7 @@
 			"internal": true,
 			"saved": true,
 			"uuid": "672f6e95-d574-c6c1-0337-107407adb375",
-			"relative_path": "../../textures/costume_christmas.png",
+			"relative_path": "../textures/costume_christmas.png",
 			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAqCAYAAACpxZteAAAAAXNSR0IArs4c6QAAAV9JREFUWEdjPBea9Z8BC+Dm5cYmDBdTn9fNCOL8/ff/PzMTI+P/y9fA5vz/+xeshslAFyzPSKkFMBtpZsG/C5f/MzIzg+0BuR7mcpg4ig/eff4CVijEy8OALYgeP3sJlpeVEmeABRHI5bBgQQ4akAUYQUSOBXgjippxgMsixptJpVhTEUwDLCgIuXTgLfj6+StWRxitngZOz7h8SsiHjLXZRXiDqHlqH9gCcgHVMhrOOKC5D2ieioI8/LDGgbayCt5gJzZuaJ8PYHFw9e4drC5et2MTOBXhiitCPsGZBEHlPLKNoDKfnKSKVRO64TCDybEErwUwA2EWDh0LQEFCahzgUo83kkviU8DB37NwDgM5wQOu0bClDJBrQIb3L54Lli+MTf5PriWM2FIMyLUgQ5EtALFxpS58yZestE1Kfhi1gGBojQbRaBARDAGCCkZT0UgIInLKeFC4EFvDDf1UBADAosdrxHRjJQAAAABJRU5ErkJggg=="
 		}
 	],

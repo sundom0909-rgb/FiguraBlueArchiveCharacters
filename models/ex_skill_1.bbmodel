@@ -1,6 +1,6 @@
 {
 	"meta": {
-		"format_version": "4.9",
+		"format_version": "4.10",
 		"model_format": "free",
 		"box_uv": false
 	},
@@ -21,6 +21,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-5.5, 0, -6],
@@ -62,6 +63,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [5.5, 6, -6],
@@ -103,6 +105,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [5.5, 2, -6],
@@ -144,6 +147,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [5.5, 2, 3],
@@ -185,6 +189,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [5.5, 0, -6],
@@ -226,6 +231,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-6, 2, -6],
@@ -267,6 +273,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-6, 6, -6],
@@ -308,6 +315,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-6, 2, 3],
@@ -349,6 +357,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-6, 0, -6],
@@ -390,6 +399,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-5, 3.5, 6],
@@ -431,6 +441,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [2, 3.5, 6],
@@ -472,6 +483,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [2.75, 29, -6.26],
@@ -521,6 +533,7 @@
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
+			"selected": false,
 			"children": [
 				"57d545e1-2e42-de51-de59-084cd5a66f99",
 				"4231cdac-faaa-c993-9aac-03c01eecce16",
@@ -546,6 +559,7 @@
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
+			"selected": false,
 			"children": [
 				"37673019-4735-f71e-997e-e9f25e7ee5c3",
 				{
@@ -559,6 +573,7 @@
 					"locked": false,
 					"visibility": true,
 					"autouv": 0,
+					"selected": false,
 					"children": []
 				}
 			]
@@ -571,15 +586,18 @@
 			"folder": "",
 			"namespace": "",
 			"id": "0",
+			"group": "",
 			"width": 29,
 			"height": 20,
 			"uv_width": 29,
 			"uv_height": 20,
 			"particle": false,
+			"use_as_default": false,
 			"layers_enabled": false,
 			"sync_to_project": "",
 			"render_mode": "default",
 			"render_sides": "auto",
+			"pbr_channel": "color",
 			"frame_time": 1,
 			"frame_order_type": "loop",
 			"frame_order": "",
@@ -588,7 +606,7 @@
 			"internal": true,
 			"saved": true,
 			"uuid": "8e3beb22-06ee-dcc1-e90c-e2ae03236333",
-			"relative_path": "../../textures/ex_skill_1.png",
+			"relative_path": "../textures/ex_skill_1.png",
 			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAUCAYAAABxnDbHAAAAAXNSR0IArs4c6QAAATBJREFUSEtjPHr8+H8GKLBqaYAxUehjNdjFiVFvbWnJCDLs/////xkZGcFsRpiluAyA2Y5uMbHqcVqKbMDlTx9RfKnLxw/nwywmZCGyQ0GWgnx5/e8/Bk1mJgaQbxn/e7vDgxekGGSp1t4jYH3XnG0YkC3FGvYEBBm37sRtKbIPkS2FmUmu5QQthVmG7niKfLxlBwMoaEHg5r1fDAGqHAzw4EUOVmpbuuH2D7iRGJbCZKgZvAxbdjDgtBRmIa0SEsx8cOoF5VNaZxn06KJb4YBsMdxSkCAxxRqyZmLUw0qkwWMpoaKN0rIXxafoxSApRd2jb9+wKpfj4oKLg0oknAmJFMtgaj9+RK0cYOL8/IhKAmucbtuxA6XAJ8VyYiz18vDA9OmABi9dExK9mivI0QYAk2DvCZWBBmoAAAAASUVORK5CYII="
 		}
 	],
@@ -600,7 +618,7 @@
 			"override": true,
 			"length": 1.3,
 			"snapping": 20,
-			"selected": true,
+			"selected": false,
 			"anim_time_update": "",
 			"blend_weight": "",
 			"start_delay": "",
@@ -616,18 +634,13 @@
 								{
 									"x": "0",
 									"y": "0",
-									"z": -11
+									"z": "-11"
 								}
 							],
 							"uuid": "8ea79170-d009-c9da-7856-2b4caeecac74",
 							"time": 0,
 							"color": -1,
-							"interpolation": "linear",
-							"bezier_linked": true,
-							"bezier_left_time": [-0.1, -0.1, -0.1],
-							"bezier_left_value": [0, 0, 0],
-							"bezier_right_time": [0.1, 0.1, 0.1],
-							"bezier_right_value": [0, 0, 0]
+							"interpolation": "linear"
 						}
 					]
 				},
@@ -694,12 +707,7 @@
 							"time": 1.15,
 							"color": -1,
 							"uniform": true,
-							"interpolation": "linear",
-							"bezier_linked": true,
-							"bezier_left_time": [-0.1, -0.1, -0.1],
-							"bezier_left_value": [0, 0, 0],
-							"bezier_right_time": [0.1, 0.1, 0.1],
-							"bezier_right_value": [0, 0, 0]
+							"interpolation": "linear"
 						},
 						{
 							"channel": "scale",
@@ -714,12 +722,7 @@
 							"time": 1.3,
 							"color": -1,
 							"uniform": true,
-							"interpolation": "linear",
-							"bezier_linked": true,
-							"bezier_left_time": [-0.1, -0.1, -0.1],
-							"bezier_left_value": [0, 0, 0],
-							"bezier_right_time": [0.1, 0.1, 0.1],
-							"bezier_right_value": [0, 0, 0]
+							"interpolation": "linear"
 						}
 					]
 				}
