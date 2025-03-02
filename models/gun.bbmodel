@@ -276,6 +276,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-0.1, 11.4649, 4.1404],
@@ -532,6 +533,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-0.3158, 4.3772, -3.0175],
@@ -573,6 +575,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-0.3158, 4.3772, -0.2807],
@@ -615,6 +618,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-0.3158, 4.3772, -4.1824],
@@ -656,6 +660,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-0.3158, 4.3772, -6.2723],
@@ -697,6 +702,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-0.3158, 3.9772, -6.2723],
@@ -812,6 +818,7 @@
 					"locked": false,
 					"visibility": true,
 					"autouv": 0,
+					"selected": false,
 					"children": [
 						"0cabeedf-e1c9-a47a-43a5-9756bf3bbd96",
 						{
@@ -826,6 +833,7 @@
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
+							"selected": false,
 							"children": ["49a43e9c-9c45-3b28-3a49-45730d57b5b5", "fcc44487-d84c-b499-534f-bbc9e02bae6c"]
 						}
 					]
@@ -844,6 +852,7 @@
 					"locked": false,
 					"visibility": true,
 					"autouv": 0,
+					"selected": false,
 					"children": [
 						"7455a7ad-6107-350a-8dd4-976c82f298c3",
 						{
@@ -858,6 +867,7 @@
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
+							"selected": false,
 							"children": ["2327bf47-7442-1654-dfdb-bc315703d2a9", "78a6149d-5ff2-bf1a-e483-faba4b6e7dd6"]
 						}
 					]
@@ -887,6 +897,7 @@
 			"folder": "",
 			"namespace": "",
 			"id": "0",
+			"group": "",
 			"width": 48,
 			"height": 33,
 			"uv_width": 48,
@@ -906,7 +917,7 @@
 			"internal": true,
 			"saved": true,
 			"uuid": "7bd4b824-3db6-476b-99e3-dde805a618f1",
-			"relative_path": "../../textures/gun.png",
+			"relative_path": "../textures/gun.png",
 			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAhCAYAAACfiCi5AAAAAXNSR0IArs4c6QAAAo9JREFUWEdj/P/5zn8GEoGmaTpDdVk9iq7YJDtGkMDieYdINo9E61GUM/5/t5tkCzWtOsAe2Lx1MdywVWtngz3gZO+LYV5ifCklbsSrlywPMAq5gkIaqwewxcD8hd2084CGhjPOGEBPJsS4AjlWYOp9vWNRtII8BIoVQjQx9jGCPHDjxl4MtRoazgx62krEmEGymjdvXjCIiEgwEKKJMZjuHiDkaJg8MY4HqcHrAWKTELZkg8sBxHiAlExPlRggNtSIcTwoaZEC8HpASpyLaLPwWQxyeGuIG9FmoSusXrMLp16wB3DJwjIxsSEMMgdWHyCbGRac+v/f08sMsjJSJHsizN6Rof/AJdweCLGwAHuAVMMJGQyzEeR5YgAo3cPyEkjPvoObwRUjIcAI8wCpngB5AF/UwiwmNk2D6gpYc4SQo5HlKfIAvqglxREgtSAPYGuaEDIHZzQVhgRhzRugkO9duhSc5I4+eoVi/oMHdzHsi7azBIv1r1mHN0mAmiBkewCXY7H5HtkDRl4FcCWTZ1RhKLeWEwOLgfTE9M8CszVVTBi27JpPVPomFPogeXASIiUDI3vg6X9huB3I7R2YZ5A9YJmbSzVHY+QBangA2VCYZ85tmwCPAbp6ADlpgFwAcwgsOcDyAIiPHAvInpBmfAvngmKNLh5AdjhyhgKFKHJoInuAmHRKFw+AHI+rUTYkPLD00HG8gQkrDpEzMTGhD0t2NE9C6GU6uuPoUaIQGyBYS6Eh7wH0kgc9NOhRJFIUA7iKQ5ihsGKRliUKzTxArzKdIg9gK4VgJQ+ywYM2BpAzMazEwdWYo1WRSFEMgDyAz+EwwwdtDBDr+1EPEBtSRKojqz8wKPMAkR4G964GkwcAzcF/BzLoqEwAAAAASUVORK5CYII="
 		}
 	],
