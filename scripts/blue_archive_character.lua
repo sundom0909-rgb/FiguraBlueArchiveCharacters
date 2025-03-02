@@ -346,12 +346,6 @@ BlueArchiveCharacter = {
                     leftEye = "SURPRISED";
                     mouth = "SHOCK";
                 };
-
-                onDied = {
-                    rightEye = "SURPRISED";
-                    leftEye = "SURPRISED";
-                    mouth = "SHOCK";
-                };
             };
         }
 
