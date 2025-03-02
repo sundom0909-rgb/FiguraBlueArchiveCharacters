@@ -1115,7 +1115,7 @@ BlueArchiveCharacter = {
                 playPotBreak = function (self, potModel)
                     local potPos = self.parent.modelUtils.getModelWorldPos(potModel)
                     for _ = 1, 32 do
-                        particles:newParticle(self.parent.compatibilityUtils.getBlockParticleId(self.parent.compatibilityUtils:checkBlock("minecraft:decorated_pot")), potPos:copy():add(math.random() - 0.5, math.random(), math.random() - 0.5))
+                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:block", self.parent.compatibilityUtils:checkBlock("minecraft:decorated_pot")), potPos:copy():add(math.random() - 0.5, math.random(), math.random() - 0.5))
                     end
                     sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.glass.break"), potPos, 1, 0.5)
                     potModel:setVisible(false)
