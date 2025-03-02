@@ -425,12 +425,12 @@ BlueArchiveCharacter = {
                         elseif tick == 59 then
                             local playerPos = player:getPos()
                             for _ = 1, 100 do
-                                particles:newParticle(self.parent.compatibilityUtils.getDustParticleId(vectors.vec3(100000000, 100000000, 100000000), 1), playerPos:copy():add(math.random() * 4 - 2, 0, math.random() * 4 - 2)):setLifetime(100):setVelocity()
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), playerPos:copy():add(math.random() * 4 - 2, 0, math.random() * 4 - 2)):setColor(1, 1, 1):setLifetime(100)
                             end
                             local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.ExSkill1ParticleAnchor3)
                             local bodyYaw = player:getBodyYaw()
                             for _ = 1, 50 do
-                                particles:newParticle(self.parent.compatibilityUtils.getDustParticleId(vectors.vec3(100000000, 100000000, 100000000), 1), anchorPos:copy():add(vectors.rotateAroundAxis(-bodyYaw, vectors.rotateAroundAxis(math.random() * 360, 0, 1.25, 0, 0, 0, 1), 0, 1, 0))):setLifetime(40):setVelocity(vectors.rotateAroundAxis(-bodyYaw, 0, 0, math.random() * 0.1 + 0.05, 0, 1, 0))
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), anchorPos:copy():add(vectors.rotateAroundAxis(-bodyYaw, vectors.rotateAroundAxis(math.random() * 360, 0, 1.25, 0, 0, 0, 1), 0, 1, 0))):setColor(1, 1, 1):setVelocity(vectors.rotateAroundAxis(-bodyYaw, 0, 0, math.random() * 0.1 + 0.05, 0, 1, 0)):setLifetime(40)
                             end
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.beacon.activate"), playerPos, 1, 1.5)
                         end
