@@ -44,6 +44,10 @@
 ---| "DEFAULT" # デフォルト衣装
 ---| "MAID" # メイド
 
+---@alias BlueArchiveCharacter.ExSkill2ShotByType
+---| "MOMOI" # モモイ
+---| "MIDORI" # ミドリ
+
 --[[ ******************************** ]]
 
 ---@class BlueArchiveCharacter : AvatarModule キャラクター変数を保持するクラス。別のキャラクターに対してもここを変更するだけで対応できるようにする。
