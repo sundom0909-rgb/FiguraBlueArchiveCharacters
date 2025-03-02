@@ -1,6 +1,6 @@
 {
 	"meta": {
-		"format_version": "4.9",
+		"format_version": "4.10",
 		"model_format": "free",
 		"box_uv": false
 	},
@@ -21,6 +21,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-4, 24, -4],
@@ -63,6 +64,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-1.07, 29, -4.55],
@@ -112,25 +114,29 @@
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
+			"selected": false,
 			"children": ["b747bd75-507f-7929-aeae-3c66cb26fac7", "9da77f2b-9ae5-1508-7197-7cd1652e0981"]
 		}
 	],
 	"textures": [
 		{
-			"path": "C:\\Users\\gakut\\AppData\\Roaming\\com.modrinth.theseus\\profiles\\Fabricバニラ\\figura\\avatars\\ブルーアーカイブ\\ベースアバター\\textures\\costume_masked.png",
+			"path": "C:\\Users\\gakut\\AppData\\Roaming\\ModrinthApp\\profiles\\Fabricバニラ\\figura\\avatars\\ブルーアーカイブ\\ベースアバター\\textures\\costume_masked.png",
 			"name": "costume_masked.png",
 			"folder": "",
 			"namespace": "",
 			"id": "1",
+			"group": "",
 			"width": 32,
 			"height": 16,
 			"uv_width": 32,
 			"uv_height": 16,
 			"particle": false,
+			"use_as_default": false,
 			"layers_enabled": false,
 			"sync_to_project": "",
 			"render_mode": "default",
 			"render_sides": "auto",
+			"pbr_channel": "color",
 			"frame_time": 1,
 			"frame_order_type": "loop",
 			"frame_order": "",
@@ -139,7 +145,7 @@
 			"internal": true,
 			"saved": true,
 			"uuid": "375bf4c3-b00b-7f4b-fdf5-83236cf51fe5",
-			"relative_path": "../../textures/costume_masked.png",
+			"relative_path": "../textures/costume_masked.png",
 			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAQCAYAAAB3AH1ZAAAAAXNSR0IArs4c6QAAANlJREFUSEtjZICCL9++/+fh4mSE8WH0vXnz/oPYohLCDK9fvMWgCckpJSVhmIlsB1gSZLmxkSfD2XPbGdAd8XnbRrAD0C2HiYFoXJaA9PJ6+eN3AMxykEHYHAAKAZDvkR2BzsZlCUgvVUIA2few4INFCcUhQCgKYCEAcgS65bCQoVsIYIsGqoQALBRw5QL0NACLEliIUBwC6FkPmY8cBehZEVkdrmxKMBHiswCXodQUZxx1wJAIAVhCAhWtoByAzqckTRCVBgaNA9CzKyxEaB4CMAuoGfSwwgwAAvE293iLdaoAAAAASUVORK5CYII="
 		}
 	],
