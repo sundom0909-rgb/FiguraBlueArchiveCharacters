@@ -1,12 +1,13 @@
 ---@class (exact) DeathAnimation : AvatarModule プレイヤーが死亡した際のキャラクターがヘリコプターで回収されるアニメーションを管理するクラス
 ---@field package DEBUG_MODE boolean デバッグモードを有効にするかどうか。デバッグモードモードではxキーでフェーズ1のモデルを、cキーでフェーズ2のモデルを表示できる。
 ---@field public dummyAvatarRoot? ModelPart 死亡アニメーションに使用されるダミーのアバターのルート。アバターが未生成の場合はnilが入っている。
+---@field package deathCheckDelay integer 死亡チェックの遅延カウンター
 ---@field package animationCount integer 死亡アニメーションの再生カウンター
 ---@field package animationPos Vector3 アニメーションを再生している場所の座標
 ---@field package animationRot number アニメーションを再生している向き（度数法で示す）
 ---@field package costumeIndex integer 死亡アニメーションのコスチュームのインデックス
 ---@field package isPlayerInvisible boolean プレイヤーモデルが不可視状態かどうか
----@field package isScriptLoaded false スクリプトを全て読み込んだかどうか
+---@field package isScriptLoaded boolean スクリプトを全て読み込んだかどうか
 ---@field package removeUnsafeModel fun(target?: ModelPart) 存在しないかもしれないモデルパーツを安全に削除する
 ---@field package spawnHelicopterParticles fun(self: DeathAnimation) ヘリコプターの出現/消滅パーティクルを生成する
 ---@field package generateDummyAvatar fun(self: DeathAnimation, parent: ModelPart) 死亡アニメーション用のダミーアバターを生成する
@@ -27,6 +28,7 @@ DeathAnimation = {
         instance.DEBUG_MODE = false
 
         instance.dummyAvatarRoot = models.models.death_animation.Avatar
+        instance.deathCheckDelay = -1
         instance.animationCount = 0
         instance.animationPos = vectors.vec3()
         instance.animationRot = 0
@@ -43,21 +45,26 @@ DeathAnimation = {
         AvatarModule.init(self)
 
         events.TICK:register(function ()
-            if self.parent.playerUtils.damageStatus == "DIED" then
+            local health = player:getHealth()
+            if self.deathCheckDelay == 0 and health == 0 then
                 self:play()
                 models.models.main:setVisible(false)
                 for _, vanillaModel in ipairs({vanilla_model.RIGHT_ITEM, vanilla_model.LEFT_ITEM, vanilla_model.ELYTRA}) do
                     vanillaModel:setVisible(false)
                 end
                 self.isPlayerInvisible = true
-            end
-            if self.isPlayerInvisible and player:getHealth() > 0 then
+            elseif self.isPlayerInvisible and health > 0 then
                 models.models.main:setVisible(true)
                 for _, vanillaModel in ipairs({vanilla_model.RIGHT_ITEM, vanilla_model.LEFT_ITEM, vanilla_model.ELYTRA}) do
                     vanillaModel:setVisible(true)
                 end
                 self.isPlayerInvisible = false
             end
+            self.deathCheckDelay = math.max(self.deathCheckDelay - 1, -1)
+        end)
+
+        events.DAMAGE:register(function ()
+            self.deathCheckDelay = 1
         end)
 
         self.parent.avatarEvents.SCRIPT_INIT:register(function ()
@@ -240,44 +247,48 @@ DeathAnimation = {
 
         if events.TICK:getRegisteredCount("death_animation_tick") == 0 then
             events.TICK:register(function ()
-                local particleAnchorPos = self.parent.modelUtils.getModelWorldPos(models.models.death_animation.DeathAnimationParticleAnchor)
-                for _ = 1, 3 do
-                    local particleRot = math.random() * math.pi * 2
-                    local particleOffset = math.random() * 3
-                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:poof"), particleAnchorPos:copy():add(math.cos(particleRot) * particleOffset, 0, math.sin(particleRot) * particleOffset)):setVelocity(math.cos(particleRot), 0, math.sin(particleRot))
+                if not client:isPaused() then
+                    local particleAnchorPos = self.parent.modelUtils.getModelWorldPos(models.models.death_animation.DeathAnimationParticleAnchor)
+                    for _ = 1, 3 do
+                        local particleRot = math.random() * math.pi * 2
+                        local particleOffset = math.random() * 3
+                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:poof"), particleAnchorPos:copy():add(math.cos(particleRot) * particleOffset, 0, math.sin(particleRot) * particleOffset)):setVelocity(math.cos(particleRot), 0, math.sin(particleRot))
 
-                end
-                if self.animationCount % 2 == 1 then
-                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.bamboo_wood_door.close"), self.parent.modelUtils.getModelWorldPos(models.models.death_animation.Helicopter.DeathAnimationSoundAnchor1), 1, 0.5):setAttenuation(2)
-                end
-                if self.animationCount < 120 then
-                    models.models.death_animation.Avatar:setLight(world.getLightLevel(self.animationPos))
-                end
-                if self.animationCount == 1 then
-                    self:spawnHelicopterParticles()
-                elseif self.animationCount == 10 then
-                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.iron_door.open"), self.parent.modelUtils.getModelWorldPos(models.models.death_animation.Helicopter.DeathAnimationSoundAnchor1), 1, 0.5)
-                elseif self.animationCount >= 57 and self.animationCount < 76 then
-                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), self.parent.modelUtils.getModelWorldPos(models.models.death_animation.Helicopter.RopeLadder.RopeLadder2.RopeLadder3.RopeLadder4.RopeLadder5.RopeLadder6.RopeLadder7.RopeLadder8.RopeLadder9.RopeLadder10.RopeLadder11.RopeLadder12.RopeLadder13.RopeLadder14), 0.25, -0.056 * (self.animationCount - 57) + 2)
-                elseif self.animationCount == 120 then
-                    self.dummyAvatarRoot = models.models.death_animation.Avatar:moveTo(models.models.death_animation.Helicopter.RopeLadder.RopeLadder2.RopeLadder3.RopeLadder4.RopeLadder5.RopeLadder6.RopeLadder7.RopeLadder8.RopeLadder9.RopeLadder10.RopeLadder11.RopeLadder12.RopeLadder13.RopeLadder14)
-                    self.setPhase2Pose(models.models.death_animation.Helicopter.RopeLadder.RopeLadder2.RopeLadder3.RopeLadder4.RopeLadder5.RopeLadder6.RopeLadder7.RopeLadder8.RopeLadder9.RopeLadder10.RopeLadder11.RopeLadder12.RopeLadder13.RopeLadder14.Avatar)
-                    if self.parent.characterData.deathAnimation.callbacks ~= nil and self.parent.characterData.deathAnimation.callbacks.onPhase2 ~= nil then
-                        self.parent.characterData.deathAnimation.callbacks.onPhase2(self.parent.characterData, models.models.death_animation.Helicopter.RopeLadder.RopeLadder2.RopeLadder3.RopeLadder4.RopeLadder5.RopeLadder6.RopeLadder7.RopeLadder8.RopeLadder9.RopeLadder10.RopeLadder11.RopeLadder12.RopeLadder13.RopeLadder14.Avatar, self.parent.characterData.costume.costumes[self.parent.costume.currentCostume].name:upper())
                     end
-                elseif self.animationCount == 180 then
-                    models.models.death_animation.Helicopter.RopeLadder.RopeLadder2.RopeLadder3.RopeLadder4.RopeLadder5.RopeLadder6.RopeLadder7.RopeLadder8.RopeLadder9.RopeLadder10.RopeLadder11.RopeLadder12.RopeLadder13.RopeLadder14.Avatar:setVisible(false)
-                elseif self.animationCount == 230 then
-                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.iron_door.close"), self.parent.modelUtils.getModelWorldPos(models.models.death_animation.Helicopter.DeathAnimationSoundAnchor1), 1, 0.5)
-                elseif self.animationCount == 255 then
-                    self:spawnHelicopterParticles()
-                    self:stop()
+                    if self.animationCount % 2 == 1 then
+                        sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.bamboo_wood_door.close"), self.parent.modelUtils.getModelWorldPos(models.models.death_animation.Helicopter.DeathAnimationSoundAnchor1), 1, 0.5):setAttenuation(2)
+                    end
+                    if self.animationCount < 120 then
+                        models.models.death_animation.Avatar:setLight(world.getLightLevel(self.animationPos))
+                    end
+                    if self.animationCount == 1 then
+                        self:spawnHelicopterParticles()
+                    elseif self.animationCount == 10 then
+                        sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.iron_door.open"), self.parent.modelUtils.getModelWorldPos(models.models.death_animation.Helicopter.DeathAnimationSoundAnchor1), 1, 0.5)
+                    elseif self.animationCount >= 57 and self.animationCount < 76 then
+                        sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), self.parent.modelUtils.getModelWorldPos(models.models.death_animation.Helicopter.RopeLadder.RopeLadder2.RopeLadder3.RopeLadder4.RopeLadder5.RopeLadder6.RopeLadder7.RopeLadder8.RopeLadder9.RopeLadder10.RopeLadder11.RopeLadder12.RopeLadder13.RopeLadder14), 0.25, -0.056 * (self.animationCount - 57) + 2)
+                    elseif self.animationCount == 120 then
+                        self.dummyAvatarRoot = models.models.death_animation.Avatar:moveTo(models.models.death_animation.Helicopter.RopeLadder.RopeLadder2.RopeLadder3.RopeLadder4.RopeLadder5.RopeLadder6.RopeLadder7.RopeLadder8.RopeLadder9.RopeLadder10.RopeLadder11.RopeLadder12.RopeLadder13.RopeLadder14)
+                        self.setPhase2Pose(models.models.death_animation.Helicopter.RopeLadder.RopeLadder2.RopeLadder3.RopeLadder4.RopeLadder5.RopeLadder6.RopeLadder7.RopeLadder8.RopeLadder9.RopeLadder10.RopeLadder11.RopeLadder12.RopeLadder13.RopeLadder14.Avatar)
+                        if self.parent.characterData.deathAnimation.callbacks ~= nil and self.parent.characterData.deathAnimation.callbacks.onPhase2 ~= nil then
+                            self.parent.characterData.deathAnimation.callbacks.onPhase2(self.parent.characterData, models.models.death_animation.Helicopter.RopeLadder.RopeLadder2.RopeLadder3.RopeLadder4.RopeLadder5.RopeLadder6.RopeLadder7.RopeLadder8.RopeLadder9.RopeLadder10.RopeLadder11.RopeLadder12.RopeLadder13.RopeLadder14.Avatar, self.parent.characterData.costume.costumes[self.parent.costume.currentCostume].name:upper())
+                        end
+                    elseif self.animationCount == 180 then
+                        models.models.death_animation.Helicopter.RopeLadder.RopeLadder2.RopeLadder3.RopeLadder4.RopeLadder5.RopeLadder6.RopeLadder7.RopeLadder8.RopeLadder9.RopeLadder10.RopeLadder11.RopeLadder12.RopeLadder13.RopeLadder14.Avatar:setVisible(false)
+                    elseif self.animationCount == 230 then
+                        sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.iron_door.close"), self.parent.modelUtils.getModelWorldPos(models.models.death_animation.Helicopter.DeathAnimationSoundAnchor1), 1, 0.5)
+                    elseif self.animationCount == 255 then
+                        self:spawnHelicopterParticles()
+                        self:stop()
+                    end
                 end
             end, "death_animation_tick")
         end
         if events.WORLD_TICK:getRegisteredCount("death_animation_world_tick") == 0 then
             events.WORLD_TICK:register(function ()
-                self.animationCount = self.animationCount + 1
+                if not client:isPaused() then
+                    self.animationCount = self.animationCount + 1
+                end
             end, "death_animation_world_tick")
         end
     end;
