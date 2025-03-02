@@ -1,6 +1,6 @@
 {
 	"meta": {
-		"format_version": "4.9",
+		"format_version": "4.10",
 		"model_format": "free",
 		"box_uv": false
 	},
@@ -21,6 +21,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-4, 24, -4],
@@ -62,6 +63,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-4, 24, -4],
@@ -105,6 +107,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-4, 12, -2],
@@ -147,6 +150,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-4, 12, -2],
@@ -190,6 +194,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [4, 18, -2],
@@ -232,6 +237,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [4, 18, -2],
@@ -275,6 +281,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-7, 18, -2],
@@ -317,6 +324,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-7, 18, -2],
@@ -360,6 +368,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [0, 6, -2],
@@ -402,6 +411,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [0, 6, -2],
@@ -445,6 +455,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-4, 6, -2],
@@ -487,6 +498,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-4, 6, -2],
@@ -530,6 +542,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [1, 25, -4.01],
@@ -571,6 +584,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-4, 25, -4.01],
@@ -612,6 +626,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-1, 24, -4.01],
@@ -654,6 +669,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-4, 35, -4],
@@ -698,6 +714,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [4, 12, -2],
@@ -740,6 +757,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [4, 12, -2],
@@ -783,6 +801,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-7, 12, -2],
@@ -825,6 +844,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-7, 12, -2],
@@ -868,6 +888,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [0, 0, -2],
@@ -911,6 +932,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [0, 0, -2],
@@ -953,6 +975,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-4, 0, -2],
@@ -995,6 +1018,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-4, 0, -2],
@@ -1038,6 +1062,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-1, -1, 1],
@@ -1079,6 +1104,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-0.5, 1, 1.25],
@@ -1120,6 +1146,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-0.5, 1, 2.75],
@@ -1161,6 +1188,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-1.5, -1.5, 0],
@@ -3299,6 +3327,7 @@
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
+			"selected": false,
 			"children": [
 				{
 					"name": "Head",
@@ -3311,6 +3340,7 @@
 					"locked": false,
 					"visibility": true,
 					"autouv": 0,
+					"selected": false,
 					"children": [
 						"a66c63cf-0082-7797-3f4e-08ff434a1cac",
 						"d48552a8-9f0d-7335-2a82-794f3264fc9d",
@@ -3325,6 +3355,7 @@
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
+							"selected": false,
 							"children": [
 								{
 									"name": "Eyes",
@@ -3337,6 +3368,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": [
 										"7853e9a2-b429-5a00-5e0e-70449c3a71ee",
 										"328a2de5-64bc-807b-5906-227bfceedf26",
@@ -3351,6 +3383,7 @@
 											"locked": false,
 											"visibility": true,
 											"autouv": 0,
+											"selected": false,
 											"children": []
 										},
 										{
@@ -3364,6 +3397,7 @@
 											"locked": false,
 											"visibility": true,
 											"autouv": 0,
+											"selected": false,
 											"children": []
 										}
 									]
@@ -3382,6 +3416,7 @@
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
+							"selected": false,
 							"children": [
 								{
 									"name": "HeadRingCenter",
@@ -3555,6 +3590,7 @@
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
+							"selected": false,
 							"children": []
 						},
 						{
@@ -3568,6 +3604,7 @@
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
+							"selected": false,
 							"children": []
 						}
 					]
@@ -3583,6 +3620,7 @@
 					"locked": false,
 					"visibility": true,
 					"autouv": 0,
+					"selected": false,
 					"children": [
 						{
 							"name": "Body",
@@ -3595,6 +3633,7 @@
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
+							"selected": false,
 							"children": [
 								"742e9ab7-8cdd-8d93-9a9a-88011f54d15b",
 								"2574fa9e-0d5f-502c-ce28-ef5cf30f41ec",
@@ -3750,6 +3789,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": []
 								},
 								{
@@ -3763,6 +3803,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": []
 								},
 								{
@@ -3776,6 +3817,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": []
 								}
 							]
@@ -3791,6 +3833,7 @@
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
+							"selected": false,
 							"children": [
 								{
 									"name": "RightArm",
@@ -3803,6 +3846,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": [
 										"8831734e-ce90-e6bb-8368-e011a468277d",
 										"cea7603d-ae80-e4e7-6f93-905551a79117",
@@ -3817,6 +3861,7 @@
 											"locked": false,
 											"visibility": true,
 											"autouv": 0,
+											"selected": false,
 											"children": [
 												"643f9c05-2d3c-e1d1-5a2f-874902eb1784",
 												"b1a76f47-912e-c2d4-8090-6f6ac9734672",
@@ -3831,6 +3876,7 @@
 													"locked": false,
 													"visibility": true,
 													"autouv": 0,
+													"selected": false,
 													"children": []
 												}
 											]
@@ -3848,6 +3894,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": [
 										"af1aa9d5-0ccf-d579-b381-54ac7b12fb55",
 										"b74fb9e9-db24-b669-6f87-8469be63eda5",
@@ -3863,6 +3910,7 @@
 											"locked": false,
 											"visibility": true,
 											"autouv": 0,
+											"selected": false,
 											"children": [
 												"a82219a3-e344-a4d8-c85c-51462943a7dc",
 												"d7794b2f-dbb3-2cd5-c956-cd163b703976",
@@ -3877,6 +3925,7 @@
 													"locked": false,
 													"visibility": true,
 													"autouv": 0,
+													"selected": false,
 													"children": []
 												}
 											]
@@ -3896,6 +3945,7 @@
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
+							"selected": false,
 							"children": []
 						},
 						{
@@ -3909,6 +3959,7 @@
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
+							"selected": false,
 							"children": []
 						},
 						{
@@ -3922,6 +3973,7 @@
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
+							"selected": false,
 							"children": []
 						},
 						{
@@ -3935,6 +3987,7 @@
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
+							"selected": false,
 							"children": []
 						}
 					]
@@ -3950,6 +4003,7 @@
 					"locked": false,
 					"visibility": true,
 					"autouv": 0,
+					"selected": false,
 					"children": [
 						{
 							"name": "Legs",
@@ -3962,6 +4016,7 @@
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
+							"selected": false,
 							"children": [
 								{
 									"name": "RightLeg",
@@ -3974,6 +4029,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": [
 										"da81ebbe-5b4e-2d46-144a-6f839ad6fa3c",
 										"bcf37da3-caec-e8f2-bc82-76a3f169374c",
@@ -3988,6 +4044,7 @@
 											"locked": false,
 											"visibility": true,
 											"autouv": 0,
+											"selected": false,
 											"children": ["8b1cc891-ffa8-9f46-ebc0-f0b84e6ffb15", "72c6eff7-d0eb-2ffa-193f-2ca402bdc722"]
 										}
 									]
@@ -4003,6 +4060,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": [
 										"9c06bc9a-beae-98d9-e9ce-9c8e6ddbb9d3",
 										"f8f1e7ad-7999-9f17-0488-5dcbd4af7945",
@@ -4017,6 +4075,7 @@
 											"locked": false,
 											"visibility": true,
 											"autouv": 0,
+											"selected": false,
 											"children": ["a1169ee6-6a78-c7c4-9214-670991206468", "a5173990-504e-f5c4-45c7-9347880c1306"]
 										}
 									]
@@ -4038,6 +4097,7 @@
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
+			"selected": false,
 			"children": [
 				"8b47234a-9700-3da5-47db-8f75a6aab837",
 				"c2175bbe-2cfe-5bd6-da67-98c3b6cd21ee",
@@ -4053,15 +4113,18 @@
 			"folder": "",
 			"namespace": "",
 			"id": "0",
+			"group": "",
 			"width": 64,
 			"height": 157,
 			"uv_width": 64,
 			"uv_height": 157,
 			"particle": false,
+			"use_as_default": false,
 			"layers_enabled": false,
 			"sync_to_project": "",
 			"render_mode": "default",
 			"render_sides": "auto",
+			"pbr_channel": "color",
 			"frame_time": 1,
 			"frame_order_type": "loop",
 			"frame_order": "",
@@ -4130,12 +4193,7 @@
 							"uuid": "9a17c91b-9caf-35cd-2701-c855c814c55e",
 							"time": 0,
 							"color": -1,
-							"interpolation": "catmullrom",
-							"bezier_linked": true,
-							"bezier_left_time": [-0.1, -0.1, -0.1],
-							"bezier_left_value": [0, 0, 0],
-							"bezier_right_time": [0.1, 0.1, 0.1],
-							"bezier_right_value": [0, 0, 0]
+							"interpolation": "catmullrom"
 						},
 						{
 							"channel": "rotation",
@@ -4149,12 +4207,7 @@
 							"uuid": "8a4caafc-cef3-23ea-a343-4ffc27491a78",
 							"time": 0.6,
 							"color": -1,
-							"interpolation": "catmullrom",
-							"bezier_linked": true,
-							"bezier_left_time": [-0.1, -0.1, -0.1],
-							"bezier_left_value": [0, 0, 0],
-							"bezier_right_time": [0.1, 0.1, 0.1],
-							"bezier_right_value": [0, 0, 0]
+							"interpolation": "catmullrom"
 						},
 						{
 							"channel": "rotation",
@@ -4168,12 +4221,7 @@
 							"uuid": "e4b80750-e456-001a-1ad4-589ba2db0d6f",
 							"time": 1.15,
 							"color": -1,
-							"interpolation": "catmullrom",
-							"bezier_linked": true,
-							"bezier_left_time": [-0.1, -0.1, -0.1],
-							"bezier_left_value": [0, 0, 0],
-							"bezier_right_time": [0.1, 0.1, 0.1],
-							"bezier_right_value": [0, 0, 0]
+							"interpolation": "catmullrom"
 						},
 						{
 							"channel": "position",
@@ -4307,12 +4355,7 @@
 							"uuid": "c103e318-5419-72fb-f3b3-77977b1f6893",
 							"time": 1.55,
 							"color": -1,
-							"interpolation": "catmullrom",
-							"bezier_linked": true,
-							"bezier_left_time": [-0.1, -0.1, -0.1],
-							"bezier_left_value": [0, 0, 0],
-							"bezier_right_time": [0.1, 0.1, 0.1],
-							"bezier_right_value": [0, 0, 0]
+							"interpolation": "catmullrom"
 						},
 						{
 							"channel": "rotation",
@@ -4370,12 +4413,7 @@
 							"uuid": "c78c6df6-53a7-5273-4901-0212f750f1e5",
 							"time": 0,
 							"color": -1,
-							"interpolation": "catmullrom",
-							"bezier_linked": true,
-							"bezier_left_time": [-0.1, -0.1, -0.1],
-							"bezier_left_value": [0, 0, 0],
-							"bezier_right_time": [0.1, 0.1, 0.1],
-							"bezier_right_value": [0, 0, 0]
+							"interpolation": "catmullrom"
 						},
 						{
 							"channel": "rotation",
@@ -4389,12 +4427,7 @@
 							"uuid": "d1b8e68f-4ef8-1f8f-ec01-9fb256f001fd",
 							"time": 0.6,
 							"color": -1,
-							"interpolation": "catmullrom",
-							"bezier_linked": true,
-							"bezier_left_time": [-0.1, -0.1, -0.1],
-							"bezier_left_value": [0, 0, 0],
-							"bezier_right_time": [0.1, 0.1, 0.1],
-							"bezier_right_value": [0, 0, 0]
+							"interpolation": "catmullrom"
 						},
 						{
 							"channel": "rotation",
@@ -5552,12 +5585,7 @@
 							"uuid": "dc9c07ec-7b4b-e67f-8f57-c8abdc1add3c",
 							"time": 2.3,
 							"color": -1,
-							"interpolation": "catmullrom",
-							"bezier_linked": true,
-							"bezier_left_time": [-0.1, -0.1, -0.1],
-							"bezier_left_value": [0, 0, 0],
-							"bezier_right_time": [0.1, 0.1, 0.1],
-							"bezier_right_value": [0, 0, 0]
+							"interpolation": "catmullrom"
 						},
 						{
 							"channel": "position",
@@ -5571,12 +5599,7 @@
 							"uuid": "e2a73577-6412-8007-ed3f-bbd20632a0d4",
 							"time": 2.7,
 							"color": -1,
-							"interpolation": "catmullrom",
-							"bezier_linked": true,
-							"bezier_left_time": [-0.1, -0.1, -0.1],
-							"bezier_left_value": [0, 0, 0],
-							"bezier_right_time": [0.1, 0.1, 0.1],
-							"bezier_right_value": [0, 0, 0]
+							"interpolation": "catmullrom"
 						}
 					]
 				},
@@ -6083,12 +6106,7 @@
 							"uuid": "54f3425c-cafa-ebb1-77ea-d9a71082b631",
 							"time": 0,
 							"color": -1,
-							"interpolation": "catmullrom",
-							"bezier_linked": true,
-							"bezier_left_time": [-0.1, -0.1, -0.1],
-							"bezier_left_value": [0, 0, 0],
-							"bezier_right_time": [0.1, 0.1, 0.1],
-							"bezier_right_value": [0, 0, 0]
+							"interpolation": "catmullrom"
 						},
 						{
 							"channel": "rotation",
@@ -6102,12 +6120,7 @@
 							"uuid": "a6880779-1675-a86e-b1d7-c759b26f4c6f",
 							"time": 0.4,
 							"color": -1,
-							"interpolation": "catmullrom",
-							"bezier_linked": true,
-							"bezier_left_time": [-0.1, -0.1, -0.1],
-							"bezier_left_value": [0, 0, 0],
-							"bezier_right_time": [0.1, 0.1, 0.1],
-							"bezier_right_value": [0, 0, 0]
+							"interpolation": "catmullrom"
 						},
 						{
 							"channel": "rotation",
@@ -6121,12 +6134,7 @@
 							"uuid": "1443915d-648a-34da-b4ff-d9532d98390f",
 							"time": 1.15,
 							"color": -1,
-							"interpolation": "catmullrom",
-							"bezier_linked": true,
-							"bezier_left_time": [-0.1, -0.1, -0.1],
-							"bezier_left_value": [0, 0, 0],
-							"bezier_right_time": [0.1, 0.1, 0.1],
-							"bezier_right_value": [0, 0, 0]
+							"interpolation": "catmullrom"
 						},
 						{
 							"channel": "rotation",
@@ -6140,12 +6148,7 @@
 							"uuid": "a6e027f8-67c1-30e6-165f-039eb1f7db9a",
 							"time": 1.55,
 							"color": -1,
-							"interpolation": "catmullrom",
-							"bezier_linked": true,
-							"bezier_left_time": [-0.1, -0.1, -0.1],
-							"bezier_left_value": [0, 0, 0],
-							"bezier_right_time": [0.1, 0.1, 0.1],
-							"bezier_right_value": [0, 0, 0]
+							"interpolation": "catmullrom"
 						},
 						{
 							"channel": "rotation",
@@ -6456,12 +6459,7 @@
 							"uuid": "6088ea77-fa33-4b0b-992c-cd6f760f8d37",
 							"time": 0,
 							"color": -1,
-							"interpolation": "catmullrom",
-							"bezier_linked": true,
-							"bezier_left_time": [-0.1, -0.1, -0.1],
-							"bezier_left_value": [0, 0, 0],
-							"bezier_right_time": [0.1, 0.1, 0.1],
-							"bezier_right_value": [0, 0, 0]
+							"interpolation": "catmullrom"
 						},
 						{
 							"channel": "rotation",
@@ -6475,12 +6473,7 @@
 							"uuid": "b17b5cc7-277a-6e56-3ba2-528a035e38dc",
 							"time": 1,
 							"color": -1,
-							"interpolation": "catmullrom",
-							"bezier_linked": true,
-							"bezier_left_time": [-0.1, -0.1, -0.1],
-							"bezier_left_value": [0, 0, 0],
-							"bezier_right_time": [0.1, 0.1, 0.1],
-							"bezier_right_value": [0, 0, 0]
+							"interpolation": "catmullrom"
 						},
 						{
 							"channel": "rotation",
@@ -6494,12 +6487,7 @@
 							"uuid": "e2462602-20dc-f939-5002-d8633f0a48fc",
 							"time": 1.55,
 							"color": -1,
-							"interpolation": "catmullrom",
-							"bezier_linked": true,
-							"bezier_left_time": [-0.1, -0.1, -0.1],
-							"bezier_left_value": [0, 0, 0],
-							"bezier_right_time": [0.1, 0.1, 0.1],
-							"bezier_right_value": [0, 0, 0]
+							"interpolation": "catmullrom"
 						},
 						{
 							"channel": "rotation",
@@ -6848,12 +6836,7 @@
 							"uuid": "26f05e18-aa5e-47ac-391c-d33e24114ace",
 							"time": 0,
 							"color": -1,
-							"interpolation": "catmullrom",
-							"bezier_linked": true,
-							"bezier_left_time": [-0.1, -0.1, -0.1],
-							"bezier_left_value": [0, 0, 0],
-							"bezier_right_time": [0.1, 0.1, 0.1],
-							"bezier_right_value": [0, 0, 0]
+							"interpolation": "catmullrom"
 						},
 						{
 							"channel": "rotation",
@@ -6886,12 +6869,7 @@
 							"uuid": "b90ce7ac-1746-f320-d72e-e07ece0edd0b",
 							"time": 1.15,
 							"color": -1,
-							"interpolation": "catmullrom",
-							"bezier_linked": true,
-							"bezier_left_time": [-0.1, -0.1, -0.1],
-							"bezier_left_value": [0, 0, 0],
-							"bezier_right_time": [0.1, 0.1, 0.1],
-							"bezier_right_value": [0, 0, 0]
+							"interpolation": "catmullrom"
 						},
 						{
 							"channel": "rotation",
@@ -6905,12 +6883,7 @@
 							"uuid": "a251f0e0-4ce7-f7ff-2902-ca19e8a9db75",
 							"time": 1.55,
 							"color": -1,
-							"interpolation": "catmullrom",
-							"bezier_linked": true,
-							"bezier_left_time": [-0.1, -0.1, -0.1],
-							"bezier_left_value": [0, 0, 0],
-							"bezier_right_time": [0.1, 0.1, 0.1],
-							"bezier_right_value": [0, 0, 0]
+							"interpolation": "catmullrom"
 						},
 						{
 							"channel": "rotation",
@@ -7378,7 +7351,7 @@
 			"override": false,
 			"length": 0.25,
 			"snapping": 20,
-			"selected": true,
+			"selected": false,
 			"anim_time_update": "",
 			"blend_weight": "",
 			"start_delay": "",
