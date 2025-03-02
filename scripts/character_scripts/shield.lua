@@ -89,7 +89,9 @@ Shield = {
             end
         end)
 
+        local this = self --Figuraにスクリプトを再構築させると参照がおかしくなることに対処しているコード
         events.ON_PLAY_SOUND:register(function (id, pos, _, _, _, _, path)
+            self = this
             if path ~= nil then
                 if id == "minecraft:item.shield.block" and math.abs(pos:copy():sub(player:getPos()):length() - player:getVelocity():length()) < 0.2 and player:getActiveItem().id == "minecraft:shield" then
                     sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.anvil.place"), pos, 1, 4)
