@@ -57,7 +57,8 @@ RailGun = {
                 local activeItem = player:getActiveItem()
                 local isLeftHanded = player:isLeftHanded()
                 local heldItems = {player:getHeldItem(isLeftHanded), player:getHeldItem(not isLeftHanded)}
-                local hasChargedCrossbow = (heldItems[1].id == "minecraft:crossbow" and heldItems[1].tag.Charged == 1 and self.parent.gun.currentGunPosition == "RIGHT") or (heldItems[2].id == "minecraft:crossbow" and heldItems[2].tag.Charged == 1 and self.parent.gun.currentGunPosition == "LEFT")
+                local gameVersion = client:getVersion()
+                local hasChargedCrossbow = (heldItems[1].id == "minecraft:crossbow" and ((gameVersion >= "1.20.5" and #heldItems[1].tag["minecraft:charged_projectiles"] >= 1) or (gameVersion < "1.20.5" and heldItems[1].tag.Charged == 1)) and self.parent.gun.currentGunPosition == "RIGHT") or (heldItems[2].id == "minecraft:crossbow" and ((gameVersion >= "1.20.5" and #heldItems[2].tag["minecraft:charged_projectiles"] >= 1) or (gameVersion < "1.20.5" and heldItems[2].tag.Charged == 1)) and self.parent.gun.currentGunPosition == "LEFT")
                 if (activeItem.id == "minecraft:bow" or activeItem.id == "minecraft:crossbow") and self.chargeState == "NONE" then
                     --チャージ開始
                     self.chargeState = self.isSpecialCharge and "STRONG" or "WEAK"
@@ -65,11 +66,15 @@ RailGun = {
                         self.animationLength = 20
                     else
                         local quickChargeLevel = 0
-                        if activeItem.tag.Enchantments ~= nil then
-                            for _, enchant in ipairs(activeItem.tag.Enchantments) do
-                                if enchant.id == "minecraft:quick_charge" then
-                                    quickChargeLevel = enchant.lvl
-                                    break
+                        if client:getVersion() >= "1.20.5" then
+                            quickChargeLevel = activeItem.tag["minecraft:enchantments"].levels["minecraft:quick_charge"] ~= nil and activeItem.tag["minecraft:enchantments"].levels["minecraft:quick_charge"] or 0
+                        else
+                            if activeItem.tag.Enchantments ~= nil then
+                                for _, enchant in ipairs(activeItem.tag.Enchantments) do
+                                    if enchant.id == "minecraft:quick_charge" then
+                                        quickChargeLevel = enchant.lvl
+                                        break
+                                    end
                                 end
                             end
                         end
