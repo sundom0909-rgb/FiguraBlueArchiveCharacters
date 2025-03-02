@@ -537,7 +537,7 @@ BlueArchiveCharacter = {
                             local particleBlock = world.getBlockState(anchor1Pos:copy() - 1).id
                             if particleBlock ~= "minecraft:air" and particleBlock ~= "minecraft:void_air" then
                                 for _ = 1, 50 do
-                                    particles:newParticle(self.parent.compatibilityUtils.getBlockParticleId(particleBlock), anchor1Pos:copy():add(math.random() - 0.5, 0, math.random() - 0.5)):setVelocity(math.random() * 0.5 - 0.25, math.random() * 0.5, math.random() * 0.5 - 0.25)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:block", particleBlock), anchor1Pos:copy():add(math.random() - 0.5, 0, math.random() - 0.5)):setVelocity(math.random() * 0.5 - 0.25, math.random() * 0.5, math.random() * 0.5 - 0.25)
                                 end
                             end
                         elseif tick == 25 then
@@ -566,10 +566,10 @@ BlueArchiveCharacter = {
                                 local particleDirection = vectors.rotateAroundAxis(-bodyYaw, vectors.rotateAroundAxis(40, 0, 0, 1, 1, 0, 0), 0, 1, 0)
                                 for i = 1, 30 do
                                     for j = 0.7, 1.5, 0.1 do
-                                        particles:newParticle(self.parent.compatibilityUtils.getDustParticleId(vectors.vec3(100, 1000000000, 1000000000), 1), vectors.rotateAroundAxis(-bodyYaw, vectors.rotateAroundAxis(40, math.cos(math.rad(i * 12)) * j, math.sin(math.rad(i * 12)) * j, 0, 1, 0, 0), 0, 1, 0):add(avatarPos)):setVelocity(particleDirection:copy():scale(math.random() * 0.1 + 0.2)):setLifetime(math.random() * 10 + 10)
+                                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), vectors.rotateAroundAxis(-bodyYaw, vectors.rotateAroundAxis(40, math.cos(math.rad(i * 12)) * j, math.sin(math.rad(i * 12)) * j, 0, 1, 0, 0), 0, 1, 0):add(avatarPos)):setColor(math.random() * 0.25 + 0.5, 1, 1):setVelocity(particleDirection:copy():scale(math.random() * 0.1 + 0.2)):setLifetime(math.random() * 10 + 10)
                                     end
                                     local particlePos = vectors.rotateAroundAxis(-bodyYaw, vectors.rotateAroundAxis(40, math.cos(math.rad(i * 12)) * 1.5, math.sin(math.rad(i * 12)) * 1.5, 0, 1, 0, 0), 0, 1, 0):add(avatarPos)
-                                    particles:newParticle(self.parent.compatibilityUtils.getDustParticleId(vectors.vec3(100, 1000000000, 1000000000), 1), particlePos):setVelocity(particleDirection:copy():scale(math.random() * 0.1 + 0.2)):setLifetime(math.random() * 10 + 10)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), particlePos):setColor(1, 1, 1):setVelocity(particleDirection:copy():scale(math.random() * 0.1 + 0.2)):setLifetime(math.random() * 10 + 10)
                                 end
                             end
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), avatarPos, 1 - math.map(tick, 45, 60, 0, 0.5), 0.75)
@@ -604,8 +604,8 @@ BlueArchiveCharacter = {
                             for i = 1, 60 do
                                 local currentParticleVelocityDirection = vectors.rotateAroundAxis(i * 6, particleVelocityDirection, particleAxis)
                                 for _, particleData in ipairs({{0.5, 0.4, 0.1}, {0.25, 0.6, 0.025}, {0.375, 2, 0.05}}) do --[1]. 輪っかの半径, [2]. 輪っかの位置のスケール, [3]. 輪っかの拡散速度のスケール
-                                    particles:newParticle(self.parent.compatibilityUtils.getDustParticleId(vectors.vec3(1000000000, 0, 0), 1), vectors.rotateAroundAxis(i * 6, 0, particleData[1], 0, particleAxis):add(anchor2Pos):add(0, -0.3, 0):add(particleAxis:copy():scale(particleData[2]))):setVelocity(currentParticleVelocityDirection:copy():scale(particleData[3])):setLifetime(20)
-                                    particles:newParticle(self.parent.compatibilityUtils.getDustParticleId(vectors.vec3(0, 0, 0), 1), vectors.rotateAroundAxis(i * 6, 0, particleData[1] * 1.5, 0, particleAxis):add(anchor2Pos):add(0, -0.3, 0):add(particleAxis:copy():scale(particleData[2]))):setVelocity(currentParticleVelocityDirection:copy():scale(particleData[3])):setLifetime(20)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 0 0 1"), vectors.rotateAroundAxis(i * 6, 0, particleData[1], 0, particleAxis):add(anchor2Pos):add(0, -0.3, 0):add(particleAxis:copy():scale(particleData[2]))):setVelocity(currentParticleVelocityDirection:copy():scale(particleData[3])):setLifetime(20)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "0 0 0 1"), vectors.rotateAroundAxis(i * 6, 0, particleData[1] * 1.5, 0, particleAxis):add(anchor2Pos):add(0, -0.3, 0):add(particleAxis:copy():scale(particleData[2]))):setVelocity(currentParticleVelocityDirection:copy():scale(particleData[3])):setLifetime(20)
                                 end
                             end
                             if host:isHost() then
@@ -626,13 +626,15 @@ BlueArchiveCharacter = {
                                 for i = 1, 60 do
                                     local currentParticleVelocityDirection = vectors.rotateAroundAxis(i * 6, particleVelocityDirection, particleAxis)
                                     for _, particleData in ipairs({{0.3, 3.5, 0.01, 0.5}, {0.5, 3.5, 0.01, 0.5}, {0.25, 7.9, 0.003, 0.2}, {0.28, 7.89, 0.003, 0.2}, {0.45, 7.85, 0.003, 0.5}}) do --[1]. 輪っかの半径, [2]. 輪っかの位置のスケール, [3]. 輪っかの拡散速度のスケール, [4]. 輪っかのパーティクルの大きさ
-                                        particles:newParticle(self.parent.compatibilityUtils.getDustParticleId(vectors.vec3(1000000000, 1, 1), particleData[4]), vectors.rotateAroundAxis(i * 6, 0, particleData[1], 0, particleAxis):add(anchor2Pos):add(particleAxis:copy():scale(particleData[2]))):setVelocity(currentParticleVelocityDirection:copy():scale(particleData[3])):setLifetime(45)
+                                    local colorOffset = math.random() * 0.5 + 0.5
+                                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), vectors.rotateAroundAxis(i * 6, 0, particleData[1], 0, particleAxis):add(anchor2Pos):add(particleAxis:copy():scale(particleData[2]))):setScale(particleData[4]):setColor(1, colorOffset, colorOffset):setVelocity(currentParticleVelocityDirection:copy():scale(particleData[3])):setLifetime(45)
                                     end
                                 end
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.lightning_bolt.thunder"), self.parent.modelUtils.getModelWorldPos(models.models.costume_swimsuit.BeachBall), 1, 2)
                             end
                             for _ = 1, 10 do
-                                particles:newParticle(self.parent.compatibilityUtils.getDustParticleId(vectors.vec3(1000000000, 1, 1), 1), anchor2Pos:copy():add(particleAxis:copy():scale(7.5)):add(vectors.rotateAroundAxis(-bodyYaw, -0.3, 0, 0, 0, 1, 0)):add(math.random() * 0.2 - 0.1, math.random() * 0.2 - 0.1 - 0.4, math.random() * 0.2 - 0.1)):setVelocity(particleAxis:copy():scale(-1))
+                                local colorOffset = math.random() * 0.5 + 0.5
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), anchor2Pos:copy():add(particleAxis:copy():scale(7.5)):add(vectors.rotateAroundAxis(-bodyYaw, -0.3, 0, 0, 0, 1, 0)):add(math.random() * 0.2 - 0.1, math.random() * 0.2 - 0.1 - 0.4, math.random() * 0.2 - 0.1)):setColor(1, colorOffset, colorOffset):setVelocity(particleAxis:copy():scale(-1))
                             end
                         end
                         if tick <= 28 and tick % 4 == 0 then
