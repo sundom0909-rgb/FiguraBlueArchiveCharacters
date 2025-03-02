@@ -630,9 +630,9 @@ BlueArchiveCharacter = {
                                 particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:poof"), particlePos:copy():add(particleOffset)):setScale(5):setVelocity(particleOffset)
                             end
                             local particleBlock = world.getBlockState(particlePos:copy():add(0, -1, 0)).id
-                            if particleBlock ~= "minecraft:air" and particleBlock ~= "minecraft:void_air" then
+                            if particleBlock ~= "minecraft:air" and particleBlock ~= "minecraft:void_air" and particleBlock ~= "minecraft:cave_air" then
                                 for _ = 1, 50 do
-                                    particles:newParticle(self.parent.compatibilityUtils.getBlockParticleId(particleBlock), particlePos):setScale(0.75):setVelocity(math.random() * 0.8 - 0.4, math.random() * 1, math.random() * 0.8 - 0.4):setLifetime(40)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:block", particleBlock), particlePos):setScale(0.75):setVelocity(math.random() * 0.8 - 0.4, math.random() * 1, math.random() * 0.8 - 0.4):setLifetime(40)
                                 end
                             end
                             local playerPos = player:getPos()
@@ -735,7 +735,7 @@ BlueArchiveCharacter = {
                                 particleOffset.x = particleOffset.x * (math.random() * 0.025 + 0.025)
                                 particleOffset.y = 0.25
                                 particleOffset.z = (particleOffset.z - 2.5) * (math.random() * 0.025 + 0.025)
-                                particles:newParticle(self.parent.compatibilityUtils.getDustParticleId(vectors.vec3(1000000000, 1000000000, 1000000000), 5), modelPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, offset, 0, 1, 0))):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, particleOffset, 0, 1, 0)):setGravity(1):setLifetime(40)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), modelPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, offset, 0, 1, 0))):setScale(3):setColor(1, 1, 1):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, particleOffset, 0, 1, 0)):setGravity(1):setLifetime(40)
                             end
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), modelPos, 1, 0.5)
                         elseif tick == 13 then
@@ -765,7 +765,7 @@ BlueArchiveCharacter = {
                             local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Waves.Wave2.Wave2ParticleAnchor)
                             local bodyYaw = player:getBodyYaw()
                             for _ = 1, 20 do
-                                particles:newParticle(self.parent.compatibilityUtils.getDustParticleId(vectors.vec3(1000000000, 1000000000, 1000000000), 5), anchorPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 32 - 16, 0, 0, 0, 1, 0))):setVelocity(math.random() * 0.2 - 0.1, 0.5, math.random() * 0.2 - 0.1):setGravity(1):setLifetime(20)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), anchorPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 32 - 16, 0, 0, 0, 1, 0))):setScale(3):setColor(1, 1, 1):setVelocity(math.random() * 0.2 - 0.1, 0.5, math.random() * 0.2 - 0.1):setGravity(1):setLifetime(20)
                             end
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), anchorPos, 1, 0.5)
                         elseif tick >= 41 then
@@ -775,7 +775,7 @@ BlueArchiveCharacter = {
                             for _ = 1, 20 do
                                 local particleDirection = math.random() * 60 - 30
                                 particleDirection = particleDirection > 0 and particleDirection + 30 or particleDirection - 30
-                                particles:newParticle(self.parent.compatibilityUtils.getDustParticleId(vectors.vec3(1000000000, 1000000000, 1000000000), 3), anchorPos):setVelocity(vectors.rotateAroundAxis(particleDirection, dirVector, YVector):add(YVector:copy():scale(math.random())):normalize():scale(0.5)):setGravity(0.5):setLifetime(10)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), anchorPos):setScale(2):setColor(1, 1, 1):setVelocity(vectors.rotateAroundAxis(particleDirection, dirVector, YVector):add(YVector:copy():scale(math.random())):normalize():scale(0.5)):setGravity(0.5):setLifetime(10)
                             end
                             if tick % 2 == 0 then
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), anchorPos, 0.1, 0.5)
@@ -795,7 +795,7 @@ BlueArchiveCharacter = {
                             local playerPos = player:getPos()
                             for i = 1, 6 do
                                 for j = 0, 35 do
-                                    particles:newParticle(self.parent.compatibilityUtils.getDustParticleId(vectors.vec3(1000000000, 1000000000, 1000000000), 2), playerPos):setVelocity(vectors.rotateAroundAxis(j * 12, 0, -0.25, i * 0.05, 0, 1, 0)):setPower(0.25):setColor((i - 1) * 0.2, 1, 1)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), playerPos):setScale(2):setColor(1, 1, 1):setVelocity(vectors.rotateAroundAxis(j * 12, 0, -0.25, i * 0.05, 0, 1, 0)):setPower(0.25):setColor((i - 1) * 0.2, 1, 1)
                                 end
                             end
                             self.parent.waveParticleManager:play()

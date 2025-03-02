@@ -4,6 +4,7 @@
 ---@field package lookDirPrev Vector3 前ティックに見ていた方法
 ---@field package whaleFloatAfkCount integer クジラフロート上でのAFKカウンター
 ---@field public isAfk boolean AFK中かどうか
+---@field package stopAfk fun(self: WhaleFloat) AFKアニメーションを停止する
 ---@field package stop fun(self: WhaleFloat) クジラフロートの表示を終了する（検出は停止しない）
 ---@field public enable fun(self: WhaleFloat) クジラフローを有効にする
 ---@field public disable fun(self: WhaleFloat) クジラフローを無効にする
@@ -29,6 +30,33 @@ WhaleFloat = {
     ---@param self AvatarModule
     init = function (self)
         AvatarModule.init(self)
+    end;
+
+    ---AFKアニメーションを停止する。
+    ---@param self WhaleFloat
+    stopAfk = function (self)
+        self.isAfk = false
+        self.whaleFloatAfkCount = 0
+        for _, animationModel in ipairs({"models.main", "models.costume_swimsuit", "models.ex_skill_2"}) do
+            animations[animationModel]["float_afk"]:setSpeed(-1)
+        end
+        events.TICK:remove("whale_float_afk_end_tick")
+        events.TICK:register(function ()
+            if animations["models.main"]["float_afk"]:getTime() == 0 then
+                for _, animationModel in ipairs({"models.main", "models.costume_swimsuit", "models.ex_skill_2"}) do
+                    animations[animationModel]["float_afk"]:stop()
+                end
+                if self.parent.gun.currentGunPosition == "RIGHT" then
+                    self.parent.arms:setArmState(1, 2)
+                elseif self.parent.gun.currentGunPosition == "LEFT" then
+                    self.parent.arms:setArmState(2, 1)
+                else
+                    self.parent.arms:setArmState(5, 5)
+                end
+                self.parent.physics:enable()
+                events.TICK:remove("whale_float_afk_end_tick")
+            end
+        end, "whale_float_afk_end_tick")
     end;
 
     ---クジラフロートの表示を終了する（検出は停止しない）。
@@ -68,7 +96,7 @@ WhaleFloat = {
             local vehicle = player:getVehicle()
             if vehicle ~= nil  then
                 local id = vehicle:getType()
-                local whaleFloatEnabled = self.parent.actionWheel.shouldReplaceVehicleModels and (id == "minecraft:boat" or id == "minecraft:chest_boat") and #vehicle:getPassengers() == 1
+                local whaleFloatEnabled = self.parent.actionWheel.shouldReplaceVehicleModels and id:match("^minecraft:[%l_]*boat$") and #vehicle:getPassengers() == 1
                 if whaleFloatEnabled then
                     if not self.whaleFloatEnabledPrev then
                         models.models.main.Avatar.LowerBody.WhaleFloat:setVisible(true)
@@ -97,7 +125,7 @@ WhaleFloat = {
                                     for _ = 1, 5 do
                                         local particleDirection = math.random() * 60 - 30
                                         particleDirection = particleDirection > 0 and particleDirection + 30 or particleDirection - 30
-                                        particles:newParticle(self.parent.compatibilityUtils.getDustParticleId(vectors.vec3(1000000000, 1000000000, 1000000000), 3), anchorPos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1 + particleDirection + 150, vectors.vec3(1, 1, 1), 0, 1, 0):scale(math.random()):normalize():scale(self.parent.physics.velocityAverage[5][2])):setGravity(0.5):setLifetime(10)
+                                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), anchorPos):setScale(3):setColor(1, 1, 1):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1 + particleDirection + 150, vectors.vec3(1, 1, 1), 0, 1, 0):scale(math.random()):normalize():scale(self.parent.physics.velocityAverage[5][2])):setGravity(0.5):setLifetime(10)
                                     end
                                 end
 
@@ -124,7 +152,7 @@ WhaleFloat = {
                             end
 
                             local lookDir = player:getLookDir()
-                            if player:getVelocity():length() < 0.01 and self.lookDirPrev:copy():sub(lookDir):length() == 0 and not player:isSwingingArm() and self.parent.playerUtils.damageStatus == "NONE" and player:getActiveItem().id == "minecraft:air" then
+                            if not player:isMoving() and self.lookDirPrev:copy():sub(lookDir):length() == 0 and not player:isSwingingArm() and player:getActiveItem().id == "minecraft:air" then
                                 self.whaleFloatAfkCount = self.whaleFloatAfkCount + 1
                                 if self.whaleFloatAfkCount == 2400 then
                                     self.isAfk = true
@@ -139,28 +167,7 @@ WhaleFloat = {
                                 end
                             else
                                 if self.isAfk then
-                                    self.isAfk = false
-                                    self.whaleFloatAfkCount = 0
-                                    for _, animationModel in ipairs({"models.main", "models.costume_swimsuit", "models.ex_skill_2"}) do
-                                        animations[animationModel]["float_afk"]:setSpeed(-1)
-                                    end
-                                    events.TICK:remove("whale_float_afk_end_tick")
-                                    events.TICK:register(function ()
-                                        if animations["models.main"]["float_afk"]:getTime() == 0 then
-                                            for _, animationModel in ipairs({"models.main", "models.costume_swimsuit", "models.ex_skill_2"}) do
-                                                animations[animationModel]["float_afk"]:stop()
-                                            end
-                                            if self.parent.gun.currentGunPosition == "RIGHT" then
-                                                self.parent.arms:setArmState(1, 2)
-                                            elseif self.parent.gun.currentGunPosition == "LEFT" then
-                                                self.parent.arms:setArmState(2, 1)
-                                            else
-                                                self.parent.arms:setArmState(5, 5)
-                                            end
-                                            self.parent.physics:enable()
-                                            events.TICK:remove("whale_float_afk_end_tick")
-                                        end
-                                    end, "whale_float_afk_end_tick")
+                                    self:stopAfk()
                                 end
                                 self.lookDirPrev = lookDir
                             end
@@ -175,6 +182,12 @@ WhaleFloat = {
                 self:stop()
             end
         end, "whale_float_tick")
+
+        events.DAMAGE:register(function ()
+            if self.isAfk then
+                self:stopAfk()
+            end
+        end, "whale_float_damage")
     end;
 
     ---クジラフロートを無効にする。
