@@ -1,6 +1,6 @@
 {
 	"meta": {
-		"format_version": "4.9",
+		"format_version": "4.10",
 		"model_format": "free",
 		"box_uv": false
 	},
@@ -21,6 +21,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-3, 20.91, -2.01],
@@ -62,6 +63,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-3, 19.5, 2.01],
@@ -103,6 +105,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-9.5, 22.6, -2.01],
@@ -145,6 +148,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [4.01, 19.01875, -7],
@@ -187,6 +191,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-4.01, 12.01875, -7],
@@ -229,6 +234,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [7.01, 19.9375, -3.5],
@@ -271,6 +277,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-7.01, 23.4375, -3.5],
@@ -321,6 +328,7 @@
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
+			"selected": false,
 			"children": [
 				"f4c2bd3c-589d-905c-5064-7f6213a9739f",
 				"0afba904-c5e5-fa04-db62-d07f1946bb3f",
@@ -340,6 +348,7 @@
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
+			"selected": false,
 			"children": ["be46b29b-15d6-0ea7-9df3-24bda0f269bf"]
 		},
 		{
@@ -353,25 +362,29 @@
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
+			"selected": false,
 			"children": ["0477bf2d-d76b-6f3d-32cc-3ea7e7e18f83"]
 		}
 	],
 	"textures": [
 		{
-			"path": "C:\\Users\\gakut\\AppData\\Roaming\\com.modrinth.theseus\\profiles\\Fabricバニラ\\figura\\avatars\\ブルーアーカイブ\\ベースアバター\\textures\\costume_riding.png",
+			"path": "C:\\Users\\gakut\\AppData\\Roaming\\ModrinthApp\\profiles\\Fabricバニラ\\figura\\avatars\\ブルーアーカイブ\\ベースアバター\\textures\\costume_riding.png",
 			"name": "costume_riding.png",
 			"folder": "",
 			"namespace": "",
 			"id": "1",
+			"group": "",
 			"width": 117,
 			"height": 35,
 			"uv_width": 117,
 			"uv_height": 35,
 			"particle": false,
+			"use_as_default": false,
 			"layers_enabled": false,
 			"sync_to_project": "",
 			"render_mode": "default",
 			"render_sides": "auto",
+			"pbr_channel": "color",
 			"frame_time": 1,
 			"frame_order_type": "loop",
 			"frame_order": "",
@@ -380,7 +393,7 @@
 			"internal": true,
 			"saved": true,
 			"uuid": "37f07c1d-5262-57fe-df7b-8eed00ebd81b",
-			"relative_path": "../../textures/costume_riding.png",
+			"relative_path": "../textures/costume_riding.png",
 			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHUAAAAjCAYAAACq00VWAAAAAXNSR0IArs4c6QAABIpJREFUeF7tWm1u1EAMzZKuVP5xCyQugMS5OAYS5+IInARQtQI5qlev7vPXZNO0KP2z2Zmxx+PnZ3uyPU3jf3+naTqNil8eHn6J7Hw+v5dP/W7HZF7m9FP3UzmUZWOoT9finp5ea4/aYHWoPZ797DzMDmanJ5v5fBQUBXQIWOagaAxBZYBEY9YBHjgV0Ow+CCgGVBQ8XfvZ2bcA1QLZBhajepqm+/l8PrFI95yD4xFINvptRshYhNnk8fl+mqbfkV4PeG/vboBngMp8l6kIoPec7ls9yBpQPRZ1mRplCXbQNVmlKps5uAsq6mszlDm6Ui+justqqsf6kZrKmIeBYRkY1fpOVol6jnd3dx9Op9MfD9wOqFnaHQY5i7xjvueBDqii+Sbpt2fi09UsgrFD9pgbdcYZg2wNZZ0xWmkzS4Xta3xiZaugMpaqLtSxKVtv0SF7JUCBq3abI92yaRCv17lbAlptlCJAXxRYW8uiGo2OYnJegDBwLVNZbdb9WP23Oq38S4OK99Hq3sLcTRh7i841C4RqtzvK1OjKU3Vwti5Kvx4wMl5J45sBy2pc1nUik1hN9OoeY2nE1IiVWSBkYFXnR0AV3QispyMCVV4RLq8Hp2myzzKGc3oWGevIMf26H+rEMW/fjpzd17OZ6WRrO2deztUFpNv9esB2ja86SvVGjmSB5AWYFxiejmx/tEsDywtqqysC94mdDNQo7UadblXORqgyc3nBD38VJmfOtfORIxl71YaMzfYMVm4kODKdrq8sqJ06uGbtW2MqOjBi4y2Y6mWlYaayJsgQ6Jq2u50xBlAVVFmnL9E7NZUxiwETMd3uGzG5AqYyz9qRna/jq7CmMiD3HtOA0+BgzZr9SdBr6KwuOVul+dvbB6X9o+4Xa5yyhOVx66CsSSkZZhaxBi0as+AqaPYOzdaN2PeqZLLXhBlAzLFew7Pm4LYsKDiq02vgqsGATM18suYcLyKbHYC121gbxGnLj8aPtU/0ZYEwcrAuOJii7bN3LVO7Og3gyFk2l+mCiq06pjR8FpCl+Msfu5dd/3ugcToP1ApTvTUyHtXnhnmva2kHVGSlshWdnXWAr+vk/7E1GaibHX2e56VOXi6XxQb5Ls/6qWNsjRqlOnSNlUXdKqNjqB/l8cBW3tqKdm/mqAHFV1C//vi5OPnb54/LmH63YzIvc/qpe6ocyrIx1XeAOoBWUeQKIIKJwClIFsxsDZNDhnkM9RhrWezpsqxF9jKfeOzObGWMLvp882XPWKlMYkxFoLxnZTGbR5YeoG6HbYupa0DVIwjo3798utZSPFqHNRUmIbttuo+YrmyXT6zbNgvoPNbp7aCqaw5B9eplVHdZTbWs91LiAWoduGjlLt1v1KVGHSYLhkxXJ1Cq+jOdt4FmXIt93TauqSE5z/Ozq4xNZcxxVaejrgyAkflMpuGKTZbuwlSsVfbeyO6R3n3z0blS95Ygye6prPaxe7F62tN5gOrEImtcLBPZXRYdrj+XHaA+dfJuTN0k7xxKFw/sBWr1PyzeCkx7+ZH6Zy9jDlA3DNd/SaUCezpGgVsAAAAASUVORK5CYII="
 		}
 	],

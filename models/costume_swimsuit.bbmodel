@@ -1,6 +1,6 @@
 {
 	"meta": {
-		"format_version": "4.9",
+		"format_version": "4.10",
 		"model_format": "free",
 		"box_uv": false
 	},
@@ -21,6 +21,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-1, 25, 4],
@@ -62,6 +63,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-1, 22, 4],
@@ -111,6 +113,7 @@
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
+			"selected": false,
 			"children": [
 				{
 					"name": "HairTail",
@@ -123,6 +126,7 @@
 					"locked": false,
 					"visibility": true,
 					"autouv": 0,
+					"selected": false,
 					"children": ["f84fc00b-3aea-66e3-3abe-432889c72556", "52b346a1-1a96-7a6c-5e20-d473c86a93b8"]
 				}
 			]
@@ -130,20 +134,23 @@
 	],
 	"textures": [
 		{
-			"path": "C:\\Users\\gakut\\AppData\\Roaming\\com.modrinth.theseus\\profiles\\Fabricバニラ\\figura\\avatars\\ブルーアーカイブ\\ベースアバター\\textures\\costume_swimsuit.png",
+			"path": "C:\\Users\\gakut\\AppData\\Roaming\\ModrinthApp\\profiles\\Fabricバニラ\\figura\\avatars\\ブルーアーカイブ\\ベースアバター\\textures\\costume_swimsuit.png",
 			"name": "costume_swimsuit.png",
 			"folder": "",
 			"namespace": "",
 			"id": "1",
+			"group": "",
 			"width": 8,
 			"height": 9,
 			"uv_width": 8,
 			"uv_height": 9,
 			"particle": false,
+			"use_as_default": false,
 			"layers_enabled": false,
 			"sync_to_project": "",
 			"render_mode": "default",
 			"render_sides": "auto",
+			"pbr_channel": "color",
 			"frame_time": 1,
 			"frame_order_type": "loop",
 			"frame_order": "",
@@ -152,7 +159,7 @@
 			"internal": true,
 			"saved": true,
 			"uuid": "fe8c26a0-26f4-2ca6-302a-045afce4ac3c",
-			"relative_path": "../../textures/costume_swimsuit.png",
+			"relative_path": "../textures/costume_swimsuit.png",
 			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAJCAYAAAAPU20uAAAAAXNSR0IArs4c6QAAAE5JREFUKFNjZGBgYNiyYdt/fgF+BlsHa0YQHxkwHj5w9P/HDx8ZQAqQaZ8AL7BiwgrQjUS3Dm4nTAKkAWQVihXojoMpBinE6QaYoylXAADouGBuYuy4HgAAAABJRU5ErkJggg=="
 		}
 	],
