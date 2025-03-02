@@ -719,7 +719,7 @@ BlueArchiveCharacter = {
                             local cameraRotY = renderer:getCameraRot().y
                             local particleCount = math.max(tick - 52, 0)
                             for i = 0, 2 * math.pi, math.pi / 6 do
-                                particles:newParticle(self.parent.compatibilityUtils.getDustParticleId(vectors.vec3(100, 1000000000, 1000000000), particleCount / 27 + 1), vectors.rotateAroundAxis(tunaRotY + cameraRotY, 0, math.cos(i) * 0.3, math.sin(i) * 0.3, 0, 1, 0):add(headPos)):setVelocity(vectors.rotateAroundAxis(tunaRotY - cameraRotY - 90, 0, 0, 0.1, 0, 1, 0)):setLifetime(20)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), vectors.rotateAroundAxis(tunaRotY + cameraRotY, 0, math.cos(i) * 0.3, math.sin(i) * 0.3, 0, 1, 0):add(headPos)):setScale(particleCount / 27 + 1):setColor(math.random() * 0.5 + 0.5, 1, 1):setVelocity(vectors.rotateAroundAxis(tunaRotY - cameraRotY - 90, 0, 0, 0.1, 0, 1, 0)):setLifetime(20)
                             end
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.squid.ambient"), player:getPos(), 1, 0.75)
                         elseif tick == 78 and host:isHost() then
@@ -753,7 +753,7 @@ BlueArchiveCharacter = {
                         elseif tick >= 160 and tick <= 170 and host:isHost() then
                             local cameraPos = renderer:getCameraOffsetPivot()
                             for i = 0, 8 do
-                                particles:newParticle(self.parent.compatibilityUtils.getDustParticleId(vectors.vec3(100, 1000000000, 1000000000), 4), cameraPos:copy():add(player:getPos()):add((i % 3 - 1) * 0.25, 1.25, (math.floor(i / 3) - 1) * 0.25)):setLifetime(5):setVelocity(0, 0.25, 0)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), cameraPos:copy():add(player:getPos()):add((i % 3 - 1) * 0.25, 1.25, (math.floor(i / 3) - 1) * 0.25)):setScale(3):setColor(math.random() * 0.5 + 0.5, 1, 1):setVelocity(0, 0.25, 0):setLifetime(5)
                             end
                             if tick == 160 then
                                 local playerPos = player:getPos()
@@ -770,7 +770,7 @@ BlueArchiveCharacter = {
                         elseif tick == 180 then
                             local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Tuna)
                             for _ = 1, 50 do
-                                particles:newParticle(self.parent.compatibilityUtils.getDustParticleId(vectors.vec3(100, 1000000000, 1000000000), 3), anchorPos:copy()):setVelocity(vectors.rotateAroundAxis(player:getBodyYaw() * -1, math.random() * 0.2, math.random() * 0.25 + 0.125, math.random() * 0.2 - 0.1, 0, 1, 0)):setGravity(0.5):setLifetime(25)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), anchorPos:copy()):setVelocity(vectors.rotateAroundAxis(player:getBodyYaw() * -1, math.random() * 0.2, math.random() * 0.25 + 0.125, math.random() * 0.2 - 0.1, 0, 1, 0)):setScale(3):setColor(math.random() * 0.5 + 0.5, 1, 1):setGravity(0.5):setLifetime(25)
                             end
                         end
                         if tick % 35 == 24 and tick <= 160 then
@@ -778,7 +778,7 @@ BlueArchiveCharacter = {
                             local bodyYaw = player:getBodyYaw()
                             for _ = 1, 50 do
                                 local particleOffset = math.random()
-                                particles:newParticle(self.parent.compatibilityUtils.getDustParticleId(vectors.vec3(1000000000, 1000000000, 1000000000), 5), anchorPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, particleOffset - 0.5, 0, 0, 0, 1, 0))):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, particleOffset * 0.5 - 0.25, math.random() * 0.5 + 0.25, math.random() * 0.25 - 0.125, 0, 1, 0)):setGravity(1):setLifetime(40)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), anchorPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, particleOffset - 0.5, 0, 0, 0, 1, 0))):setScale(5):setColor(1, 1, 1):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, particleOffset * 0.5 - 0.25, math.random() * 0.5 + 0.25, math.random() * 0.25 - 0.125, 0, 1, 0)):setGravity(1):setLifetime(40)
                             end
                             if tick >= 80 or not host:isHost() then
                                 local playerPos = player:getPos()
@@ -878,10 +878,10 @@ BlueArchiveCharacter = {
                                 particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), backWheelPos):setVelocity(math.random() * 0.2 - 0.1, 0.015, math.random() * 0.2 - 0.1)
                             end
                             local particleBlock = world.getBlockState(bicyclePos:copy():sub(0, 0.5, 0)).id
-                            if particleBlock ~= "minecraft:air" and particleBlock ~= "minecraft:void_air" then
+                            if particleBlock ~= "minecraft:air" and particleBlock ~= "minecraft:void_air" and particleBlock ~= "minecraft:cave_air" then
                                 for _ = 1, 5 do
-                                    particles:newParticle(self.parent.compatibilityUtils.getBlockParticleId(particleBlock), frontWheelPos)
-                                    particles:newParticle(self.parent.compatibilityUtils.getBlockParticleId(particleBlock), backWheelPos)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:block", particleBlock), frontWheelPos)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:block", particleBlock), backWheelPos)
                                 end
                             end
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.gravel.hit"), bicyclePos, 0.1, 0.5)
@@ -897,7 +897,7 @@ BlueArchiveCharacter = {
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.25, 0.5)
                             if host:isHost() then
                                 local windowSize = client:getWindowSize()
-                                models.models.ex_skill_3.CameraBackground.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(33.5))
+                                models.models.ex_skill_3.CameraBackground.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(45))
                                 local backgroundPos = vectors.rotateAroundAxis(player:getBodyYaw() + 180, renderer:getCameraOffsetPivot():copy():add(0, 1.62, 0):add(client:getCameraDir():copy():scale(1.5)), 0, 1, 0):scale(16 / 0.9375)
                                 models.models.ex_skill_3.CameraBackground:setOffsetPivot(backgroundPos)
                                 models.models.ex_skill_3.CameraBackground.Background:setPos(backgroundPos)

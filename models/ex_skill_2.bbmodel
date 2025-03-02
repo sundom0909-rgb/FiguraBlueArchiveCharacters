@@ -2369,16 +2369,20 @@
 			"origin": [-12, -16, -12],
 			"faces": {
 				"north": {
-					"uv": [0, 0, 1, 1]
+					"uv": [0, 0, 0, 0],
+					"texture": null
 				},
 				"east": {
-					"uv": [0, 0, 1, 1]
+					"uv": [0, 0, 0, 0],
+					"texture": null
 				},
 				"south": {
-					"uv": [0, 0, 1, 1]
+					"uv": [0, 0, 0, 0],
+					"texture": null
 				},
 				"west": {
-					"uv": [0, 0, 1, 1]
+					"uv": [0, 0, 0, 0],
+					"texture": null
 				},
 				"up": {
 					"uv": [0, 0, 240, 240],
@@ -3701,7 +3705,7 @@
 			"width": 16,
 			"height": 512,
 			"uv_width": 16,
-			"uv_height": 16,
+			"uv_height": 512,
 			"particle": false,
 			"use_as_default": false,
 			"layers_enabled": false,
