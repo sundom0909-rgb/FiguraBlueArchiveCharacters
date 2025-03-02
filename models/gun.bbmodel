@@ -359,6 +359,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-0.4864, 1.7554, -6.2439],
@@ -400,6 +401,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-0.5946, 1.6473, -6.4385],
@@ -441,6 +443,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-0.5946, 2.4041, -6.5899],
@@ -482,6 +485,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-0.45175, 1.8851, -0.3242],
@@ -523,6 +527,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-0.36755, 1.9716, 3.3346],
@@ -565,6 +570,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-0.3675, 0.931, 5.5],
@@ -607,6 +613,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-0.36755, 0.714, 6.581],
@@ -775,6 +782,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-0.375, 1.7986, 2.919],
@@ -816,6 +824,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-0.375, 1.4506, 2.705],
@@ -857,6 +866,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-0.375, 1.665, 2.491],
@@ -898,6 +908,7 @@
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
+			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
 			"from": [-0.375, 1.8788, 2.4846],
@@ -1003,6 +1014,7 @@
 					"locked": false,
 					"visibility": true,
 					"autouv": 0,
+					"selected": false,
 					"children": [
 						"012bb83b-1d93-399e-43dc-3aa73ed2fe76",
 						"ba4d5436-0c74-6a0b-087f-e111c6c4f7b3",
@@ -1028,6 +1040,7 @@
 					"locked": false,
 					"visibility": true,
 					"autouv": 0,
+					"selected": false,
 					"children": ["a58a5492-d2d4-dfc5-ee80-046ec555142e"]
 				},
 				{
@@ -1041,6 +1054,7 @@
 					"locked": false,
 					"visibility": true,
 					"autouv": 0,
+					"selected": false,
 					"children": [
 						"dc99dfda-30f2-21e1-b77a-5e442e59d108",
 						{
@@ -1054,6 +1068,7 @@
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
+							"selected": false,
 							"children": [
 								"6a3b4b1d-a942-b6cc-bc4a-f7070aeb46c5",
 								{
@@ -1068,6 +1083,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": ["1c99cf7b-2519-01d1-1f82-926d2ebb43f4"]
 								}
 							]
@@ -1085,6 +1101,7 @@
 					"locked": false,
 					"visibility": true,
 					"autouv": 0,
+					"selected": false,
 					"children": [
 						"f17ef303-7bd5-1c08-511c-e838b4a358e9",
 						"f029b889-1eca-a6a5-e1e2-33f4a1f95df7",
@@ -1120,6 +1137,7 @@
 			"folder": "",
 			"namespace": "",
 			"id": "0",
+			"group": "",
 			"width": 32,
 			"height": 16,
 			"uv_width": 32,
@@ -1139,7 +1157,7 @@
 			"internal": true,
 			"saved": true,
 			"uuid": "7bd4b824-3db6-476b-99e3-dde805a618f1",
-			"relative_path": "../../textures/gun.png",
+			"relative_path": "../textures/gun.png",
 			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAQCAYAAAB3AH1ZAAAAAXNSR0IArs4c6QAAAUlJREFUSEtjNDIy+s+AByiw/YHLvvrwiUFMgA/MJ5UNM0RRQpShd8NeRhifMSEh4f+lS5cYzp07h+EMIyMjBidZQbj4iZt3GSzUlRlKbDwZQuZOAbNBAMQHgZ4j2xlgakB8ZDbMkOtPXjJsPXsF4QBYCBDrgDXJOQy3X7xkUJUQB1uIbhEhB/xnZEANAVIdgC0EcFlKVAhsz8j8X33qJFFRAApqXL4GhQwxUYARAqAgBIUCoSgAWY4c9Nh8jZ42sIUATgfgygjIuWBacBxD1tpFFOWCdScuwRMgyCDGIAs9nNnwwS8WfDmUKnJgByiJi2IYdu/lawa3hCyGEydOUMUiXIbAHQCyEAZADgLx6RoCIAthFqM7QFFRkeH+/fs0CQmCIdBqZk4Ti+FFMb40AEqxoHKCli7AmwtADiBUWVHqOJQ8ic2wYe8AAFGx77z7rXAMAAAAAElFTkSuQmCC"
 		}
 	],
