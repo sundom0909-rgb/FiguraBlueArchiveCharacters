@@ -13,8 +13,6 @@
 ---@field public checkItem fun(self: CompatibilityUtils, item: Minecraft.itemID): Minecraft.itemID 指定されたアイテムIDがレジストリに登録されているか確認する。レジストリに未登録の場合は"minecraft:barrier"を返す。
 ---@field public checkParticle fun(self: CompatibilityUtils, particle: Minecraft.particleID): Minecraft.particleID 指定されたパーティクルIDがレジストリに登録されているか確認する。レジストリに未登録の場合は"minecraft:poof"を返す。
 ---@field public checkSound fun(self: CompatibilityUtils, sound: Minecraft.soundID): Minecraft.soundID 指定されたサウンドIDがレジストリに登録されているか確認する。レジストリに未登録の場合は"minecraft:empty"を返す。
----@field public getBlockParticleId fun(block: Minecraft.blockID, blockState?: string): string ブロックの破片のパーティクルを示す文字列を返す。Minecraftのバージョン違いを吸収するための関数。
----@field public getDustParticleId fun(color: Vector3, size: number): string dustパーティクルを示す文字列を返す。Minecraftのバージョン違いを吸収するための関数。
 ---@field public setPostEffect fun(effect?: Minecraft.shaderName) renderer:setPostEffect()のラッパー関数。1.20.5でレンダーエフェクトが削除されたことによる対応。
 
 CompatibilityUtils = {
@@ -52,8 +50,10 @@ CompatibilityUtils = {
         self.checkedTable.item["minecraft:barrier"] = true
         self.checkedTable.particle["minecraft:poof"] = true
         self.checkedTable.sound["minecraft:empty"] = true
-        if host:isHost() and client:getVersion() < "1.20.1" then
-            print(self.parent.locale:getLocale("avatar.old_version_warning"))
+        if host:isHost() and client:getVersion() < "1.21.4" then
+            self.parent.avatarEvents.SCRIPT_INIT:register(function ()
+                print(self.parent.locale:getLocale("avatar.old_version_warning"))
+            end)
         end
     end;
 
@@ -141,21 +141,6 @@ CompatibilityUtils = {
             self.checkedTable.sound[sound] = self:find("SOUND", sound)
         end
         return self.checkedTable.sound[sound] and sound or "minecraft:empty"
-    end;
-
-    ---ブロックの破片のパーティクルを示す文字列を返す。Minecraftのバージョン違いを吸収するための関数。
-    ---@param block Minecraft.blockID ブロックの破片パーティクルとして表示するブロックのID。レジストリへの確認は行わない。
-    ---@return string particleData ブロックの破片のパーティクルを示す文字列
-    getBlockParticleId = function (block)
-        return client:getVersion() >= "1.20.5" and "minecraft:block{block_state:\""..block.."\"}" or "minecraft:block "..block
-    end;
-
-    ---dustパーティクルを示す文字列を返す。Minecraftのバージョン違いを吸収するための関数。
-    ---@param color Vector3 dustの色
-    ---@param size number dustの大きさ
-    ---@return string particleData dustの破片のパーティクルを示す文字列
-    getDustParticleId = function (color, size)
-        return client:getVersion() >= "1.20.5" and "minecraft:dust{color:["..color.x..","..color.y..","..color.z.."],scale:"..math.clamp(size, 0.01, 4).."}" or "minecraft:dust "..color.x.." "..color.y.." "..color.z.." "..size
     end;
 
     ---renderer:setPostEffect()のラッパー関数
