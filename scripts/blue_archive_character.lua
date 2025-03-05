@@ -897,10 +897,13 @@ BlueArchiveCharacter = {
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.25, 0.5)
                             if host:isHost() then
                                 local windowSize = client:getWindowSize()
-                                models.models.ex_skill_3.CameraBackground.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(45))
+                                models.models.ex_skill_3.CameraBackground.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(38))
                                 local backgroundPos = vectors.rotateAroundAxis(player:getBodyYaw() + 180, renderer:getCameraOffsetPivot():copy():add(0, 1.62, 0):add(client:getCameraDir():copy():scale(1.5)), 0, 1, 0):scale(16 / 0.9375)
                                 models.models.ex_skill_3.CameraBackground:setOffsetPivot(backgroundPos)
                                 models.models.ex_skill_3.CameraBackground.Background:setPos(backgroundPos)
+                                if client:getVersion() >= "1.21" then
+                                    models.models.ex_skill_3.CameraBackground.Background:setRot(0, 0, renderer:getCameraRot().z)
+                                end
                                 models.models.ex_skill_3.CameraBackground:setVisible(true)
                             end
                         end
