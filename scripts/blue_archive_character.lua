@@ -371,10 +371,25 @@ BlueArchiveCharacter = {
                 placementMode = "MOVE";
 
                 callbacks = {
-                    onInit = function ()
+                    onInit = function (self)
                         animations["models.ex_skill_1"]["swing"]:play()
+                        self.placementObjects.swingCooldown = 60
+                    end;
+
+                    onTick = function (self, placementObject)
+                        if raycast:entity(placementObject.currentPos, placementObject.currentPos:copy():add(0, 1.2, 0), function (entity)
+                            return entity:isLiving() and entity:isMoving()
+                        end) and self.placementObjects.swingCooldown == 0 then
+                            animations["models.ex_skill_1"]["swing"]:play()
+                            self.placementObjects.swingCooldown = 60
+                        end
+                        self.placementObjects.swingCooldown = math.max(self.placementObjects.swingCooldown - 1, 0)
                     end;
                 };
+
+                ---人形が揺れるアニメーション再生後に再び再生できるようになるまでの時間
+                ---@type integer
+                swingCooldown = 60
             };
         }
 
