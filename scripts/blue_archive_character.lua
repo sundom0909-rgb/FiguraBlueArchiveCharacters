@@ -617,8 +617,8 @@ BlueArchiveCharacter = {
                     };
 
                     fin = {
-                        rot = vectors.vec3(-5, 180, -25);
-                        pos = vectors.vec3(-336, 16.3, -30);
+                        rot = vectors.vec3(-10, 180, -35);
+                        pos = vectors.vec3(-335, 11.3, -30);
                     };
                 };
 
@@ -1240,7 +1240,7 @@ BlueArchiveCharacter = {
                         local modelRot = model:getRot()
                         local headRotY = math.deg(math.asin(player:getLookDir().y))
                         if headRotY < 0 then
-                            modelRot.x = math.min(modelRot.x, 30)
+                            modelRot.x = math.min(modelRot.x, 50)
                         end
                         model:setRot(modelRot)
                     end
