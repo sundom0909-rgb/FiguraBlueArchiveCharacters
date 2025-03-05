@@ -438,15 +438,19 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "FRUST", 6, true)
                         elseif tick == 53 then
                             self.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "TRIANGLE", 14, true)
+                            local shouldAdjustBackgroundRot = client:getVersion() >= "1.21"
                             if host:isHost() then
                                 models.models.ex_skill_1.CameraBackground:setVisible(true)
                                 local windowSize = client:getWindowSize()
-                                models.models.ex_skill_1.CameraBackground.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(55))
+                                models.models.ex_skill_1.CameraBackground.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(45))
                                 events.RENDER:register(function (delta, context)
                                     models.models.ex_skill_1.CameraBackground:setVisible(context == "RENDER")
                                     local backgroundPos = vectors.rotateAroundAxis(player:getBodyYaw(delta) + 180, renderer:getCameraOffsetPivot():copy():add(0, 1.62, 0):add(client:getCameraDir():copy():scale(1.75)), 0, 1, 0):scale(16 / 0.9375)
                                     models.models.ex_skill_1.CameraBackground:setOffsetPivot(backgroundPos)
                                     models.models.ex_skill_1.CameraBackground.Background:setPos(backgroundPos)
+                                    if shouldAdjustBackgroundRot then
+                                        models.models.ex_skill_1.CameraBackground.Background:setRot(0, 0, renderer:getCameraRot().z)
+                                    end
                                 end, "ex_skill_1_background_render")
                             end
                             local particleAnchor = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar):add(0, 5, 0)
