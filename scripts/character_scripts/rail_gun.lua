@@ -159,8 +159,9 @@ RailGun = {
 
                 --音の演出
                 if self.chargePercent >= 1.25 and not self.isChargeSoundPlayed then
-                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.beacon.activate"), player:getPos(), 1, 2)
-                    self.fullChargeSound = sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.beacon.ambient"), player:getPos(), 1, 2, true)
+                    local avatarPos = player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, models.models.main.Avatar:getAnimPos():mul(-1, 0, -1):scale(0.05859375), 0, 1, 0))
+                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.beacon.activate"), avatarPos, 1, 2)
+                    self.fullChargeSound = sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.beacon.ambient"), avatarPos, 1, 2, true)
                     self.isChargeSoundPlayed = true
                 elseif self.chargePercent < 1.25 then
                     self.isChargeSoundPlayed = false
@@ -170,7 +171,7 @@ RailGun = {
                     end
                 end
                 if self.fullChargeSound ~= nil then
-                    self.fullChargeSound:setPos(player:getPos())
+                    self.fullChargeSound:setPos(player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, models.models.main.Avatar:getAnimPos():mul(-1, 0, -1):scale(0.05859375), 0, 1, 0)))
                 end
             end
         end)

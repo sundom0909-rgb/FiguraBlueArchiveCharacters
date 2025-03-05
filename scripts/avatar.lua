@@ -30,6 +30,7 @@
 ---@field public hypixelZombies HypixelZombies
 ---@field public updateChecker UpdateChecker
 ---@field public railGun RailGun
+---@field public coinManager ExSkill2CoinManager
 ---@field public instantiate fun(class: table, super: table, ...: any) クラスをインスタンス化する
 
 Avatar = {
@@ -181,6 +182,11 @@ Avatar = {
 			require("scripts.character_scripts.rail_gun")
 			instance.railGun = RailGun.new(instance)
 			instance.railGun:init()
+
+			require("scripts.character_scripts.ex_skill_2_coin_manager")
+			require("scripts.character_scripts.ex_skill_2_coin")
+			instance.coinManager = ExSkill2CoinManager.new(instance)
+			instance.coinManager:init()
 
 			--SCRIPT_INITイベントを実行
 			instance.avatarEvents.SCRIPT_INIT:fire()

@@ -628,6 +628,11 @@ BlueArchiveCharacter = {
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom.BroomBase:setPrimaryTexture("RESOURCE", "minecraft:textures/block/oak_planks.png")
                             self.exSkill[2].init = true
                         end
+                        for i = -1, 4 do
+                            for j = 0, 18 do
+                                self.parent.coinManager:spawn(vectors.vec3(j * 32 - 96, 0, i * 32))
+                            end
+                        end
                         self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 66, true)
                     end;
 
@@ -652,6 +657,8 @@ BlueArchiveCharacter = {
                             models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(true)
                         elseif tick == 106 then
                             self.parent.faceParts:setEmotion("NORMAL", "CENTER", "OPENED", 41, true)
+                        elseif tick == 109 then
+                            self.parent.coinManager:getAll()
                         end
                     end;
 
@@ -665,7 +672,9 @@ BlueArchiveCharacter = {
                             models.models.main.Avatar.UpperBody.Body.Gun:setRot(self.gun.gunPosition.put.rot[isLeftHanded and "left" or "right"])
                             models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(false)
                         end
-                        if not forcedStop then
+                        if forcedStop then
+                            self.parent.coinManager:removeAll()
+                        else
                             self.parent.railGun.isSpecialCharge = true
                         end
                     end;
