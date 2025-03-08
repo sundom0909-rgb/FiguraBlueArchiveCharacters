@@ -732,6 +732,10 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("NORMAL", "CENTER", "OPENED", 41, true)
                         elseif tick == 109 then
                             self.parent.coinManager:getAll()
+                        elseif tick == 111 then
+                            for _ = 1, 50 do
+                                self.parent.cubeManager:spawn()
+                            end
                         end
 
                         if tick < 61 then
@@ -757,8 +761,10 @@ BlueArchiveCharacter = {
                             models.models.main.Avatar.UpperBody.Body.Gun:setRot(self.gun.gunPosition.put.rot[isLeftHanded and "left" or "right"])
                             models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(false)
                         end
+                        self.parent.cubeManager:removeAll()
                         if forcedStop then
                             self.parent.coinManager:removeAll()
+                            self.parent.waterManager:removeAll()
                             if host:isHost() then
                                 models.ex_skill_2_gui:setVisible(false)
                             end

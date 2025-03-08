@@ -1,7 +1,7 @@
 ---@class (exact) ExSkill2CoinManager : SpawnObjectManager Exスキル2で使用するコインを管理するクラス
 ---@field public objects ExSkill2Coin[] インスタンスで制御するオブジェクト
----@field public getObject fun(self: ExSkill2CoinManager, pos: Vector3): ExSkill2Coin コインのインスタンスを生成して返す
----@field public spawn fun(self: ExSkill2CoinManager, pos: Vector3) コインスポーンさせる
+---@field package getObject fun(self: ExSkill2CoinManager, pos: Vector3): ExSkill2Coin コインのインスタンスを生成して返す
+---@field public spawn fun(self: ExSkill2CoinManager, pos: Vector3) コインをスポーンさせる
 ---@field public getAll fun(self: ExSkill2CoinManager) 現在スポーン中の全てのコインオブジェクトに対して取得アニメーションを再生する
 
 ExSkill2CoinManager = {
@@ -34,7 +34,7 @@ ExSkill2CoinManager = {
         return ExSkill2Coin.new(self.parent, pos)
     end;
 
-    ---コインスポーンさせる。
+    ---コインをスポーンさせる。
     ---@param self ExSkill2CoinManager
     ---@param pos Vector3 コインをスポーンさせるアバター座標
     spawn = function (self, pos)

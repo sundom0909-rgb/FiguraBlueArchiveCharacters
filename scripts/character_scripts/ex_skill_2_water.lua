@@ -4,6 +4,7 @@
 ---@field package currentPos Vector3 スプライトの現在位置
 ---@field package velocity Vector3 スプライトの移動速度
 ---@field package lifeCount integer スプライトを表示する残り時間
+---@field public new fun(parent: Avatar, pos: Vector3, velocity: Vector3): ExSkill2Water コンストラクタ
 
 ExSkill2Water = {
     ---コンストラクタ
@@ -47,7 +48,7 @@ ExSkill2Water = {
             end;
 
             ---@param self ExSkill2Water
-            onRender = function (self, delta, context)
+            onRender = function (self, delta)
                 local spriteScale = math.sin(math.rad((20 - self.lifeCount + delta) * 4.5))
                 self.object:setPos(self.currentPos:copy():add(self.velocity:copy():scale(delta)):scale(16):add(0, 0.1, 0))
                 self.object:setScale(spriteScale)

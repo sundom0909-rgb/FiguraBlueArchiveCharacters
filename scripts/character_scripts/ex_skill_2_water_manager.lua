@@ -1,6 +1,6 @@
 ---@class (exact) ExSkill2WaterManager : SpawnObjectManager Exスキル2で使用する水スプライトを管理するクラス
 ---@field public objects ExSkill2Water[] インスタンスで制御するオブジェクト
----@field public getObject fun(self: ExSkill2WaterManager, pos: Vector3, velocity: Vector3): ExSkill2Water 水スプライトのインスタンスを生成して返す
+---@field package getObject fun(self: ExSkill2WaterManager, pos: Vector3, velocity: Vector3): ExSkill2Water 水スプライトのインスタンスを生成して返す
 ---@field public spawn fun(self: ExSkill2WaterManager, pos: Vector3, velocity: Vector3) 水スプライトスポーンさせる
 
 ExSkill2WaterManager = {
@@ -35,7 +35,7 @@ ExSkill2WaterManager = {
         return ExSkill2Water.new(self.parent, pos, velocity)
     end;
 
-    ---水スプライトさせる。
+    ---水スプライトをスポーンさせる。
     ---@param self ExSkill2WaterManager
     ---@param pos Vector3 水スプライトをスポーンさせるワールド座標
     ---@param velocity Vector3 水スプライトを移動させる速度

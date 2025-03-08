@@ -32,6 +32,7 @@
 ---@field public railGun RailGun
 ---@field public coinManager ExSkill2CoinManager
 ---@field public waterManager ExSkill2WaterManager
+---@field public cubeManager ExSkill2CubeManager
 ---@field public instantiate fun(class: table, super: table, ...: any) クラスをインスタンス化する
 
 Avatar = {
@@ -193,6 +194,11 @@ Avatar = {
 			require("scripts.character_scripts.ex_skill_2_water")
 			instance.waterManager = ExSkill2WaterManager.new(instance)
 			instance.waterManager:init()
+
+			require("scripts.character_scripts.ex_skill_2_cube_manager")
+			require("scripts.character_scripts.ex_skill_2_cube")
+			instance.cubeManager = ExSkill2CubeManager.new(instance)
+			instance.cubeManager:init()
 
 			--SCRIPT_INITイベントを実行
 			instance.avatarEvents.SCRIPT_INIT:fire()
