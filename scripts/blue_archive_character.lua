@@ -704,6 +704,8 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 4, true)
                         elseif tick == 70 then
                             self.parent.faceParts:setEmotion("NORMAL", "CENTER", "SMALL", 15, true)
+                        elseif tick == 80 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.5, 1.25)
                         elseif tick == 85 then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMALL", 2, true)
                         elseif tick == 87 then
@@ -711,6 +713,9 @@ BlueArchiveCharacter = {
                             self.exSkill[1].broomTipAnchorPosPrev = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom)
                         elseif tick >= 88 and tick < 92 then
                             local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom)
+                            if tick == 88 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), anchorPos, 1, 0.75)
+                            end
                             local directionVec = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom.BroomParticleNAnchor):copy():sub(anchorPos)
                             for i = -2, 2 do
                                 local offsetPos = directionVec:copy():scale(i)
@@ -736,11 +741,20 @@ BlueArchiveCharacter = {
                             for _ = 1, 50 do
                                 self.parent.cubeManager:spawn()
                             end
+                        elseif tick == 118 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bit"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 1.5)
+                        elseif tick == 120 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bit"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 1.75)
+                        elseif tick == 122 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bit"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 2)
                         end
 
                         if tick < 61 then
                             if (tick - 1) % 2 == 0 then
                                 self.parent.waterManager:spawn(self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom), vectors.rotateAroundAxis(player:getBodyYaw() * -1, -0.1, 0, 0, 0, 1, 0))
+                            end
+                            if tick % 8 == 0 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.cod.flop"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.25, 0.75)
                             end
                             for _ = 1, 3 do
                                 particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:splash"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom))
