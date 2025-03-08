@@ -34,6 +34,7 @@
 
 ---@alias BlueArchiveCharacter.Costumes
 ---| "DEFAULT" # デフォルト衣装
+---| "MAID" # メイド衣装
 
 --[[ ******************************** ]]
 
@@ -885,17 +886,27 @@ BlueArchiveCharacter = {
 
         instance.deathAnimation = {
             callbacks = {
-                onPhase1 = function (_, dummyAvatar)
-                    dummyAvatar.Head.SideTail:setRot(30, 0, -10)
-                    dummyAvatar.UpperBody.Body.Hairs.BackHair:setRot(-10, 0, 0)
-                    dummyAvatar.UpperBody.Body.Hairs.BackHair.BackHairBottom:setRot(-80, 0, 0)
-                    dummyAvatar.UpperBody.Body.Hairs.BackHair.BackHairBottom:setOffsetPivot(0, 0, -1)
+                onPhase1 = function (_, dummyAvatar, costume)
+                    if costume == "DEFAULT" then
+                        dummyAvatar.Head.SideTail:setRot(30, 0, -10)
+                        dummyAvatar.UpperBody.Body.Hairs.BackHair:setRot(-10, 0, 0)
+                        dummyAvatar.UpperBody.Body.Hairs.BackHair.BackHairBottom:setRot(-80, 0, 0)
+                        dummyAvatar.UpperBody.Body.Hairs.BackHair.BackHairBottom:setOffsetPivot(0, 0, -1)
+                    else
+                        dummyAvatar.Head.CMaidH.HairTail:setRot(10, 0, 0)
+                        dummyAvatar.UpperBody.Body.CMaidB.Skirt1:setRot(35, 0, 0)
+                    end
                 end;
 
-                onPhase2 = function (_, dummyAvatar)
-                    dummyAvatar.Head.SideTail:setRot(-20, 0, -5)
-                    dummyAvatar.UpperBody.Body.Hairs.BackHair:setRot(-12.5, 0, -15)
-                    dummyAvatar.UpperBody.Body.Hairs.BackHair.BackHairBottom:setRot()
+                onPhase2 = function (_, dummyAvatar, costume)
+                    if costume == "DEFAULT" then
+                        dummyAvatar.Head.SideTail:setRot(-25, 0, 0)
+                        dummyAvatar.UpperBody.Body.Hairs.BackHair:setRot(-12.5, 0, -15)
+                        dummyAvatar.UpperBody.Body.Hairs.BackHair.BackHairBottom:setRot()
+                    else
+                        dummyAvatar.Head.CMaidH.HairTail:setRot(-20, 0, 0)
+                        dummyAvatar.UpperBody.Body.CMaidB.Skirt1:setRot(15, 0, 0)
+                    end
                 end;
             };
         }
