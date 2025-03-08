@@ -626,8 +626,65 @@ BlueArchiveCharacter = {
                     onPreAnimation = function (self)
                         if not self.exSkill[2].init then
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom.BroomBase:setPrimaryTexture("RESOURCE", "minecraft:textures/block/oak_planks.png")
+                            if host:isHost() then
+                                if client:getVersion() >= "1.20.2" then
+                                    textures:fromVanilla("heart_base", "minecraft:textures/gui/sprites/hud/heart/container.png")
+                                    textures:fromVanilla("heart", "minecraft:textures/gui/sprites/hud/heart/full.png")
+                                else
+                                    textures:fromVanilla("icons", "minecraft:textures/gui/icons.png")
+                                end
+
+                                ---@diagnostic disable-next-line: discard-returns
+                                models:newPart("ex_skill_2_gui", "Gui")
+                                ---@diagnostic disable-next-line: discard-returns
+                                models.ex_skill_2_gui:newPart("hearts")
+                                models.ex_skill_2_gui.hearts:setPos(-17.5, -17.5, 0)
+                                for i = 1, 3 do
+                                    local baseSprite = models.ex_skill_2_gui.hearts:newSprite("ex_skill_2_heart_"..i.."_base")
+                                    if textures.heart_base ~= nil then
+                                        baseSprite:setTexture(textures.heart_base)
+                                        baseSprite:setDimensions(9, 9)
+                                        baseSprite:setRegion(9, 9)
+                                        baseSprite:setSize(18, 18)
+                                    else
+                                        baseSprite:setTexture(textures.icons)
+                                        baseSprite:setDimensions(256, 256)
+                                        baseSprite:setRegion(9, 9)
+                                        baseSprite:setUVPixels(16, 0)
+                                        baseSprite:setSize(18, 18)
+                                    end
+                                    baseSprite:setPos((i - 1) * -19, 0, 0)
+                                    local heartSprite = models.ex_skill_2_gui.hearts:newSprite("ex_skill_2_heart_"..i)
+                                    if textures.heart ~= nil then
+                                        heartSprite:setTexture(textures.heart)
+                                        heartSprite:setDimensions(9, 9)
+                                        heartSprite:setRegion(9, 9)
+                                        heartSprite:setSize(18, 18)
+                                    else
+                                        heartSprite:setTexture(textures.icons)
+                                        heartSprite:setDimensions(256, 256)
+                                        heartSprite:setRegion(9, 9)
+                                        heartSprite:setUVPixels(52, 0)
+                                        heartSprite:setSize(18, 18)
+                                    end
+                                    heartSprite:setPos((i - 1) * -19, 0, 0)
+                                end
+                                ---@diagnostic disable-next-line: discard-returns
+                                models.ex_skill_2_gui:newPart("coins")
+                                models.ex_skill_2_gui.coins:setPos(client:getScaledWindowSize().x * -1 + 17.5, -18.5, 0)
+                                models.ex_skill_2_gui.coins:addChild(models.models.ex_skill_2.Coin:copy("Coin"))
+                                models.ex_skill_2_gui.coins.Coin:setPos(51, -11.5, 0)
+                                models.ex_skill_2_gui.coins.Coin:setScale(1.6, 1.6, 1)
+                                models.ex_skill_2_gui.coins.Coin:setPivot(0, 12, 0)
+                                models.ex_skill_2_gui.coins.Coin:setPrimaryRenderType()
+                                models.ex_skill_2_gui.coins.Coin:setVisible(true)
+                                models.ex_skill_2_gui.coins:newText("ex_skill_2_coin_counter"):setText("215"):setPos(38, -1, 0):setScale(2, 2, 2):setOutline(true):setOutlineColor(0.35, 0.35, 0.35)
+                            end
                             self.exSkill[2].init = true
+                        elseif host:isHost() then
+                            models.ex_skill_2_gui:setVisible(true)
                         end
+                        self.exSkill[2].coinCount = 215
                         for i = -1, 4 do
                             for j = 0, 18 do
                                 self.parent.coinManager:spawn(vectors.vec3(j * 32 - 96, 0, i * 32))
@@ -650,6 +707,7 @@ BlueArchiveCharacter = {
                         elseif tick == 87 then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 19, true)
                         elseif tick == 92 then
+                            models.ex_skill_2_gui:setVisible(false)
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom:moveTo(models.models.main.Avatar.UpperBody.Body)
                             self.parent.railGun.chargePercent = 0
                             self.parent.railGun.chargeState = "STRONG"
@@ -659,6 +717,10 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("NORMAL", "CENTER", "OPENED", 41, true)
                         elseif tick == 109 then
                             self.parent.coinManager:getAll()
+                        end
+
+                        if tick < 92 and host:isHost() then
+                            models.ex_skill_2_gui.coins:getTask("ex_skill_2_coin_counter"):setText(self.exSkill[2].coinCount)
                         end
                     end;
 
@@ -674,6 +736,9 @@ BlueArchiveCharacter = {
                         end
                         if forcedStop then
                             self.parent.coinManager:removeAll()
+                            if host:isHost() then
+                                models.ex_skill_2_gui:setVisible(false)
+                            end
                         else
                             self.parent.railGun.isSpecialCharge = true
                         end
@@ -683,6 +748,10 @@ BlueArchiveCharacter = {
                 ---このExスキルの初期化処理が行われたかどうか
                 ---@type boolean
                 init = false;
+
+                ---Exスキル中に表示されるコインカウンターの値
+                ---@type integer
+                coinCount = 215;
             };
         }
 

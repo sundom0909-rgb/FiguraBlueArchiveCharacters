@@ -87,6 +87,8 @@ ExSkill2Coin = {
         if shouldRandomizeMultiplayer then
             self.animMultiplayer = math.random() * 5 + 1
             self.shouldPlaySound = false
+        else
+            self.parent.characterData.exSkill[2].coinCount = self.parent.characterData.exSkill[2].coinCount + 1
         end
         self.rotSpeed = -50
         self.animationCount = 10
