@@ -6,6 +6,8 @@
 ---| "NARROW" # 少し閉じた目
 ---| "CLOSED2" # 閉じた目2
 ---| "STARE" # 凝視目（Exスキル1の最後の目）
+---| "ANGRY" # 怒った目
+---| "TEAR" # 涙目
 
 ---@alias BlueArchiveCharacter.LeftEyeTextures
 ---| "NORMAL" # 通常
@@ -16,6 +18,8 @@
 ---| "CLOSED2" # 閉じた目2
 ---| "STARE" # 凝視目（Exスキル1の最後の目）
 ---| "CENTER" # 少し反対側を見る目
+---| "ANGRY" # 怒った目
+---| "TEAR" # 涙目
 
 ---@alias BlueArchiveCharacter.MouthTextures
 ---| "NORMAL" # 通常
@@ -23,6 +27,8 @@
 ---| "SMILE" # にっこり
 ---| "SMALL" # 小さく開いた口
 ---| "OPENED" # 開いた口
+---| "ANGRY" # への口
+---| "SHOCK" # あんぐり口
 
 ---@alias BlueArchiveCharacter.GunPutType
 ---| "BODY" # アバターのBodyに銃を移動させる
@@ -300,6 +306,8 @@ BlueArchiveCharacter = {
                 NARROW = vectors.vec2(5, 0);
                 CLOSED2 = vectors.vec2(7, 0);
                 STARE = vectors.vec2(8, 0);
+                ANGRY = vectors.vec2(0, 1);
+                TEAR = vectors.vec2(2, 1);
             };
 
             leftEye = {
@@ -311,6 +319,8 @@ BlueArchiveCharacter = {
                 CLOSED2 = vectors.vec2(6, 0);
                 STARE = vectors.vec2(7, 0);
                 CENTER = vectors.vec2(8, 0);
+                ANGRY = vectors.vec2(0, 1);
+                TEAR = vectors.vec2(1, 1);
             };
 
             mouth = {
@@ -318,6 +328,8 @@ BlueArchiveCharacter = {
                 SMILE = vectors.vec2(1, 0);
                 SMALL =  vectors.vec2(2, 0);
                 OPENED = vectors.vec2(3, 0);
+                ANGRY = vectors.vec2(0, 1);
+                SHOCK = vectors.vec2(1, 1);
             };
         }
 
@@ -865,7 +877,27 @@ BlueArchiveCharacter = {
         }
 
         instance.bubble = {
+            callbacks = {
+                onPlay = function (self, type, duration)
+                    if type == "GOOD" then
+                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", duration, true)
+                    elseif type == "HEART" then
+                        self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", duration, true)
+                    elseif type == "NOTE" then
+                        self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "ANGRY", duration, true)
+                    elseif type == "QUESTION" then
+                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMALL", duration, true)
+                    elseif type == "SWEAT" then
+                        self.parent.faceParts:setEmotion("TEAR", "TEAR", "SHOCK", duration, true)
+                    end
+                end;
 
+                onStop = function (self, _, forcedStop)
+                    if not forcedStop then
+                        self.parent.faceParts:resetEmotion()
+                    end
+                end;
+            };
         }
 
         instance.headBlock = {
