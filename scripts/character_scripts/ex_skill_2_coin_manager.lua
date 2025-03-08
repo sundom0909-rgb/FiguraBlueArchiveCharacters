@@ -17,7 +17,7 @@ ExSkill2CoinManager = {
         return instance
     end;
 
-        ---初期化関数
+    ---初期化関数
     ---@param self ExSkill2CoinManager
     init = function (self)
         SpawnObjectManager.init(self)

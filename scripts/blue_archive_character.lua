@@ -671,7 +671,6 @@ BlueArchiveCharacter = {
                                 end
                                 ---@diagnostic disable-next-line: discard-returns
                                 models.ex_skill_2_gui:newPart("coins")
-                                models.ex_skill_2_gui.coins:setPos(client:getScaledWindowSize().x * -1 + 17.5, -18.5, 0)
                                 models.ex_skill_2_gui.coins:addChild(models.models.ex_skill_2.Coin:copy("Coin"))
                                 models.ex_skill_2_gui.coins.Coin:setPos(51, -11.5, 0)
                                 models.ex_skill_2_gui.coins.Coin:setScale(1.6, 1.6, 1)
@@ -683,6 +682,9 @@ BlueArchiveCharacter = {
                             self.exSkill[2].init = true
                         elseif host:isHost() then
                             models.ex_skill_2_gui:setVisible(true)
+                        end
+                        if host:isHost() then
+                            models.ex_skill_2_gui.coins:setPos(client:getScaledWindowSize().x * -1 + 17.5, -18.5, 0)
                         end
                         self.exSkill[2].coinCount = 215
                         for i = -1, 4 do
@@ -719,6 +721,14 @@ BlueArchiveCharacter = {
                             self.parent.coinManager:getAll()
                         end
 
+                        if tick < 61 then
+                            if (tick - 1) % 2 == 0 then
+                                self.parent.waterManager:spawn(self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom), vectors.rotateAroundAxis(player:getBodyYaw() * -1, -0.1, 0, 0, 0, 1, 0))
+                            end
+                            for _ = 1, 3 do
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:splash"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom))
+                            end
+                        end
                         if tick < 92 and host:isHost() then
                             models.ex_skill_2_gui.coins:getTask("ex_skill_2_coin_counter"):setText(self.exSkill[2].coinCount)
                         end
