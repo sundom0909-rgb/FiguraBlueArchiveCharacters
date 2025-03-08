@@ -864,6 +864,8 @@ BlueArchiveCharacter = {
                                 modelPart:setPos()
                             end
                         end
+                    elseif parts == "LEGGINGS" then
+                        models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1:setVisible(not isVisible)
                     end
                 end;
             };
