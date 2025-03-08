@@ -708,8 +708,21 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMALL", 2, true)
                         elseif tick == 87 then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 19, true)
+                            self.exSkill[1].broomTipAnchorPosPrev = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom)
+                        elseif tick >= 88 and tick < 92 then
+                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom)
+                            local directionVec = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom.BroomParticleNAnchor):copy():sub(anchorPos)
+                            for i = -2, 2 do
+                                local offsetPos = directionVec:copy():scale(i)
+                                for j = 0, 1, 0.25 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), anchorPos:copy():sub(self.exSkill[1].broomTipAnchorPosPrev):scale(j):add(anchorPos):add(offsetPos)):setScale(1.5):setColor(math.random() * 0.5 + 0.5, 1, 1)
+                                end
+                            end
+                            self.exSkill[1].broomTipAnchorPosPrev = anchorPos:copy()
                         elseif tick == 92 then
-                            models.ex_skill_2_gui:setVisible(false)
+                            if host:isHost() then
+                                models.ex_skill_2_gui:setVisible(false)
+                            end
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom:moveTo(models.models.main.Avatar.UpperBody.Body)
                             self.parent.railGun.chargePercent = 0
                             self.parent.railGun.chargeState = "STRONG"
@@ -762,6 +775,10 @@ BlueArchiveCharacter = {
                 ---Exスキル中に表示されるコインカウンターの値
                 ---@type integer
                 coinCount = 215;
+
+                ---前ティックの箒の先っちょの座標
+                ---@type Vector3
+                broomTipAnchorPosPrev = vectors.vec3()
             };
         }
 
