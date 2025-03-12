@@ -5,8 +5,8 @@
 ---@field package selectingShouldShowClubName boolean 現在選択中の「部活名を表示するかどうか」
 ---@field package selectingExSkillParticleAmount integer 現在選択中のExスキルフレームのパーティクル量
 ---@field public shouldReplaceVehicleModels boolean 乗り物のモデルを置き換えるかどうか
----@field package fpmCompatibilityMode boolean First-person Models互換モードが有効かどうか
----@field package fpmMassageShowed boolean First-person Models互換モードに関するメッセージを表示したかどうか
+---@field package fpmCompatibilityMode boolean First-person Model互換モードが有効かどうか
+---@field package fpmMassageShowed boolean First-person Model互換モードに関するメッセージを表示したかどうか
 ---@field package isActionWheelOpenedPrev boolean 前ティックにアクションホイールを開けていたかどうか
 ---@field package currentTime integer アクションホイールを開けた瞬間の時間（UNIX時間）
 ---@field package refreshCostumeChangeActionTitle fun(self: ActionWheel) 衣装変更アクションのタイトルを更新する
@@ -239,7 +239,7 @@ ActionWheel = {
             else
                 self.mainPage:getAction(7):setItem(self.parent.compatibilityUtils:checkItem("minecraft:player_head", "{SkullOwner: \""..player:getName().."\"}"))
             end
-            if self.parent.config:loadConfig("PRIVATE", "fpmCompatibilityMode", true) then
+            if self.parent.config:loadConfig("PRIVATE", "fpmCompatibilityMode", false) then
                 local action = self.mainPage:getAction(7)
                 action:setToggled(true)
                 action:setHoverColor(0.33, 1, 0.33)
