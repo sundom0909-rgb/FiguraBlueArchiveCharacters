@@ -2,6 +2,7 @@
 ---@field public whaleFloatEnabled boolean クジラフローに乗っているか
 ---@field package whaleFloatEnabledPrev boolean 前ティックにクジラフロートに乗っていたかどうか
 ---@field package lookDirPrev Vector3 前ティックに見ていた方法
+---@field package eyeHeightOffset number クジラフローに乗っているときの視点の高さのオフセット値
 ---@field package whaleFloatAfkCount integer クジラフロート上でのAFKカウンター
 ---@field public isAfk boolean AFK中かどうか
 ---@field package stopAfk fun(self: WhaleFloat) AFKアニメーションを停止する
@@ -20,6 +21,7 @@ WhaleFloat = {
         instance.whaleFloatEnabled = false
         instance.whaleFloatEnabledPrev = false
         instance.lookDirPrev = player:getLookDir()
+        instance.eyeHeightOffset = 0
         instance.whaleFloatAfkCount = 0
         instance.isAfk = false
 
@@ -39,6 +41,9 @@ WhaleFloat = {
         self.whaleFloatAfkCount = 0
         for _, animationModel in ipairs({"models.main", "models.costume_swimsuit", "models.ex_skill_2"}) do
             animations[animationModel]["float_afk"]:setSpeed(-1)
+        end
+        if self.parent.actionWheel.fpmCompatibilityMode then
+            events.RENDER:register(self.parent.actionWheel.fpmCompatibilityModeRender, "fpm_compatibility_render")
         end
         events.TICK:remove("whale_float_afk_end_tick")
         events.TICK:register(function ()
@@ -65,6 +70,7 @@ WhaleFloat = {
         for _, eventName in ipairs({"whale_float_tick_2", "whale_float_afk_end_tick"}) do
             events.TICK:remove(eventName)
         end
+        events.RENDER:remove("whale_float_render")
         models.models.main.Avatar.LowerBody.WhaleFloat:setVisible(false)
         renderer:setRenderVehicle(true)
         models.models.main.Avatar.Head:setRot()
@@ -84,8 +90,12 @@ WhaleFloat = {
         models.models.main.Avatar:setPos()
         self.parent.cameraManager.setCameraPivot(vectors.vec3())
         renderer:setEyeOffset()
+        if self.parent.actionWheel.fpmCompatibilityMode and events.RENDER:getRegisteredCount("fpm_compatibility_render") then
+            events.RENDER:register(self.parent.actionWheel.fpmCompatibilityModeRender, "fpm_compatibility_render")
+        end
         self.whaleFloatAfkCount = 0
         self.isAfk = false
+        self.whaleFloatEnabled = false
         self.whaleFloatEnabledPrev = false
     end,
 
@@ -95,9 +105,9 @@ WhaleFloat = {
         events.TICK:register(function ()
             local vehicle = player:getVehicle()
             if vehicle ~= nil  then
-                local id = vehicle:getType()
-                local whaleFloatEnabled = self.parent.actionWheel.shouldReplaceVehicleModels and id:match("^minecraft:[%l_]*boat$") and #vehicle:getPassengers() == 1
-                if whaleFloatEnabled then
+                local entityId = vehicle:getType()
+                self.whaleFloatEnabled = self.parent.actionWheel.shouldReplaceVehicleModels and (entityId:match("^minecraft:[%l_]*boat$") or entityId:match("^minecraft:bamboo_[%l_]*raft$")) and #vehicle:getPassengers() == 1
+                if self.whaleFloatEnabled then
                     if not self.whaleFloatEnabledPrev then
                         models.models.main.Avatar.LowerBody.WhaleFloat:setVisible(true)
                         renderer:setRenderVehicle(false)
@@ -129,25 +139,37 @@ WhaleFloat = {
                                     end
                                 end
 
-                                if player:getVehicle():getNbt().Type == "bamboo" then
-                                    models.models.main.Avatar:setPos(0, -6, 0)
-                                    self.parent.cameraManager.setCameraPivot(vectors.vec3(0, 0.1875, 0))
-                                    renderer:setEyeOffset(0, 0.1875, 0)
-                                else
-                                    models.models.main.Avatar:setPos()
-                                    self.parent.cameraManager.setCameraPivot(vectors.vec3(0, 0.5625, 0))
-                                    renderer:setEyeOffset(0, 0.5625, 0)
+                                local vehicle2 = player:getVehicle()
+                                if vehicle2 ~= nil then
+                                    local gameVersion = client:getVersion()
+                                    if (gameVersion >= "1.21.2" and vehicle2:getType():match("^minecraft:bamboo_[%l_]*raft$")) or (gameVersion < "1.21.2" and vehicle2:getNbt().Type == "bamboo") then
+                                        models.models.main.Avatar:setPos(0, -6, 0)
+                                        if host:isHost() then
+                                            self.eyeHeightOffset = 0.1875
+                                        end
+                                    else
+                                        models.models.main.Avatar:setPos()
+                                        if host:isHost() then
+                                            self.eyeHeightOffset = 0.5625
+                                        end
+                                    end
                                 end
                             else
                                 animations["models.main"]["whale_float"]:setPlaying(false)
-                                if player:getVehicle():getNbt().Type == "bamboo" then
-                                    models.models.main.Avatar:setPos(0, -9, 0)
-                                    self.parent.cameraManager.setCameraPivot(vectors.vec3())
-                                    renderer:setEyeOffset()
-                                else
-                                    models.models.main.Avatar:setPos(0, -3, 0)
-                                    self.parent.cameraManager.setCameraPivot(vectors.vec3(0, 0.375, 0))
-                                    renderer:setEyeOffset(0, 0.375, 0)
+                                local vehicle2 = player:getVehicle()
+                                if vehicle2 ~= nil then
+                                    local gameVersion = client:getVersion()
+                                    if (gameVersion >= "1.21.2" and vehicle2:getType():match("^minecraft:bamboo_[%l_]*raft$")) or (gameVersion < "1.21.2" and vehicle2:getNbt().Type == "bamboo") then
+                                        models.models.main.Avatar:setPos(0, -9, 0)
+                                        if host:isHost() then
+                                            self.eyeHeightOffset = 0
+                                        end
+                                    else
+                                        models.models.main.Avatar:setPos(0, -3, 0)
+                                        if host:isHost() then
+                                            self.eyeHeightOffset = 0.375
+                                        end
+                                    end
                                 end
                             end
 
@@ -165,6 +187,11 @@ WhaleFloat = {
                                 elseif self.whaleFloatAfkCount >= 2430 then
                                     self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "YAWN", 1, false)
                                 end
+                                if self.whaleFloatAfkCount >= 2400 and events.RENDER:getRegisteredCount("fpm_compatibility_render") == 1 then
+                                    events.RENDER:remove("fpm_compatibility_render")
+                                    models.models.main.Avatar.Head:setVisible(true)
+                                    models.models.main.Avatar.Head:setOpacity(1)
+                                end
                             else
                                 if self.isAfk then
                                     self:stopAfk()
@@ -172,6 +199,15 @@ WhaleFloat = {
                                 self.lookDirPrev = lookDir
                             end
                         end, "whale_float_tick_2")
+
+                        events.RENDER:register(function (delta)
+                            if host:isHost() and self.whaleFloatEnabled then
+                                local offset = models.models.main.CameraAnchor:getAnimPos().y
+                                local pos = vectors.rotateAroundAxis(player:getBodyYaw(delta) * -1, 0, self.eyeHeightOffset + offset / 16, 0.3, 0, 1, 0)
+                                renderer:setOffsetCameraPivot(pos)
+                                renderer:setEyeOffset(pos)
+                            end
+                        end, "whale_float_render")
                     end
                     self.whaleFloatEnabledPrev = true
                 elseif self.whaleFloatEnabledPrev then

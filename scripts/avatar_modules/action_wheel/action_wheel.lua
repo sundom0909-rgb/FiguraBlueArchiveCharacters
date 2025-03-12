@@ -5,7 +5,7 @@
 ---@field package selectingShouldShowClubName boolean 現在選択中の「部活名を表示するかどうか」
 ---@field package selectingExSkillParticleAmount integer 現在選択中のExスキルフレームのパーティクル量
 ---@field public shouldReplaceVehicleModels boolean 乗り物のモデルを置き換えるかどうか
----@field package fpmCompatibilityMode boolean First-person Model互換モードが有効かどうか
+---@field public fpmCompatibilityMode boolean First-person Model互換モードが有効かどうか
 ---@field package fpmMassageShowed boolean First-person Model互換モードに関するメッセージを表示したかどうか
 ---@field package isActionWheelOpenedPrev boolean 前ティックにアクションホイールを開けていたかどうか
 ---@field package currentTime integer アクションホイールを開けた瞬間の時間（UNIX時間）
@@ -13,7 +13,7 @@
 ---@field package refreshNameChangeActionTitle fun(self: ActionWheel) 名前変更アクションのタイトルを更新する
 ---@field package refreshExSkillParticleActionTitle fun(self: ActionWheel) Exスキルアニメーションのパーティクル量調整アクションのタイトルを更新する
 ---@field package refreshUpdateActionStatus fun(self: ActionWheel) アップデート確認アクションの状態を更新する
----@field package fpmCompatibilityModeRender fun(_, context: Event.Render.context) First-person Model互換性モードにおけるレンダー関数
+---@field public fpmCompatibilityModeRender fun(_, context: Event.Render.context) First-person Model互換性モードにおけるレンダー関数
 
 ActionWheel = {
     ---コンストラクタ
