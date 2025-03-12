@@ -153,8 +153,9 @@ Bicycle = {
                         local currentHandleRot = (self.handleRot - self.handleRotPrev) * delta + self.handleRot
                         models.models.main.Avatar.LowerBody.Bicycle.Handle:setRot(0, currentHandleRot, 0)
                         if host:isHost() and self.bicycleEnabled then
-                            self.parent.cameraManager.setCameraPivot(vectors.vec3(0, 0.15 * bicycleIdleFactor - 0.75 + self.bicycleOffsetPos, 0))
-                            renderer:setEyeOffset(0, 0.15 * bicycleIdleFactor - 0.75 + self.bicycleOffsetPos, 0)
+                            local pos = vectors.rotateAroundAxis(player:getBodyYaw(delta) * -1, 0, 0.15 * bicycleIdleFactor - 0.75 + self.bicycleOffsetPos, (1 - bicycleIdleFactor) * 0.3, 0, 1, 0)
+                            self.parent.cameraManager.setCameraPivot(pos)
+                            renderer:setEyeOffset(pos)
                         end
                     end, "bicycle_ride_render")
                     events.ON_PLAY_SOUND:register(function (id, pos, _, _, _, _, path)
