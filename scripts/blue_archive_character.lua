@@ -1130,7 +1130,8 @@ BlueArchiveCharacter = {
                     local healingPotionPos = 0
                     for i = 1, 2 do
                         local heldItem = player:getHeldItem(i == 2)
-                        if (heldItem.id == "minecraft:potion" or heldItem.id == "minecraft:splash_potion" or heldItem.id == "minecraft:lingering_potion") and heldItem.tag.Potion ~= nil and heldItem.tag.Potion:match("minecraft:.*healing") ~= nil then
+                        local gameVersion = client:getVersion()
+                        if (heldItem.id == "minecraft:potion" or heldItem.id == "minecraft:splash_potion" or heldItem.id == "minecraft:lingering_potion") and ((gameVersion >= "1.20.5" and heldItem.tag["minecraft:potion_contents"].potion ~= nil and heldItem.tag["minecraft:potion_contents"].potion:match("minecraft:.*healing") ~= nil) or (gameVersion < "1.20.5" and heldItem.tag.Potion ~= nil and heldItem.tag.Potion:match("minecraft:.*healing") ~= nil)) then
                             healingPotionPos = i
                             break
                         end
