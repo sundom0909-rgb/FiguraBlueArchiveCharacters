@@ -686,7 +686,9 @@ BlueArchiveCharacter = {
                             end
                             if host:isHost() then
                                 --モデルのコピー
-                                models.models.main.Avatar.Head.FaceParts.Mouth:setVisible(true)
+                                for _, modelPart in ipairs({models.models.main.Avatar.Head, models.models.main.Avatar.Head.HeadRing, models.models.main.Avatar.Head.FaceParts.Mouth}) do
+                                    modelPart:setVisible(true)
+                                end
                                 models.models.main.Avatar.UpperBody.Body.Gun:setVisible(false)
                                 local armorVisible = {
                                     helmet = self.parent.armor.isArmorVisible.helmet;
