@@ -1023,7 +1023,7 @@ BlueArchiveCharacter = {
                                 local turretRot = math.clamp(math.deg(math.asin(lookDir.y)), -15, 25)
                                 local heightOffset = (player:getPos(delta):sub(vehicle:getPos(delta)):length() - 1.51017) * -1.35
                                 models.models.main.Avatar:setPos(-13, 16 + heightOffset * 16, 4)
-                                models.models.ex_skill_1.Tank:setPos(0, -24.5 + heightOffset * 16, 0)
+                                models.models.ex_skill_1.Tank:setPos(0, -24.5 + heightOffset * 16, models.models.ex_skill_1.ShootAnimAnchor:getAnimPos().z)
                                 models.models.ex_skill_1.Tank.TankBody.Turret.Cannon:setRot(turretRot, 0, 0)
                                 models.models.ex_skill_1.Tank.TankBody.Turret.Cannon.HangingSign:setRot(turretRot * -1, 0, 0)
                                 if camelVelocity > 0.01 then
@@ -1038,8 +1038,9 @@ BlueArchiveCharacter = {
                                 local bodyYaw = player:getBodyYaw(delta)
                                 if renderer:isFirstPerson() then
                                     renderer:setCameraPos(0.75, 0, 0)
-                                    self.parent.cameraManager.setCameraPivot(vectors.vec3(math.sin(math.rad(bodyYaw)) * 0.2, 1 + heightOffset, math.cos(math.rad(bodyYaw)) * -0.2))
-                                    renderer:setEyeOffset(vectors.rotateAroundAxis(bodyYaw * -1, 0.8, 1 + heightOffset, 0.2, 0, 1, 0))
+                                    local animOffset = vectors.rotateAroundAxis(bodyYaw * -1, 0, models.models.ex_skill_1.IdleAnimAnchor:getAnimPos().y, models.models.ex_skill_1.ShootAnimAnchor:getAnimPos().z * -1, 0, 1, 0):scale(0.0625)
+                                    self.parent.cameraManager.setCameraPivot(vectors.rotateAroundAxis(bodyYaw * -1, 0, heightOffset + 1, -0.45, 0, 1, 0):add(animOffset))
+                                    renderer:setEyeOffset(vectors.rotateAroundAxis(bodyYaw * -1, 0.75, heightOffset + 1, -0.45, 0, 1, 0):add(animOffset))
                                 else
                                     self.parent.cameraManager.setCameraPivot(vectors.vec3(0, heightOffset * 0.75, 0))
                                     renderer:setEyeOffset(0, heightOffset * 0.75, 0)
@@ -1142,7 +1143,6 @@ BlueArchiveCharacter = {
                         end
                         sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.firework_rocket.large_blast"), player:getPos(), 1, 1)
                     elseif self.costume.costumes[1].shootTick == 38 then
-                        events.RENDER:remove("tank_shoot_render")
                         self.costume.costumes[1].shootTick = -1
                     end
                 end
@@ -1161,9 +1161,6 @@ function pings.tankShoot()
     animations["models.main"]["tank_shoot_"..(player:isLeftHanded() and "left" or "right")]:play()
     animations["models.ex_skill_1"]["tank_shoot"]:play()
     AvatarInstance.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "CLOSED", 38, true)
-    events.RENDER:register(function (delta, ctx, matrix)
-        models.models.ex_skill_1.Tank:setPos(0, models.models.ex_skill_1.Tank:getPos().y, models.models.ex_skill_1.ShootAnimAnchor:getAnimPos().z)
-    end, "tank_shoot_render")
     avatar:store("shootingStart", true)
     AvatarInstance.characterData.costume.costumes[1].shootTick = 0
     AvatarInstance.characterData.costume.costumes[1].shootCooldown = 100
