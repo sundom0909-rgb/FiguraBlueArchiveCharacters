@@ -259,23 +259,23 @@ BlueArchiveCharacter = {
 
         instance.basic = {
             firstName = {
-                en_us = "FirstName";
-                ja_jp = "名前";
+                en_us = "Yuzu";
+                ja_jp = "ユズ";
             };
 
             lastName = {
-                en_us = "LastName";
-                ja_jp = "苗字";
+                en_us = "Hanaoka";
+                ja_jp = "花岡";
             };
 
             clubName = {
-                en_us = "ClubName";
-                ja_jp = "部活名";
+                en_us = "Game Development Department";
+                ja_jp = "ゲーム開発部";
             };
 
             birth = {
-                month = 1;
-                day = 1;
+                month = 8;
+                day = 12;
             };
         }
 
