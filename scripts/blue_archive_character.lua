@@ -1259,7 +1259,7 @@ BlueArchiveCharacter = {
                                 if isEngineActive ~= self.costume.costumes[1].isEngineActivePrev then
                                     if isEngineActive then
                                         animations["models.main"].tank_idle_powered:play()
-                                        animations["models.main"].tank_idle_powered:setTime(avatarVars[irohaUUID].engineAnimTime)
+                                        animations["models.main"].tank_idle_powered:setTime(avatarVars[irohaUUID].engineAnimTime + 0.25)
                                     else
                                         animations["models.main"].tank_idle_powered:stop()
                                     end
@@ -1320,12 +1320,13 @@ BlueArchiveCharacter = {
                                     models.models.main.Avatar:setRot(0, bodyYaw * -1 + 90, 0)
                                     models.models.main.Avatar.LowerBody:setVisible(false)
                                 end
+                                local animOffset = vectors.rotateAroundAxis(bodyYaw * -1, 0, models.models.main.TankIdleAnimAnchor:getAnimPos().y, models.models.main.TankShootAnimAnchor:getAnimPos().z * -1, 0, 1, 0):scale(0.0625)
                                 if renderer:isFirstPerson() then
-                                    self.parent.cameraManager.setCameraPivot(vectors.rotateAroundAxis(bodyYaw * -1, -0.85, 0.675 + heightOffset, 1.1, 0, 1, 0))
-                                    renderer:setEyeOffset(vectors.rotateAroundAxis(bodyYaw * -1, -0.85, 1 + heightOffset, 1.1, 0, 1, 0))
+                                    self.parent.cameraManager.setCameraPivot(vectors.rotateAroundAxis(bodyYaw * -1, -0.85, heightOffset + 0.8, 1.1, 0, 1, 0):add(animOffset))
+                                    renderer:setEyeOffset(vectors.rotateAroundAxis(bodyYaw * -1, -0.85, heightOffset + 0.8, 1.1, 0, 1, 0):add(animOffset))
                                 else
-                                    self.parent.cameraManager.setCameraPivot(vectors.rotateAroundAxis(bodyYaw * -1, -0.85, 0.5 + heightOffset, 1.1, 0, 1, 0))
-                                    renderer:setEyeOffset(vectors.rotateAroundAxis(bodyYaw * -1, -0.85, 1, 1.1 + heightOffset, 0, 1, 0))
+                                    self.parent.cameraManager.setCameraPivot(vectors.rotateAroundAxis(bodyYaw * -1, -0.85, heightOffset + 0.75, 1.1, 0, 1, 0):add(animOffset))
+                                    renderer:setEyeOffset(vectors.rotateAroundAxis(bodyYaw * -1, -0.85, 1, 1.1 + heightOffset, 0, 1, 0):add(animOffset))
                                 end
                                 if self.costume.costumes[1].shootTick >= 0 then
                                     models.models.main.Avatar:setPos(vectors.rotateAroundAxis(bodyYaw * -1 + 180, models.models.main.TankShootAnimAnchor:getAnimPos(), 0, 1, 0):add(models.models.main.Avatar:getPos()))
