@@ -288,7 +288,7 @@ BlueArchiveCharacter = {
             };
 
             clubName = {
-                en_us = "Game Development Club";
+                en_us = "Game Development Department";
                 ja_jp = "ゲーム開発部";
             };
 
