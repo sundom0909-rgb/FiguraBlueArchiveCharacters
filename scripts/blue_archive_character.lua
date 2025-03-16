@@ -425,7 +425,177 @@ BlueArchiveCharacter = {
 
         instance.physics = {
             physicData = {
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.Hairs.FrontHair};
 
+                    x = {
+                        vertical = {
+                            min = 0;
+                            neutral = 0;
+                            max = 80;
+                            sneakOffset = 30;
+
+                            bodyX = {
+                                multiplayer = -80;
+                                min = 0;
+                                max = 80;
+                            };
+
+                            bodyY = {
+                                multiplayer = -80;
+                                min = 0;
+                                max = 80;
+                            };
+
+                            bodyRot = {
+                                multiplayer = -0.05;
+                                min = 0;
+                                max = 80;
+                            };
+                        };
+
+                        horizontal = {
+                            min = 0;
+                            neutral = 80;
+                            max = 80;
+
+                            bodyX = {
+                                multiplayer = -160;
+                                min = 0;
+                                max = 80;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.Hairs.BackHair};
+
+                    x = {
+                        vertical = {
+                            min = -80;
+                            neutral = 0;
+                            max = 0;
+
+                            bodyX = {
+                                multiplayer = -80;
+                                min = -80;
+                                max = 0;
+                            };
+
+                            bodyY = {
+                                multiplayer = 80;
+                                min = -80;
+                                max = 0;
+                            };
+
+                            bodyRot = {
+                                multiplayer = 0.05;
+                                min = -80;
+                                max = 0;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.Head.HairTip1.HairTipCore},
+
+                    z = {
+                        vertical = {
+                            min = -20;
+                            neutral = 32.5;
+                            max = 60;
+                        };
+
+                        horizontal = {
+                            min = -20;
+                            neutral = 32.5;
+                            max = 60;
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.Head.HairTip1.HairTipCore.HairTipCoreZPivot},
+
+                    y = {
+                        vertical = {
+                            min = -10;
+                            neutral = 0;
+                            max = 10;
+                        };
+
+                        horizontal = {
+                            min = -10;
+                            neutral = 0;
+                            max = 10;
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.Head.HairTip2};
+
+                    x = {
+                        vertical = {
+                            min = -15;
+                            neutral = 52.5;
+                            max = 82.5;
+
+                            bodyY = {
+                                multiplayer = -40;
+                                min = -15;
+                                max = 82.5;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -15;
+                            neutral = 52.5;
+                            max = 82.5;
+
+                            bodyX = {
+                                multiplayer = -80;
+                                min = -15;
+                                max = 82.5;
+                            };
+                        };
+                    };
+
+                    y = {
+                        vertical = {
+                            min = -40;
+                            neutral = -40;
+                            max = -40;
+                        };
+
+                        horizontal = {
+                            min = -40;
+                            neutral = -40;
+                            max = -40;
+                        };
+                    };
+                };
+            };
+
+            callbacks = {
+                onPhysicPerformed = function (self, model)
+                    if model:getName():match("^HairTipCore") then
+                        local playerPose = player:getPose()
+                        local isHorizontal = playerPose == "SWIMMING" or playerPose == "FALL_FLYING"
+                        local velocityY = math.clamp(self.parent.physics.velocityAverage[1][2] * -40, -20, 20)
+                        local velocityZ = math.clamp(self.parent.physics.velocityAverage[2][2] * (isHorizontal and 160 or -40), -20, 60)
+                        local lookRotY = math.deg(math.asin(player:getLookDir().y)) / 90
+                        local rotY = velocityZ * (1 - math.abs(lookRotY)) * -1 + velocityY * lookRotY
+                        local rotZ = velocityY * (1 - math.abs(lookRotY)) * -1 + velocityZ * lookRotY
+                        if model == models.models.main.Avatar.Head.HairTip1.HairTipCore then
+                            models.models.main.Avatar.Head.HairTip1.HairTipCore:setRot(0, 0, (isHorizontal and rotZ or rotY) + 32.5)
+                        elseif model == models.models.main.Avatar.Head.HairTip1.HairTipCore.HairTipCoreZPivot then
+                            models.models.main.Avatar.Head.HairTip1.HairTipCore.HairTipCoreZPivot:setRot(0, isHorizontal and rotY or rotZ, 0)
+                        end
+                    end
+                end;
             };
         }
 

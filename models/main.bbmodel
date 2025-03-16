@@ -3317,7 +3317,22 @@
 									"visibility": true,
 									"autouv": 0,
 									"selected": false,
-									"children": ["170e4a5f-037a-8b8a-1f98-cae15d3e9ac5", "de419374-d7ea-c7ae-7339-41adad3b35b6"]
+									"children": [
+										{
+											"name": "HairTipCoreZPivot",
+											"origin": [-3.175, 27, 4],
+											"color": 0,
+											"uuid": "636d3f68-b210-afb3-53f5-51696a9d415a",
+											"export": true,
+											"mirror_uv": false,
+											"isOpen": true,
+											"locked": false,
+											"visibility": true,
+											"autouv": 0,
+											"selected": true,
+											"children": ["170e4a5f-037a-8b8a-1f98-cae15d3e9ac5", "de419374-d7ea-c7ae-7339-41adad3b35b6"]
+										}
+									]
 								}
 							]
 						},
@@ -3460,7 +3475,7 @@
 									"children": [
 										{
 											"name": "FrontHair",
-											"origin": [0, 24, 0],
+											"origin": [0, 24, -2],
 											"color": 0,
 											"uuid": "e62ab1d6-8ed3-0b50-16f0-aabc6b274210",
 											"export": true,
@@ -3479,7 +3494,7 @@
 										},
 										{
 											"name": "BackHair",
-											"origin": [0, 24, -2],
+											"origin": [0, 24, 2],
 											"color": 0,
 											"uuid": "45cef6f7-23fb-bd0f-566a-6649461f351f",
 											"export": true,
