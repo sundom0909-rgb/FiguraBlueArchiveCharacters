@@ -144,6 +144,9 @@
 		"models.models.gun.Gun": {
 			"moveTo": "models.models.main.Avatar.UpperBody.Body"
 		},
+		"models.models.gun.Gun.Display": {
+			"primaryRenderType": "EMISSIVE_SOLID"
+		},
 		"models.models.placement_object.PlacementObject": {
 			"visible": false
 		},

@@ -332,6 +332,10 @@ BlueArchiveCharacter = {
                 name = "minecraft:entity.arrow.shoot";
                 pitch = 0.5;
             };
+
+            ---武器のアニメーション用のティック変数
+            ---@type integer
+            animationTick = 0;
         }
 
         instance.placementObjects = {
@@ -617,5 +621,19 @@ BlueArchiveCharacter = {
 
         --生徒固有初期化処理
         --Player APIにアクセスする場合は、ENTITY_INIT後に実行されるようにする必要がある。
+
+        events.TICK:register(function ()
+            if models.models.main.Avatar.UpperBody.Body.Gun ~= nil then
+                if self.gun.animationTick % 4 == 0 then
+                    local frame = self.gun.animationTick / 4
+                    if models.models.main.Avatar.UpperBody.Body.Gun ~= nil then
+                        models.models.main.Avatar.UpperBody.Body.Gun.Display:setUVPixels(37 * (frame % 2), 15 * (math.floor(frame / 2)))
+                    end
+                end
+                self.gun.animationTick = self.gun.animationTick == 15 and 0 or self.gun.animationTick + 1
+            else
+                self.gun.animationTick = 0
+            end
+        end)
     end;
 }
