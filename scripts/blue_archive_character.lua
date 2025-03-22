@@ -336,6 +336,10 @@ BlueArchiveCharacter = {
             ---武器のアニメーション用のティック変数
             ---@type integer
             animationTick = 0;
+
+            ---前ティックの銃の位置
+            ---@type Gun.GunPosition
+            gunPositionPrev = "NONE";
         }
 
         instance.placementObjects = {
@@ -623,16 +627,20 @@ BlueArchiveCharacter = {
         --Player APIにアクセスする場合は、ENTITY_INIT後に実行されるようにする必要がある。
 
         events.TICK:register(function ()
-            if models.models.main.Avatar.UpperBody.Body.Gun ~= nil then
-                if self.gun.animationTick % 4 == 0 then
-                    local frame = self.gun.animationTick / 4
-                    if models.models.main.Avatar.UpperBody.Body.Gun ~= nil then
-                        models.models.main.Avatar.UpperBody.Body.Gun.Display:setUVPixels(37 * (frame % 2), 15 * (math.floor(frame / 2)))
+            if not client:isPaused() then
+                if self.parent.gun.currentGunPosition ~= "NONE" then
+                    if self.gun.animationTick % 4 == 0 then
+                        local frame = self.gun.animationTick / 4
+                        if models.models.main.Avatar.UpperBody.Body.Gun ~= nil then
+                            models.models.main.Avatar.UpperBody.Body.Gun.Display:setUVPixels(37 * (frame % 2), 15 * (math.floor(frame / 2)))
+                        end
                     end
+                    self.gun.animationTick = self.gun.animationTick == 15 and 0 or self.gun.animationTick + 1
+                elseif self.parent.gun.currentGunPosition == "NONE" and self.gun.gunPositionPrev ~= "NONE" then
+                    models.models.main.Avatar.UpperBody.Body.Gun.Display:setUVPixels()
+                    self.gun.animationTick = 0
                 end
-                self.gun.animationTick = self.gun.animationTick == 15 and 0 or self.gun.animationTick + 1
-            else
-                self.gun.animationTick = 0
+                self.gun.gunPositionPrev = self.parent.gun.currentGunPosition
             end
         end)
     end;
