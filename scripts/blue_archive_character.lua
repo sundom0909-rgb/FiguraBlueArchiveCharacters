@@ -632,12 +632,12 @@ BlueArchiveCharacter = {
                     if self.gun.animationTick % 4 == 0 then
                         local frame = self.gun.animationTick / 4
                         if models.models.main.Avatar.UpperBody.Body.Gun ~= nil then
-                            models.models.main.Avatar.UpperBody.Body.Gun.Display:setUVPixels(37 * (frame % 2), 15 * (math.floor(frame / 2)))
+                            models.models.main.Avatar.UpperBody.Body.Gun.GameDisplay.Display:setUVPixels(37 * (frame % 2), 15 * (math.floor(frame / 2)))
                         end
                     end
                     self.gun.animationTick = self.gun.animationTick == 15 and 0 or self.gun.animationTick + 1
                 elseif self.parent.gun.currentGunPosition == "NONE" and self.gun.gunPositionPrev ~= "NONE" then
-                    models.models.main.Avatar.UpperBody.Body.Gun.Display:setUVPixels()
+                    models.models.main.Avatar.UpperBody.Body.Gun.GameDisplay.Display:setUVPixels()
                     self.gun.animationTick = 0
                 end
                 self.gun.gunPositionPrev = self.parent.gun.currentGunPosition
