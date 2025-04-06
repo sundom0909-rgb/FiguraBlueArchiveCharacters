@@ -357,15 +357,15 @@ BlueArchiveCharacter = {
         instance.exSkill = {
             {
                 name = {
-                    en_us = "Ex Skill name";
-                    ja_jp = "Exスキル名";
+                    en_us = "Game Start!";
+                    ja_jp = "ゲームスタート！";
                 };
 
                 formationType = "STRIKER";
 
                 models = {};
 
-                animations = {"main"};
+                animations = {"main", "gun"};
 
                 camera = {
                     start = {
@@ -379,17 +379,24 @@ BlueArchiveCharacter = {
                     };
                 };
 
-                --[[
                 callbacks = {
-                    --Exスキルアニメーションを任意の位置で一時停止させるコードスニペット。デバッグ用。
-                    --"<>"内を適切な数値に置き換えること。
+                    onPreAnimation = function (self)
+                    end;
+
                     onAnimationTick = function (self, tick)
-                        for _, name in ipairs(self.exSkill[<ex_skill_index>]) do
-                            animations["models."..name]["ex_skill_<ex_skill_index>"]:pause()
+                        if tick == 0 then
+                            models.models.main.Avatar.UpperBody.Body.Gun:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
+                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setPos()
+                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setRot()
+                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setVisible(true)
                         end
                     end;
+
+                    onPostAnimation = function (self, forcedStop)
+                        models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:moveTo(models.models.main.Avatar.UpperBody.Body)
+                        models.models.main.Avatar.UpperBody.Body.Gun:setVisible(self.parent.gun.currentGunPosition ~= "NONE")
+                    end;
                 };
-                ]]
             };
         }
 
@@ -628,11 +635,13 @@ BlueArchiveCharacter = {
 
         events.TICK:register(function ()
             if not client:isPaused() then
-                if self.parent.gun.currentGunPosition ~= "NONE" then
+                if self.parent.gun.currentGunPosition ~= "NONE" or self.parent.exSkill.animationCount >= 0 then
                     if self.gun.animationTick % 4 == 0 then
                         local frame = self.gun.animationTick / 4
                         if models.models.main.Avatar.UpperBody.Body.Gun ~= nil then
                             models.models.main.Avatar.UpperBody.Body.Gun.GameDisplay.Display:setUVPixels(37 * (frame % 2), 15 * (math.floor(frame / 2)))
+                        elseif models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun ~= nil then
+                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.GameDisplay.Display:setUVPixels(37 * (frame % 2), 15 * (math.floor(frame / 2)))
                         end
                     end
                     self.gun.animationTick = self.gun.animationTick == 15 and 0 or self.gun.animationTick + 1
