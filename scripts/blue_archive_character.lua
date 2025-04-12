@@ -3,15 +3,27 @@
 ---| "SURPRISED" # 驚いた目（ダメージを受けたときなど）
 ---| "TIRED" # 疲れた目（死亡アニメーションなど）
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
+---| "UNEQUAL" # 不等号目（><）
+---| "INVERTED" # 反対側を見る目
+---| "ANGRY" # 怒った目
+---| "CLOSED2" # 閉じた目2
 
 ---@alias BlueArchiveCharacter.LeftEyeTextures
 ---| "NORMAL" # 通常
 ---| "SURPRISED" # 驚いた目（ダメージを受けたときなど）
 ---| "TIRED" # 疲れた目（死亡アニメーションなど）
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
+---| "UNEQUAL" # 不等号目（><）
+---| "ANGRY_INVERTED" # 怒りつつ反対側を見る目
+---| "CLOSED2" # 閉じた目2
 
 ---@alias BlueArchiveCharacter.MouthTextures
 ---| "NORMAL" # 通常
+---| "SHOCK" # あんぐり口
+---| "FRUST" # ぐにゅぐにゅ口
+---| "SMALL" # 小さく開けた口
+---| "CLOSED" # 閉じた口
+---| "ANGRY" # 怒った口
 
 ---@alias BlueArchiveCharacter.GunPutType
 ---| "BODY" # アバターのBodyに銃を移動させる
@@ -285,6 +297,10 @@ BlueArchiveCharacter = {
                 SURPRISED = vectors.vec2(2, 0); --必須
                 TIRED = vectors.vec2(3, 0); --必須
                 CLOSED = vectors.vec2(4, 0); --必須
+                UNEQUAL = vectors.vec2(5, 0);
+                INVERTED = vectors.vec2(6, 0);
+                ANGRY = vectors.vec2(7, 0);
+                CLOSED2 = vectors.vec2(9, 0);
             };
 
             leftEye = {
@@ -292,10 +308,17 @@ BlueArchiveCharacter = {
                 SURPRISED = vectors.vec2(1, 0); --必須
                 TIRED = vectors.vec2(2, 0); --必須
                 CLOSED = vectors.vec2(3, 0); --必須
+                UNEQUAL = vectors.vec2(4, 0);
+                ANGRY_INVERTED = vectors.vec2(7, 0);
+                CLOSED2 = vectors.vec2(8, 0);
             };
 
             mouth = {
-
+                SHOCK = vectors.vec2(0, 0);
+                FRUST = vectors.vec2(1, 0);
+                SMALL = vectors.vec2(2, 0);
+                CLOSED = vectors.vec2(3, 0);
+                ANGRY = vectors.vec2(0, 1);
             };
         }
 
@@ -380,23 +403,51 @@ BlueArchiveCharacter = {
                 };
 
                 callbacks = {
+                    onPreAnimation = function (self)
+                        self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "SHOCK", 9, true)
+                    end;
+
                     onAnimationTick = function (self, tick)
                         if tick == 0 then
                             models.models.main.Avatar.UpperBody.Body.Gun:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setPos()
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setRot()
+                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.Grenade:setVisible(true)
+                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.GameDisplay.Display:setColor(0, 0, 0)
+                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.GameDisplay.DisplayFlash:setVisible(true)
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setVisible(true)
                         end
 
-                        if tick == 6500 then
-                            for _, modelName in ipairs(self.exSkill[1].animations) do
-                                animations["models."..modelName]["ex_skill_1"]:pause()
-                            end
+                        if tick == 9 then
+                            self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "FRUST", 9, true)
+                        elseif tick == 18 then
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "FRUST", 8, true)
+                        elseif tick == 21 then
+                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.GameDisplay.Display:setColor()
+                        elseif tick == 26 then
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "FRUST", 3, true)
+                        elseif tick == 29 then
+                            self.parent.faceParts:setEmotion("INVERTED", "NORMAL", "SMALL", 4, true)
+                        elseif tick == 33 then
+                            self.parent.faceParts:setEmotion("INVERTED", "NORMAL", "SMALL", 2, true)
+                        elseif tick == 35 then
+                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "SMALL", 2, true)
+                        elseif tick == 38 then
+                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "CLOSED", 16, true)
+                        elseif tick == 54 then
+                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED", 2, true)
+                        elseif tick == 56 then
+                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "CLOSED", 2, true)
+                        elseif tick == 58 then
+                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "ANGRY", 28, true)
                         end
                     end;
 
                     onPostAnimation = function (self, forcedStop)
                         models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:moveTo(models.models.main.Avatar.UpperBody.Body)
+                        models.models.main.Avatar.UpperBody.Body.Gun.Grenade:setVisible(false)
+                        models.models.main.Avatar.UpperBody.Body.Gun.GameDisplay.Display:setColor()
+                        models.models.main.Avatar.UpperBody.Body.Gun.GameDisplay.DisplayFlash:setVisible(false)
                         models.models.main.Avatar.UpperBody.Body.Gun:setVisible(self.parent.gun.currentGunPosition ~= "NONE")
                     end;
                 };

@@ -144,8 +144,15 @@
 		"models.models.gun.Gun": {
 			"moveTo": "models.models.main.Avatar.UpperBody.Body"
 		},
+		"models.models.gun.Gun.Grenade": {
+			"visible": false
+		},
 		"models.models.gun.Gun.GameDisplay.Display": {
 			"primaryRenderType": "EMISSIVE_SOLID"
+		},
+		"models.models.gun.Gun.GameDisplay.DisplayFlash": {
+			"primaryRenderType": "EMISSIVE_SOLID",
+			"visible": false
 		},
 		"models.models.placement_object.PlacementObject": {
 			"visible": false
