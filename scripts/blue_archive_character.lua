@@ -369,26 +369,29 @@ BlueArchiveCharacter = {
 
                 camera = {
                     start = {
-                        rot = vectors.vec3(0, 180, 0);
-                        pos = vectors.vec3(0, 28, -64);
+                        rot = vectors.vec3(-10, 130, 0);
+                        pos = vectors.vec3(9, 22, -12.7);
                     };
 
                     fin = {
-                        rot = vectors.vec3(0, 180, 0);
-                        pos = vectors.vec3(0, 28, -64);
+                        rot = vectors.vec3(0, 180, -15);
+                        pos = vectors.vec3(0, 24, -16.7);
                     };
                 };
 
                 callbacks = {
-                    onPreAnimation = function (self)
-                    end;
-
                     onAnimationTick = function (self, tick)
                         if tick == 0 then
                             models.models.main.Avatar.UpperBody.Body.Gun:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setPos()
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setRot()
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setVisible(true)
+                        end
+
+                        if tick == 6500 then
+                            for _, modelName in ipairs(self.exSkill[1].animations) do
+                                animations["models."..modelName]["ex_skill_1"]:pause()
+                            end
                         end
                     end;
 
