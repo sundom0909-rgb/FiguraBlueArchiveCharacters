@@ -388,7 +388,7 @@ BlueArchiveCharacter = {
 
                 models = {};
 
-                animations = {"main", "gun"};
+                animations = {"main", "gun", "ex_skill_1"};
 
                 camera = {
                     start = {
@@ -404,6 +404,20 @@ BlueArchiveCharacter = {
 
                 callbacks = {
                     onPreAnimation = function (self)
+                        if not self.exSkill[1].init then
+                            if host:isHost() then
+                                models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:newText("ex_skill_1_action_text"):setAlignment("CENTER"):setOutlineColor(0.33, 1, 1)
+                                models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelTextAnchor:newText("ex_skill_1_cancel_text"):setText("CANCEL"):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.33, 1, 1)
+                                models.models.ex_skill_1.Background.Background2.Action.ActionBackground.Background:setColor(0.055, 0.341, 0.702)
+                                models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.Background:setColor(0.698, 0.016, 0.184)
+                            end
+                            self.exSkill[1].init = false
+                        end
+                        if host:isHost() then
+                            local randomNum = math.random()
+                            self.exSkill[1].actionTextIndex = randomNum < 0.95 and 1 or (randomNum < 0.975 and 2 or 3)
+                            models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setText("§7"..(self.exSkill[1].actionTextIndex == 1 and "ACTION" or (self.exSkill[1].actionTextIndex == 2 and "MINE" or "CRAFT")))
+                        end
                         self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "SHOCK", 9, true)
                     end;
 
@@ -424,16 +438,40 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "FRUST", 8, true)
                         elseif tick == 21 then
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.GameDisplay.Display:setColor()
+                            if host:isHost() then
+                                models.models.ex_skill_1.Background:setVisible(true)
+                                local windowSize = client:getScaledWindowSize()
+                                local barWidthScale = 0.135 * windowSize.x
+                                for _, modelPart in ipairs({models.models.ex_skill_1.Background.Background2.Action.ActionBackground, models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground}) do
+                                    modelPart:setScale(barWidthScale, 1, 1)
+                                end
+                                models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setScale(vectors.vec3(1 / barWidthScale, 1, 1):scale(0.4)):setPos(-15 * (1 / barWidthScale), 1.4, 0)
+                                models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelTextAnchor:getTask("ex_skill_1_cancel_text"):setScale(vectors.vec3(1 / barWidthScale, 1, 1):scale(0.4)):setPos(-15 * (1 / barWidthScale), 1.4, 0)
+                                events.RENDER:register(function ()
+                                    local backgroundPos = vectors.rotateAroundAxis(player:getBodyYaw() + 180, renderer:getCameraOffsetPivot():copy():add(0, 1.62, 0):add(client:getCameraDir():copy():scale(1.3)), 0, 1, 0):scale(16 / 0.9375)
+                                    models.models.ex_skill_1.Background:setOffsetPivot(backgroundPos)
+                                    models.models.ex_skill_1.Background.Background2:setPos(backgroundPos)
+                                    models.models.ex_skill_1.Background.Background2:setRot(0, 0, renderer:getCameraRot().z)
+                                end, "ex_skill_1_background_render")
+                            end
                         elseif tick == 26 then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "FRUST", 3, true)
                         elseif tick == 29 then
                             self.parent.faceParts:setEmotion("INVERTED", "NORMAL", "SMALL", 4, true)
                         elseif tick == 33 then
                             self.parent.faceParts:setEmotion("INVERTED", "NORMAL", "SMALL", 2, true)
+                        elseif tick == 31 and host:isHost() then
+                            models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text")models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setText(self.exSkill[1].actionTextIndex == 1 and "ACTION" or (self.exSkill[1].actionTextIndex == 2 and "MINE" or "CRAFT")):setOutline(true)
+                            models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelTextAnchor:getTask("ex_skill_1_cancel_text"):setText("§7CANCEL"):setOutline(false)
+                            models.models.ex_skill_1.Background.Background2.Action.ActionBackground.Background:setVisible(true)
+                            models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.Background:setVisible(false)
                         elseif tick == 35 then
                             self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "SMALL", 2, true)
                         elseif tick == 38 then
                             self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "CLOSED", 16, true)
+                        elseif tick == 44 and host:isHost() then
+                            events.RENDER:remove("ex_skill_1_background_render")
+                            models.models.ex_skill_1.Background:setVisible(false)
                         elseif tick == 54 then
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED", 2, true)
                         elseif tick == 56 then
@@ -449,8 +487,29 @@ BlueArchiveCharacter = {
                         models.models.main.Avatar.UpperBody.Body.Gun.GameDisplay.Display:setColor()
                         models.models.main.Avatar.UpperBody.Body.Gun.GameDisplay.DisplayFlash:setVisible(false)
                         models.models.main.Avatar.UpperBody.Body.Gun:setVisible(self.parent.gun.currentGunPosition ~= "NONE")
+                        if host:isHost() then
+                            models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setOutline(false)
+                            models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelTextAnchor:getTask("ex_skill_1_cancel_text"):setText("CANCEL"):setOutline(true)
+                            models.models.ex_skill_1.Background.Background2.Action.ActionBackground.Background:setVisible(false)
+                            models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.Background:setVisible(true)
+                        end
+                        if forcedStop then
+                            if host:isHost() then
+                                events.RENDER:remove("ex_skill_1_background_render")
+                                models.models.ex_skill_1.Background:setVisible(false)
+                            end
+                        end
                     end;
                 };
+
+                ---このExスキルの初期化処理が行われたかどうか
+                ---@type boolean
+                init = false;
+
+                ---「Action」の項目に出すテキスト
+                ---1.ACTION, 2.MINE, 3.CRAFT
+                ---@type integer
+                actionTextIndex = 1;
             };
         }
 
