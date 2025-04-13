@@ -440,18 +440,24 @@ BlueArchiveCharacter = {
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.GameDisplay.Display:setColor()
                             if host:isHost() then
                                 models.models.ex_skill_1.Background:setVisible(true)
-                                local windowSize = client:getScaledWindowSize()
-                                local barWidthScale = 0.135 * windowSize.x
+                                local barWidthScale = 0.135 * client:getScaledWindowSize().x
                                 for _, modelPart in ipairs({models.models.ex_skill_1.Background.Background2.Action.ActionBackground, models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground}) do
                                     modelPart:setScale(barWidthScale, 1, 1)
                                 end
-                                models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setScale(vectors.vec3(1 / barWidthScale, 1, 1):scale(0.4)):setPos(-15 * (1 / barWidthScale), 1.4, 0)
-                                models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelTextAnchor:getTask("ex_skill_1_cancel_text"):setScale(vectors.vec3(1 / barWidthScale, 1, 1):scale(0.4)):setPos(-15 * (1 / barWidthScale), 1.4, 0)
+                                for _, modelPart in ipairs({models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor, models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelTextAnchor}) do
+                                    modelPart:setPos(1 / barWidthScale * -15, 0, 0)
+                                end
+                                models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setPos(0, 1.4, 0)
+                                models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelTextAnchor:getTask("ex_skill_1_cancel_text"):setPos(0, 1.4, 0)
                                 events.RENDER:register(function ()
                                     local backgroundPos = vectors.rotateAroundAxis(player:getBodyYaw() + 180, renderer:getCameraOffsetPivot():copy():add(0, 1.62, 0):add(client:getCameraDir():copy():scale(1.3)), 0, 1, 0):scale(16 / 0.9375)
                                     models.models.ex_skill_1.Background:setOffsetPivot(backgroundPos)
                                     models.models.ex_skill_1.Background.Background2:setPos(backgroundPos)
                                     models.models.ex_skill_1.Background.Background2:setRot(0, 0, renderer:getCameraRot().z)
+                                    local actionTextScale = models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getScale().x
+                                    models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setScale(vectors.vec3(1 / barWidthScale, 1, 1):scale(0.4 * actionTextScale))
+                                    local cancelTextScale = models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelTextAnchor:getScale().x
+                                    models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelTextAnchor:getTask("ex_skill_1_cancel_text"):setScale(vectors.vec3(1 / barWidthScale, 1, 1):scale(0.4 * cancelTextScale))
                                 end, "ex_skill_1_background_render")
                             end
                         elseif tick == 26 then
@@ -461,14 +467,18 @@ BlueArchiveCharacter = {
                         elseif tick == 33 then
                             self.parent.faceParts:setEmotion("INVERTED", "NORMAL", "SMALL", 2, true)
                         elseif tick == 31 and host:isHost() then
-                            models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text")models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setText(self.exSkill[1].actionTextIndex == 1 and "ACTION" or (self.exSkill[1].actionTextIndex == 2 and "MINE" or "CRAFT")):setOutline(true)
+                            models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setText(self.exSkill[1].actionTextIndex == 1 and "ACTION" or (self.exSkill[1].actionTextIndex == 2 and "MINE" or "CRAFT")):setOutline(true)
                             models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelTextAnchor:getTask("ex_skill_1_cancel_text"):setText("§7CANCEL"):setOutline(false)
                             models.models.ex_skill_1.Background.Background2.Action.ActionBackground.Background:setVisible(true)
                             models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.Background:setVisible(false)
                         elseif tick == 35 then
                             self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "SMALL", 2, true)
+                        elseif tick == 36 and host:isHost() then
+                            models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setOutlineColor(1, 1, 1)
                         elseif tick == 38 then
                             self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "CLOSED", 16, true)
+                        elseif tick == 40 and host:isHost() then
+                            models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setOutlineColor(0.33, 1, 1)
                         elseif tick == 44 and host:isHost() then
                             events.RENDER:remove("ex_skill_1_background_render")
                             models.models.ex_skill_1.Background:setVisible(false)
@@ -497,6 +507,7 @@ BlueArchiveCharacter = {
                             if host:isHost() then
                                 events.RENDER:remove("ex_skill_1_background_render")
                                 models.models.ex_skill_1.Background:setVisible(false)
+                                models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setOutlineColor(0.33, 1, 1)
                             end
                         end
                     end;
