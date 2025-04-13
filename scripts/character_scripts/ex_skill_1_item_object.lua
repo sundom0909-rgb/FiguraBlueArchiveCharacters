@@ -27,7 +27,7 @@ ExSkill1ItemObject = {
         instance.spriteIndex = instance.spriteType == "CROSS" and 5 or (instance.spriteType == "DOT" and 6 or math.random(1, 4))
         instance.currentPos = player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1 + 180, 0, 2, 1, 0, 1, 0))
         instance.nextPos = instance.currentPos
-        instance.velocity = vectors.rotateAroundAxis(player:getBodyYaw() * -1, vectors.rotateAroundAxis(instance.spriteType == "ITEM" and launchRot or (math.random() * 360), instance.spriteType == "ITEM" and (math.random() * 0.5 + 0.25) or (math.random() * 0.75), 0, 0, 0, 0, 1), 0, 1, 0)
+        instance.velocity = vectors.rotateAroundAxis(player:getBodyYaw() * -1, vectors.rotateAroundAxis(instance.spriteType == "ITEM" and launchRot or (math.random() * 360), instance.spriteType == "ITEM" and (math.random() * 0.3 + 0.2) or (math.random() * 0.5), 0, 0, 0, 0, 1):mul(client:getScaledWindowSize().x / client:getScaledWindowSize().y, 1, 1), 0, 1, 0)
         instance.lifeTimeCount = 25
 
         instance.callbacks = {
