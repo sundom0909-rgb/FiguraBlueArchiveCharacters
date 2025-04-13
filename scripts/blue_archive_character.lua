@@ -423,6 +423,7 @@ BlueArchiveCharacter = {
                             models.models.ex_skill_1.Gui.NameArea:setPos(client:getScaledWindowSize():scale(-1):augmented(0))
                         end
                         self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "SHOCK", 9, true)
+                        sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:ui.toast.in"), player:getPos(), 1, 1)
                     end;
 
                     onAnimationTick = function (self, tick)
@@ -436,12 +437,19 @@ BlueArchiveCharacter = {
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setVisible(true)
                         end
 
-                        if tick == 9 then
+                        if tick == 8 then
+                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.GameDisplay.ExSkill1ParticleAnchor)
+                            for i = -2, 5 do
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setScale(0.25):setVelocity(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0.01, i * 0.01, -0.025, 0, 1, 0)):setColor(0.996, 1, 0.039)
+                            end
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.chiseled_bookshelf.insert"), anchorPos, 0.5, 5)
+                        elseif tick == 9 then
                             self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "FRUST", 9, true)
                         elseif tick == 18 then
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "FRUST", 8, true)
                         elseif tick == 21 then
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.GameDisplay.Display:setColor()
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.GameDisplay), 0.25, 2)
                             if host:isHost() then
                                 models.models.ex_skill_1.Background:setVisible(true)
                                 local barWidthScale = 0.135 * client:getScaledWindowSize().x
@@ -475,10 +483,12 @@ BlueArchiveCharacter = {
                             models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelTextAnchor:getTask("ex_skill_1_cancel_text"):setText("§7CANCEL"):setOutline(false)
                             models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionBackground:setVisible(true)
                             models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelBackground:setVisible(false)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:ui.button.click"), player:getPos(), 0.25, 1.5)
                         elseif tick == 35 then
                             self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "SMALL", 2, true)
                         elseif tick == 36 and host:isHost() then
                             models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setOutlineColor(1, 1, 1)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:ui.button.click"), player:getPos(), 0.5, 1)
                         elseif tick == 38 then
                             self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "CLOSED", 16, true)
                         elseif tick == 40 and host:isHost() then
@@ -486,6 +496,8 @@ BlueArchiveCharacter = {
                         elseif tick == 44 and host:isHost() then
                             events.RENDER:remove("ex_skill_1_background_render")
                             models.models.ex_skill_1.Background:setVisible(false)
+                        elseif tick == 47 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 1, 1.5)
                         elseif tick == 54 then
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED", 2, true)
                         elseif tick == 56 then
@@ -510,6 +522,12 @@ BlueArchiveCharacter = {
                             for _ = 1, 10 do
                                 self.parent.itemSpriteManager:spawn("DOT")
                             end
+                        elseif tick == 70 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bit"), player:getPos(), 1, 1.5)
+                        elseif tick == 72 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bit"), player:getPos(), 1, 1.75)
+                        elseif tick == 74 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bit"), player:getPos(), 1, 2)
                         end
                     end;
 
