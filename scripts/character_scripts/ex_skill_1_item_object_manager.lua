@@ -1,6 +1,11 @@
+---@alias ExSkill1ItemObjectManager.SpriteType
+---| "ITEM" # アイテムテクスチャ
+---| "CROSS" # 十字
+---| "DOT" # ドット
+
 ---@class ExSkill1ItemObjectManager : SpawnObjectManager Exスキル1で使用するアイテムオブジェクトのマネージャークラス
----@field public getObject fun(self: ExSkill1ItemObjectManager, launchRot: number): ExSkill1ItemObject アイテムオブジェクトのインスタンスを生成して返す
----@field public spawn fun(self: ExSkill1ItemObjectManager, launchRot: number) アイテムオブジェクトを生成する
+---@field public getObject fun(self: ExSkill1ItemObjectManager, type: ExSkill1ItemObjectManager.SpriteType, launchRot?: number): ExSkill1ItemObject アイテムオブジェクトのインスタンスを生成して返す
+---@field public spawn fun(self: ExSkill1ItemObjectManager, type: ExSkill1ItemObjectManager.SpriteType, launchRot?: number) アイテムオブジェクトを生成する
 
 ExSkill1ItemObjectManager = {
     ---コンストラクタ
@@ -26,16 +31,18 @@ ExSkill1ItemObjectManager = {
 
     ---アイテムオブジェクトのインスタンスを生成して返す。
     ---@param self ExSkill1ItemObjectManager
-    ---@param launchRot number スプライトの射出角度
+    ---@param type ExSkill1ItemObjectManager.SpriteType 表示するスプライトの種類
+    ---@param launchRot? number スプライトの射出角度。スプライトタイプが"ITEM"以外は無視される。
     ---@return ExSkill1ItemObject instance 生成したインスタンス
-    getObject = function (self, launchRot)
-        return ExSkill1ItemObject.new(self.parent, launchRot)
+    getObject = function (self, type, launchRot)
+        return ExSkill1ItemObject.new(self.parent, type, launchRot)
     end;
 
     ---アイテムオブジェクトを生成する。
     ---@param self ExSkill1ItemObjectManager
-    ---@param launchRot number スプライトの射出角度
-    spawn = function (self, launchRot)
-        SpawnObjectManager.spawn(self, launchRot)
+    ---@param type ExSkill1ItemObjectManager.SpriteType 表示するスプライトの種類
+    ---@param launchRot? number スプライトの射出角度。スプライトタイプが"ITEM"以外は無視される。
+    spawn = function (self, type, launchRot)
+        SpawnObjectManager.spawn(self, type, launchRot)
     end;
 }

@@ -502,7 +502,13 @@ BlueArchiveCharacter = {
                             end
                         elseif tick == 61 then
                             for i = 0, 5 do
-                                self.parent.itemSpriteManager:spawn(i * 60 + math.random() * 60 - 30)
+                                self.parent.itemSpriteManager:spawn("ITEM", i * 60 + math.random() * 60 - 30)
+                            end
+                            for _ = 1, 5 do
+                                self.parent.itemSpriteManager:spawn("CROSS")
+                            end
+                            for _ = 1, 10 do
+                                self.parent.itemSpriteManager:spawn("DOT")
                             end
                         end
                     end;
