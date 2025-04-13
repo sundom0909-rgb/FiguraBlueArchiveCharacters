@@ -386,7 +386,7 @@ BlueArchiveCharacter = {
 
                 formationType = "STRIKER";
 
-                models = {};
+                models = {models.models.main.Avatar.Head.ShineRing};
 
                 animations = {"main", "gun", "ex_skill_1"};
 
