@@ -408,8 +408,11 @@ BlueArchiveCharacter = {
                             if host:isHost() then
                                 models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:newText("ex_skill_1_action_text"):setAlignment("CENTER"):setOutlineColor(0.33, 1, 1)
                                 models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelTextAnchor:newText("ex_skill_1_cancel_text"):setText("CANCEL"):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.33, 1, 1)
-                                models.models.ex_skill_1.Background.Background2.Action.ActionBackground.Background:setColor(0.055, 0.341, 0.702)
-                                models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.Background:setColor(0.698, 0.016, 0.184)
+                                models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionBackground:setColor(0.055, 0.341, 0.702)
+                                models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelBackground:setColor(0.698, 0.016, 0.184)
+                                models.models.ex_skill_1.Gui.NameArea:setScale(4, 4, 4)
+                                models.models.ex_skill_1.Gui.NameArea.NameAreaRight:newText("ex_skill_1_name_text_1"):setText("§lYUZU"):setPos(30, 5.5, -1):setScale(1.2, 1.2, 1):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.33, 1, 1)
+                                models.models.ex_skill_1.Gui.NameArea.NameAreaRight:newText("ex_skill_1_name_text_2"):setText("§lYUZU"):setPos(30, 4.5, -0.5):setScale(1.2, 1.2, 1):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.33, 0.5, 0.5)
                             end
                             self.exSkill[1].init = false
                         end
@@ -417,6 +420,7 @@ BlueArchiveCharacter = {
                             local randomNum = math.random()
                             self.exSkill[1].actionTextIndex = randomNum < 0.95 and 1 or (randomNum < 0.975 and 2 or 3)
                             models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setText("§7"..(self.exSkill[1].actionTextIndex == 1 and "ACTION" or (self.exSkill[1].actionTextIndex == 2 and "MINE" or "CRAFT")))
+                            models.models.ex_skill_1.Gui.NameArea:setPos(client:getScaledWindowSize():scale(-1):augmented(0))
                         end
                         self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "SHOCK", 9, true)
                     end;
@@ -469,8 +473,8 @@ BlueArchiveCharacter = {
                         elseif tick == 31 and host:isHost() then
                             models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setText(self.exSkill[1].actionTextIndex == 1 and "ACTION" or (self.exSkill[1].actionTextIndex == 2 and "MINE" or "CRAFT")):setOutline(true)
                             models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelTextAnchor:getTask("ex_skill_1_cancel_text"):setText("§7CANCEL"):setOutline(false)
-                            models.models.ex_skill_1.Background.Background2.Action.ActionBackground.Background:setVisible(true)
-                            models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.Background:setVisible(false)
+                            models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionBackground:setVisible(true)
+                            models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelBackground:setVisible(false)
                         elseif tick == 35 then
                             self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "SMALL", 2, true)
                         elseif tick == 36 and host:isHost() then
@@ -488,6 +492,14 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "CLOSED", 2, true)
                         elseif tick == 58 then
                             self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "ANGRY", 28, true)
+                            if host:isHost() then
+                                models.models.ex_skill_1.Gui:setVisible(true)
+                                local windowSize = client:getScaledWindowSize()
+                                events.RENDER:register(function ()
+                                    models.models.ex_skill_1.Gui.NameArea.NameAreaLeft:setPos(models.models.ex_skill_1.Gui.NameArea.NameAreaLeftAnchor:getAnimPos().x * (windowSize.x / 427), 24.5, 0)
+                                    models.models.ex_skill_1.Gui.NameArea.NameAreaRight:setPos(models.models.ex_skill_1.Gui.NameArea.NameAreaRightAnchor:getAnimPos().x * (windowSize.x / 427), 17, 0)
+                                end, "ex_skill_1_name_render")
+                            end
                         end
                     end;
 
@@ -498,10 +510,12 @@ BlueArchiveCharacter = {
                         models.models.main.Avatar.UpperBody.Body.Gun.GameDisplay.DisplayFlash:setVisible(false)
                         models.models.main.Avatar.UpperBody.Body.Gun:setVisible(self.parent.gun.currentGunPosition ~= "NONE")
                         if host:isHost() then
+                            events.RENDER:remove("ex_skill_1_name_render")
+                            models.models.ex_skill_1.Gui:setVisible(false)
                             models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setOutline(false)
                             models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelTextAnchor:getTask("ex_skill_1_cancel_text"):setText("CANCEL"):setOutline(true)
-                            models.models.ex_skill_1.Background.Background2.Action.ActionBackground.Background:setVisible(false)
-                            models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.Background:setVisible(true)
+                            models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionBackground:setVisible(false)
+                            models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelBackground:setVisible(true)
                         end
                         if forcedStop then
                             if host:isHost() then

@@ -159,7 +159,10 @@
 			"parentType": "Camera",
 			"primaryRenderType": "EMISSIVE_SOLID"
 		},
-		"models.models.ex_skill_1.Background.Background2.Action.ActionBackground.Background": {
+		"models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionBackground": {
+			"visible": false
+		},
+		"models.models.ex_skill_1.Gui": {
 			"visible": false
 		},
 		"models.models.placement_object.PlacementObject": {
