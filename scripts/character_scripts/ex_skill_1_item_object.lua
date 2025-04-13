@@ -35,7 +35,7 @@ ExSkill1ItemObject = {
             onInit = function (self)
                 self.spriteTask:setTexture(textures["textures.ex_skill_1"])
                 self.spriteTask:setDimensions(textures["textures.ex_skill_1"]:getDimensions())
-                self.spriteTask:setLight(15)
+                self.spriteTask:setRenderType("CUTOUT_EMISSIVE_SOLID")
                 if self.spriteIndex == 1 then
                     self.spriteTask:setRegion(12, 21)
                     self.spriteTask:setUVPixels(0, 17)
