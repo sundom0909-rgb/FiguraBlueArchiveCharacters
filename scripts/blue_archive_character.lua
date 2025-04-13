@@ -500,6 +500,10 @@ BlueArchiveCharacter = {
                                     models.models.ex_skill_1.Gui.NameArea.NameAreaRight:setPos(models.models.ex_skill_1.Gui.NameArea.NameAreaRightAnchor:getAnimPos().x * (windowSize.x / 427), 17, 0)
                                 end, "ex_skill_1_name_render")
                             end
+                        elseif tick == 61 then
+                            for i = 0, 5 do
+                                self.parent.itemSpriteManager:spawn(i * 60 + math.random() * 60 - 30)
+                            end
                         end
                     end;
 
@@ -518,6 +522,7 @@ BlueArchiveCharacter = {
                             models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelBackground:setVisible(true)
                         end
                         if forcedStop then
+                            self.parent.itemSpriteManager:removeAll()
                             if host:isHost() then
                                 events.RENDER:remove("ex_skill_1_background_render")
                                 models.models.ex_skill_1.Background:setVisible(false)
