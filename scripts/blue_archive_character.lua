@@ -579,6 +579,17 @@ BlueArchiveCharacter = {
 
                     exSkill = 1;
                 };
+
+                {
+                    name = "maid";
+
+                    displayName = {
+                        en_us = "Maid";
+                        ja_jp = "メイド";
+                    };
+
+                    exSkill = 1;
+                };
             };
 
             callbacks = {
