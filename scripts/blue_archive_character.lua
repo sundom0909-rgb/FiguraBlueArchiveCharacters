@@ -327,7 +327,7 @@ BlueArchiveCharacter = {
         }
 
         instance.skirt = {
-
+            skirtModels = {models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1}
         }
 
         instance.gun = {
@@ -593,6 +593,31 @@ BlueArchiveCharacter = {
             };
 
             callbacks = {
+                onChange = function (self)
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.CMaidH, models.models.main.Avatar.UpperBody.Body.CMaidB, models.models.main.Avatar.UpperBody.Arms.RightArm.CMaidRA, models.models.main.Avatar.UpperBody.Arms.LeftArm.CMaidLA}) do
+                        modelPart:setVisible(true)
+                    end
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.HairTip1, models.models.main.Avatar.UpperBody.Body.Hairs, models.models.main.Avatar.UpperBody.Body.MilleniumLogo, models.models.main.Avatar.UpperBody.Body.IDCard, models.models.main.Avatar.UpperBody.Body.GameConsole, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.MilleniumPatch}) do
+                        modelPart:setVisible(false)
+                    end
+                    self.parent.costume.setCostumeTextureOffset(1)
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer}) do
+                        modelPart:setUVPixels(0, 16)
+                    end
+                end;
+
+                onReset = function (self)
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.HairTip1, models.models.main.Avatar.UpperBody.Body.Hairs, models.models.main.Avatar.UpperBody.Body.MilleniumLogo, models.models.main.Avatar.UpperBody.Body.IDCard, models.models.main.Avatar.UpperBody.Body.GameConsole, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.MilleniumPatch}) do
+                        modelPart:setVisible(true)
+                    end
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.CMaidH, models.models.main.Avatar.UpperBody.Body.CMaidB, models.models.main.Avatar.UpperBody.Arms.RightArm.CMaidRA, models.models.main.Avatar.UpperBody.Arms.LeftArm.CMaidLA}) do
+                        modelPart:setVisible(false)
+                    end
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer}) do
+                        modelPart:setUVPixels()
+                    end
+                end;
+
                 onArmorChange = function (_, parts, isVisible)
                     if parts == "CHEST_PLATE" then
                         if isVisible then
