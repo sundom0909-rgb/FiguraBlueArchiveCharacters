@@ -1178,13 +1178,13 @@ BlueArchiveCharacter = {
 
                             local shouldAdjustLegs = skirtVisible and not shouldHideLegs
                             if shouldAdjustLegs and not self.costume.costumes[2].shouldAdjustLegsPrev then
-                                events.RENDER:register(function ()
+                                events.RENDER:register(function (delta)
                                     local rightLegRotX = vanilla_model.RIGHT_LEG:getOriginRot().x
                                     models.models.main.Avatar.LowerBody.Legs.RightLeg:setRot(rightLegRotX * -0.45, 0, 0)
                                     models.models.main.Avatar.LowerBody.Legs.LeftLeg:setRot(vanilla_model.LEFT_LEG:getOriginRot().x * -0.45, 0, 0)
                                     local rightLegRotAbs = math.abs(rightLegRotX)
                                     local playerPose = player:getPose()
-                                    local skirtFlipVal = math.min(math.abs(self.parent.physics.velocityAverage[7][2]) * 0.00025 + ((playerPose == "SWIMMING" or playerPose == "FALL_FLYING") and 0 or math.max(self.parent.physics.velocityAverage[2][2] * -0.25, 0)), 0.5)
+                                    local skirtFlipVal = math.min(math.abs(self.parent.physics.getValueBetweenTicks(self.parent.physics.velocityAverage[7], delta)) * 0.00025 + ((playerPose == "SWIMMING" or playerPose == "FALL_FLYING") and 0 or math.max(self.parent.physics.getValueBetweenTicks(self.parent.physics.velocityAverage[2], delta) * -0.25, 0)), 0.5)
                                     models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1:setScale(1 + skirtFlipVal, 1 - skirtFlipVal, rightLegRotAbs * 0.001 + 1 + skirtFlipVal)
                                     models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1.Skirt2:setScale(rightLegRotAbs * -0.0001 + 1, 1, rightLegRotAbs * 0.001 + 1)
                                     models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1.Skirt2.Skirt3:setScale(rightLegRotAbs * -0.0001 + 1, 1, rightLegRotAbs * 0.001 + 1)
