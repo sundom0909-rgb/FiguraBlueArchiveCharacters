@@ -604,6 +604,51 @@ BlueArchiveCharacter = {
                     for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer}) do
                         modelPart:setUVPixels(0, 16)
                     end
+
+                    events.TICK:register(function ()
+                        if not client:isPaused() then
+                            local skirtVisible = models.models.main.Avatar.UpperBody.Body.CMaidB:getVisible()
+                            local shouldHideLegs = skirtVisible and player:getVehicle() ~= nil
+                            if shouldHideLegs and not self.costume.costumes[2].shouldHideLegsPrev then
+                                models.models.main.Avatar.LowerBody.Legs:setVisible(false)
+                                models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1:setScale(1.5, 0.5, 1.5)
+                                for _, modelPart in ipairs({ models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1.Skirt2, models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1.Skirt2.Skirt3, models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1.Skirt2.Skirt3.Skirt4}) do
+                                    modelPart:setScale()
+                                end
+                            elseif not shouldHideLegs and self.costume.costumes[2].shouldHideLegsPrev then
+                                models.models.main.Avatar.LowerBody.Legs:setVisible(true)
+                            end
+
+                            local shouldAdjustLegs = skirtVisible and not shouldHideLegs
+                            if shouldAdjustLegs and not self.costume.costumes[2].shouldAdjustLegsPrev then
+                                events.RENDER:register(function (delta)
+                                    local rightLegRotX = vanilla_model.RIGHT_LEG:getOriginRot().x
+                                    models.models.main.Avatar.LowerBody.Legs.RightLeg:setRot(rightLegRotX * -0.45, 0, 0)
+                                    models.models.main.Avatar.LowerBody.Legs.LeftLeg:setRot(vanilla_model.LEFT_LEG:getOriginRot().x * -0.45, 0, 0)
+                                    local rightLegRotAbs = math.abs(rightLegRotX)
+                                    local playerPose = player:getPose()
+                                    local skirtFlipVal = math.min(math.abs(self.parent.physics.getValueBetweenTicks(self.parent.physics.velocityAverage[7], delta)) * 0.00025 + ((playerPose == "SWIMMING" or playerPose == "FALL_FLYING") and 0 or math.max(self.parent.physics.getValueBetweenTicks(self.parent.physics.velocityAverage[2], delta) * -0.25, 0)), 0.5)
+                                    models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1:setScale(1 + skirtFlipVal, 1 - skirtFlipVal * 0.75, rightLegRotAbs * 0.001 + 1 + skirtFlipVal)
+                                    models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1.Skirt2:setScale(rightLegRotAbs * -0.0001 + 1, 1, rightLegRotAbs * 0.001 + 1)
+                                    models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1.Skirt2.Skirt3:setScale(rightLegRotAbs * -0.0001 + 1, 1, rightLegRotAbs * 0.001 + 1)
+                                    models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1.Skirt2.Skirt3.Skirt4:setScale(rightLegRotAbs * -0.00005 + 1, 1, rightLegRotAbs * 0.0005 + 1)
+                                end, "costume_maid_render")
+                            elseif not shouldAdjustLegs and self.costume.costumes[2].shouldAdjustLegsPrev then
+                                events.RENDER:remove("costume_maid_render")
+                                for _, modelPart in ipairs({models.models.main.Avatar.LowerBody.Legs.RightLeg, models.models.main.Avatar.LowerBody.Legs.LeftLeg}) do
+                                    modelPart:setRot()
+                                end
+                                if not shouldHideLegs then
+                                    for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1, models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1.Skirt2, models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1.Skirt2.Skirt3, models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1.Skirt2.Skirt3.Skirt4}) do
+                                        modelPart:setScale()
+                                    end
+                                end
+                            end
+
+                            self.costume.costumes[2].shouldHideLegsPrev = shouldHideLegs
+                            self.costume.costumes[2].shouldAdjustLegsPrev = shouldAdjustLegs
+                        end
+                    end,"costume_maid_tick")
                 end;
 
                 onReset = function (self)
@@ -812,6 +857,493 @@ BlueArchiveCharacter = {
                         };
                     };
                 };
+
+                {
+                    models = {models.models.main.Avatar.Head.CMaidH.HairTail};
+
+                    x = {
+                        vertical = {
+                            min = -170;
+                            neutral = 0;
+                            max = 30;
+                            sneakOffset = -20;
+                            headRotMultiplayer = -1;
+
+                            headX = {
+                                multiplayer = -80;
+                                min = -90;
+                                max = 10;
+                            };
+
+                            headRot = {
+                                multiplayer = 0.05;
+                                min = -90;
+                                max = 0;
+                            };
+
+                            bodyY = {
+                                multiplayer = 80;
+                                min = -170;
+                                max = 0;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -135;
+                            neutral = -30;
+                            max = -30;
+
+                            headX = {
+                                multiplayer = -80;
+                                min = -45;
+                                max = -30;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.Head.CMaidH.HairTail.HairTailZPivot};
+
+                    z = {
+                        vertical = {
+                            min = -80;
+                            neutral = 0;
+                            max = 80;
+
+                            headZ = {
+                                multiplayer = -80;
+                                min = -80;
+                                max = 80;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.Head.CMaidH.HairBandRibbon.HairBandRibbonTopLeftYPivot};
+
+                    y = {
+                        vertical = {
+                            min = 0;
+                            neutral = 0;
+                            max = 80;
+                            headRotMultiplayer = 0.5;
+
+                            headX = {
+                                multiplayer = 160;
+                                min = 0;
+                                max = 80;
+                            };
+
+                            headRot = {
+                                multiplayer = -0.1;
+                                min = 0;
+                                max = 80;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.Head.CMaidH.HairBandRibbon.HairBandRibbonTopLeftYPivot.HairBandRibbonTopLeftZPivot};
+
+                    z = {
+                        vertical = {
+                            min = -75;
+                            neutral = 0;
+                            max = 27.5;
+
+                            bodyY = {
+                                multiplayer = 20;
+                                min = -75;
+                                max = 27.5;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.Head.CMaidH.HairBandRibbon.HairBandRibbonTopRightYPivot};
+
+                    y = {
+                        vertical = {
+                            min = -80;
+                            neutral = 0;
+                            max = 0;
+                            headRotMultiplayer = -0.5;
+
+                            headX = {
+                                multiplayer = -160;
+                                min = -80;
+                                max = 0;
+                            };
+
+                            headRot = {
+                                multiplayer = 0.1;
+                                min = -80;
+                                max = 0;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.Head.CMaidH.HairBandRibbon.HairBandRibbonTopRightYPivot.HairBandRibbonTopRightZPivot};
+
+                    z = {
+                        vertical = {
+                            min = -27.5;
+                            neutral = 0;
+                            max = 75;
+
+                            bodyY = {
+                                multiplayer = -20;
+                                min = -27.5;
+                                max = 75;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.Head.CMaidH.HairBandRibbon.HairBandRibbonBottom.HairBandRibbonBottomLeftXPivot, models.models.main.Avatar.Head.CMaidH.HairBandRibbon.HairBandRibbonBottom.HairBandRibbonBottomRightXPivot};
+
+                    x = {
+                        vertical = {
+                            min = -170;
+                            neutral = 0;
+                            max = 0;
+                            headRotMultiplayer = -1;
+
+                            headX = {
+                                multiplayer = -160;
+                                min = -80;
+                                max = 0;
+                            };
+
+                            headRot = {
+                                multiplayer = 0.1;
+                                min = -80;
+                                max = 0;
+                            };
+
+                            bodyY = {
+                                multiplayer = 160;
+                                min = -170;
+                                max = 0;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.Head.CMaidH.HairBandRibbon.HairBandRibbonBottom.HairBandRibbonBottomLeftXPivot.HairBandRibbonBottomLeftZPivot};
+
+                    z = {
+                        vertical = {
+                            min = 0;
+                            neutral = 0;
+                            max = 30;
+
+                            headX = {
+                                multiplayer = 20;
+                                min = 0;
+                                max = 30;
+                            };
+
+                            headRot = {
+                                multiplayer = -0.1;
+                                min = 0;
+                                max = 30;
+                            };
+
+                            bodyY = {
+                                multiplayer = 20;
+                                min = 0;
+                                max = 30;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.Head.CMaidH.HairBandRibbon.HairBandRibbonBottom.HairBandRibbonBottomRightXPivot.HairBandRibbonBottomRightZPivot};
+
+                    z = {
+                        vertical = {
+                            min = -30;
+                            neutral = 0;
+                            max = 0;
+
+                            headX = {
+                                multiplayer = -20;
+                                min = -30;
+                                max = 0;
+                            };
+
+                            headRot = {
+                                multiplayer = 0.1;
+                                min = -30;
+                                max = 0;
+                            };
+
+                            bodyY = {
+                                multiplayer = -20;
+                                min = -30;
+                                max = 0;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.CMaidB.BackRibbon.RibbonRight};
+
+                    y = {
+                        vertical = {
+                            min = -70;
+                            neutral = 0;
+                            max = 0;
+
+                            bodyX = {
+                                multiplayer = -40;
+                                min = -70;
+                                max = 0;
+                            };
+
+                            bodyRot = {
+                                multiplayer = 0.025;
+                                min = -70;
+                                max = 0;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -70;
+                            neutral = 0;
+                            max = 0;
+
+                            bodyY = {
+                                multiplayer = 40;
+                                min = -70;
+                                max = 0;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.CMaidB.BackRibbon.RibbonRight.RibbonRightZPivot};
+
+                    z = {
+                        vertical = {
+                            min = -20;
+                            neutral = 0;
+                            max = 20;
+
+                            bodyY = {
+                                multiplayer = -20;
+                                min = -20;
+                                max = 20;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -20;
+                            neutral = 0;
+                            max = 20;
+
+                            bodyX = {
+                                multiplayer = -20;
+                                min = -20;
+                                max = 20;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.CMaidB.BackRibbon.RibbonLeft};
+
+                    y = {
+                        vertical = {
+                            min = 0;
+                            neutral = 0;
+                            max = 70;
+
+                            bodyX = {
+                                multiplayer = 40;
+                                min = 0;
+                                max = 70;
+                            };
+
+                            bodyRot = {
+                                multiplayer = -0.025;
+                                min = 0;
+                                max = 70;
+                            };
+                        };
+
+                        horizontal = {
+                            min = 0;
+                            neutral = 0;
+                            max = 70;
+
+                            bodyY = {
+                                multiplayer = -40;
+                                min = 0;
+                                max = 70;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.CMaidB.BackRibbon.RibbonLeft.RibbonLeftZPivot};
+
+                    z = {
+                        vertical = {
+                            min = -20;
+                            neutral = 0;
+                            max = 20;
+
+                            bodyY = {
+                                multiplayer = 20;
+                                min = -20;
+                                max = 20;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -20;
+                            neutral = 0;
+                            max = 20;
+
+                            bodyX = {
+                                multiplayer = 20;
+                                min = -20;
+                                max = 20;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.CMaidB.BackRibbon.RibbonBottomRight, models.models.main.Avatar.UpperBody.Body.CMaidB.BackRibbon.RibbonBottomLeft};
+
+                    x = {
+                        vertical = {
+                            min = -140;
+                            neutral = 0;
+                            max = 0;
+                            sneakOffset = 30;
+
+                            bodyX = {
+                                multiplayer = -80;
+                                min = -60;
+                                max = 0;
+                            };
+
+                            bodyY = {
+                                multiplayer = 80;
+                                min = -140;
+                                max = 0;
+                            };
+
+                            bodyRot = {
+                                multiplayer = 0.05;
+                                min = -60;
+                                max = 0;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -140;
+                            neutral = 0;
+                            max = 0;
+
+                            bodyY = {
+                                multiplayer = 80;
+                                min = -60;
+                                max = 0;
+                            };
+                        };
+                    };
+                };
+
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.CMaidB.BackRibbon.RibbonBottomRight.RibbonBottomRightZPivot};
+
+                    z = {
+                        vertical = {
+                            min = -22.5;
+                            neutral = 0;
+                            max = 15;
+
+                            bodyX = {
+                                multiplayer = 10;
+                                min = -22.5;
+                                max = 15;
+                            };
+
+                            bodyRot = {
+                                multiplayer = -0.025;
+                                min = -22.5;
+                                max = 15;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -22.5;
+                            neutral = 0;
+                            max = 10;
+
+                            bodyX = {
+                                multiplayer = 10;
+                                min = -22.5;
+                                max = 15;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.CMaidB.BackRibbon.RibbonBottomLeft.RibbonBottomLeftZPivot};
+
+                    z = {
+                        vertical = {
+                            min = -15;
+                            neutral = 0;
+                            max = 22.5;
+
+                            bodyX = {
+                                multiplayer = -10;
+                                min = -15;
+                                max = 22.5;
+                            };
+
+                            bodyRot = {
+                                multiplayer = 0.025;
+                                min = -15;
+                                max = 22.5;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -22.5;
+                            neutral = 0;
+                            max = 10;
+
+                            bodyX = {
+                                multiplayer = 10;
+                                min = -22.5;
+                                max = 15;
+                            };
+                        };
+                    };
+                };
             };
 
             callbacks = {
@@ -829,6 +1361,14 @@ BlueArchiveCharacter = {
                         elseif model == models.models.main.Avatar.Head.HairTip1.HairTipCore.HairTipCoreZPivot then
                             models.models.main.Avatar.Head.HairTip1.HairTipCore.HairTipCoreZPivot:setRot(0, isHorizontal and rotY or rotZ, 0)
                         end
+                    elseif model == models.models.main.Avatar.Head.CMaidH.HairTail then
+                        model:setRot(math.min(model:getRot().x, 30), 0, 0)
+                    elseif model == models.models.main.Avatar.Head.CMaidH.HairBandRibbon.HairBandRibbonTopRightYPivot then
+                        model:setRot(0, math.min(model:getRot().y, 0), 0)
+                    elseif model == models.models.main.Avatar.Head.CMaidH.HairBandRibbon.HairBandRibbonTopLeftYPivot then
+                        model:setRot(0, math.max(model:getRot().y, 0), 0)
+                    elseif model == models.models.main.Avatar.Head.CMaidH.HairBandRibbon.HairBandRibbonBottom.HairBandRibbonBottomRightXPivot or model == models.models.main.Avatar.Head.CMaidH.HairBandRibbon.HairBandRibbonBottom.HairBandRibbonBottomLeftXPivot then
+                        model:setRot(math.min(model:getRot().x, 0), 0, 0)
                     end
                 end;
             };
