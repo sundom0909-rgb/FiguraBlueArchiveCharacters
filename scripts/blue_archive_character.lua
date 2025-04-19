@@ -684,6 +684,18 @@ BlueArchiveCharacter = {
                         elseif tick == 93 then
                             models.models.main.Avatar.Head.FearEffect:setVisible(false)
                             self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "SMALL", 44)
+                        elseif tick == 105 and host:isHost() then
+                            events.RENDER:register(function (delta, ctx, matrix)
+                                local opacity = (self.parent.exSkill.animationCount + delta - 1) * -0.2 + 22
+                                for _, modelPart in ipairs({models.models.ex_skill_2.YuzuChest.YuzuChestBottom.YuzuChestBottomFront, models.models.ex_skill_2.YuzuChest.TheYuzu, models.models.ex_skill_2.YuzuChest.YuzuChestTop.YuzuChestTopFront, models.models.ex_skill_2.YuzuChest.YuzuChestTop.YuzuChestHook}) do
+                                    modelPart:setOpacity(opacity)
+                                end
+                            end, "ex_skill_2_yuzu_chest")
+                        elseif tick == 110 and host:isHost() then
+                            events.RENDER:remove("ex_skill_2_yuzu_chest")
+                            for _, modelPart in ipairs({models.models.ex_skill_2.YuzuChest.YuzuChestBottom.YuzuChestBottomFront, models.models.ex_skill_2.YuzuChest.TheYuzu, models.models.ex_skill_2.YuzuChest.YuzuChestTop.YuzuChestTopFront, models.models.ex_skill_2.YuzuChest.YuzuChestTop.YuzuChestHook}) do
+                                modelPart:setOpacity(0)
+                            end
                         end
                     end;
 
@@ -691,6 +703,11 @@ BlueArchiveCharacter = {
                         models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:moveTo(models.models.main.Avatar.UpperBody.Body)
                         models.models.main.Avatar.UpperBody.Body.Gun:setVisible(self.parent.gun.currentGunPosition ~= "NONE")
                         models.script_ex_skill_2_wall_model:setVisible(false)
+                        if host:isHost() then
+                            for _, modelPart in ipairs({models.models.ex_skill_2.YuzuChest.YuzuChestBottom.YuzuChestBottomFront, models.models.ex_skill_2.YuzuChest.TheYuzu, models.models.ex_skill_2.YuzuChest.YuzuChestTop.YuzuChestTopFront, models.models.ex_skill_2.YuzuChest.YuzuChestTop.YuzuChestHook}) do
+                                modelPart:setOpacity(1)
+                            end
+                        end
                         if forcedStop then
                             models.models.main.Avatar.Head.FearEffect:setVisible(false)
                         end
