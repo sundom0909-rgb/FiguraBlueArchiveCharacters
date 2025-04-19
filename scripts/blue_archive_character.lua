@@ -7,6 +7,9 @@
 ---| "INVERTED" # 反対側を見る目
 ---| "ANGRY" # 怒った目
 ---| "CLOSED2" # 閉じた目2
+---| "FEAR" # 恐怖を感じているときの目
+---| "FEAR_CENTER" # 恐怖を感じてつつ少し反対側を見る目
+---| "CLOSED2_WITH_TEAR" # 涙ぐみつつ閉じた目2
 
 ---@alias BlueArchiveCharacter.LeftEyeTextures
 ---| "NORMAL" # 通常
@@ -16,6 +19,9 @@
 ---| "UNEQUAL" # 不等号目（><）
 ---| "ANGRY_INVERTED" # 怒りつつ反対側を見る目
 ---| "CLOSED2" # 閉じた目2
+---| "FEAR" # 恐怖を感じているときの目
+---| "FEAR_CENTER" # 恐怖を感じてつつ少し反対側を見る目
+---| "CLOSED2_WITH_TEAR" # 涙ぐみつつ閉じた目2
 
 ---@alias BlueArchiveCharacter.MouthTextures
 ---| "NORMAL" # 通常
@@ -24,6 +30,7 @@
 ---| "SMALL" # 小さく開けた口
 ---| "CLOSED" # 閉じた口
 ---| "ANGRY" # 怒った口
+---| "FEAR" # 恐怖を感じているときの口
 
 ---@alias BlueArchiveCharacter.GunPutType
 ---| "BODY" # アバターのBodyに銃を移動させる
@@ -301,6 +308,9 @@ BlueArchiveCharacter = {
                 INVERTED = vectors.vec2(6, 0);
                 ANGRY = vectors.vec2(7, 0);
                 CLOSED2 = vectors.vec2(9, 0);
+                FEAR = vectors.vec2(0, 1);
+                FEAR_CENTER = vectors.vec2(1, 1);
+                CLOSED2_WITH_TEAR = vectors.vec2(2, 1);
             };
 
             leftEye = {
@@ -311,6 +321,9 @@ BlueArchiveCharacter = {
                 UNEQUAL = vectors.vec2(4, 0);
                 ANGRY_INVERTED = vectors.vec2(7, 0);
                 CLOSED2 = vectors.vec2(8, 0);
+                FEAR = vectors.vec2(-1, 1);
+                FEAR_CENTER = vectors.vec2(0, 1);
+                CLOSED2_WITH_TEAR = vectors.vec2(1, 1);
             };
 
             mouth = {
@@ -319,6 +332,7 @@ BlueArchiveCharacter = {
                 SMALL = vectors.vec2(2, 0);
                 CLOSED = vectors.vec2(3, 0);
                 ANGRY = vectors.vec2(0, 1);
+                FEAR = vectors.vec2(1, 1);
             };
         }
 
@@ -591,12 +605,44 @@ BlueArchiveCharacter = {
                 };
 
                 callbacks = {
+                    onPreAnimation = function (self)
+                        self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "CLOSED", 6)
+                    end;
+
                     onAnimationTick = function (self, tick)
                         if tick == 0 then
                             models.models.main.Avatar.UpperBody.Body.Gun:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setPos()
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setRot()
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setVisible(true)
+                        elseif tick == 6 then
+                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED", 2)
+                        elseif tick == 8 then
+                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "SMALL", 22)
+                        elseif tick == 30 then
+                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMALL", 2)
+                        elseif tick == 32 then
+                            self.parent.faceParts:setEmotion("FEAR_CENTER", "FEAR", "FRUST", 2)
+                        elseif tick == 34 then
+                            self.parent.faceParts:setEmotion("FEAR_CENTER", "FEAR", "FEAR", 8)
+                        elseif tick == 42 then
+                            self.parent.faceParts:setEmotion("FEAR", "FEAR_CENTER", "FEAR", 4)
+                        elseif tick == 46 then
+                            self.parent.faceParts:setEmotion("FEAR_CENTER", "FEAR", "FEAR", 4)
+                        elseif tick == 50 then
+                            self.parent.faceParts:setEmotion("FEAR", "FEAR_CENTER", "FEAR", 4)
+                        elseif tick == 54 then
+                            self.parent.faceParts:setEmotion("FEAR_CENTER", "FEAR", "FEAR", 4)
+                        elseif tick == 58 then
+                            self.parent.faceParts:setEmotion("FEAR", "FEAR_CENTER", "FEAR", 4)
+                        elseif tick == 62 then
+                            self.parent.faceParts:setEmotion("FEAR_CENTER", "FEAR", "FEAR", 4)
+                        elseif tick == 66 then
+                            self.parent.faceParts:setEmotion("FEAR", "FEAR_CENTER", "FEAR", 10)
+                        elseif tick == 76 then
+                            self.parent.faceParts:setEmotion("CLOSED2_WITH_TEAR", "CLOSED2_WITH_TEAR", "SHOCK", 17)
+                        elseif tick == 93 then
+                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "SMALL", 44)
                         end
                     end;
 
