@@ -618,6 +618,9 @@ BlueArchiveCharacter = {
                                     models.script_ex_skill_2_wall_model:newBlock("ex_skill_2_block_"..((i - 1) * 4) + j + 4):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:dark_oak_planks")):setPos((i - 1) * 16 + 16, (j - 1) * 16, 0)
                                 end
                             end
+                            for i = 1, 2 do
+                                models.models.ex_skill_2.Pillagers["Pillager"..i]["Pillager"..i.."RightArm"]:newItem("ex_skill_2_pillager_"..i.."_crossbow"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:crossbow")):setPos(0, -12, -2):setRot(0, 0, -135)
+                            end
                             if host:isHost() then
                                 models.models.ex_skill_2.Gui.Hotbar.HotbarSection1:newItem("ex_skill_2_hotbar_section1"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:firework_rocket")):setPos(0, 11, 0)
                                 models.models.ex_skill_2.Gui.Hotbar.HotbarSection2:newItem("ex_skill_2_hotbar_section2"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:comparator")):setPos(0, 11, 0)
