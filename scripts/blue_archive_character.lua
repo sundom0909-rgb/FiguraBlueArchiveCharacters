@@ -607,20 +607,35 @@ BlueArchiveCharacter = {
                 callbacks = {
                     onPreAnimation = function (self)
                         if not self.exSkill[2].init then
-                            models.models.ex_skill_2.Gui.Hotbar.HotbarSection1:newItem("ex_skill_2_hotbar_section1"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:firework_rocket")):setPos(0, 11, 0)
-                            models.models.ex_skill_2.Gui.Hotbar.HotbarSection2:newItem("ex_skill_2_hotbar_section2"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:comparator")):setPos(0, 11, 0)
-                            models.models.ex_skill_2.Gui.Hotbar.HotbarSection3:newItem("ex_skill_2_hotbar_section3"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:name_tag")):setPos(0, 11, 0)
-                            models.models.ex_skill_2.Gui.Hotbar.HotbarSection4:newItem("ex_skill_2_hotbar_section4"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:arrow")):setPos(0, 11, 0)
-                            models.models.ex_skill_2.Gui.Hotbar.HotbarSection5:newItem("ex_skill_2_hotbar_section5"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:book")):setPos(0, 11, 0)
-                            models.models.ex_skill_2.Gui.Hotbar.HotbarSection6:newItem("ex_skill_2_hotbar_section6"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:crossbow")):setPos(0, 11, -5)
-                            models.models.ex_skill_2.Gui.Hotbar.HotbarSection7:newItem("ex_skill_2_hotbar_section7"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:brush")):setPos(0, 11, -5)
-                            models.models.ex_skill_2.Gui.Hotbar.HotbarSection9:newItem("ex_skill_2_hotbar_section9"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:diamond")):setPos(0, 11, -5)
-                            local chestModel = self.parent.modelUtils:copyModel(models.models.ex_skill_2.YuzuChest)
-                            chestModel:setPos(-60, -16, -2)
-                            chestModel:setRot(-33.4, 39.86, -22.91)
-                            chestModel:setScale(0.5, 0.5, 0.5)
-                            models.models.ex_skill_2.Gui.Hotbar.HotbarSection8:addChild(chestModel)
+                            ---@diagnostic disable-next-line: discard-returns
+                            models:newPart("script_ex_skill_2_wall_model")
+                            models.script_ex_skill_2_wall_model:setPos(-8, 0, 8)
+                            for i = 1, 4 do
+                                models.script_ex_skill_2_wall_model:newBlock("ex_skill_2_block_"..i):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:stripped_dark_oak_log")):setPos(0, (i - 1) * 16, 0)
+                            end
+                            for i = 1, 3 do
+                                for j = 1, 4 do
+                                    models.script_ex_skill_2_wall_model:newBlock("ex_skill_2_block_"..((i - 1) * 4) + j + 4):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:dark_oak_planks")):setPos((i - 1) * 16 + 16, (j - 1) * 16, 0)
+                                end
+                            end
+                            if host:isHost() then
+                                models.models.ex_skill_2.Gui.Hotbar.HotbarSection1:newItem("ex_skill_2_hotbar_section1"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:firework_rocket")):setPos(0, 11, 0)
+                                models.models.ex_skill_2.Gui.Hotbar.HotbarSection2:newItem("ex_skill_2_hotbar_section2"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:comparator")):setPos(0, 11, 0)
+                                models.models.ex_skill_2.Gui.Hotbar.HotbarSection3:newItem("ex_skill_2_hotbar_section3"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:name_tag")):setPos(0, 11, 0)
+                                models.models.ex_skill_2.Gui.Hotbar.HotbarSection4:newItem("ex_skill_2_hotbar_section4"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:arrow")):setPos(0, 11, 0)
+                                models.models.ex_skill_2.Gui.Hotbar.HotbarSection5:newItem("ex_skill_2_hotbar_section5"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:book")):setPos(0, 11, 0)
+                                models.models.ex_skill_2.Gui.Hotbar.HotbarSection6:newItem("ex_skill_2_hotbar_section6"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:crossbow")):setPos(0, 11, -5)
+                                models.models.ex_skill_2.Gui.Hotbar.HotbarSection7:newItem("ex_skill_2_hotbar_section7"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:brush")):setPos(0, 11, -5)
+                                models.models.ex_skill_2.Gui.Hotbar.HotbarSection9:newItem("ex_skill_2_hotbar_section9"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:diamond")):setPos(0, 11, -5)
+                                local chestModel = self.parent.modelUtils:copyModel(models.models.ex_skill_2.YuzuChest)
+                                chestModel:setPos(-60, -16, -2)
+                                chestModel:setRot(-33.4, 39.86, -22.91)
+                                chestModel:setScale(0.5, 0.5, 0.5)
+                                models.models.ex_skill_2.Gui.Hotbar.HotbarSection8:addChild(chestModel)
+                            end
                             self.exSkill[2].init = true
+                        else
+                            models.script_ex_skill_2_wall_model:setVisible(true)
                         end
                         if host:isHost() then
                             local windowSize = client:getScaledWindowSize()
@@ -669,6 +684,7 @@ BlueArchiveCharacter = {
                     onPostAnimation = function (self, forcedStop)
                         models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:moveTo(models.models.main.Avatar.UpperBody.Body)
                         models.models.main.Avatar.UpperBody.Body.Gun:setVisible(self.parent.gun.currentGunPosition ~= "NONE")
+                        models.script_ex_skill_2_wall_model:setVisible(false)
                     end;
 
                 };
