@@ -588,7 +588,7 @@ BlueArchiveCharacter = {
 
                 formationType = "SPECIAL";
 
-                models = {models.models.ex_skill_2.Pillagers, models.models.ex_skill_2.YuzuChest};
+                models = {models.models.ex_skill_2.Pillagers, models.models.ex_skill_2.YuzuChest, models.models.ex_skill_2.Gui};
 
                 animations = {"main", "gun", "costume_maid", "ex_skill_2"};
 
@@ -606,6 +606,26 @@ BlueArchiveCharacter = {
 
                 callbacks = {
                     onPreAnimation = function (self)
+                        if not self.exSkill[2].init then
+                            models.models.ex_skill_2.Gui.Hotbar.HotbarSection1:newItem("ex_skill_2_hotbar_section1"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:firework_rocket")):setPos(0, 11, 0)
+                            models.models.ex_skill_2.Gui.Hotbar.HotbarSection2:newItem("ex_skill_2_hotbar_section2"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:comparator")):setPos(0, 11, 0)
+                            models.models.ex_skill_2.Gui.Hotbar.HotbarSection3:newItem("ex_skill_2_hotbar_section3"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:name_tag")):setPos(0, 11, 0)
+                            models.models.ex_skill_2.Gui.Hotbar.HotbarSection4:newItem("ex_skill_2_hotbar_section4"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:arrow")):setPos(0, 11, 0)
+                            models.models.ex_skill_2.Gui.Hotbar.HotbarSection5:newItem("ex_skill_2_hotbar_section5"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:book")):setPos(0, 11, 0)
+                            models.models.ex_skill_2.Gui.Hotbar.HotbarSection6:newItem("ex_skill_2_hotbar_section6"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:crossbow")):setPos(0, 11, -5)
+                            models.models.ex_skill_2.Gui.Hotbar.HotbarSection7:newItem("ex_skill_2_hotbar_section7"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:brush")):setPos(0, 11, -5)
+                            models.models.ex_skill_2.Gui.Hotbar.HotbarSection9:newItem("ex_skill_2_hotbar_section9"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:diamond")):setPos(0, 11, -5)
+                            local chestModel = self.parent.modelUtils:copyModel(models.models.ex_skill_2.YuzuChest)
+                            chestModel:setPos(-60, -16, 0)
+                            chestModel:setRot(-33.4, 39.86, -22.91)
+                            chestModel:setScale(0.5, 0.5, 0.5)
+                            models.models.ex_skill_2.Gui.Hotbar.HotbarSection8:addChild(chestModel)
+                            self.exSkill[2].init = true
+                        end
+                        if host:isHost() then
+                            local windowSize = client:getScaledWindowSize()
+                            models.models.ex_skill_2.Gui:setPos(windowSize.x / 2 * -1, windowSize.y * -1, 0)
+                        end
                         self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "CLOSED", 6)
                     end;
 
@@ -650,7 +670,12 @@ BlueArchiveCharacter = {
                         models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:moveTo(models.models.main.Avatar.UpperBody.Body)
                         models.models.main.Avatar.UpperBody.Body.Gun:setVisible(self.parent.gun.currentGunPosition ~= "NONE")
                     end;
+
                 };
+
+                ---このExスキルの初期化処理が行われたかどうか。
+                ---@type boolean
+                init = false;
             }
         }
 
