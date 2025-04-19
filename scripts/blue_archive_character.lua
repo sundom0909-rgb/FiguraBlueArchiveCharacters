@@ -589,6 +589,14 @@ BlueArchiveCharacter = {
                     };
 
                     exSkill = 1;
+
+                    ---前ティックに脚とスカートの調整をしたかどうか
+                    ---@type boolean
+                    shouldAdjustLegsPrev = false;
+
+                    ---前ティックは脚を隠すべきだったかどうか
+                    ---@type boolean
+                    shouldHideLegsPrev = false;
                 };
             };
 
@@ -604,7 +612,6 @@ BlueArchiveCharacter = {
                     for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer}) do
                         modelPart:setUVPixels(0, 16)
                     end
-
                     events.TICK:register(function ()
                         if not client:isPaused() then
                             local skirtVisible = models.models.main.Avatar.UpperBody.Body.CMaidB:getVisible()
@@ -644,7 +651,6 @@ BlueArchiveCharacter = {
                                     end
                                 end
                             end
-
                             self.costume.costumes[2].shouldHideLegsPrev = shouldHideLegs
                             self.costume.costumes[2].shouldAdjustLegsPrev = shouldAdjustLegs
                         end
@@ -652,6 +658,12 @@ BlueArchiveCharacter = {
                 end;
 
                 onReset = function (self)
+                    events.TICK:remove("costume_maid_tick")
+                    events.RENDER:remove("costume_maid_render")
+                    models.models.main.Avatar.LowerBody.Legs:setVisible(true)
+                    for _, modelPart in ipairs({models.models.main.Avatar.LowerBody.Legs.RightLeg, models.models.main.Avatar.LowerBody.Legs.LeftLeg}) do
+                        modelPart:setRot()
+                    end
                     for _, modelPart in ipairs({models.models.main.Avatar.Head.HairTip1, models.models.main.Avatar.UpperBody.Body.Hairs, models.models.main.Avatar.UpperBody.Body.MilleniumLogo, models.models.main.Avatar.UpperBody.Body.IDCard, models.models.main.Avatar.UpperBody.Body.GameConsole, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.MilleniumPatch}) do
                         modelPart:setVisible(true)
                     end
@@ -661,6 +673,7 @@ BlueArchiveCharacter = {
                     for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer}) do
                         modelPart:setUVPixels()
                     end
+                    self.costume.costumes[2].shouldAdjustLegsPrev = false
                 end;
 
                 onArmorChange = function (_, parts, isVisible)
