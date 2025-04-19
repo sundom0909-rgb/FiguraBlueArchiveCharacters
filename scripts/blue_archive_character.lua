@@ -642,7 +642,8 @@ BlueArchiveCharacter = {
                         end
                         if host:isHost() then
                             local windowSize = client:getScaledWindowSize()
-                            models.models.ex_skill_2.Gui:setPos(windowSize.x / 2 * -1, windowSize.y * -1, 0)
+                            models.models.ex_skill_2.Gui.Hotbar:setPos(windowSize.x / 2 * -1, windowSize.y * -1, 0)
+                            models.models.ex_skill_2.Gui.Map:setPos(windowSize.x * -1 + 50, -30, 0)
                         end
                         self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "CLOSED", 6)
                     end;
