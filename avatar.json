@@ -171,6 +171,10 @@
 			"parentType": "Camera",
 			"primaryRenderType": "EMISSIVE_SOLID"
 		},
+		"models.models.ex_skill_2.FearEffect": {
+			"visible": false,
+			"moveTo": "models.models.main.Avatar.Head"
+		},
 		"models.models.ex_skill_2.Pillagers": {
 			"visible": false
 		},

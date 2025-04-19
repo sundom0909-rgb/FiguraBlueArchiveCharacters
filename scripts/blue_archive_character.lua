@@ -657,6 +657,7 @@ BlueArchiveCharacter = {
                         elseif tick == 30 then
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMALL", 2)
                         elseif tick == 32 then
+                            models.models.main.Avatar.Head.FearEffect:setVisible(true)
                             self.parent.faceParts:setEmotion("FEAR_CENTER", "FEAR", "FRUST", 2)
                         elseif tick == 34 then
                             self.parent.faceParts:setEmotion("FEAR_CENTER", "FEAR", "FEAR", 8)
@@ -677,6 +678,7 @@ BlueArchiveCharacter = {
                         elseif tick == 76 then
                             self.parent.faceParts:setEmotion("CLOSED2_WITH_TEAR", "CLOSED2_WITH_TEAR", "SHOCK", 17)
                         elseif tick == 93 then
+                            models.models.main.Avatar.Head.FearEffect:setVisible(false)
                             self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "SMALL", 44)
                         end
                     end;
@@ -685,6 +687,9 @@ BlueArchiveCharacter = {
                         models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:moveTo(models.models.main.Avatar.UpperBody.Body)
                         models.models.main.Avatar.UpperBody.Body.Gun:setVisible(self.parent.gun.currentGunPosition ~= "NONE")
                         models.script_ex_skill_2_wall_model:setVisible(false)
+                        if forcedStop then
+                            models.models.main.Avatar.Head.FearEffect:setVisible(false)
+                        end
                     end;
 
                 };
