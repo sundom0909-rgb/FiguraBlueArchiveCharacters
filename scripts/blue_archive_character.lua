@@ -565,6 +565,47 @@ BlueArchiveCharacter = {
                 ---@type integer
                 actionTextIndex = 1;
             };
+
+            {
+                name = {
+                    ja_jp = "潜入スタート！";
+                    en_us = "Starting infiltration!";
+                };
+
+                formationType = "SPECIAL";
+
+                models = {models.models.ex_skill_2.Pillagers, models.models.ex_skill_2.YuzuChest};
+
+                animations = {"main", "gun", "costume_maid", "ex_skill_2"};
+
+                camera = {
+                    start = {
+                        rot = vectors.vec3();
+                        pos = vectors.vec3();
+                    };
+
+                    fin = {
+                        rot = vectors.vec3();
+                        pos = vectors.vec3();
+                    };
+                };
+
+                callbacks = {
+                    onAnimationTick = function (self, tick)
+                        if tick == 0 then
+                            models.models.main.Avatar.UpperBody.Body.Gun:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
+                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setPos()
+                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setRot()
+                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setVisible(true)
+                        end
+                    end;
+
+                    onPostAnimation = function (self, forcedStop)
+                        models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:moveTo(models.models.main.Avatar.UpperBody.Body)
+                        models.models.main.Avatar.UpperBody.Body.Gun:setVisible(self.parent.gun.currentGunPosition ~= "NONE")
+                    end;
+                };
+            }
         }
 
         instance.costume = {
@@ -588,7 +629,7 @@ BlueArchiveCharacter = {
                         ja_jp = "メイド";
                     };
 
-                    exSkill = 1;
+                    exSkill = 2;
 
                     ---前ティックに脚とスカートの調整をしたかどうか
                     ---@type boolean
