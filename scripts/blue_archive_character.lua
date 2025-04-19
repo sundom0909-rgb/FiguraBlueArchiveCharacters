@@ -616,7 +616,7 @@ BlueArchiveCharacter = {
                             models.models.ex_skill_2.Gui.Hotbar.HotbarSection7:newItem("ex_skill_2_hotbar_section7"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:brush")):setPos(0, 11, -5)
                             models.models.ex_skill_2.Gui.Hotbar.HotbarSection9:newItem("ex_skill_2_hotbar_section9"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:diamond")):setPos(0, 11, -5)
                             local chestModel = self.parent.modelUtils:copyModel(models.models.ex_skill_2.YuzuChest)
-                            chestModel:setPos(-60, -16, 0)
+                            chestModel:setPos(-60, -16, -2)
                             chestModel:setRot(-33.4, 39.86, -22.91)
                             chestModel:setScale(0.5, 0.5, 0.5)
                             models.models.ex_skill_2.Gui.Hotbar.HotbarSection8:addChild(chestModel)
