@@ -1573,7 +1573,7 @@
 			"uuid": "bfc84650-0c8b-3783-e9b0-f5847146b342",
 			"export": true,
 			"mirror_uv": false,
-			"isOpen": false,
+			"isOpen": true,
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
@@ -1616,7 +1616,20 @@
 						"13c20c06-23c1-4482-37fe-51daca3a26a9",
 						"5ebb2c2d-bdbb-a8bb-8bb5-29d440e948fc",
 						"b3411bc8-33cd-c13e-f3b3-b56f1e5ae393",
-						"e083f248-8f7e-6538-3450-478acb03437a"
+						{
+							"name": "YuzuChestHook",
+							"origin": [0, 13.5, 10.5],
+							"color": 0,
+							"uuid": "f99d9ed6-f79d-89f3-3e46-b5b54002efb0",
+							"export": true,
+							"mirror_uv": false,
+							"isOpen": true,
+							"locked": false,
+							"visibility": true,
+							"autouv": 0,
+							"selected": true,
+							"children": ["e083f248-8f7e-6538-3450-478acb03437a"]
+						}
 					]
 				},
 				"a0aefb52-7fa6-10b3-8f7a-b6a640cbd93a"
@@ -1762,7 +1775,7 @@
 			"override": true,
 			"length": 6.85,
 			"snapping": 20,
-			"selected": false,
+			"selected": true,
 			"anim_time_update": "",
 			"blend_weight": "",
 			"start_delay": "",
@@ -3669,6 +3682,82 @@
 							"time": 4.95,
 							"color": -1,
 							"interpolation": "catmullrom"
+						}
+					]
+				},
+				"f99d9ed6-f79d-89f3-3e46-b5b54002efb0": {
+					"name": "YuzuChestHook",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "3",
+									"z": "0"
+								}
+							],
+							"uuid": "89405d2e-327e-aa8f-48a6-9becf4bc5191",
+							"time": 4,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "3",
+									"z": "0"
+								}
+							],
+							"uuid": "213aeaa1-28f4-18ff-206e-4cbc9c3b0cf3",
+							"time": 4.2,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "b18bf75b-c297-5a52-d3df-04146788bfef",
+							"time": 4.3,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "cb3371b9-9df6-8394-d176-55639d8f2635",
+							"time": 4.65,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "3",
+									"z": "0"
+								}
+							],
+							"uuid": "5c4e688c-6c11-0f96-b729-c8813f1c460a",
+							"time": 4.95,
+							"color": -1,
+							"interpolation": "linear"
 						}
 					]
 				}
