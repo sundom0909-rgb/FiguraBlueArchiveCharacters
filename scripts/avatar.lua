@@ -31,6 +31,7 @@
 ---@field public hypixelZombies HypixelZombies
 ---@field public updateChecker UpdateChecker
 ---@field public itemSpriteManager ExSkill1ItemObjectManager
+---@field public exSkill2SpriteManager ExSkill2SpriteManager
 ---@field public instantiate fun(class: table, super: table, ...: any) クラスをインスタンス化する
 
 Avatar = {
@@ -187,6 +188,11 @@ Avatar = {
 			require("scripts.character_scripts.ex_skill_1_item_object")
 			instance.itemSpriteManager = ExSkill1ItemObjectManager.new(instance)
 			instance.itemSpriteManager:init()
+
+			require("scripts.character_scripts.ex_skill_2_sprite_manager")
+			require("scripts.character_scripts.ex_skill_2_sprite")
+			instance.exSkill2SpriteManager = ExSkill2SpriteManager.new(instance)
+			instance.exSkill2SpriteManager:init()
 
 			--SCRIPT_INITイベントを実行
 			instance.avatarEvents.SCRIPT_INIT:fire()

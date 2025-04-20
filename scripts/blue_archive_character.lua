@@ -738,6 +738,13 @@ BlueArchiveCharacter = {
                                 models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectBRFront:setPos(models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectFrontAnchor:getAnimPos().x * (windowSize.x / 427) * -1 + ((windowSize.x + math.sin(math.rad(-18.8)) * windowSize.y) * -1) / 8, (windowSize.y * -1 + math.sin(math.rad(-18.8)) * windowSize.x) / 8 + 10, -1)
                                 models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectBRBack:setPos(models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectBackAnchor:getAnimPos().x * (windowSize.x / 427) * -1 + ((windowSize.x + math.sin(math.rad(-18.8)) * windowSize.y) * -1) / 8, (windowSize.y * -1 + math.sin(math.rad(-18.8)) * windowSize.x) / 8 + 11, 0)
                             end, "ex_skill_2_screen_effects")
+                        elseif tick == 107 and host:isHost() then
+                            models.script_ex_skill_2_sprite:setPos(client:getScaledWindowSize():scale(-0.5):augmented(0))
+                            local windowSize = client:getScaledWindowSize()
+                            for i = 0, 5 do
+                                local offset = vectors.vec2(math.cos(math.rad(i * 60)), math.sin(math.rad(i * 60))):mul(windowSize.x / windowSize.y, 1)
+                                self.parent.exSkill2SpriteManager:spawn(offset:copy():scale(50), offset:copy():scale(math.random() * 5 + 10))
+                            end
                         elseif tick == 110 and host:isHost() then
                             events.RENDER:remove("ex_skill_2_yuzu_chest")
                             for _, modelPart in ipairs({models.models.ex_skill_2.YuzuChest.YuzuChestBottom.YuzuChestBottomFront, models.models.ex_skill_2.YuzuChest.TheYuzu, models.models.ex_skill_2.YuzuChest.YuzuChestTop.YuzuChestTopFront, models.models.ex_skill_2.YuzuChest.YuzuChestTop.YuzuChestHook}) do
@@ -763,6 +770,9 @@ BlueArchiveCharacter = {
                         if forcedStop then
                             for _, modelPart in ipairs({models.models.main.Avatar.Head.ExSkill2H.FearEffect, models.models.main.Avatar.Head.ExSkill2H.NoticeEffect}) do
                                 modelPart:setVisible(false)
+                            end
+                            if host:isHost() then
+                                self.parent.exSkill2SpriteManager:removeAll()
                             end
                         end
                     end;
