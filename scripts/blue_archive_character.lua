@@ -618,6 +618,12 @@ BlueArchiveCharacter = {
                                     models.script_ex_skill_2_wall_model:newBlock("ex_skill_2_block_"..((i - 1) * 4) + j + 4):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:dark_oak_planks")):setPos((i - 1) * 16 + 16, (j - 1) * 16, 0)
                                 end
                             end
+                            for _, modelPart in ipairs({models.models.ex_skill_2.Pillagers.Pillager1.Pillager1Head.PillagerHead, models.models.ex_skill_2.Pillagers.Pillager1.Pillager1Head.Pillager1Nose, models.models.ex_skill_2.Pillagers.Pillager1.Pillager1Body, models.models.ex_skill_2.Pillagers.Pillager1.Pillager1RightArm, models.models.ex_skill_2.Pillagers.Pillager1.Pillager1LeftArm, models.models.ex_skill_2.Pillagers.Pillager1.Pillager1RightLeg, models.models.ex_skill_2.Pillagers.Pillager1.Pillager1LeftLeg}) do
+                                modelPart:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/illager/pillager.png")
+                            end
+                            for _, part in ipairs({"Head", "Body", "RightArm", "LeftArm", "RightLeg", "LeftLeg"}) do
+                                models.models.ex_skill_2.Pillagers.Pillager2["Pillager2"..part]:addChild(self.parent.modelUtils:copyModel(models.models.ex_skill_2.Pillagers.Pillager1["Pillager1"..part]))
+                            end
                             for i = 1, 2 do
                                 models.models.ex_skill_2.Pillagers["Pillager"..i]["Pillager"..i.."RightArm"]:newItem("ex_skill_2_pillager_"..i.."_crossbow"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:crossbow")):setPos(0, -12, -2):setRot(0, 0, -135)
                                 models.models.ex_skill_2.Pillagers["Pillager"..i]["Pillager"..i.."Question"]["Pillager"..i.."Question2"]:newText("ex_skill_2_pillager_question_"..i):setText("§e?"):setPos(0, 7, 0):setAlignment("CENTER")
