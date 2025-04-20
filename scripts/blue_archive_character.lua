@@ -607,6 +607,9 @@ BlueArchiveCharacter = {
                 callbacks = {
                     onPreAnimation = function (self)
                         if not self.exSkill[2].init then
+                            for _, modelPart in ipairs({models.models.ex_skill_2.YuzuChest.YuzuChestBottom, models.models.ex_skill_2.YuzuChest.YuzuChestTop}) do
+                                modelPart:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/chest/normal.png")
+                            end
                             ---@diagnostic disable-next-line: discard-returns
                             models:newPart("script_ex_skill_2_wall_model")
                             models.script_ex_skill_2_wall_model:setPos(-8, 0, 8)
@@ -637,6 +640,7 @@ BlueArchiveCharacter = {
                                 models.models.ex_skill_2.Gui.Hotbar.HotbarSection6:newItem("ex_skill_2_hotbar_section6"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:crossbow")):setPos(0, 11, -5)
                                 models.models.ex_skill_2.Gui.Hotbar.HotbarSection7:newItem("ex_skill_2_hotbar_section7"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:brush")):setPos(0, 11, -5)
                                 models.models.ex_skill_2.Gui.Hotbar.HotbarSection9:newItem("ex_skill_2_hotbar_section9"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:diamond")):setPos(0, 11, -5)
+                                models.models.ex_skill_2.Gui.Map.MapBackground:setPrimaryTexture("RESOURCE", "minecraft:textures/map/map_background.png")
                                 local chestModel = self.parent.modelUtils:copyModel(models.models.ex_skill_2.YuzuChest)
                                 chestModel:setPos(-60, -16, -2)
                                 chestModel:setRot(-33.4, 39.86, -22.91)
@@ -655,6 +659,54 @@ BlueArchiveCharacter = {
                                 for _, modelPart in ipairs({models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectTLBack, models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectBRBack}) do
                                     modelPart:setColor(0.231, 0.725, 0.988)
                                 end
+                                if client:getVersion() >= "1.20.2" then
+                                    for i = 1, 9 do
+                                        models.models.ex_skill_2.Gui.Hotbar["HotbarSection"..i]["HotbarSection"..i]:setPrimaryTexture("RESOURCE", "minecraft:textures/gui/sprites/hud/hotbar.png")
+                                    end
+                                    models.models.ex_skill_2.Gui.Hotbar.HotbarSelection:setPrimaryTexture("RESOURCE", "minecraft:textures/gui/sprites/hud/hotbar_selection.png")
+                                    models.models.ex_skill_2.Gui.Map.PlayerMarker:setPrimaryTexture("RESOURCE", "minecraft:textures/map/decorations/player.png")
+                                    for i = 1, 2 do
+                                        models.models.ex_skill_2.Gui.Map["EnemyMarker"..i]:setPrimaryTexture("RESOURCE", "minecraft:textures/map/decorations/red_marker.png")
+                                    end
+                                else
+                                    textures:fromVanilla("widgets", "minecraft:textures/gui/widgets.png")
+                                    local hotbarTextureScale = textures["widgets"]:getDimensions().x / 256
+                                    textures:newTexture("hotbar", 182 * hotbarTextureScale, 22 * hotbarTextureScale)
+                                    for y = 0, 21 do
+                                        for x = 0, 181 do
+                                            textures["hotbar"]:setPixel(x, y, textures["widgets"]:getPixel(x, y))
+                                        end
+                                    end
+                                    for i = 1, 9 do
+                                        models.models.ex_skill_2.Gui.Hotbar["HotbarSection"..i]["HotbarSection"..i]:setPrimaryTexture("CUSTOM", textures["hotbar"])
+                                    end
+                                    textures:newTexture("hotbar_selection", 24 * hotbarTextureScale, 24 * hotbarTextureScale)
+                                    for y = 0, 23 do
+                                        for x = 0, 23 do
+                                            textures["hotbar_selection"]:setPixel(x, y, textures["widgets"]:getPixel(x, y + 22))
+                                        end
+                                    end
+                                    models.models.ex_skill_2.Gui.Hotbar.HotbarSelection:setPrimaryTexture("CUSTOM", textures["hotbar_selection"])
+                                    textures:fromVanilla("map_icons", "minecraft:textures/map/map_icons.png")
+                                    local mapTextureScale = textures["map_icons"]:getDimensions().x / 128
+                                    textures:newTexture("player", 8 * mapTextureScale, 8 * mapTextureScale)
+                                    for y = 0, 7 do
+                                        for x = 0, 7 do
+                                            textures["player"]:setPixel(x, y, textures["map_icons"]:getPixel(x, y))
+                                        end
+                                    end
+                                    models.models.ex_skill_2.Gui.Map.PlayerMarker:setPrimaryTexture("CUSTOM", textures["player"])
+                                    textures:newTexture("red_marker", 8 * mapTextureScale, 8 * mapTextureScale)
+                                    for y = 0, 7 do
+                                        for x = 0, 7 do
+                                            textures["red_marker"]:setPixel(x, y, textures["map_icons"]:getPixel(x + 16, y))
+                                        end
+                                    end
+                                    for i = 1, 2 do
+                                        models.models.ex_skill_2.Gui.Map["EnemyMarker"..i]:setPrimaryTexture("CUSTOM", textures["red_marker"])
+                                    end
+                                end
+
                             end
                             self.exSkill[2].init = true
                         else
