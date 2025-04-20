@@ -42,6 +42,7 @@
 
 ---@alias BlueArchiveCharacter.Costumes
 ---| "DEFAULT" # デフォルト衣装
+---| "MAID" # メイド衣装
 
 --[[ ******************************** ]]
 
@@ -1017,9 +1018,25 @@ BlueArchiveCharacter = {
 
         instance.deathAnimation = {
             callbacks = {
-                onPhase2 = function (_, dummyAvatar)
-                    dummyAvatar.UpperBody.Body.Hairs.BackHair:setPos(0, 0.5, 0.5)
-                    dummyAvatar.UpperBody.Body.Hairs.BackHair:setRot(-15, 0, -15)
+                onPhase1 = function (_, dummyAvatar, costume)
+                    if costume == "MAID" then
+                        dummyAvatar.Head.CMaidH.HairTail:setRot(20, 0, 0)
+                        dummyAvatar.UpperBody.Body.CMaidB.Skirt1:setScale(1.5, 0.5, 1.5)
+                        dummyAvatar.LowerBody.Legs:setVisible(false)
+                    end
+                end;
+                onPhase2 = function (_, dummyAvatar, costume)
+                    if costume == "DEFAULT" then
+                        dummyAvatar.UpperBody.Body.Hairs.BackHair:setPos(0, 0.5, 0.5)
+                        dummyAvatar.UpperBody.Body.Hairs.BackHair:setRot(-15, 0, -15)
+                    elseif costume == "MAID" then
+                        dummyAvatar.Head.CMaidH.HairTail:setRot(-15, 0, -5)
+                        dummyAvatar.UpperBody.Body.CMaidB.Skirt1:setRot(20, 0, 0)
+                        dummyAvatar.UpperBody.Body.CMaidB.Skirt1:setScale(1, 1, 1)
+                        dummyAvatar.UpperBody.Body.CMaidB.BackRibbon.RibbonBottomRight:setRot(15, 0, 0)
+                        dummyAvatar.UpperBody.Body.CMaidB.BackRibbon.RibbonBottomLeft:setRot(15, 0, 0)
+                        dummyAvatar.LowerBody.Legs:setVisible(true)
+                    end
                 end;
             };
         }
