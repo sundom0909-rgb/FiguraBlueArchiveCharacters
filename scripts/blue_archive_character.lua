@@ -520,8 +520,8 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "ANGRY", 28, true)
                             if host:isHost() then
                                 models.models.ex_skill_1.Gui:setVisible(true)
-                                local windowSize = client:getScaledWindowSize()
                                 events.RENDER:register(function ()
+                                    local windowSize = client:getScaledWindowSize()
                                     models.models.ex_skill_1.Gui.NameArea.NameAreaLeft:setPos(models.models.ex_skill_1.Gui.NameArea.NameAreaLeftAnchor:getAnimPos().x * (windowSize.x / 427), 24.5, 0)
                                     models.models.ex_skill_1.Gui.NameArea.NameAreaRight:setPos(models.models.ex_skill_1.Gui.NameArea.NameAreaRightAnchor:getAnimPos().x * (windowSize.x / 427), 17, 0)
                                 end, "ex_skill_1_name_render")
@@ -588,7 +588,7 @@ BlueArchiveCharacter = {
 
                 formationType = "SPECIAL";
 
-                models = {models.models.ex_skill_2.Pillagers, models.models.ex_skill_2.YuzuChest, models.models.ex_skill_2.Gui};
+                models = {models.models.ex_skill_2.Pillagers, models.models.ex_skill_2.YuzuChest, models.models.ex_skill_2.Gui.Hotbar, models.models.ex_skill_2.Gui.Map};
 
                 animations = {"main", "gun", "costume_maid", "ex_skill_2"};
 
@@ -636,6 +636,19 @@ BlueArchiveCharacter = {
                                 chestModel:setRot(-33.4, 39.86, -22.91)
                                 chestModel:setScale(0.5, 0.5, 0.5)
                                 models.models.ex_skill_2.Gui.Hotbar.HotbarSection8:addChild(chestModel)
+                                models.models.ex_skill_2.Gui.ScreenEffects:setScale(8, 8, 8)
+                                for _, modelName in ipairs({"ScreenEffectTLBack", "ScreenEffectBRFront", "ScreenEffectBRBack"}) do
+                                    models.models.ex_skill_2.Gui.ScreenEffects:addChild(models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectTLFront:copy(modelName))
+                                end
+                                for _, modelPart in ipairs({models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectBRFront, models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectBRBack}) do
+                                    modelPart:setRot(0, 0, 180)
+                                end
+                                for _, modelPart in ipairs({models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectTLFront, models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectBRFront}) do
+                                    modelPart:setColor(0.996, 0.4, 0.455)
+                                end
+                                for _, modelPart in ipairs({models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectTLBack, models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectBRBack}) do
+                                    modelPart:setColor(0.231, 0.725, 0.988)
+                                end
                             end
                             self.exSkill[2].init = true
                         else
@@ -716,6 +729,15 @@ BlueArchiveCharacter = {
                                     modelPart:setOpacity(opacity)
                                 end
                             end, "ex_skill_2_yuzu_chest")
+                        elseif tick == 106 and host:isHost() then
+                            models.models.ex_skill_2.Gui.ScreenEffects:setVisible(true)
+                            events.RENDER:register(function ()
+                                local windowSize = client:getScaledWindowSize()
+                                models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectTLFront:setPos(models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectFrontAnchor:getAnimPos().x * (windowSize.x / 427), -10, -1)
+                                models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectTLBack:setPos(models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectBackAnchor:getAnimPos().x * (windowSize.x / 427), -11, 0)
+                                models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectBRFront:setPos(models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectFrontAnchor:getAnimPos().x * (windowSize.x / 427) * -1 + ((windowSize.x + math.sin(math.rad(-18.8)) * windowSize.y) * -1) / 8, (windowSize.y * -1 + math.sin(math.rad(-18.8)) * windowSize.x) / 8 + 10, -1)
+                                models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectBRBack:setPos(models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectBackAnchor:getAnimPos().x * (windowSize.x / 427) * -1 + ((windowSize.x + math.sin(math.rad(-18.8)) * windowSize.y) * -1) / 8, (windowSize.y * -1 + math.sin(math.rad(-18.8)) * windowSize.x) / 8 + 11, 0)
+                            end, "ex_skill_2_screen_effects")
                         elseif tick == 110 and host:isHost() then
                             events.RENDER:remove("ex_skill_2_yuzu_chest")
                             for _, modelPart in ipairs({models.models.ex_skill_2.YuzuChest.YuzuChestBottom.YuzuChestBottomFront, models.models.ex_skill_2.YuzuChest.TheYuzu, models.models.ex_skill_2.YuzuChest.YuzuChestTop.YuzuChestTopFront, models.models.ex_skill_2.YuzuChest.YuzuChestTop.YuzuChestHook}) do
@@ -732,6 +754,8 @@ BlueArchiveCharacter = {
                         models.models.main.Avatar.UpperBody.Body.Gun:setVisible(self.parent.gun.currentGunPosition ~= "NONE")
                         models.script_ex_skill_2_wall_model:setVisible(false)
                         if host:isHost() then
+                            events.RENDER:remove("ex_skill_2_screen_effects")
+                            models.models.ex_skill_2.Gui.ScreenEffects:setVisible(false)
                             for _, modelPart in ipairs({models.models.ex_skill_2.YuzuChest.YuzuChestBottom.YuzuChestBottomFront, models.models.ex_skill_2.YuzuChest.TheYuzu, models.models.ex_skill_2.YuzuChest.YuzuChestTop.YuzuChestTopFront, models.models.ex_skill_2.YuzuChest.YuzuChestTop.YuzuChestHook}) do
                                 modelPart:setOpacity(1)
                             end
