@@ -658,6 +658,7 @@ BlueArchiveCharacter = {
                                 models.models.ex_skill_2.Gui.Hotbar.HotbarSection7:newItem("ex_skill_2_hotbar_section7"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:brush")):setPos(0, 11, -5)
                                 models.models.ex_skill_2.Gui.Hotbar.HotbarSection9:newItem("ex_skill_2_hotbar_section9"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:diamond")):setPos(0, 11, -5)
                                 models.models.ex_skill_2.Gui.Map.MapBackground:setPrimaryTexture("RESOURCE", "minecraft:textures/map/map_background.png")
+                                models.models.ex_skill_2.YuzuChest:setVisible(true)
                                 local chestModel = self.parent.modelUtils:copyModel(models.models.ex_skill_2.YuzuChest)
                                 chestModel:setPos(-60, -16, -2)
                                 chestModel:setRot(-33.4, 39.86, -22.91)
@@ -948,12 +949,15 @@ BlueArchiveCharacter = {
                     ---@param self BlueArchiveCharacter
                     stopChest = function (self)
                         events.TICK:remove("chest_tick")
+                        events.RENDER:remove("chest_render")
                         events.DAMAGE:remove("chest_damage")
                         models.models.ex_skill_2.YuzuChest:setVisible(false)
                         for _, anim in ipairs({animations["models.ex_skill_2"]["chest_idle"], animations["models.main"]["chest_hide"], animations["models.costume_maid"]["chest_hide"], animations["models.ex_skill_2"]["chest_hide"], animations["models.main"]["chest_afk"], animations["models.main"]["chest_afk_overwrite"], animations["models.costume_maid"]["chest_afk"], animations["models.ex_skill_2"]["chest_afk"]}) do
                             anim:stop()
                         end
                         self.parent.faceParts:resetEmotion()
+                        self.parent.cameraManager.setCameraPivot()
+                        renderer:setEyeOffset()
                         self.costume.costumes[2].shouldShowChest = false
                         self.costume.costumes[2].shouldShowChestPrev = false
                         self.costume.costumes[2].shouldHideInChest = false
@@ -1096,6 +1100,13 @@ BlueArchiveCharacter = {
                                             self.costume.costumes[2].bodyYawPrev = bodyYaw
                                         end
                                     end, "chest_tick")
+
+                                    events.RENDER:register(function ()
+                                        local lookYOffset = (models.models.ex_skill_2.YuzuChest:getAnimPos().y / 16 - 0.75) * 0.5
+                                        self.parent.cameraManager.setCameraPivot(vectors.vec3(0, lookYOffset, 0))
+                                        renderer:setEyeOffset(0, lookYOffset, 0)
+                                    end, "chest_render")
+
                                     events.DAMAGE:register(function ()
                                         for _, anim in ipairs({animations["models.main"]["chest_afk"], animations["models.main"]["chest_afk_overwrite"], animations["models.costume_maid"]["chest_afk"], animations["models.ex_skill_2"]["chest_afk"]}) do
                                             anim:stop()
