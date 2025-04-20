@@ -620,6 +620,7 @@ BlueArchiveCharacter = {
                             end
                             for i = 1, 2 do
                                 models.models.ex_skill_2.Pillagers["Pillager"..i]["Pillager"..i.."RightArm"]:newItem("ex_skill_2_pillager_"..i.."_crossbow"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:crossbow")):setPos(0, -12, -2):setRot(0, 0, -135)
+                                models.models.ex_skill_2.Pillagers["Pillager"..i]["Pillager"..i.."Question"]["Pillager"..i.."Question2"]:newText("ex_skill_2_pillager_question_"..i):setText("§e?"):setPos(0, 7, 0):setAlignment("CENTER")
                             end
                             if host:isHost() then
                                 models.models.ex_skill_2.Gui.Hotbar.HotbarSection1:newItem("ex_skill_2_hotbar_section1"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:firework_rocket")):setPos(0, 11, 0)
@@ -685,7 +686,7 @@ BlueArchiveCharacter = {
                             models.models.main.Avatar.Head.FearEffect:setVisible(false)
                             self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "SMALL", 44)
                         elseif tick == 105 and host:isHost() then
-                            events.RENDER:register(function (delta, ctx, matrix)
+                            events.RENDER:register(function (delta)
                                 local opacity = (self.parent.exSkill.animationCount + delta - 1) * -0.2 + 22
                                 for _, modelPart in ipairs({models.models.ex_skill_2.YuzuChest.YuzuChestBottom.YuzuChestBottomFront, models.models.ex_skill_2.YuzuChest.TheYuzu, models.models.ex_skill_2.YuzuChest.YuzuChestTop.YuzuChestTopFront, models.models.ex_skill_2.YuzuChest.YuzuChestTop.YuzuChestHook}) do
                                     modelPart:setOpacity(opacity)

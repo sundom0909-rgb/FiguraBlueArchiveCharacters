@@ -2038,7 +2038,7 @@
 							"uuid": "1d82e3d6-2a22-e875-fd07-d04714ed8a78",
 							"export": true,
 							"mirror_uv": false,
-							"isOpen": true,
+							"isOpen": false,
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
@@ -2131,6 +2131,35 @@
 							"autouv": 0,
 							"selected": false,
 							"children": ["79973a4f-0532-a4bb-643b-e3e3706a3b09"]
+						},
+						{
+							"name": "Pillager1Question",
+							"origin": [0, 36, 0],
+							"color": 0,
+							"uuid": "b09ab88e-ae25-6e78-c4d3-c3133a131e8a",
+							"export": true,
+							"mirror_uv": false,
+							"isOpen": true,
+							"locked": false,
+							"visibility": true,
+							"autouv": 0,
+							"selected": false,
+							"children": [
+								{
+									"name": "Pillager1Question2",
+									"origin": [0, 36, 0],
+									"color": 0,
+									"uuid": "0cf00e9c-aed6-bbbd-bc84-f6ec746cadbc",
+									"export": true,
+									"mirror_uv": false,
+									"isOpen": true,
+									"locked": false,
+									"visibility": true,
+									"autouv": 0,
+									"selected": false,
+									"children": []
+								}
+							]
 						}
 					]
 				},
@@ -2154,7 +2183,7 @@
 							"uuid": "9495a45b-061c-c26b-ad16-a0eebd2462ff",
 							"export": true,
 							"mirror_uv": false,
-							"isOpen": true,
+							"isOpen": false,
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
@@ -2185,7 +2214,7 @@
 							"uuid": "48527871-038b-3b05-9c9b-9d1f9dbe2839",
 							"export": true,
 							"mirror_uv": false,
-							"isOpen": true,
+							"isOpen": false,
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
@@ -2199,7 +2228,7 @@
 							"uuid": "6eeb8cca-d71f-f78f-546c-882693a932a9",
 							"export": true,
 							"mirror_uv": false,
-							"isOpen": true,
+							"isOpen": false,
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
@@ -2213,7 +2242,7 @@
 							"uuid": "ef62ef9a-ce74-53c7-36b9-bc881e3ab1d2",
 							"export": true,
 							"mirror_uv": true,
-							"isOpen": true,
+							"isOpen": false,
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
@@ -2227,7 +2256,7 @@
 							"uuid": "4c145f6c-10e1-90a2-a690-a9ca8c2b1600",
 							"export": true,
 							"mirror_uv": false,
-							"isOpen": true,
+							"isOpen": false,
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
@@ -2241,12 +2270,41 @@
 							"uuid": "0b0c5844-d04a-2ce4-f844-be289ad763d2",
 							"export": true,
 							"mirror_uv": true,
-							"isOpen": true,
+							"isOpen": false,
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
 							"selected": false,
 							"children": ["16c9bdf5-40a8-1984-69b7-a518a8c69705"]
+						},
+						{
+							"name": "Pillager2Question",
+							"origin": [0, 36, 0],
+							"color": 0,
+							"uuid": "343367d0-be90-9d79-4e64-489d5fe28e37",
+							"export": true,
+							"mirror_uv": false,
+							"isOpen": true,
+							"locked": false,
+							"visibility": true,
+							"autouv": 0,
+							"selected": false,
+							"children": [
+								{
+									"name": "Pillager2Question2",
+									"origin": [0, 36, 0],
+									"color": 0,
+									"uuid": "16b3b57a-62ec-ad3e-93e2-b4f8978ce966",
+									"export": true,
+									"mirror_uv": false,
+									"isOpen": true,
+									"locked": false,
+									"visibility": true,
+									"autouv": 0,
+									"selected": true,
+									"children": []
+								}
+							]
 						}
 					]
 				}
@@ -7101,6 +7159,188 @@
 							"time": 4,
 							"color": -1,
 							"interpolation": "step"
+						}
+					]
+				},
+				"0cf00e9c-aed6-bbbd-bc84-f6ec746cadbc": {
+					"name": "Pillager1Question2",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "30"
+								}
+							],
+							"uuid": "66ce6b60-6989-5e4d-46d0-8ccd8736613a",
+							"time": 4.35,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "21dc5096-10b2-925d-8f22-4dd028411e1f",
+							"time": 4.1,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "scale",
+							"data_points": [
+								{
+									"x": "2",
+									"y": "0.25",
+									"z": "1"
+								},
+								{
+									"x": "2",
+									"y": "0",
+									"z": "1"
+								}
+							],
+							"uuid": "54cc5413-acdd-aba1-26bc-495590ab27f2",
+							"time": 1.05,
+							"color": -1,
+							"uniform": false,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "scale",
+							"data_points": [
+								{
+									"x": "0.75",
+									"y": "1.5",
+									"z": "1"
+								}
+							],
+							"uuid": "dfc5ca15-8469-c3c6-0290-609d8c234e41",
+							"time": 1.2,
+							"color": -1,
+							"uniform": false,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "scale",
+							"data_points": [
+								{
+									"x": "1",
+									"y": "1",
+									"z": "1"
+								}
+							],
+							"uuid": "2b308daf-a5fb-a5e1-d31f-467e2456d547",
+							"time": 1.3,
+							"color": -1,
+							"uniform": false,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"16b3b57a-62ec-ad3e-93e2-b4f8978ce966": {
+					"name": "Pillager2Question2",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "10"
+								}
+							],
+							"uuid": "3e0e4b28-9743-f9bc-a176-d75f9a6dd855",
+							"time": 1.15,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "10"
+								}
+							],
+							"uuid": "7bb80ad8-1ce8-ff45-d841-af688a6d0a51",
+							"time": 4,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "-40"
+								}
+							],
+							"uuid": "d659d7f3-2e8e-c435-1ccd-d1824f07ac78",
+							"time": 4.25,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "scale",
+							"data_points": [
+								{
+									"x": "2",
+									"y": "0.25",
+									"z": "1"
+								},
+								{
+									"x": "2",
+									"y": "0",
+									"z": "1"
+								}
+							],
+							"uuid": "138dae28-2ade-ff5c-730a-c8a75bf02975",
+							"time": 1.15,
+							"color": -1,
+							"uniform": false,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "scale",
+							"data_points": [
+								{
+									"x": "0.75",
+									"y": "1.5",
+									"z": "1"
+								}
+							],
+							"uuid": "492ffd0c-d2f6-939c-096e-dc4de6eae352",
+							"time": 1.3,
+							"color": -1,
+							"uniform": false,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "scale",
+							"data_points": [
+								{
+									"x": "1",
+									"y": "1",
+									"z": "1"
+								}
+							],
+							"uuid": "4b12889b-893e-037f-a128-d117a03be618",
+							"time": 1.4,
+							"color": -1,
+							"uniform": false,
+							"interpolation": "linear"
 						}
 					]
 				}
