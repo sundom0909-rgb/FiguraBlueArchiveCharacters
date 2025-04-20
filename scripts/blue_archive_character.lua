@@ -717,6 +717,9 @@ BlueArchiveCharacter = {
                                 modelPart:setOpacity(0)
                             end
                         end
+                        if tick >= 32 and tick < 76 then
+                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:splash"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head)):setPower(2)
+                        end
                     end;
 
                     onPostAnimation = function (self, forcedStop)
