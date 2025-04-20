@@ -344,7 +344,27 @@ BlueArchiveCharacter = {
         }
 
         instance.arms = {
+            callbacks = {
+                onArmStateChanged = function (self, right, left)
+                    if self.costume.costumes[2].shouldShowChest then
+                        return {right = 4, left = 4}
+                    end
+                end;
 
+                onAdditionalRightArmProcess = function (self, state)
+                    if state == 4 then
+                        models.models.main.Avatar.UpperBody.Arms.RightArm:setRot(0, 0, 15)
+                        models.models.main.Avatar.UpperBody.Arms.RightArm:setParentType("Body")
+                    end
+                end;
+
+                onAdditionalLeftArmProcess = function (self, state)
+                    if state == 4 then
+                        models.models.main.Avatar.UpperBody.Arms.LeftArm:setRot(0, 0, -15)
+                        models.models.main.Avatar.UpperBody.Arms.LeftArm:setParentType("Body")
+                    end
+                end;
+            };
         }
 
         instance.skirt = {
@@ -586,7 +606,7 @@ BlueArchiveCharacter = {
 
                 formationType = "SPECIAL";
 
-                models = {models.models.main.Avatar.Head.ExSkill2H.ShineEffect, models.models.ex_skill_2.Pillagers, models.models.ex_skill_2.YuzuChest, models.models.ex_skill_2.Gui.Hotbar, models.models.ex_skill_2.Gui.Map};
+                models = {models.models.main.Avatar.Head.ExSkill2H.ShineEffect, models.models.ex_skill_2.Pillagers, models.models.ex_skill_2.Gui.Hotbar, models.models.ex_skill_2.Gui.Map};
 
                 animations = {"main", "gun", "costume_maid", "ex_skill_2"};
 
@@ -605,9 +625,6 @@ BlueArchiveCharacter = {
                 callbacks = {
                     onPreAnimation = function (self)
                         if not self.exSkill[2].init then
-                            for _, modelPart in ipairs({models.models.ex_skill_2.YuzuChest.YuzuChestBottom, models.models.ex_skill_2.YuzuChest.YuzuChestTop}) do
-                                modelPart:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/chest/normal.png")
-                            end
                             ---@diagnostic disable-next-line: discard-returns
                             models:newPart("script_ex_skill_2_wall_model")
                             models.script_ex_skill_2_wall_model:setPos(-8, 0, 8)
@@ -774,6 +791,7 @@ BlueArchiveCharacter = {
                         elseif tick == 71 and host:isHost() then
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:ui.button.click"), player:getPos(), 0.5, 1)
                         elseif tick == 74 then
+                            models.models.ex_skill_2.YuzuChest:setVisible(true)
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.YuzuChest), 1, 1)
                         elseif tick == 76 then
                             self.parent.faceParts:setEmotion("CLOSED2_WITH_TEAR", "CLOSED2_WITH_TEAR", "SHOCK", 17)
@@ -839,6 +857,7 @@ BlueArchiveCharacter = {
                         models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:moveTo(models.models.main.Avatar.UpperBody.Body)
                         models.models.main.Avatar.UpperBody.Body.Gun:setVisible(self.parent.gun.currentGunPosition ~= "NONE")
                         models.script_ex_skill_2_wall_model:setVisible(false)
+                        models.models.ex_skill_2.YuzuChest:setVisible(self.costume.costumes[2].shouldShowChest)
                         if host:isHost() then
                             events.RENDER:remove("ex_skill_2_screen_effects")
                             models.models.ex_skill_2.Gui.ScreenEffects:setVisible(false)
@@ -887,6 +906,10 @@ BlueArchiveCharacter = {
 
                     exSkill = 2;
 
+                    ---この衣装の初期化処理が行われたかどうか
+                    ---@type boolean
+                    init = false;
+
                     ---前ティックに脚とスカートの調整をしたかどうか
                     ---@type boolean
                     shouldAdjustLegsPrev = false;
@@ -894,6 +917,20 @@ BlueArchiveCharacter = {
                     ---前ティックは脚を隠すべきだったかどうか
                     ---@type boolean
                     shouldHideLegsPrev = false;
+
+                    ---チェストを表示すべきかどうか
+                    ---@type boolean
+                    shouldShowChest = false;
+
+                    ---前ティックにチェストを表示していたかどうか
+                    ---@type boolean
+                    shouldShowChestPrev = false;
+
+                    ---チェストの中に隠れていたかどうか
+                    shouldHideInChest = false;
+
+                    ---前ティックにチェストの中に隠れていたかどうか
+                    shouldHideInChestPrev = false;
                 };
             };
 
@@ -909,6 +946,12 @@ BlueArchiveCharacter = {
                     self.parent.costume.setCostumeTextureOffset(1)
                     for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer}) do
                         modelPart:setUVPixels(0, 16)
+                    end
+                    if not self.costume.costumes[2].init then
+                        for _, modelPart in ipairs({models.models.ex_skill_2.YuzuChest.YuzuChestBottom, models.models.ex_skill_2.YuzuChest.YuzuChestTop}) do
+                            modelPart:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/chest/normal.png")
+                        end
+                        self.costume.costumes[2].init = true
                     end
                     events.TICK:register(function ()
                         if not client:isPaused() then
@@ -930,13 +973,19 @@ BlueArchiveCharacter = {
                                     local rightLegRotX = vanilla_model.RIGHT_LEG:getOriginRot().x
                                     models.models.main.Avatar.LowerBody.Legs.RightLeg:setRot(rightLegRotX * -0.45, 0, 0)
                                     models.models.main.Avatar.LowerBody.Legs.LeftLeg:setRot(vanilla_model.LEFT_LEG:getOriginRot().x * -0.45, 0, 0)
-                                    local rightLegRotAbs = math.abs(rightLegRotX)
-                                    local playerPose = player:getPose()
-                                    local skirtFlipVal = math.min(math.abs(self.parent.physics.getValueBetweenTicks(self.parent.physics.velocityAverage[7], delta)) * 0.00025 + ((playerPose == "SWIMMING" or playerPose == "FALL_FLYING") and 0 or math.max(self.parent.physics.getValueBetweenTicks(self.parent.physics.velocityAverage[2], delta) * -0.25, 0)), 0.5)
-                                    models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1:setScale(1 + skirtFlipVal, 1 - skirtFlipVal * 0.75, rightLegRotAbs * 0.001 + 1 + skirtFlipVal)
-                                    models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1.Skirt2:setScale(rightLegRotAbs * -0.0001 + 1, 1, rightLegRotAbs * 0.001 + 1)
-                                    models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1.Skirt2.Skirt3:setScale(rightLegRotAbs * -0.0001 + 1, 1, rightLegRotAbs * 0.001 + 1)
-                                    models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1.Skirt2.Skirt3.Skirt4:setScale(rightLegRotAbs * -0.00005 + 1, 1, rightLegRotAbs * 0.0005 + 1)
+                                    if self.costume.costumes[2].shouldHideInChest then
+                                        for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1, models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1.Skirt2, models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1.Skirt2.Skirt3, models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1.Skirt2.Skirt3.Skirt4}) do
+                                            modelPart:setScale()
+                                        end
+                                    else
+                                        local rightLegRotAbs = math.abs(rightLegRotX)
+                                        local playerPose = player:getPose()
+                                        local skirtFlipVal = math.min(math.abs(self.parent.physics.getValueBetweenTicks(self.parent.physics.velocityAverage[7], delta)) * 0.00025 + ((playerPose == "SWIMMING" or playerPose == "FALL_FLYING") and 0 or math.max(self.parent.physics.getValueBetweenTicks(self.parent.physics.velocityAverage[2], delta) * -0.25, 0)), 0.5)
+                                        models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1:setScale(1 + skirtFlipVal, 1 - skirtFlipVal * 0.75, rightLegRotAbs * 0.001 + 1 + skirtFlipVal)
+                                        models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1.Skirt2:setScale(rightLegRotAbs * -0.0001 + 1, 1, rightLegRotAbs * 0.001 + 1)
+                                        models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1.Skirt2.Skirt3:setScale(rightLegRotAbs * -0.0001 + 1, 1, rightLegRotAbs * 0.001 + 1)
+                                        models.models.main.Avatar.UpperBody.Body.CMaidB.Skirt1.Skirt2.Skirt3.Skirt4:setScale(rightLegRotAbs * -0.00005 + 1, 1, rightLegRotAbs * 0.0005 + 1)
+                                    end
                                 end, "costume_maid_render")
                             elseif not shouldAdjustLegs and self.costume.costumes[2].shouldAdjustLegsPrev then
                                 events.RENDER:remove("costume_maid_render")
@@ -951,6 +1000,56 @@ BlueArchiveCharacter = {
                             end
                             self.costume.costumes[2].shouldHideLegsPrev = shouldHideLegs
                             self.costume.costumes[2].shouldAdjustLegsPrev = shouldAdjustLegs
+
+                            self.costume.costumes[2].shouldShowChest = player:getItem(6).id == "minecraft:carved_pumpkin" and not self.parent.armor.shouldShowArmor and self.parent.exSkill.animationCount == -1 and player:getPose() ~= "SLEEPING"
+                            if self.costume.costumes[2].shouldShowChest ~= self.costume.costumes[2].shouldShowChestPrev then
+                                if self.costume.costumes[2].shouldShowChest then
+                                    models.models.ex_skill_2.YuzuChest:setVisible(true)
+                                    for _, anim in ipairs({animations["models.ex_skill_2"]["chest_idle"], animations["models.main"]["chest_hide"], animations["models.costume_maid"]["chest_hide"], animations["models.ex_skill_2"]["chest_hide"]}) do
+                                        anim:play()
+                                    end
+                                    for _, anim in ipairs({animations["models.main"]["chest_hide"], animations["models.costume_maid"]["chest_hide"], animations["models.ex_skill_2"]["chest_hide"]}) do
+                                        anim:setTime(0)
+                                        anim:setSpeed(-1)
+                                    end
+                                    self.parent.arms:setArmState(4, 4)
+                                    events.TICK:register(function ()
+                                        if not client:isPaused() then
+                                            self.costume.costumes[2].shouldHideInChest = player:isCrouching()
+                                            if self.costume.costumes[2].shouldHideInChest ~= self.costume.costumes[2].shouldHideInChestPrev then
+                                                if self.costume.costumes[2].shouldHideInChest then
+                                                    for _, anim in ipairs({animations["models.main"]["chest_hide"], animations["models.costume_maid"]["chest_hide"], animations["models.ex_skill_2"]["chest_hide"]}) do
+                                                        anim:setSpeed(1)
+                                                    end
+                                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.ender_chest.close"), player:getPos(), 0.1, 2)
+                                                else
+                                                    for _, anim in ipairs({animations["models.main"]["chest_hide"], animations["models.costume_maid"]["chest_hide"], animations["models.ex_skill_2"]["chest_hide"]}) do
+                                                        anim:setSpeed(-1)
+                                                    end
+                                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.chest.open"), player:getPos(), 0.1, 2)
+                                                end
+                                                self.costume.costumes[2].shouldHideInChestPrev = self.costume.costumes[2].shouldHideInChest
+                                            end
+                                        end
+                                    end, "chest_tick")
+                                else
+                                    events.TICK:remove("chest_tick")
+                                    models.models.ex_skill_2.YuzuChest:setVisible(false)
+                                    for _, anim in ipairs({animations["models.ex_skill_2"]["chest_idle"], animations["models.main"]["chest_hide"], animations["models.costume_maid"]["chest_hide"], animations["models.ex_skill_2"]["chest_hide"]}) do
+                                        anim:stop()
+                                    end
+                                    if self.parent.gun.currentGunPosition == "RIGHT" then
+                                        self.parent.arms:setArmState(1, 2)
+                                    elseif self.parent.gun.currentGunPosition == "LEFT" then
+                                        self.parent.arms:setArmState(2, 1)
+                                    else
+                                        self.parent.arms:setArmState(0, 0)
+                                    end
+                                    self.costume.costumes[2].shouldHideInChest = false
+                                    self.costume.costumes[2].shouldHideInChestPrev = false
+                                end
+                                self.costume.costumes[2].shouldShowChestPrev = self.costume.costumes[2].shouldShowChest
+                            end
                         end
                     end,"costume_maid_tick")
                 end;
