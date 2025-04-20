@@ -701,6 +701,11 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("FEAR", "FEAR_CENTER", "FEAR", 10)
                         elseif tick == 76 then
                             self.parent.faceParts:setEmotion("CLOSED2_WITH_TEAR", "CLOSED2_WITH_TEAR", "SHOCK", 17)
+                        elseif tick == 82 then
+                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.YuzuChest)
+                            for i = 0, 11 do
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), anchorPos:copy():add(vectors.rotateAroundAxis(i * 30, 0, 0, 0.5, 0, 1, 0))):setVelocity(vectors.rotateAroundAxis(i * 30, 0, 0, 0.05, 0, 1, 0)):setLifetime(20)
+                            end
                         elseif tick == 93 then
                             models.models.main.Avatar.Head.ExSkill2H.FearEffect:setVisible(false)
                             self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "SMALL", 44)
