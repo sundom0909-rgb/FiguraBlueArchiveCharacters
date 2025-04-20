@@ -3064,7 +3064,7 @@
 			"override": false,
 			"length": 0.15,
 			"snapping": 20,
-			"selected": true,
+			"selected": false,
 			"anim_time_update": "",
 			"blend_weight": "",
 			"start_delay": "",
@@ -3136,6 +3136,87 @@
 							"uuid": "b6028500-f0d9-1acb-1575-e2b0868b9d77",
 							"time": 0.15,
 							"color": -1,
+							"interpolation": "catmullrom"
+						}
+					]
+				}
+			}
+		},
+		{
+			"uuid": "edcc1766-f2f9-5b06-0b6c-169ac7113d95",
+			"name": "chest_afk",
+			"loop": "once",
+			"override": false,
+			"length": 7,
+			"snapping": 20,
+			"selected": true,
+			"anim_time_update": "",
+			"blend_weight": "",
+			"start_delay": "",
+			"loop_delay": "",
+			"animators": {
+				"3c4b7cd3-781d-23b2-3081-24005ba2b900": {
+					"name": "Skirt1",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "scale",
+							"data_points": [
+								{
+									"x": "1",
+									"y": "1",
+									"z": "1"
+								}
+							],
+							"uuid": "eb3b9c6d-5753-df0c-7732-922483d337e3",
+							"time": 0,
+							"color": -1,
+							"uniform": true,
+							"interpolation": "catmullrom"
+						},
+						{
+							"channel": "scale",
+							"data_points": [
+								{
+									"x": "1",
+									"y": "1.75",
+									"z": "1"
+								}
+							],
+							"uuid": "7369ac8c-51db-1b56-623c-83f5c7232140",
+							"time": 0.5,
+							"color": -1,
+							"uniform": false,
+							"interpolation": "catmullrom"
+						},
+						{
+							"channel": "scale",
+							"data_points": [
+								{
+									"x": "1",
+									"y": "1",
+									"z": "1"
+								}
+							],
+							"uuid": "69ade1be-f29d-0602-255e-1f404f3f1e19",
+							"time": 7,
+							"color": -1,
+							"uniform": true,
+							"interpolation": "catmullrom"
+						},
+						{
+							"channel": "scale",
+							"data_points": [
+								{
+									"x": "1",
+									"y": "1.75",
+									"z": "1"
+								}
+							],
+							"uuid": "eced83d4-eff8-e118-3259-66caecc4da36",
+							"time": 6.5,
+							"color": -1,
+							"uniform": false,
 							"interpolation": "catmullrom"
 						}
 					]

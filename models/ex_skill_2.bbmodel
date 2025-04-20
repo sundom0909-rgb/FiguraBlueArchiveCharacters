@@ -2127,7 +2127,7 @@
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
-			"selected": true,
+			"selected": false,
 			"children": [
 				{
 					"name": "YuzuChestBottom",
@@ -2177,7 +2177,7 @@
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
-							"selected": false,
+							"selected": true,
 							"children": ["e083f248-8f7e-6538-3450-478acb03437a"]
 						}
 					]
@@ -7487,7 +7487,7 @@
 			"override": false,
 			"length": 0,
 			"snapping": 20,
-			"selected": true,
+			"selected": false,
 			"anim_time_update": "",
 			"blend_weight": "",
 			"start_delay": "",
@@ -7667,6 +7667,145 @@
 							"time": 0.15,
 							"color": -1,
 							"interpolation": "linear"
+						}
+					]
+				}
+			}
+		},
+		{
+			"uuid": "a244b659-ca37-4fed-01f9-2ab1400cc966",
+			"name": "chest_afk",
+			"loop": "once",
+			"override": false,
+			"length": 7,
+			"snapping": 20,
+			"selected": true,
+			"anim_time_update": "",
+			"blend_weight": "",
+			"start_delay": "",
+			"loop_delay": "",
+			"animators": {
+				"efbbc7e2-01fd-f96e-9a44-6afbbd42fb66": {
+					"name": "YuzuChestTop",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "382f2f2e-5193-22cc-b49d-6a7e3d8ef489",
+							"time": 0,
+							"color": -1,
+							"interpolation": "catmullrom"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "-10",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "83a805eb-9a1e-9284-64f5-09b89af1f6a0",
+							"time": 0.5,
+							"color": -1,
+							"interpolation": "catmullrom"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "-10",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "8b88fe18-7be5-1817-f852-03ced6d5803f",
+							"time": 6.5,
+							"color": -1,
+							"interpolation": "catmullrom"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "57f7eb97-89c3-6021-73f5-a4d82ebf1b2d",
+							"time": 7,
+							"color": -1,
+							"interpolation": "catmullrom"
+						}
+					]
+				},
+				"f99d9ed6-f79d-89f3-3e46-b5b54002efb0": {
+					"name": "YuzuChestHook",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "8a60c2ba-c53c-b90b-1b2b-0966e78db268",
+							"time": 0,
+							"color": -1,
+							"interpolation": "catmullrom"
+						},
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "3",
+									"z": "0"
+								}
+							],
+							"uuid": "d235a7a3-d8d0-ac73-da65-69546a6f4fe6",
+							"time": 0.5,
+							"color": -1,
+							"interpolation": "catmullrom"
+						},
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "3",
+									"z": "0"
+								}
+							],
+							"uuid": "2e3f4bd8-15c8-1bcd-8529-924bfb90a834",
+							"time": 6.5,
+							"color": -1,
+							"interpolation": "catmullrom"
+						},
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "6fbd64c9-fe12-1ec8-cb6a-4873a48e6567",
+							"time": 7,
+							"color": -1,
+							"interpolation": "catmullrom"
 						}
 					]
 				}

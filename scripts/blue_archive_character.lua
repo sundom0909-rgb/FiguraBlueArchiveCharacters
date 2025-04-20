@@ -23,6 +23,7 @@
 ---| "FEAR_CENTER" # 恐怖を感じてつつ少し反対側を見る目
 ---| "CLOSED2_WITH_TEAR" # 涙ぐみつつ閉じた目2
 ---| "ANGRY" # 怒った目
+---| "INVERTED" # 反対側を見る目
 
 ---@alias BlueArchiveCharacter.MouthTextures
 ---| "NORMAL" # 通常
@@ -329,6 +330,7 @@ BlueArchiveCharacter = {
                 FEAR_CENTER = vectors.vec2(0, 1);
                 CLOSED2_WITH_TEAR = vectors.vec2(1, 1);
                 ANGRY = vectors.vec2(2, 1);
+                INVERTED = vectors.vec2(3, 1);
             };
 
             mouth = {
@@ -927,10 +929,44 @@ BlueArchiveCharacter = {
                     shouldShowChestPrev = false;
 
                     ---チェストの中に隠れていたかどうか
+                    ---@type boolean
                     shouldHideInChest = false;
 
                     ---前ティックにチェストの中に隠れていたかどうか
+                    ---@type boolean
                     shouldHideInChestPrev = false;
+
+                    ---前ティックのBodyYaw
+                    ---@type number
+                    bodyYawPrev = 0;
+
+                    ---チェストに隠れているときのAFKカウンター
+                    ---@type integer
+                    chestAFKCount = 0;
+
+                    ---チェストに隠れられる機能を停止する。
+                    ---@param self BlueArchiveCharacter
+                    stopChest = function (self)
+                        events.TICK:remove("chest_tick")
+                        events.DAMAGE:remove("chest_damage")
+                        models.models.ex_skill_2.YuzuChest:setVisible(false)
+                        for _, anim in ipairs({animations["models.ex_skill_2"]["chest_idle"], animations["models.main"]["chest_hide"], animations["models.costume_maid"]["chest_hide"], animations["models.ex_skill_2"]["chest_hide"], animations["models.main"]["chest_afk"], animations["models.main"]["chest_afk_overwrite"], animations["models.costume_maid"]["chest_afk"], animations["models.ex_skill_2"]["chest_afk"]}) do
+                            anim:stop()
+                        end
+                        self.parent.faceParts:resetEmotion()
+                        self.costume.costumes[2].shouldShowChest = false
+                        self.costume.costumes[2].shouldShowChestPrev = false
+                        self.costume.costumes[2].shouldHideInChest = false
+                        self.costume.costumes[2].shouldHideInChestPrev = false
+                        self.costume.costumes[2].chestAFKCount = 0
+                        if self.parent.gun.currentGunPosition == "RIGHT" then
+                            self.parent.arms:setArmState(1, 2)
+                        elseif self.parent.gun.currentGunPosition == "LEFT" then
+                            self.parent.arms:setArmState(2, 1)
+                        else
+                            self.parent.arms:setArmState(0, 0)
+                        end
+                    end;
                 };
             };
 
@@ -1030,23 +1066,44 @@ BlueArchiveCharacter = {
                                                 end
                                                 self.costume.costumes[2].shouldHideInChestPrev = self.costume.costumes[2].shouldHideInChest
                                             end
+                                            local bodyYaw = player:getBodyYaw()
+                                            if self.costume.costumes[2].shouldHideInChest and not player:isMoving() and bodyYaw == self.costume.costumes[2].bodyYawPrev and not player:isInWater() and not player:isInLava() and player:getFrozenTicks() == 0 and player:getSwingArm() == nil and player:getActiveItem().id == "minecraft:air" then
+                                                if self.costume.costumes[2].chestAFKCount == -135 then
+                                                    self.parent.faceParts:setEmotion("NORMAL", "INVERTED", "FRUST", 35, true)
+                                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.chest.open"), player:getPos(), 0.1, 2)
+                                                elseif self.costume.costumes[2].chestAFKCount == -100 then
+                                                    self.parent.faceParts:setEmotion("INVERTED", "NORMAL", "FRUST", 35, true)
+                                                elseif self.costume.costumes[2].chestAFKCount == -65 then
+                                                    self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "FRUST", 15, true)
+                                                elseif self.costume.costumes[2].chestAFKCount == -50 then
+                                                    self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMALL", 40, true)
+                                                elseif self.costume.costumes[2].chestAFKCount == -10 then
+                                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.ender_chest.close"), player:getPos(), 0.1, 2)
+                                                elseif self.costume.costumes[2].chestAFKCount == 1200 then
+                                                    for _, anim in ipairs({animations["models.main"]["chest_afk"], animations["models.main"]["chest_afk_overwrite"], animations["models.costume_maid"]["chest_afk"], animations["models.ex_skill_2"]["chest_afk"]}) do
+                                                        anim:play()
+                                                    end
+                                                    self.costume.costumes[2].chestAFKCount = -140
+                                                end
+                                                self.costume.costumes[2].chestAFKCount = self.costume.costumes[2].chestAFKCount + 1
+                                            else
+                                                for _, anim in ipairs({animations["models.main"]["chest_afk"], animations["models.main"]["chest_afk_overwrite"], animations["models.costume_maid"]["chest_afk"], animations["models.ex_skill_2"]["chest_afk"]}) do
+                                                    anim:stop()
+                                                end
+                                                self.parent.faceParts:resetEmotion()
+                                                self.costume.costumes[2].chestAFKCount = 0
+                                            end
+                                            self.costume.costumes[2].bodyYawPrev = bodyYaw
                                         end
                                     end, "chest_tick")
+                                    events.DAMAGE:register(function ()
+                                        for _, anim in ipairs({animations["models.main"]["chest_afk"], animations["models.main"]["chest_afk_overwrite"], animations["models.costume_maid"]["chest_afk"], animations["models.ex_skill_2"]["chest_afk"]}) do
+                                            anim:stop()
+                                        end
+                                        self.costume.costumes[2].chestAFKCount = 0
+                                    end, "chest_damage")
                                 else
-                                    events.TICK:remove("chest_tick")
-                                    models.models.ex_skill_2.YuzuChest:setVisible(false)
-                                    for _, anim in ipairs({animations["models.ex_skill_2"]["chest_idle"], animations["models.main"]["chest_hide"], animations["models.costume_maid"]["chest_hide"], animations["models.ex_skill_2"]["chest_hide"]}) do
-                                        anim:stop()
-                                    end
-                                    if self.parent.gun.currentGunPosition == "RIGHT" then
-                                        self.parent.arms:setArmState(1, 2)
-                                    elseif self.parent.gun.currentGunPosition == "LEFT" then
-                                        self.parent.arms:setArmState(2, 1)
-                                    else
-                                        self.parent.arms:setArmState(0, 0)
-                                    end
-                                    self.costume.costumes[2].shouldHideInChest = false
-                                    self.costume.costumes[2].shouldHideInChestPrev = false
+                                    self.costume.costumes[2].stopChest(self)
                                 end
                                 self.costume.costumes[2].shouldShowChestPrev = self.costume.costumes[2].shouldShowChest
                             end
@@ -1057,6 +1114,7 @@ BlueArchiveCharacter = {
                 onReset = function (self)
                     events.TICK:remove("costume_maid_tick")
                     events.RENDER:remove("costume_maid_render")
+                    self.costume.costumes[2].stopChest(self)
                     models.models.main.Avatar.LowerBody.Legs:setVisible(true)
                     for _, modelPart in ipairs({models.models.main.Avatar.LowerBody.Legs.RightLeg, models.models.main.Avatar.LowerBody.Legs.LeftLeg}) do
                         modelPart:setRot()
