@@ -588,7 +588,7 @@ BlueArchiveCharacter = {
 
                 formationType = "SPECIAL";
 
-                models = {models.models.ex_skill_2.Pillagers, models.models.ex_skill_2.YuzuChest, models.models.ex_skill_2.Gui.Hotbar, models.models.ex_skill_2.Gui.Map};
+                models = {models.models.main.Avatar.Head.ExSkill2H.ShineEffect, models.models.ex_skill_2.Pillagers, models.models.ex_skill_2.YuzuChest, models.models.ex_skill_2.Gui.Hotbar, models.models.ex_skill_2.Gui.Map};
 
                 animations = {"main", "gun", "costume_maid", "ex_skill_2"};
 
