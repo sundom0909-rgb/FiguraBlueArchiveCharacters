@@ -171,9 +171,15 @@
 			"parentType": "Camera",
 			"primaryRenderType": "EMISSIVE_SOLID"
 		},
-		"models.models.ex_skill_2.FearEffect": {
-			"visible": false,
+		"models.models.ex_skill_2.ExSkill2H": {
 			"moveTo": "models.models.main.Avatar.Head"
+		},
+		"models.models.ex_skill_2.ExSkill2H.FearEffect": {
+			"visible": false
+		},
+		"models.models.ex_skill_2.ExSkill2H.NoticeEffect": {
+			"visible": false,
+			"parentType": "Camera"
 		},
 		"models.models.ex_skill_2.Pillagers": {
 			"visible": false

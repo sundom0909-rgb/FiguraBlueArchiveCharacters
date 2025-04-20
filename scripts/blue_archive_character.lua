@@ -659,12 +659,31 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED", 2)
                         elseif tick == 8 then
                             self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "SMALL", 22)
+                        elseif tick == 21 then
+                            local bodyYaw = player:getBodyYaw()
+                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Pillagers.Pillager1.Pillager1Question):add(0, 0.25, 0)
+                            for j = 0, 5 do
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, vectors.rotateAroundAxis(j * 60, 0.1, 0, 0, 0, 0, 1), 0, 1, 0)):setColor(1, 1, 0.33):setLifetime(5)
+                            end
+                        elseif tick == 23 then
+                            local bodyYaw = player:getBodyYaw()
+                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Pillagers.Pillager2.Pillager2Question):add(0, 0.25, 0)
+                            for j = 0, 5 do
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, vectors.rotateAroundAxis(j * 60, 0.1, 0, 0, 0, 0, 1), 0, 1, 0)):setColor(1, 1, 0.33):setLifetime(5)
+                            end
+                        elseif tick == 29 then
+                            models.models.main.Avatar.Head.ExSkill2H.NoticeEffect:setVisible(true)
                         elseif tick == 30 then
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMALL", 2)
+                        elseif tick == 31 then
+                            models.models.main.Avatar.Head.ExSkill2H.NoticeEffect:setVisible(false)
                         elseif tick == 32 then
-                            models.models.main.Avatar.Head.FearEffect:setVisible(true)
+                            for _, modelPart in ipairs({models.models.main.Avatar.Head.ExSkill2H.FearEffect, models.models.main.Avatar.Head.ExSkill2H.NoticeEffect}) do
+                                modelPart:setVisible(true)
+                            end
                             self.parent.faceParts:setEmotion("FEAR_CENTER", "FEAR", "FRUST", 2)
                         elseif tick == 34 then
+                            models.models.main.Avatar.Head.ExSkill2H.NoticeEffect:setVisible(false)
                             self.parent.faceParts:setEmotion("FEAR_CENTER", "FEAR", "FEAR", 8)
                         elseif tick == 42 then
                             self.parent.faceParts:setEmotion("FEAR", "FEAR_CENTER", "FEAR", 4)
@@ -683,7 +702,7 @@ BlueArchiveCharacter = {
                         elseif tick == 76 then
                             self.parent.faceParts:setEmotion("CLOSED2_WITH_TEAR", "CLOSED2_WITH_TEAR", "SHOCK", 17)
                         elseif tick == 93 then
-                            models.models.main.Avatar.Head.FearEffect:setVisible(false)
+                            models.models.main.Avatar.Head.ExSkill2H.FearEffect:setVisible(false)
                             self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "SMALL", 44)
                         elseif tick == 105 and host:isHost() then
                             events.RENDER:register(function (delta)
@@ -710,7 +729,9 @@ BlueArchiveCharacter = {
                             end
                         end
                         if forcedStop then
-                            models.models.main.Avatar.Head.FearEffect:setVisible(false)
+                            for _, modelPart in ipairs({models.models.main.Avatar.Head.ExSkill2H.FearEffect, models.models.main.Avatar.Head.ExSkill2H.NoticeEffect}) do
+                                modelPart:setVisible(false)
+                            end
                         end
                     end;
 
