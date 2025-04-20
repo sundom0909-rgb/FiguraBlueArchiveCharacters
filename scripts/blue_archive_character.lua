@@ -901,12 +901,13 @@ BlueArchiveCharacter = {
 
             callbacks = {
                 onChange = function (self)
-                    for _, modelPart in ipairs({models.models.main.Avatar.Head.CMaidH, models.models.main.Avatar.UpperBody.Body.CMaidB, models.models.main.Avatar.UpperBody.Arms.RightArm.CMaidRA, models.models.main.Avatar.UpperBody.Arms.LeftArm.CMaidLA}) do
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.CMaidH, models.models.main.Avatar.UpperBody.Arms.RightArm.CMaidRA, models.models.main.Avatar.UpperBody.Arms.LeftArm.CMaidLA}) do
                         modelPart:setVisible(true)
                     end
                     for _, modelPart in ipairs({models.models.main.Avatar.Head.HairTip1, models.models.main.Avatar.UpperBody.Body.Hairs, models.models.main.Avatar.UpperBody.Body.MilleniumLogo, models.models.main.Avatar.UpperBody.Body.IDCard, models.models.main.Avatar.UpperBody.Body.GameConsole, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.MilleniumPatch}) do
                         modelPart:setVisible(false)
                     end
+                    models.models.main.Avatar.UpperBody.Body.CMaidB:setVisible(not self.parent.armor.isArmorVisible.leggings)
                     self.parent.costume.setCostumeTextureOffset(1)
                     for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer}) do
                         modelPart:setUVPixels(0, 16)
@@ -975,8 +976,18 @@ BlueArchiveCharacter = {
                     self.costume.costumes[2].shouldAdjustLegsPrev = false
                 end;
 
-                onArmorChange = function (_, parts, isVisible)
-                    if parts == "CHEST_PLATE" then
+                onArmorChange = function (self, parts, isVisible)
+                    if parts == "HELMET" then
+                        if isVisible then
+                            for _, modelPart in ipairs({models.models.main.Avatar.Head.HairTip2, models.models.main.Avatar.Head.CMaidH.Brim}) do
+                                modelPart:setVisible(false)
+                            end
+                        else
+                            for _, modelPart in ipairs({models.models.main.Avatar.Head.HairTip2, models.models.main.Avatar.Head.CMaidH.Brim}) do
+                                modelPart:setVisible(true)
+                            end
+                        end
+                    elseif parts == "CHEST_PLATE" then
                         if isVisible then
                             models.models.main.Avatar.UpperBody.Body.Hairs.FrontHair:setPos(0, 0, -1)
                             models.models.main.Avatar.UpperBody.Body.Hairs.BackHair:setPos(0, 0, 1)
@@ -985,6 +996,8 @@ BlueArchiveCharacter = {
                                 modelPart:setPos()
                             end
                         end
+                    elseif parts == "LEGGINGS" and self.parent.costume.currentCostume == 2 then
+                        models.models.main.Avatar.UpperBody.Body.CMaidB:setVisible(not isVisible)
                     end
                 end;
             };
