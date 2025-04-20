@@ -678,6 +678,7 @@ BlueArchiveCharacter = {
                             for j = 0, 5 do
                                 particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, vectors.rotateAroundAxis(j * 60, 0.1, 0, 0, 0, 0, 1), 0, 1, 0)):setColor(1, 1, 0.33):setLifetime(5)
                             end
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.pillager.ambient"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Pillagers.Pillager1), 0.5, 1)
                         elseif tick == 23 then
                             local bodyYaw = player:getBodyYaw()
                             local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Pillagers.Pillager2.Pillager2Question):add(0, 0.25, 0)
@@ -686,6 +687,7 @@ BlueArchiveCharacter = {
                             end
                         elseif tick == 29 then
                             models.models.main.Avatar.Head.ExSkill2H.NoticeEffect:setVisible(true)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.experience_orb.pickup"), player:getPos(), 0.25, 1.5)
                         elseif tick == 30 then
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMALL", 2)
                         elseif tick == 31 then
@@ -695,6 +697,7 @@ BlueArchiveCharacter = {
                                 modelPart:setVisible(true)
                             end
                             self.parent.faceParts:setEmotion("FEAR_CENTER", "FEAR", "FRUST", 2)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.experience_orb.pickup"), player:getPos(), 0.25, 1.5)
                         elseif tick == 34 then
                             models.models.main.Avatar.Head.ExSkill2H.NoticeEffect:setVisible(false)
                             self.parent.faceParts:setEmotion("FEAR_CENTER", "FEAR", "FEAR", 8)
@@ -712,6 +715,10 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("FEAR_CENTER", "FEAR", "FEAR", 4)
                         elseif tick == 66 then
                             self.parent.faceParts:setEmotion("FEAR", "FEAR_CENTER", "FEAR", 10)
+                        elseif tick == 71 and host:isHost() then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:ui.button.click"), player:getPos(), 0.5, 1)
+                        elseif tick == 74 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.YuzuChest), 1, 1)
                         elseif tick == 76 then
                             self.parent.faceParts:setEmotion("CLOSED2_WITH_TEAR", "CLOSED2_WITH_TEAR", "SHOCK", 17)
                         elseif tick == 82 then
@@ -719,9 +726,13 @@ BlueArchiveCharacter = {
                             for i = 0, 11 do
                                 particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), anchorPos:copy():add(vectors.rotateAroundAxis(i * 30, 0, 0, 0.5, 0, 1, 0))):setVelocity(vectors.rotateAroundAxis(i * 30, 0, 0, 0.05, 0, 1, 0)):setLifetime(20)
                             end
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.zombie.attack_wooden_door"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.YuzuChest), 0.2, 1.5)
+                        elseif tick == 84 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.pillager.hurt"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Pillagers.Pillager1), 0.5, 1)
                         elseif tick == 93 then
                             models.models.main.Avatar.Head.ExSkill2H.FearEffect:setVisible(false)
                             self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "SMALL", 44)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.chest.open"), player:getPos(), 0.1, 0.75)
                         elseif tick == 105 and host:isHost() then
                             events.RENDER:register(function (delta)
                                 local opacity = (self.parent.exSkill.animationCount + delta - 1) * -0.2 + 22
@@ -729,6 +740,7 @@ BlueArchiveCharacter = {
                                     modelPart:setOpacity(opacity)
                                 end
                             end, "ex_skill_2_yuzu_chest")
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 0.5, 1.5)
                         elseif tick == 106 and host:isHost() then
                             models.models.ex_skill_2.Gui.ScreenEffects:setVisible(true)
                             events.RENDER:register(function ()
@@ -758,6 +770,12 @@ BlueArchiveCharacter = {
                         end
                         if tick >= 32 and tick < 76 then
                             particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:splash"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head)):setPower(2)
+                            if (tick - 32) % 4 == 0 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.bubble_column.bubble_pop"), player:getPos(), 0.15, 2 - math.random() * 0.5)
+                            end
+                        end
+                        if tick >= 37 and tick <= 67 and (tick - 37) % 4 == 0 and host:isHost() then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:ui.button.click"), player:getPos(), 0.25, 1.5)
                         end
                     end;
 
