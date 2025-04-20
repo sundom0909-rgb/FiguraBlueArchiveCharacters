@@ -22,6 +22,7 @@
 ---| "FEAR" # 恐怖を感じているときの目
 ---| "FEAR_CENTER" # 恐怖を感じてつつ少し反対側を見る目
 ---| "CLOSED2_WITH_TEAR" # 涙ぐみつつ閉じた目2
+---| "ANGRY" # 怒った目
 
 ---@alias BlueArchiveCharacter.MouthTextures
 ---| "NORMAL" # 通常
@@ -31,6 +32,8 @@
 ---| "CLOSED" # 閉じた口
 ---| "ANGRY" # 怒った口
 ---| "FEAR" # 恐怖を感じているときの口
+---| "SMILE" # にっこり
+---| "OPENED" # 開いた口
 
 ---@alias BlueArchiveCharacter.GunPutType
 ---| "BODY" # アバターのBodyに銃を移動させる
@@ -325,6 +328,7 @@ BlueArchiveCharacter = {
                 FEAR = vectors.vec2(-1, 1);
                 FEAR_CENTER = vectors.vec2(0, 1);
                 CLOSED2_WITH_TEAR = vectors.vec2(1, 1);
+                ANGRY = vectors.vec2(2, 1);
             };
 
             mouth = {
@@ -334,6 +338,8 @@ BlueArchiveCharacter = {
                 CLOSED = vectors.vec2(3, 0);
                 ANGRY = vectors.vec2(0, 1);
                 FEAR = vectors.vec2(1, 1);
+                SMILE = vectors.vec2(2, 1);
+                OPENED = vectors.vec2(3, 1);
             };
         }
 
@@ -996,7 +1002,32 @@ BlueArchiveCharacter = {
         }
 
         instance.bubble = {
+            callbacks = {
+                onPlay = function(self, type, duration)
+                    if duration > 0 then
+                        if type == "GOOD" then
+                            print("A")
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", duration, true)
+                        elseif type == "HEART" then
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", duration, true)
+                        elseif type == "NOTE" then
+                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "CLOSED", duration, true)
+                        elseif type == "QUESTION" then
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "FRUST", duration, true)
+                        elseif type == "SWEAT" then
+                            self.parent.faceParts:setEmotion("FEAR", "FEAR", "FEAR", duration, true)
+                            models.models.main.Avatar.Head.ExSkill2H.FearEffect:setVisible(true)
+                        end
+                    end
+                end;
 
+                onStop = function(self, _, forcedStop)
+                    models.models.main.Avatar.Head.ExSkill2H.FearEffect:setVisible(false)
+                    if forcedStop then
+                        self.parent.faceParts:resetEmotion()
+                    end
+                end;
+            };
         }
 
         instance.headBlock = {
