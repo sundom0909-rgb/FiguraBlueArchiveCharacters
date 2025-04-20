@@ -1006,7 +1006,6 @@ BlueArchiveCharacter = {
                 onPlay = function(self, type, duration)
                     if duration > 0 then
                         if type == "GOOD" then
-                            print("A")
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", duration, true)
                         elseif type == "HEART" then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", duration, true)
