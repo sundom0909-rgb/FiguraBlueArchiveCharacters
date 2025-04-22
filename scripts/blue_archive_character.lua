@@ -918,13 +918,13 @@ BlueArchiveCharacter = {
             callbacks = {
                 onPlay = function (self, type, duration, showInGui)
                     if type == "GOOD" then
-                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", duration, true)
+                        self.parent.faceParts:setEmotion("NORMAL", self.costume.costumes[1].isRidingTank and "INVERTED" or "NORMAL", "OPENED", duration, true)
                     elseif type == "HEART" then
                         self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "W", duration, true)
                     elseif type == "NOTE" then
                         self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "OPENED", duration, true)
                     elseif type == "QUESTION" then
-                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "ANXIOUS", duration, true)
+                        self.parent.faceParts:setEmotion("NORMAL", self.costume.costumes[1].isRidingTank and "INVERTED" or "NORMAL", "ANXIOUS", duration, true)
                     elseif type == "SWEAT" then
                         if showInGui then
                             self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "SHOCK", duration, true)
