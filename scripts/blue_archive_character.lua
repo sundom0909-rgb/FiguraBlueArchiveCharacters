@@ -628,7 +628,7 @@ BlueArchiveCharacter = {
             };
 
             callbacks = {
-                onArmorChange = function (self, parts, isVisible)
+                onArmorChange = function (_, parts, isVisible)
                     if parts == "HELMET" then
                         models.models.main.Avatar.Head.Hat:setVisible(not isVisible)
                     end
@@ -640,13 +640,13 @@ BlueArchiveCharacter = {
             callbacks = {
                 onPlay = function (self, type, duration, showInGui)
                     if type == "GOOD" then
-                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", duration, true)
+                        self.parent.faceParts:setEmotion("NORMAL", self.costume.costumes[1].isRidingTank and "INVERTED" or "NORMAL", "CLOSED", duration, true)
                     elseif type == "HEART" then
-                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", duration, true)
+                        self.parent.faceParts:setEmotion("NORMAL", self.costume.costumes[1].isRidingTank and "INVERTED" or "NORMAL", "SMILE", duration, true)
                     elseif type == "NOTE" then
-                        self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "SMILE", duration, true)
+                        self.parent.faceParts:setEmotion("ANGRY", self.costume.costumes[1].isRidingTank and "ANGRY_INVERTED" or "ANGRY", "SMILE", duration, true)
                     elseif type == "QUESTION" then
-                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMALL", duration, true)
+                        self.parent.faceParts:setEmotion("NORMAL", self.costume.costumes[1].isRidingTank and "INVERTED" or "NORMAL", "SMALL", duration, true)
                     elseif type == "SWEAT" then
                         if showInGui then
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SIGH", duration, true)
