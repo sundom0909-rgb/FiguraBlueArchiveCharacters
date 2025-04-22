@@ -33,6 +33,7 @@
 ---| "TIRED" # げっそり口
 ---| "OPENED2" # 開いた口2
 ---| "SMALL" # 小さく開いた口
+---| "TRIANGLE3" # 三角口3
 
 ---@alias BlueArchiveCharacter.GunPutType
 ---| "BODY" # アバターのBodyに銃を移動させる
@@ -340,6 +341,7 @@ BlueArchiveCharacter = {
                 TIRED = vectors.vec2(1, 2);
                 OPENED2 = vectors.vec2(0, 3);
                 SMALL = vectors.vec2(1, 3);
+                TRIANGLE3 = vectors.vec2(0, 0);
             };
         }
 
@@ -989,7 +991,7 @@ BlueArchiveCharacter = {
                         elseif tick == 97 then
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", 3, true)
                         elseif tick == 100 then
-                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "TRIANGLE", 12, true)
+                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "TRIANGLE3", 12, true)
                         elseif tick == 112 then
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMALL", 16, true)
                         elseif tick == 128 then
