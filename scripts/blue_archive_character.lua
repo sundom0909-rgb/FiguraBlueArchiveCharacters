@@ -394,8 +394,8 @@ BlueArchiveCharacter = {
                     };
 
                     fin = {
-                        rot = vectors.vec3(10, -100, 0);
-                        pos = vectors.vec3(-203, 24, 23);
+                        rot = vectors.vec3(10, -105, 0);
+                        pos = vectors.vec3(-229.46, 22.31, -1.77);
                     };
 
                     fixMode = true;
@@ -522,7 +522,7 @@ BlueArchiveCharacter = {
                             self.exSkill[1].textTask:setVisible(false)
                         else
                             local bodyYaw = player:getBodyYaw() % 360
-                            self.parent.placementObjectManager:spawn(1, vectors.rotateAroundAxis(bodyYaw * -1, -10.75, 1, -2.1875, 0, 1, 0):add(player:getPos()), 180 + bodyYaw * -1)
+                            self.parent.placementObjectManager:spawn(1, vectors.rotateAroundAxis(bodyYaw * -1, -12.75, 1, -0.8875, 0, 1, 0):add(player:getPos()), 180 + bodyYaw * -1)
                         end
                     end;
                 };

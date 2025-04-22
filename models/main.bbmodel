@@ -6896,7 +6896,7 @@
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
-			"selected": true,
+			"selected": false,
 			"children": [
 				{
 					"name": "Head",
@@ -8309,7 +8309,7 @@
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
-			"selected": false,
+			"selected": true,
 			"children": []
 		},
 		{
@@ -12204,12 +12204,26 @@
 								},
 								{
 									"x": "10",
-									"y": "-100",
+									"y": "-110",
 									"z": "0"
 								}
 							],
 							"uuid": "0ee5825b-f985-88b3-c039-9f9b103c5b3b",
 							"time": 3.35,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "10",
+									"y": "-105",
+									"z": "0"
+								}
+							],
+							"uuid": "ee105c73-ce02-4444-db08-ac6a3823c23b",
+							"time": 4.75,
 							"color": -1,
 							"interpolation": "linear"
 						},
@@ -12390,9 +12404,9 @@
 									"z": "0"
 								},
 								{
-									"x": "-143",
-									"y": "22",
-									"z": "17"
+									"x": "-155.46",
+									"y": "22.31",
+									"z": "-1.77"
 								}
 							],
 							"uuid": "8f816f3a-3405-24ce-2156-6e994ddbfc98",
@@ -12404,26 +12418,12 @@
 							"channel": "position",
 							"data_points": [
 								{
-									"x": "-175",
-									"y": "26",
-									"z": "20"
+									"x": "-229.46",
+									"y": "22.31",
+									"z": "-1.77"
 								}
 							],
-							"uuid": "a8575927-71a6-6578-7c35-d3a75e2e6e36",
-							"time": 4,
-							"color": -1,
-							"interpolation": "linear"
-						},
-						{
-							"channel": "position",
-							"data_points": [
-								{
-									"x": "-203",
-									"y": "24",
-									"z": "23"
-								}
-							],
-							"uuid": "c8293198-50a2-783c-fdc6-672a7936808c",
+							"uuid": "e6d7ae15-789d-01a4-eea3-737541417b3f",
 							"time": 4.75,
 							"color": -1,
 							"interpolation": "linear"
@@ -12432,13 +12432,27 @@
 							"channel": "position",
 							"data_points": [
 								{
-									"x": "-184.33",
-									"y": "26",
-									"z": "21.25"
+									"x": "-214.6",
+									"y": "22.31",
+									"z": "-1.77"
 								}
 							],
-							"uuid": "7fedb22a-498e-7496-d7b2-c7a0cf45c88d",
+							"uuid": "eb16a197-2a0d-40ce-0408-2a4e9da6d792",
 							"time": 4.25,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "-200.17",
+									"y": "22.31",
+									"z": "-1.77"
+								}
+							],
+							"uuid": "8333de3a-20b7-fef9-ec7f-465ecd358ea4",
+							"time": 4,
 							"color": -1,
 							"interpolation": "linear"
 						}
