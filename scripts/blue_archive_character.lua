@@ -408,7 +408,7 @@ BlueArchiveCharacter = {
         }
 
         instance.headBlock = {
-            includeModels = {};
+            includeModels = {models.models.main.Avatar.UpperBody.Body.Hairs};
         }
 
         instance.portrait = {
