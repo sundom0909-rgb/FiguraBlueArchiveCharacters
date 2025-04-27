@@ -300,7 +300,14 @@ BlueArchiveCharacter = {
         }
 
         instance.arms = {
-
+            callbacks = {
+                onArmStateChanged = function (_, right, left)
+                    local armState = {right = right, left = left}
+                    armState.right = armState.right == 2 and 0 or armState.right
+                    armState.left = armState.left == 2 and 0 or armState.left
+                    return armState
+                end;
+            };
         }
 
         instance.skirt = {
@@ -308,19 +315,27 @@ BlueArchiveCharacter = {
         }
 
         instance.gun = {
-            scale = 1.2;
+            scale = 0.5;
 
             gunPosition = {
                 hold = {
+                    firstPersonPos = {
+                        right = vectors.vec3(-1, -3.5, -2);
+                        left = vectors.vec3(1, -3.5, -2);
+                    };
 
+                    thirdPersonPos = {
+                        right = vectors.vec3(0, -3.5, -3);
+                        left = vectors.vec3(0, -3.5, -3);
+                    };
                 };
 
                 put = {
                     type = "BODY";
 
                     pos = {
-                        right = vectors.vec3(4.5, -3, 4);
-                        left = vectors.vec3(-4.5, -3, 4);
+                        right = vectors.vec3(4.5, -9, 0);
+                        left = vectors.vec3(4.5, -9, 0);
                     };
 
                     rot = {
