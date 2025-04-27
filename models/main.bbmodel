@@ -4532,17 +4532,32 @@
 									"autouv": 0,
 									"selected": false,
 									"children": [
-										"4f883b37-358a-dfe9-7b30-83b58c239d46",
-										"23d37b17-e0c0-79c0-16d4-8456a2ec7b40",
-										"dafa4df8-d8fe-1f8d-b3be-385d49aa79ee",
-										"7bc8efd3-478e-b216-067a-f15b6d9e1d67",
-										"66cdc050-0333-bf8a-757c-b8833f4c6949",
-										"9acf9f61-74b3-0005-814e-9037a232effc",
-										"52f7c36b-d38d-71ae-f0be-fac0c802a8ca",
-										"e1f169b5-26d5-838d-584d-2599a49aaf9c",
-										"e4b5b7ff-e4f0-5d43-7115-3ac634930b6b",
-										"e041ddf7-93af-73a1-8465-e0c328cefeb1",
-										"be62dcf2-0001-1bde-1d15-fdba51e6feaa"
+										{
+											"name": "RightHairTailZPivot",
+											"origin": [4, 28.5, 4],
+											"color": 0,
+											"uuid": "d5106391-b49a-fa81-0d6f-49781cce4442",
+											"export": true,
+											"mirror_uv": false,
+											"isOpen": true,
+											"locked": false,
+											"visibility": true,
+											"autouv": 0,
+											"selected": false,
+											"children": [
+												"4f883b37-358a-dfe9-7b30-83b58c239d46",
+												"23d37b17-e0c0-79c0-16d4-8456a2ec7b40",
+												"dafa4df8-d8fe-1f8d-b3be-385d49aa79ee",
+												"7bc8efd3-478e-b216-067a-f15b6d9e1d67",
+												"66cdc050-0333-bf8a-757c-b8833f4c6949",
+												"9acf9f61-74b3-0005-814e-9037a232effc",
+												"52f7c36b-d38d-71ae-f0be-fac0c802a8ca",
+												"e1f169b5-26d5-838d-584d-2599a49aaf9c",
+												"e4b5b7ff-e4f0-5d43-7115-3ac634930b6b",
+												"e041ddf7-93af-73a1-8465-e0c328cefeb1",
+												"be62dcf2-0001-1bde-1d15-fdba51e6feaa"
+											]
+										}
 									]
 								},
 								{
@@ -4556,19 +4571,34 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
-									"selected": false,
+									"selected": true,
 									"children": [
-										"faa51bf5-a9c8-eed9-8702-24bbfd5413bb",
-										"66284b70-8222-801d-2b04-da0f7e2efbc0",
-										"0457cbe4-bc65-cdcf-7548-6644ad3e1523",
-										"2d5919dc-be01-06f4-8f99-fc9a1585ab7b",
-										"20310317-a1c0-0110-5e86-efb85a9eb72f",
-										"cccd8ea9-bebd-0750-cc25-0cfe1471112b",
-										"70dbd666-ad83-b5ec-c824-97e09821f871",
-										"7d49d90b-0e37-8f8b-2e0c-b7f3b52b8cd4",
-										"69862682-5887-375c-a454-94ae233ff3fe",
-										"dafdd9f8-baf9-f1fc-676b-6bcf48b63a03",
-										"5eb05400-1b2d-e9c8-dd7b-28dfe888a240"
+										{
+											"name": "LeftHairTailZPivot",
+											"origin": [-4, 28.5, 4],
+											"color": 0,
+											"uuid": "f35e78bb-ae13-f3bd-cf4c-f25bcf9989fc",
+											"export": true,
+											"mirror_uv": false,
+											"isOpen": true,
+											"locked": false,
+											"visibility": true,
+											"autouv": 0,
+											"selected": false,
+											"children": [
+												"faa51bf5-a9c8-eed9-8702-24bbfd5413bb",
+												"66284b70-8222-801d-2b04-da0f7e2efbc0",
+												"0457cbe4-bc65-cdcf-7548-6644ad3e1523",
+												"2d5919dc-be01-06f4-8f99-fc9a1585ab7b",
+												"20310317-a1c0-0110-5e86-efb85a9eb72f",
+												"cccd8ea9-bebd-0750-cc25-0cfe1471112b",
+												"70dbd666-ad83-b5ec-c824-97e09821f871",
+												"7d49d90b-0e37-8f8b-2e0c-b7f3b52b8cd4",
+												"69862682-5887-375c-a454-94ae233ff3fe",
+												"dafdd9f8-baf9-f1fc-676b-6bcf48b63a03",
+												"5eb05400-1b2d-e9c8-dd7b-28dfe888a240"
+											]
+										}
 									]
 								}
 							]

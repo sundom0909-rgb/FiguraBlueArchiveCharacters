@@ -425,7 +425,213 @@ BlueArchiveCharacter = {
 
         instance.physics = {
             physicData = {
+                {
+                    models = {models.models.main.Avatar.Head.HairTails.LeftHairTail};
 
+                    x = {
+                        vertical = {
+                            min = -180;
+                            neutral = 0;
+                            max = 90;
+                            headRotMultiplayer = -1;
+
+                            headX = {
+                                multiplayer = -80;
+                                min = -90;
+                                max = 90;
+                            };
+
+                            headRot = {
+                                multiplayer = 0.05;
+                                min = -90;
+                                max = 90;
+                            };
+
+                            bodyY = {
+                                multiplayer = 80;
+                                min = -180;
+                                max = 0;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -180;
+                            neutral = -45;
+                            max = 95;
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.Head.HairTails.LeftHairTail.LeftHairTailZPivot};
+
+                    z = {
+                        vertical = {
+                            min = -70;
+                            neutral = 0;
+                            max = 90;
+
+                            headZ = {
+                                multiplayer = -80;
+                                min = -70;
+                                max = 90;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -70;
+                            neutral = 0;
+                            max = 90;
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.Head.HairTails.RightHairTail};
+
+                    x = {
+                        vertical = {
+                            min = -180;
+                            neutral = 0;
+                            max = 90;
+                            headRotMultiplayer = -1;
+
+                            headX = {
+                                multiplayer = -80;
+                                min = -90;
+                                max = 90;
+                            };
+
+                            headRot = {
+                                multiplayer = 0.05;
+                                min = -90;
+                                max = 90;
+                            };
+
+                            bodyY = {
+                                multiplayer = 80;
+                                min = -180;
+                                max = 0;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -180;
+                            neutral = -45;
+                            max = 95;
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.Head.HairTails.RightHairTail.RightHairTailZPivot};
+
+                    z = {
+                        vertical = {
+                            min = -90;
+                            neutral = 0;
+                            max = 70;
+
+                            headZ = {
+                                multiplayer = -80;
+                                min = -90;
+                                max = 70;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -90;
+                            neutral = 0;
+                            max = 70;
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.BeltAccessories};
+
+                    x = {
+                        vertical = {
+                            min = 0;
+                            neutral = 0;
+                            max = 155;
+                            sneakOffset = 30;
+
+                            bodyX = {
+                                multiplayer = -160;
+                                min = 0;
+                                max = 90;
+                            };
+
+                            bodyY = {
+                                multiplayer = -160;
+                                min = 0;
+                                max = 155;
+                            };
+                        };
+
+                        horizontal = {
+                            min = 0;
+                            neutral = 90;
+                            max = 155;
+
+                            bodyX = {
+                                multiplayer = 0;
+                                min = -40;
+                                max = 155;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.TailXPivot};
+
+                    x = {
+                        vertical = {
+                            min = -40;
+                            neutral = 0;
+                            max = 40;
+                            sneakOffset = 15;
+
+                            bodyY = {
+                                multiplayer = 40;
+                                min = -40;
+                                max = 40;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -40;
+                            neutral = 0;
+                            max = 40;
+
+                            bodyX = {
+                                multiplayer = 40;
+                                min = -40;
+                                max = 40;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.TailXPivot.TailYPivot};
+
+                    y = {
+                        vertical = {
+                            min = -40;
+                            neutral = 0;
+                            max = 40;
+
+                            bodyZ = {
+                                multiplayer = -80;
+                                min = -40;
+                                max = 40;
+                            };
+                        };
+                    };
+                };
             };
         }
 
