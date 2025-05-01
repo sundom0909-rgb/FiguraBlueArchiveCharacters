@@ -222,7 +222,9 @@ RailGun = {
             end
         end)
 
+        local this = self --Figuraにスクリプトを再構築させると参照がおかしくなることに対処しているコード
         events.ON_PLAY_SOUND:register(function (id, pos, _, pitch, _, _, path)
+            self = this
             if id == self.parent.characterData.gun.sound.name and pitch == self.parent.characterData.gun.sound.pitch and path == nil and math.abs(pos:copy():sub(player:getPos()):length() - player:getVelocity():length()) < 1.2 and self.chargePercent >= 1.95 and not client:isPaused() then
                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.blaze.death"), player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0, 0, 0.5, 0, 1, 0)), 1, 2)
                 local gunPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun)
