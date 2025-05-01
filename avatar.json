@@ -150,6 +150,14 @@
 		"models.models.ex_skill_frame.Particles": {
 			"visible": false
 		},
+		"models.models.ex_skill_1.Ticket": {
+			"moveTo": "models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom",
+			"visible": false
+		},
+		"models.models.ex_skill_1.Puncher": {
+			"moveTo": "models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom",
+			"visible": false
+		},
 		"models.models.bubble.Camera.AvatarBubble": {
 			"visible": false
 		},
