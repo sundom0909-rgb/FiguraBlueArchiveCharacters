@@ -432,6 +432,9 @@ BlueArchiveCharacter = {
                         for i = 1, 8 do
                             models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_"..i):setNbt("minecraft:villager", "{\"VillagerData\": {\"level\": "..math.random(1, 5)..", \"profession\": \""..villagerProfessions[math.random(1, #villagerProfessions)].."\", \"type\": \""..villagerTypes[math.random(1, #villagerTypes)].."\"}}")
                         end
+                        for i = 15, 54 do
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket["Hole"..i]:setVisible(false)
+                        end
                         self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "ANXIOUS", 47, true)
                     end;
 
@@ -448,14 +451,40 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "TRIANGLE", 2, true)
                         elseif tick == 64 then
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "TRIANGLE", 48, true)
+                        elseif tick == 86 then
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole15:setVisible(true)
+                            for i = 23, 54 do
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket["Hole"..i]:setVisible(true)
+                            end
+                        elseif tick == 88 then
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole22:setVisible(true)
+                        elseif tick == 91 then
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole21:setVisible(true)
+                        elseif tick == 93 then
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole20:setVisible(true)
+                        elseif tick == 94 then
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole19:setVisible(true)
+                        elseif tick == 96 then
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole18:setVisible(true)
+                        elseif tick == 99 then
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole17:setVisible(true)
+                        elseif tick == 100 then
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole16:setVisible(true)
+                        elseif tick >= 111 and tick <= 121 and (tick - 111) % 2 == 0 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), player:getPos(), 0.5, 1.85)
                         elseif tick == 112 then
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMILE", 22, true)
                         elseif tick == 134 then
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", 16, true)
+                        elseif tick == 143 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), player:getPos(), 0.25, 1)
                         elseif tick == 150 then
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "TRIANGLE", 2, true)
                         elseif tick == 152 then
                             self.parent.faceParts:setEmotion("NORMAL", "CENTER", "TRIANGLE", 40, true)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 1, 1.5)
+                        elseif tick == 160 then
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.ShineEffect:setOffsetPivot(-0.5, 0, 0)
                         end
 
                         for _, villagerId in ipairs({1, 5}) do
@@ -477,6 +506,10 @@ BlueArchiveCharacter = {
 
                     onPostAnimation = function (self, forcedStop)
                         models.models.ex_skill_1.VillagerArea:setVisible(false)
+                        for i = 15, 54 do
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket["Hole"..i]:setVisible(false)
+                        end
+                        models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.ShineEffect:setOffsetPivot()
                     end;
                 };
 
