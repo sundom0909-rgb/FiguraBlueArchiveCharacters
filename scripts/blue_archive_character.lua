@@ -467,6 +467,9 @@ BlueArchiveCharacter = {
                         elseif ((tick >= 47 and tick < 61) or (tick >= 69 and tick < 108)) and (tick - 47) % 6 == 0 then
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.sheep.shear"), player:getPos(), 0.25, 2)
                         end
+                        if tick < 86 and tick % 2 == 0 then
+                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:angry_villager"), player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, math.random() * 2 - 1, math.random() * 2, 0, 0, 1, 0)))
+                        end
                         if math.random() > 0.95 then
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.villager.ambient"), player:getPos(), 0.25, 1)
                         end
