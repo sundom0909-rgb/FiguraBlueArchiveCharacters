@@ -401,11 +401,48 @@ BlueArchiveCharacter = {
 
                 callbacks = {
                     onPreAnimation = function (self)
+                        if not self.exSkill[1].didInit then
+                            ---@diagnostic disable-next-line: discard-returns
+                            models.models.ex_skill_1:newPart("VillagerArea")
+                            for i = 1, 8 do
+                                models.models.ex_skill_1.VillagerArea:newEntity("ex_skill_1_villager_"..i):setNbt("minecraft:villager", "{}")
+                            end
+                            models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_1"):setPos(12, 0, -18):setRot(0, -30, 0)
+                            models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_2"):setPos(-12, 0, -18):setRot(0, 30, 0)
+                            models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_3"):setPos(64, 0, -64):setRot(0, -45, 0)
+                            models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_4"):setPos(28, 0, -64):setRot(0, -25, 0)
+                            models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_5"):setPos(48, 0, -40):setRot(0, -50, 0)
+                            models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_6"):setPos(24, 0, -40):setRot(0, -35, 0)
+                            models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_7"):setPos(0, 0, -64):setRot(0, 0, 0)
+                            models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_8"):setPos(-24, 0, -40):setRot(0, 35, 0)
+                            for i = 1, 2 do
+                                models.models.ex_skill_1.VillagerArea:addChild(models.models.ex_skill_1.ShockEffect:copy("ShockEffect"..i))
+                                models.models.ex_skill_1.VillagerArea["ShockEffect"..i]:setVisible(true)
+                            end
+                            models.models.ex_skill_1.VillagerArea.ShockEffect1:setPos(-9, 29, -22)
+                            models.models.ex_skill_1.VillagerArea.ShockEffect1:setRot(0, -60, 0)
+                            models.models.ex_skill_1.VillagerArea.ShockEffect2:setPos(62, 29, -64)
+                            models.models.ex_skill_1.VillagerArea.ShockEffect2:setRot(0, 45, 0)
+                            self.exSkill[1].didInit = true
+                        else
+                            models.models.ex_skill_1.VillagerArea:setVisible(true)
+                        end
+                        local villagerTypes = client.getRegistry("minecraft:villager_type")
+                        local villagerProfessions = client.getRegistry("minecraft:villager_profession")
+                        for i = 1, 8 do
+                            models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_"..i):setNbt("minecraft:villager", "{\"VillagerData\": {\"level\": "..math.random(1, 5)..", \"profession\": \""..villagerProfessions[math.random(1, #villagerProfessions)].."\", \"type\": \""..villagerTypes[math.random(1, #villagerTypes)].."\"}}")
+                        end
                         self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "ANXIOUS", 47, true)
                     end;
 
                     onAnimationTick = function (self, tick)
-                        if tick == 47 then
+                        if tick == 9 then
+                            self.exSkill[1].playAngryVillagerEffect(self, player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, -1.5, 0, 2.5, 0, 1, 0)))
+                        elseif tick == 22 then
+                            self.exSkill[1].playAngryVillagerEffect(self, player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, -1.75, 0, 4, 0, 1, 0)))
+                        elseif tick == 39 then
+                            self.exSkill[1].playAngryVillagerEffect(self, player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0, 0, 4, 0, 1, 0)))
+                        elseif tick == 47 then
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "TRIANGLE", 15, true)
                         elseif tick == 62 then
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "TRIANGLE", 2, true)
@@ -420,8 +457,35 @@ BlueArchiveCharacter = {
                         elseif tick == 152 then
                             self.parent.faceParts:setEmotion("NORMAL", "CENTER", "TRIANGLE", 40, true)
                         end
+
+                        for _, villagerId in ipairs({1, 5}) do
+                            local anchorPos = player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_"..villagerId):getPos():scale(-0.0575):add(0, 1.5, 0), 0, 1, 0))
+                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:splash"), anchorPos):setPower(1.2)
+                        end
+                        if tick < 47 and tick % 4 == 0 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.bubble_column.bubble_pop"), player:getPos(), 0.25, 2 - math.random() * 0.5)
+                        end
+                        if math.random() > 0.95 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.villager.ambient"), player:getPos(), 0.25, 1)
+                        end
+                    end;
+
+                    onPostAnimation = function (self, forcedStop)
+                        models.models.ex_skill_1.VillagerArea:setVisible(false)
                     end;
                 };
+
+                ---このExスキルの初期化処理がされたかどうか
+                ---@type boolean
+                didInit = false;
+
+                ---村人が怒っている演出を再生する。
+                playAngryVillagerEffect = function (self, anchorPos)
+                    for _ = 1, 5 do
+                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:angry_villager"), anchorPos:copy():add(math.random() * 1 - 0.5, math.random() * 1 + 0.5, math.random() * 1 - 0.5))
+                    end
+                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.villager.no"), anchorPos, 1, 1)
+                end;
             };
         }
 
