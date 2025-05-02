@@ -379,26 +379,19 @@ BlueArchiveCharacter = {
                 camera = {
                     start = {
                         rot = vectors.vec3(0, 180, 0);
-                        pos = vectors.vec3(0, 28, -64);
+                        pos = vectors.vec3(-61, 32, -77);
                     };
 
                     fin = {
-                        rot = vectors.vec3(0, 180, 0);
-                        pos = vectors.vec3(0, 28, -64);
+                        rot = vectors.vec3(-10, 135, 5);
+                        pos = vectors.vec3(16, 25, -8.25);
                     };
                 };
 
-                --[[
                 callbacks = {
-                    --Exスキルアニメーションを任意の位置で一時停止させるコードスニペット。デバッグ用。
-                    --"<>"内を適切な数値に置き換えること。
                     onAnimationTick = function (self, tick)
-                        for _, name in ipairs(self.exSkill[<ex_skill_index>]) do
-                            animations["models."..name]["ex_skill_<ex_skill_index>"]:pause()
-                        end
                     end;
                 };
-                ]]
             };
         }
 
