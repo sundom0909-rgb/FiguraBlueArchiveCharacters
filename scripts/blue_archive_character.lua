@@ -366,15 +366,15 @@ BlueArchiveCharacter = {
         instance.exSkill = {
             {
                 name = {
-                    en_us = "Ex Skill name";
-                    ja_jp = "Exスキル名";
+                    en_us = "Ti~cket~ check";
+                    ja_jp = "にゅ～きょ～の時間";
                 };
 
                 formationType = "STRIKER";
 
-                models = {};
+                models = {models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Puncher, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket};
 
-                animations = {"main"};
+                animations = {"main", "ex_skill_1"};
 
                 camera = {
                     start = {
