@@ -529,6 +529,8 @@ BlueArchiveCharacter = {
                             end, "ex_skill_1_render")
                         elseif tick == 134 then
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", 16, true)
+                        elseif tick == 141 and host:isHost() then
+                            events.RENDER:remove("ex_skill_1_render")
                         elseif tick == 143 then
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), player:getPos(), 0.25, 1)
                         elseif tick == 150 then
@@ -558,14 +560,14 @@ BlueArchiveCharacter = {
                     end;
 
                     onPostAnimation = function (self, forcedStop)
-                        if host:isHost() then
-                            events.RENDER:remove("ex_skill_1_render")
-                        end
                         models.models.ex_skill_1.VillagerArea:setVisible(false)
                         for i = 15, 54 do
                             models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket["Hole"..i]:setVisible(false)
                         end
                         models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.ShineEffect:setOffsetPivot()
+                        if forcedStop and host:isHost() then
+                            events.RENDER:remove("ex_skill_1_render")
+                        end
                     end;
                 };
 
