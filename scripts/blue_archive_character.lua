@@ -423,6 +423,14 @@ BlueArchiveCharacter = {
                             models.models.ex_skill_1.VillagerArea.ShockEffect1:setRot(0, -60, 0)
                             models.models.ex_skill_1.VillagerArea.ShockEffect2:setPos(62, 29, -64)
                             models.models.ex_skill_1.VillagerArea.ShockEffect2:setRot(0, 45, 0)
+                            for i = 1, 2 do
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Stamp1["Stamp1ShineEffect"..i]:setColor(0.996, 1, 0.663)
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Stamp2["Stamp2ShineEffect"..i]:setColor(1, 0.698, 0.624)
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Stamp3["Stamp3ShineEffect"..i]:setColor(0.714, 0.996, 0.812)
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Stamp4["Stamp4ShineEffect"..i]:setColor(0.714, 0.996, 0.812)
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Stamp6["Stamp6ShineEffect"..i]:setColor(1, 0.769, 0.988)
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Stamp7["Stamp7ShineEffect"..i]:setColor(1, 0.635, 0.996)
+                            end
                             self.exSkill[1].didInit = true
                         else
                             models.models.ex_skill_1.VillagerArea:setVisible(true)
