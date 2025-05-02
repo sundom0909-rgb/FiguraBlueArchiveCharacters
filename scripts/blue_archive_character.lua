@@ -383,7 +383,7 @@ BlueArchiveCharacter = {
 
                 formationType = "STRIKER";
 
-                models = {models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Puncher, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket};
+                models = {models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Puncher, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket, models.models.ex_skill_1.Gui};
 
                 animations = {"main", "ex_skill_1"};
 
@@ -402,6 +402,16 @@ BlueArchiveCharacter = {
                 callbacks = {
                     onPreAnimation = function (self)
                         if not self.exSkill[1].didInit then
+                            if host:isHost() then
+                                for i = 1, 8 do
+                                    models.models.ex_skill_1.Gui.TransitionArea:addChild(models.models.ex_skill_1.TransitionPart.TransitionPartLtoR:copy("TransitionPartLtoR"..i))
+                                    models.models.ex_skill_1.Gui.TransitionArea["TransitionPartLtoR"..i]:setRot(0, 0, -15)
+                                    models.models.ex_skill_1.Gui.TransitionArea["TransitionPartLtoR"..i]:setVisible(true)
+                                    models.models.ex_skill_1.Gui.TransitionArea:addChild(models.models.ex_skill_1.TransitionPart.TransitionPartRtoL:copy("TransitionPartRtoL"..i))
+                                    models.models.ex_skill_1.Gui.TransitionArea["TransitionPartRtoL"..i]:setRot(0, 0, -15)
+                                    models.models.ex_skill_1.Gui.TransitionArea["TransitionPartRtoL"..i]:setVisible(true)
+                                end
+                            end
                             ---@diagnostic disable-next-line: discard-returns
                             models.models.ex_skill_1:newPart("VillagerArea")
                             for i = 1, 8 do
@@ -435,6 +445,18 @@ BlueArchiveCharacter = {
                         else
                             models.models.ex_skill_1.VillagerArea:setVisible(true)
                         end
+                        if host:isHost() then
+                            local windowSize = client:getScaledWindowSize()
+                            models.models.ex_skill_1.Gui.TransitionArea:setPos(windowSize:copy():scale(-0.5):augmented(0))
+                            local height = math.sqrt(windowSize.y ^ 2 + (math.tan(math.rad(15)) * windowSize.y) ^ 2) + math.tan(math.rad(15)) * 64
+                            local halfWidth = windowSize.x / 2 + math.tan(math.rad(15)) * windowSize.y + 1
+                            for i = 1, 8 do
+                                models.models.ex_skill_1.Gui.TransitionArea["TransitionPartLtoR"..i]:setPos(halfWidth, 0, 0)
+                                models.models.ex_skill_1.Gui.TransitionArea["TransitionPartLtoR"..i]:setScale(16, height, 1)
+                                models.models.ex_skill_1.Gui.TransitionArea["TransitionPartRtoL"..i]:setPos(halfWidth * -1, 0, 0)
+                                models.models.ex_skill_1.Gui.TransitionArea["TransitionPartRtoL"..i]:setScale(16, height, 1)
+                            end
+                        end
                         local villagerTypes = client.getRegistry("minecraft:villager_type")
                         local villagerProfessions = client.getRegistry("minecraft:villager_profession")
                         for i = 1, 8 do
@@ -459,6 +481,14 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "TRIANGLE", 2, true)
                         elseif tick == 64 then
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "TRIANGLE", 48, true)
+                        elseif tick == 80 and host:isHost() then
+                            local windowSize = client:getScaledWindowSize()
+                            local moveWidth = windowSize.x + math.tan(math.rad(15)) * windowSize.y * 2 + 2
+                            events.RENDER:register(function ()
+                                for i = 1, 8 do
+                                    models.models.ex_skill_1.Gui.TransitionArea["TransitionPartRtoL"..i]:setPos(models.models.ex_skill_1.Gui.TransitionArea["TransitionAnchorRtoL"..i]:getAnimPos().x * moveWidth, 0, 0)
+                                end
+                            end, "ex_skill_1_render")
                         elseif tick == 86 then
                             models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole15:setVisible(true)
                             for i = 23, 54 do
@@ -471,6 +501,9 @@ BlueArchiveCharacter = {
                         elseif tick == 93 then
                             models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole20:setVisible(true)
                         elseif tick == 94 then
+                            if host:isHost() then
+                                events.RENDER:remove("ex_skill_1_render")
+                            end
                             models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole19:setVisible(true)
                         elseif tick == 96 then
                             models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole18:setVisible(true)
@@ -482,6 +515,18 @@ BlueArchiveCharacter = {
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), player:getPos(), 0.5, 1.85)
                         elseif tick == 112 then
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMILE", 22, true)
+                        elseif tick == 130 and host:isHost() then
+                            local windowSize = client:getScaledWindowSize()
+                            local moveWidth = windowSize.x + math.tan(math.rad(15)) * windowSize.y * 2 + 2
+                            local height = math.sqrt(windowSize.y ^ 2 + (math.tan(math.rad(15)) * windowSize.y) ^ 2) + math.tan(math.rad(15)) * 64
+                            events.RENDER:register(function ()
+                                for i = 1, 8 do
+                                    models.models.ex_skill_1.Gui.TransitionArea["TransitionPartLtoR"..i]:setPos(models.models.ex_skill_1.Gui.TransitionArea["TransitionAnchorLtoR"..i]:getAnimPos().x * moveWidth, 0, 0)
+                                    models.models.ex_skill_1.Gui.TransitionArea["TransitionPartLtoR"..i]:setScale(models.models.ex_skill_1.Gui.TransitionArea["TransitionAnchorLtoR"..i]:getAnimScale():mul(16, height, 1))
+                                    models.models.ex_skill_1.Gui.TransitionArea["TransitionPartRtoL"..i]:setPos(models.models.ex_skill_1.Gui.TransitionArea["TransitionAnchorRtoL"..i]:getAnimPos().x * moveWidth, 0, 0)
+                                    models.models.ex_skill_1.Gui.TransitionArea["TransitionPartRtoL"..i]:setScale(models.models.ex_skill_1.Gui.TransitionArea["TransitionAnchorRtoL"..i]:getAnimScale():mul(16, height, 1))
+                                end
+                            end, "ex_skill_1_render")
                         elseif tick == 134 then
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", 16, true)
                         elseif tick == 143 then
@@ -513,6 +558,9 @@ BlueArchiveCharacter = {
                     end;
 
                     onPostAnimation = function (self, forcedStop)
+                        if host:isHost() then
+                            events.RENDER:remove("ex_skill_1_render")
+                        end
                         models.models.ex_skill_1.VillagerArea:setVisible(false)
                         for i = 15, 54 do
                             models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket["Hole"..i]:setVisible(false)
