@@ -154,7 +154,7 @@
 			"moveTo": "models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom",
 			"visible": false
 		},
-		"models.models.ex_skill_1.Ticket.ShineEffect": {
+		"models.models.ex_skill_1.Ticket.TicketShineEffect": {
 			"primaryRenderType": "EMISSIVE_SOLID"
 		},
 		"models.models.ex_skill_1.Ticket.Stamp1.Stamp1ShineEffect1": {
@@ -200,7 +200,20 @@
 		"models.models.ex_skill_1.ShockEffect": {
 			"visible": false
 		},
-		"models.models.ex_skill_1.Gui": {
+		"models.models.ex_skill_1.PopEffectCenter": {
+			"visible": false,
+			"parentType": "Camera",
+			"primaryRenderType": "EMISSIVE_SOLID"
+		},
+		"models.models.ex_skill_1.ShineEffect": {
+			"visible": false,
+			"parentType": "Camera",
+			"primaryRenderType": "EMISSIVE_SOLID"
+		},
+		"models.models.ex_skill_1.Gui.TransitionArea": {
+			"visible": false
+		},
+		"models.models.ex_skill_1.Gui.ScreenFilter": {
 			"visible": false
 		},
 		"models.models.ex_skill_1.TransitionPart": {

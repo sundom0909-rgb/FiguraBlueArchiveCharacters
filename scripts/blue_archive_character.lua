@@ -383,7 +383,7 @@ BlueArchiveCharacter = {
 
                 formationType = "STRIKER";
 
-                models = {models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Puncher, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket, models.models.ex_skill_1.Gui};
+                models = {models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Puncher, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket, models.models.ex_skill_1.Gui.TransitionArea, models.models.ex_skill_1.PopEffectCenter, models.models.ex_skill_1.ShineEffect};
 
                 animations = {"main", "ex_skill_1"};
 
@@ -533,13 +533,22 @@ BlueArchiveCharacter = {
                             events.RENDER:remove("ex_skill_1_render")
                         elseif tick == 143 then
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), player:getPos(), 0.25, 1)
+                        elseif tick == 147 and host:isHost() then
+                            models.models.ex_skill_1.Gui.ScreenFilter:setScale(client:getScaledWindowSize():augmented(1))
+                            models.models.ex_skill_1.Gui.ScreenFilter:setVisible(true)
+                            events.RENDER:register(function ()
+                                models.models.ex_skill_1.Gui.ScreenFilter:setOpacity(models.models.ex_skill_1.Gui.ScreenFilterOpacity:getAnimScale().x)
+                            end, "ex_skill_1_render")
                         elseif tick == 150 then
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "TRIANGLE", 2, true)
                         elseif tick == 152 then
                             self.parent.faceParts:setEmotion("NORMAL", "CENTER", "TRIANGLE", 40, true)
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 1, 1.5)
+                        elseif tick == 154 and host:isHost() then
+                            events.RENDER:remove("ex_skill_1_render")
+                            models.models.ex_skill_1.Gui.ScreenFilter:setVisible(false)
                         elseif tick == 160 then
-                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.ShineEffect:setOffsetPivot(-0.5, 0, 0)
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.TicketShineEffect:setOffsetPivot(-0.5, 0, 0)
                         end
 
                         for _, villagerId in ipairs({1, 5}) do
@@ -564,9 +573,10 @@ BlueArchiveCharacter = {
                         for i = 15, 54 do
                             models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket["Hole"..i]:setVisible(false)
                         end
-                        models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.ShineEffect:setOffsetPivot()
+                        models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.TicketShineEffect:setOffsetPivot()
                         if forcedStop and host:isHost() then
                             events.RENDER:remove("ex_skill_1_render")
+                            models.models.ex_skill_1.Gui.ScreenFilter:setVisible(false)
                         end
                     end;
                 };
