@@ -4619,7 +4619,7 @@
 					"locked": false,
 					"visibility": true,
 					"autouv": 0,
-					"selected": false,
+					"selected": true,
 					"children": [
 						"a66c63cf-0082-7797-3f4e-08ff434a1cac",
 						"d48552a8-9f0d-7335-2a82-794f3264fc9d",
@@ -6350,7 +6350,7 @@
 							"uuid": "6a9b1927-272d-7d1e-081c-77093db18999",
 							"time": 5.35,
 							"color": -1,
-							"interpolation": "catmullrom"
+							"interpolation": "linear"
 						},
 						{
 							"channel": "rotation",
