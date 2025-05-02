@@ -464,6 +464,8 @@ BlueArchiveCharacter = {
                         end
                         if tick < 47 and tick % 4 == 0 then
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.bubble_column.bubble_pop"), player:getPos(), 0.25, 2 - math.random() * 0.5)
+                        elseif ((tick >= 47 and tick < 61) or (tick >= 69 and tick < 108)) and (tick - 47) % 6 == 0 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.sheep.shear"), player:getPos(), 0.25, 2)
                         end
                         if math.random() > 0.95 then
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.villager.ambient"), player:getPos(), 0.25, 1)
