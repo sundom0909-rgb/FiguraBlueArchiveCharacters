@@ -610,6 +610,44 @@ BlueArchiveCharacter = {
                 };
             };
 
+            callbacks = {
+                onArmorChange = function (self, parts, isVisible)
+                    if parts == "HELMET" then
+                        models.models.main.Avatar.Head.Hat:setVisible(not isVisible)
+                    elseif parts == "CHEST_PLATE" then
+                        if isVisible then
+                            for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.ShoulderBag, models.models.main.Avatar.UpperBody.Body.BeltAccessories}) do
+                                modelPart:setVisible(false)
+                            end
+                            models.models.main.Avatar.UpperBody.Body.Hairs.FrontHair:setPos(0, 0, -1)
+                            models.models.main.Avatar.UpperBody.Body.Hairs.BackHair:setPos(0, 0, 1)
+                            self.physics.physicData[1].x.vertical.neutral = 0
+                            self.physics.physicData[1].x.vertical.max = 0
+                            self.physics.physicData[1].x.vertical.bodyX.max = 0
+                            self.physics.physicData[1].x.vertical.bodyY.max = 0
+                            self.physics.physicData[1].x.vertical.bodyRot.max = 0
+                            self.physics.physicData[1].x.horizontal.neutral = 0
+                            self.physics.physicData[1].x.horizontal.max = 0
+                        else
+                            for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.ShoulderBag, models.models.main.Avatar.UpperBody.Body.BeltAccessories}) do
+                                modelPart:setVisible(true)
+                            end
+                            for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.Hairs.FrontHair, models.models.main.Avatar.UpperBody.Body.Hairs.BackHair}) do
+                                modelPart:setPos()
+                            end
+                            self.physics.physicData[1].x.vertical.neutral = -17.5
+                            self.physics.physicData[1].x.vertical.max = -17.5
+                            self.physics.physicData[1].x.vertical.bodyX.max = -17.5
+                            self.physics.physicData[1].x.vertical.bodyY.max = -17.5
+                            self.physics.physicData[1].x.vertical.bodyRot.max = -17.5
+                            self.physics.physicData[1].x.horizontal.neutral = -17.5
+                            self.physics.physicData[1].x.horizontal.max = -17.5
+                        end
+                    elseif parts == "LEGGINGS" then
+                        models.models.main.Avatar.UpperBody.Body.Skirt:setVisible(not isVisible)
+                    end
+                end;
+            };
         }
 
         instance.bubble = {
@@ -664,7 +702,7 @@ BlueArchiveCharacter = {
 
                         horizontal = {
                             min = -90;
-                            neutral = -10;
+                            neutral = -17.5;
                             max = -17.5;
                         };
                     };
