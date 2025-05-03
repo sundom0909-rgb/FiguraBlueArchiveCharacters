@@ -465,6 +465,7 @@ BlueArchiveCharacter = {
                         for i = 15, 54 do
                             models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket["Hole"..i]:setVisible(false)
                         end
+                        models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Stamp1.Stamp1:setUVPixels(0, math.random() >= 0.95 and 32 or 0)
                         self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "ANXIOUS", 47, true)
                     end;
 
