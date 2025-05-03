@@ -388,17 +388,19 @@ BlueArchiveCharacter = {
                     };
                 };
 
-                --[[
                 callbacks = {
-                    --Exスキルアニメーションを任意の位置で一時停止させるコードスニペット。デバッグ用。
-                    --"<>"内を適切な数値に置き換えること。
-                    onAnimationTick = function (self, tick)
-                        for _, name in ipairs(self.exSkill[<ex_skill_index>]) do
-                            animations["models."..name]["ex_skill_<ex_skill_index>"]:pause()
+                    onPreAnimation = function (self)
+                        if self.exSkill[1].didInit then
+                            for _, modelPart in ipairs({models.models.main.Avatar.LowerBody.Train.TrainCar1.TrainCar1RightFirework.TrainCar1RightFireworkItem, models.models.main.Avatar.LowerBody.Train.TrainCar1.TrainCar1LeftFirework.TrainCar1LeftFireworkItem}) do
+                                modelPart:setPrimaryTexture("RESOURCE", "minecraft:textures/item/firework_rocket.png")
+                            end
+                            self.exSkill[1].didInit = true
                         end
-                    end;
+                    end
                 };
-                ]]
+
+                ---このExスキルの初期化処理が行われたかどうか
+                didInit = false;
             };
         }
 

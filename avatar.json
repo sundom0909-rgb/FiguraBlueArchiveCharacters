@@ -10,7 +10,8 @@
 		"textures.for_modeling.leather_layer_2",
 		"textures.for_modeling.leather_layer_2_overlay",
 		"textures.for_modeling.trim",
-		"textures.for_modeling.trim_leggings"
+		"textures.for_modeling.trim_leggings",
+		"textures.for_modeling.firework_rocket"
 	],
 	"autoScripts": [
 		"scripts/avatar.lua"
@@ -149,6 +150,10 @@
 		},
 		"models.models.ex_skill_frame.Particles": {
 			"visible": false
+		},
+		"models.models.ex_skill_1.Train": {
+			"visible": false,
+			"moveTo": "models.models.main.Avatar.LowerBody"
 		},
 		"models.models.bubble.Camera.AvatarBubble": {
 			"visible": false
