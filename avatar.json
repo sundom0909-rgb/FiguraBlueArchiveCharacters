@@ -155,6 +155,10 @@
 			"visible": false,
 			"moveTo": "models.models.main.Avatar.LowerBody"
 		},
+		"models.models.ex_skill_1.Key": {
+			"visible": true,
+			"moveTo": "models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom"
+		},
 		"models.models.bubble.Camera.AvatarBubble": {
 			"visible": false
 		},

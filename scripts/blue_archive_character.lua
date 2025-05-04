@@ -372,7 +372,7 @@ BlueArchiveCharacter = {
 
                 formationType = "STRIKER";
 
-                models = {models.models.main.Avatar.LowerBody.Train};
+                models = {models.models.main.Avatar.LowerBody.Train, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Key};
 
                 animations = {"main", "ex_skill_1"};
 
@@ -399,11 +399,6 @@ BlueArchiveCharacter = {
                     end;
 
                     onAnimationTick = function (self, tick)
-                        if tick == 2200 then
-                            for _, modelName in ipairs(self.exSkill[1].animations) do
-                                animations["models."..modelName]["ex_skill_1"]:pause()
-                            end
-                        end
                     end;
                 };
 
