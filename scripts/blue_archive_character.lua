@@ -3,15 +3,25 @@
 ---| "SURPRISED" # 驚いた目（ダメージを受けたときなど）
 ---| "TIRED" # 疲れた目（死亡アニメーションなど）
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
+---| "CLOSED2" # 閉じた目2
+---| "CENTER" # 少し反対側を見る目
+---| "UNEQUAL" # 不等号目
 
 ---@alias BlueArchiveCharacter.LeftEyeTextures
 ---| "NORMAL" # 通常
 ---| "SURPRISED" # 驚いた目（ダメージを受けたときなど）
 ---| "TIRED" # 疲れた目（死亡アニメーションなど）
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
+---| "CLOSED2" # 閉じた目2
+---| "CENTER" # 少し反対側を見る目
+---| "UNEQUAL" # 不等号目
 
 ---@alias BlueArchiveCharacter.MouthTextures
 ---| "NORMAL" # 通常
+---| "SMALL" # 小さく開いた口
+---| "SMILE" # にっこり + 八重歯
+---| "YUMMY" # 舌を出した口
+---| "BIG" # 大きく開いた口
 
 ---@alias BlueArchiveCharacter.GunPutType
 ---| "BODY" # アバターのBodyに銃を移動させる
@@ -285,6 +295,9 @@ BlueArchiveCharacter = {
                 SURPRISED = vectors.vec2(2, 0); --必須
                 TIRED = vectors.vec2(3, 0); --必須
                 CLOSED = vectors.vec2(4, 0); --必須
+                CLOSED2 = vectors.vec2(5, 0);
+                CENTER = vectors.vec2(6, 0);
+                UNEQUAL = vectors.vec2(8, 0);
             };
 
             leftEye = {
@@ -292,10 +305,16 @@ BlueArchiveCharacter = {
                 SURPRISED = vectors.vec2(1, 0); --必須
                 TIRED = vectors.vec2(2, 0); --必須
                 CLOSED = vectors.vec2(3, 0); --必須
+                CLOSED2 = vectors.vec2(4, 0);
+                CENTER = vectors.vec2(6, 0);
+                UNEQUAL = vectors.vec2(7, 0);
             };
 
             mouth = {
-
+                SMALL = vectors.vec2(0, 0);
+                SMILE = vectors.vec2(1, 0);
+                YUMMY = vectors.vec2(2, 0);
+                BIG = vectors.vec2(3, 0);
             };
         }
 
@@ -396,9 +415,25 @@ BlueArchiveCharacter = {
                             end
                             self.exSkill[1].didInit = true
                         end
+                        self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMALL", 20, true)
                     end;
 
                     onAnimationTick = function (self, tick)
+                        if tick == 20 then
+                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMILE", 2, true)
+                        elseif tick == 22 then
+                            self.parent.faceParts:setEmotion("CENTER", "NORMAL", "SMILE", 25, true)
+                        elseif tick == 47 then
+                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMILE", 2, true)
+                        elseif tick == 49 then
+                            self.parent.faceParts:setEmotion("NORMAL", "CENTER", "YUMMY", 21, true)
+                        elseif tick == 60 then
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "YUMMY", 32, true)
+                        elseif tick == 92 then
+                            self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "SMALL", 54, true)
+                        elseif tick == 146 then
+                            self.parent.faceParts:setEmotion("NORMAL", "CLOSED", "BIG", 77, true)
+                        end
                     end;
                 };
 
