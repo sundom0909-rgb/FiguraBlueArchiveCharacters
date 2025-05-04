@@ -366,8 +366,8 @@ BlueArchiveCharacter = {
         instance.exSkill = {
             {
                 name = {
-                    en_us = "Ex Skill name";
-                    ja_jp = "Exスキル名";
+                    en_us = "Booster on!";
+                    ja_jp = "ブースターオン！";
                 };
 
                 formationType = "STRIKER";
@@ -378,25 +378,33 @@ BlueArchiveCharacter = {
 
                 camera = {
                     start = {
-                        rot = vectors.vec3(0, 180, 0);
-                        pos = vectors.vec3(0, 28, -64);
+                        rot = vectors.vec3(0, 195, 0);
+                        pos = vectors.vec3(-15, 63, -101);
                     };
 
                     fin = {
-                        rot = vectors.vec3(0, 180, 0);
-                        pos = vectors.vec3(0, 28, -64);
+                        rot = vectors.vec3(0, 210, 15);
+                        pos = vectors.vec3(-12.1, 42.75, -4079.85);
                     };
                 };
 
                 callbacks = {
                     onPreAnimation = function (self)
-                        if self.exSkill[1].didInit then
+                        if not self.exSkill[1].didInit then
                             for _, modelPart in ipairs({models.models.main.Avatar.LowerBody.Train.TrainCar1.TrainCar1RightFirework.TrainCar1RightFireworkItem, models.models.main.Avatar.LowerBody.Train.TrainCar1.TrainCar1LeftFirework.TrainCar1LeftFireworkItem}) do
                                 modelPart:setPrimaryTexture("RESOURCE", "minecraft:textures/item/firework_rocket.png")
                             end
                             self.exSkill[1].didInit = true
                         end
-                    end
+                    end;
+
+                    onAnimationTick = function (self, tick)
+                        if tick == 2200 then
+                            for _, modelName in ipairs(self.exSkill[1].animations) do
+                                animations["models."..modelName]["ex_skill_1"]:pause()
+                            end
+                        end
+                    end;
                 };
 
                 ---このExスキルの初期化処理が行われたかどうか
