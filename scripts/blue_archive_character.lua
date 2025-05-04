@@ -391,7 +391,7 @@ BlueArchiveCharacter = {
 
                 formationType = "STRIKER";
 
-                models = {models.models.main.Avatar.LowerBody.Train, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Key};
+                models = {models.models.main.Avatar.LowerBody.Train, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Key, models.models.main.Avatar.Head.HeadShineEffects};
 
                 animations = {"main", "ex_skill_1"};
 
