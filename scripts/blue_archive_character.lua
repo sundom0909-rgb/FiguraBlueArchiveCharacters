@@ -372,9 +372,9 @@ BlueArchiveCharacter = {
 
                 formationType = "STRIKER";
 
-                models = {};
+                models = {models.models.main.Avatar.LowerBody.Train};
 
-                animations = {"main"};
+                animations = {"main", "ex_skill_1"};
 
                 camera = {
                     start = {
