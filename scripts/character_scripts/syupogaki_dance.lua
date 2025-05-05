@@ -8,7 +8,7 @@
 ---@field package isHost boolean このアバターが親かどうか
 ---@field package offsetPos Vector3 ダンスを行う位置のオフセット
 ---@field package rot number ダンスをする際のアバターの向き
----@field package targetPlayer string 相手プレイヤーのUUID
+---@field package targetPlayer string|nil 相手プレイヤーのUUID
 ---@field package canPlayDance fun(self: SyupogakiDance): boolean シュポガキダンスが再生可能か（スタンバイ可能か）を返す。
 ---@field public standby fun(self: SyupogakiDance) シュポガキダンスをスタンバイ状態にする。
 ---@field public stop fun(self: SyupogakiDance) シュポガキダンスを終了する（スタンバイ状態を含む）。
@@ -25,7 +25,7 @@ SyupogakiDance = {
         instance.isHost = false
         instance.offsetPos = vectors.vec3()
         instance.rot = 0
-        instance.targetPlayer = ""
+        instance.targetPlayer = nil
 
         return instance
     end;
@@ -67,7 +67,17 @@ SyupogakiDance = {
     ---@param self SyupogakiDance
     ---@return boolean canPlayDance シュポガキダンスが再生可能かどうか
     canPlayDance = function (self)
-        return player:getPose() == "STANDING" and not player:isMoving() and player:isOnGround() and not player:isInWater() and not player:isInLava() and player:getFrozenTicks() == 0 and not renderer:isFirstPerson() and player:getSwingArm() == nil and player:getActiveItem().id == "minecraft:air" and not self.parent.costume.isChangingCostume and self.parent.exSkill.transitionCount == 0
+        local firstCheck = player:getPose() == "STANDING" and not player:isMoving() and player:isOnGround() and not player:isInWater() and not player:isInLava() and player:getFrozenTicks() == 0 and not renderer:isFirstPerson() and player:getSwingArm() == nil and player:getActiveItem().id == "minecraft:air" and not self.parent.costume.isChangingCostume and self.parent.exSkill.transitionCount == 0
+        if self.targetPlayer ~= nil then
+            local avatarVars = world.avatarVars()
+            if avatarVars[self.targetPlayer].FBAC_Nozomi then
+                return firstCheck and avatarVars[self.targetPlayer].dance_state ~= "NOT_STANDBY"
+            else
+                return false
+            end
+        else
+            return firstCheck
+        end
     end;
 
     ---シュポガキダンスをスタンバイ状態にする。
@@ -104,8 +114,6 @@ SyupogakiDance = {
             self.rot = player:getBodyYaw() % 360
             avatar:store("dance_rot", self.rot)
         end
-        --animations["models.main"]["syupogaki_dance_standby"]:stop()
-        --animations["models.main"]["syupogaki_dance"]:play()
 
         events.TICK:register(function ()
             if not self:canPlayDance() then
@@ -126,8 +134,9 @@ SyupogakiDance = {
                     end
                 end
             elseif self.danceState == "PLAYING" then
+                local avatarVars = world.avatarVars()
                 if self.isHost then
-                    animations["models.main"]["syupogaki_dance"]:setTime(world.avatarVars()[self.targetPlayer].dance_animation_time)
+                    animations["models.main"]["syupogaki_dance"]:setTime(avatarVars[self.targetPlayer].dance_animation_time)
                 else
                     avatar:store("dance_animation_time", animations["models.main"]["syupogaki_dance"]:getTime())
                 end
