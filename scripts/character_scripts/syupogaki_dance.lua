@@ -87,8 +87,8 @@ SyupogakiDance = {
                 avatar:store("target_player", uuid)
                 playerFound = true
                 self.offsetPos = avatarVar.dance_pos:copy():sub(playerPos)
-                models.models.main.Avatar:setPos(self.offsetPos:copy():scale(16))
                 self.rot = avatarVar.dance_rot
+                models.models.main.Avatar:setPos(vectors.rotateAroundAxis(self.rot, self.offsetPos:copy():scale(16):mul(-1, 1, -1), 0, 1, 0))
                 animations["models.main"]["syupogaki_dance_standby"]:stop()
                 animations["models.main"]["syupogaki_dance"]:play()
             end
@@ -112,7 +112,7 @@ SyupogakiDance = {
             ---ここで発見した場合、こちらが親になる。
             if self.danceState == "STANDBY" then
                 for uuid, avatarVar in pairs(world.avatarVars()) do
-                    if avatarVar.FBAC_Nozomi and avatarVar.dance_state == "STANDBY" and avatarVar.target_player == player:getUUID()  then
+                    if avatarVar.FBAC_Nozomi and avatarVar.target_player == player:getUUID()  then
                         self.danceState = "PLAYING"
                         avatar:store("dance_state", "PLAYING")
                         self.targetPlayer = uuid
