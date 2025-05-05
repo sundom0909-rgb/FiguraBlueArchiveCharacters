@@ -575,6 +575,16 @@ BlueArchiveCharacter = {
                 };
             };
 
+            callbacks = {
+                onArmorChange = function (self, parts, isVisible)
+                    if parts == "HELMET" then
+                        models.models.main.Avatar.Head.Hat:setVisible(not isVisible)
+                    elseif parts == "CHEST_PLATE" then
+                        models.models.main.Avatar.UpperBody.Body.ShoulderBag:setVisible(not isVisible)
+                    end
+                end;
+            };
+
         }
 
         instance.bubble = {
