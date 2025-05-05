@@ -140,7 +140,7 @@ SyupogakiDance = {
                 local avatarVars = world.avatarVars()
                 if self.isHost then
                     animations["models.main"]["syupogaki_dance"]:setTime(avatarVars[self.targetPlayer].dance_animation_time)
-                    self.animationTick = avatarVars[self.targetPlayer].animationTick
+                    self.animationTick = avatarVars[self.targetPlayer].dance_tick
                 else
                     self.animationTick = self.animationTick + 1
                     avatar:store("dance_animation_time", animations["models.main"]["syupogaki_dance"]:getTime())
