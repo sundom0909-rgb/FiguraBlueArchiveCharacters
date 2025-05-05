@@ -573,6 +573,7 @@ BlueArchiveCharacter = {
                     elseif parts == "CHEST_PLATE" then
                         models.models.main.Avatar.UpperBody.Body.ShoulderBag:setVisible(not isVisible)
                     end
+                    models.models.main.Avatar.UpperBody.Body.BeltAccessories:setVisible(not self.parent.armor.isArmorVisible.chestplate and not self.parent.armor.isArmorVisible.leggings)
                 end;
             };
 
