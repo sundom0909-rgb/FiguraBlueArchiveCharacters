@@ -4352,7 +4352,7 @@
 			"uuid": "e98e96cf-993b-878e-02b8-777c368bb888",
 			"export": true,
 			"mirror_uv": false,
-			"isOpen": true,
+			"isOpen": false,
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
@@ -5203,7 +5203,7 @@
 											"locked": false,
 											"visibility": true,
 											"autouv": 0,
-											"selected": true,
+											"selected": false,
 											"children": ["8b1cc891-ffa8-9f46-ebc0-f0b84e6ffb15", "72c6eff7-d0eb-2ffa-193f-2ca402bdc722"]
 										}
 									]
@@ -5246,13 +5246,27 @@
 			]
 		},
 		{
+			"name": "SyupogakiTurnTable",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"uuid": "0fc39267-82db-04c6-6f13-a0ac868f5498",
+			"export": true,
+			"mirror_uv": false,
+			"isOpen": true,
+			"locked": false,
+			"visibility": true,
+			"autouv": 0,
+			"selected": true,
+			"children": []
+		},
+		{
 			"name": "CameraAnchor",
 			"origin": [0, 0, 0],
 			"color": 0,
 			"uuid": "4ad021e9-2857-4e55-337b-f61da0762800",
 			"export": true,
 			"mirror_uv": false,
-			"isOpen": true,
+			"isOpen": false,
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
@@ -15924,6 +15938,50 @@
 							"time": 6.05,
 							"color": -1,
 							"interpolation": "catmullrom"
+						}
+					]
+				},
+				"0fc39267-82db-04c6-6f13-a0ac868f5498": {
+					"name": "SyupogakiTurnTable",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "720",
+									"z": "0"
+								}
+							],
+							"uuid": "15058b70-b8eb-2181-13be-b607a5556632",
+							"time": 5.8,
+							"color": -1,
+							"interpolation": "bezier",
+							"bezier_linked": true,
+							"bezier_left_time": [-0.1, -0.44667, -0.1],
+							"bezier_left_value": [0, 0, 0],
+							"bezier_right_time": [0.1, 0.44667, 0.1],
+							"bezier_right_value": [0, 0, 0]
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "0627b528-6b6a-c824-189c-76a9cbb462f5",
+							"time": 4.45,
+							"color": -1,
+							"interpolation": "bezier",
+							"bezier_linked": true,
+							"bezier_left_time": [-0.1, -0.44667, -0.1],
+							"bezier_left_value": [0, 0, 0],
+							"bezier_right_time": [0.1, 0.44667, 0.1],
+							"bezier_right_value": [0, 0, 0]
 						}
 					]
 				}
