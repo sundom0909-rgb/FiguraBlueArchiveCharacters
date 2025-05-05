@@ -133,9 +133,9 @@ SyupogakiDance = {
                 self:stop()
             end
 
-            ---相手が承認してくれるのを待つ。
-            ---ここで発見した場合、こちらが親になる。
             if self.danceState == "STANDBY" then
+                ---相手が承認してくれるのを待つ。
+                ---ここで発見した場合、こちらが親になる。
                 for uuid, avatarVar in pairs(world.avatarVars()) do
                     if avatarVar.FBAC_Nozomi and avatarVar.target_player == player:getUUID()  then
                         self.isHost = true
@@ -157,6 +157,10 @@ SyupogakiDance = {
                     avatar:store("dance_tick", self.animationTick)
                     self.cameraAdjustCount = math.min(self.cameraAdjustCount + 1, 3)
                 end
+            end
+
+            if self.animationTick == 156 then
+                self:stop()
             end
         end, "syupogaki_dance_tick")
 
