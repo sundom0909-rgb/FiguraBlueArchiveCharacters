@@ -11857,7 +11857,7 @@
 									"uuid": "a95ec596-ed1b-80d7-0dbd-77c416531ea9",
 									"export": true,
 									"mirror_uv": false,
-									"isOpen": false,
+									"isOpen": true,
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
@@ -11911,7 +11911,7 @@
 									"uuid": "d21b106c-b026-956b-29b2-2506391e9ba3",
 									"export": true,
 									"mirror_uv": false,
-									"isOpen": false,
+									"isOpen": true,
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
@@ -12027,7 +12027,7 @@
 							"uuid": "8cf443ff-df0a-a515-dbfe-800c07edced5",
 							"export": true,
 							"mirror_uv": false,
-							"isOpen": true,
+							"isOpen": false,
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
@@ -12110,7 +12110,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
-									"selected": true,
+									"selected": false,
 									"children": [
 										"69138ca8-11f3-36ae-686e-e63f30ca9aa3",
 										"8195696f-1900-7063-026d-d66bd2e9ff37",
@@ -12141,7 +12141,7 @@
 							"uuid": "c0138e6e-f265-47b6-7a35-90b3142444e6",
 							"export": true,
 							"mirror_uv": false,
-							"isOpen": false,
+							"isOpen": true,
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
@@ -12256,7 +12256,7 @@
 							"uuid": "d9afea26-826d-eebb-15d2-5cc1ecef7d57",
 							"export": true,
 							"mirror_uv": false,
-							"isOpen": false,
+							"isOpen": true,
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
@@ -12288,7 +12288,7 @@
 							"uuid": "39cfe028-6e2d-40d5-b9a5-dfe51bb001a6",
 							"export": true,
 							"mirror_uv": false,
-							"isOpen": false,
+							"isOpen": true,
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
@@ -12314,16 +12314,16 @@
 						},
 						{
 							"name": "TrainCar1ShineEffects",
-							"origin": [0, 14.5, -19.5],
+							"origin": [0, 28, -70],
 							"color": 0,
 							"uuid": "6d40f819-96dc-b9e7-2acd-8cefc18d2424",
 							"export": true,
 							"mirror_uv": false,
-							"isOpen": false,
+							"isOpen": true,
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
-							"selected": false,
+							"selected": true,
 							"children": [
 								{
 									"name": "TrainCar1ShineEffect1",
@@ -12332,7 +12332,7 @@
 									"uuid": "e04e7a5b-acf2-77e8-7e03-652f014a9690",
 									"export": true,
 									"mirror_uv": false,
-									"isOpen": false,
+									"isOpen": true,
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
@@ -12490,7 +12490,7 @@
 									"uuid": "e4d644a7-0102-ee68-8820-29bc689b5094",
 									"export": true,
 									"mirror_uv": false,
-									"isOpen": false,
+									"isOpen": true,
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
@@ -12544,7 +12544,7 @@
 									"uuid": "07c1b67f-7946-13fc-9777-adffc12ffe2c",
 									"export": true,
 									"mirror_uv": false,
-									"isOpen": false,
+									"isOpen": true,
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
@@ -13148,7 +13148,7 @@
 			"uuid": "9df170cd-d74d-639f-ff02-5ffdb9f45a63",
 			"export": true,
 			"mirror_uv": false,
-			"isOpen": false,
+			"isOpen": true,
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
@@ -13341,7 +13341,7 @@
 			"override": true,
 			"length": 11.15,
 			"snapping": 20,
-			"selected": true,
+			"selected": false,
 			"anim_time_update": "",
 			"blend_weight": "",
 			"start_delay": "",
@@ -22886,6 +22886,1288 @@
 							"time": 4.55,
 							"color": -1,
 							"uniform": true,
+							"interpolation": "linear"
+						}
+					]
+				}
+			}
+		},
+		{
+			"uuid": "d2d24274-c431-f0c8-08dc-726d1504ab11",
+			"name": "train_animation",
+			"loop": "loop",
+			"override": true,
+			"length": 0.2,
+			"snapping": 20,
+			"selected": false,
+			"anim_time_update": "",
+			"blend_weight": "",
+			"start_delay": "",
+			"loop_delay": "",
+			"animators": {
+				"702504fc-a444-11ab-56f5-3763eabadcae": {
+					"name": "Train",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "248d1ec3-caed-1d74-3ed4-150b202b8c20",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "-0.5",
+									"z": "0"
+								}
+							],
+							"uuid": "f6588022-8c35-c6a6-60b4-a13fc6cfb566",
+							"time": 0.1,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "6b48a4a2-7496-5628-90e0-cc2eb8c5accf",
+							"time": 0.2,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"df466ba4-79e3-f32d-c484-b18af6894eb4": {
+					"name": "TrainCar1Platform",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "f45ea847-6b83-896f-1f9d-ddb58ed5ee91",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "e795ed36-df46-37f2-65d0-939d8dc3f859",
+							"time": 0.2,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0.5",
+									"z": "0"
+								}
+							],
+							"uuid": "246f95fa-8165-6a12-624e-ccd3c9e331b0",
+							"time": 0.1,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"e14397e1-888d-7be7-acc4-0a027b401a0d": {
+					"name": "TrainCar1RightHatch",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "11.25",
+									"z": "0"
+								}
+							],
+							"uuid": "1d690155-e10c-61fa-18bb-b262827b5d3f",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"f43ed16d-56f0-9da8-5a0f-64a8a0452761": {
+					"name": "TrainCar1LeftHatch",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "11.25",
+									"z": "0"
+								}
+							],
+							"uuid": "1b87bb58-c156-0eb7-73a1-48dcfafa5edc",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"8cf443ff-df0a-a515-dbfe-800c07edced5": {
+					"name": "TrainCar1RightFirework",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "-16",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "41f7dac6-2e90-be80-f0d9-442a1b562ec9",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"e55de5a9-678e-3475-88f9-f2499eae8d18": {
+					"name": "TrainCar1RightFireworkShineEffectInner1",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "scale",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "d0d6a801-749d-228b-237c-d8cbbf393416",
+							"time": 0,
+							"color": -1,
+							"uniform": true,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"2c415e28-9db8-fb2f-462f-42dd7d2ffa45": {
+					"name": "TrainCar1RightFireworkShineEffectInner2",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "scale",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "e132efe0-0e51-3935-5328-e98ed2e01c9a",
+							"time": 0,
+							"color": -1,
+							"uniform": true,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"c0138e6e-f265-47b6-7a35-90b3142444e6": {
+					"name": "TrainCar1LeftFirework",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "16",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "56377f3c-030f-6d06-366e-4ebbaaf39ed8",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"88ba6970-b9c9-e590-ad8c-498f598cb04b": {
+					"name": "TrainCar1LeftFireworkShineEffectInner1",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "scale",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "01aa4851-a43e-fcbd-7af6-7787ce8be236",
+							"time": 0,
+							"color": -1,
+							"uniform": true,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"fa3e8dc9-1f80-c647-8ea5-67ce161546cf": {
+					"name": "TrainCar1LeftFireworkShineEffectInner2",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "scale",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "eaefddb0-699a-ce40-5d5d-256d9afda5e3",
+							"time": 0,
+							"color": -1,
+							"uniform": true,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"e04e7a5b-acf2-77e8-7e03-652f014a9690": {
+					"name": "TrainCar1ShineEffect1",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "scale",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "aab87357-497e-cc99-0885-b3af7a357bd6",
+							"time": 0,
+							"color": -1,
+							"uniform": true,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"b3730389-8f2f-a73a-d4c7-e36dab147b39": {
+					"name": "TrainCar1ShineEffect2",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "scale",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "1c9c729b-5efa-6fd5-0f58-64d82e59609f",
+							"time": 0,
+							"color": -1,
+							"uniform": true,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"b407b214-327b-9edb-3445-d5db23e09ff6": {
+					"name": "TrainCar1ShineEffect3",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "scale",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "524f7ca3-18e2-d37e-0793-cd7db893d550",
+							"time": 0,
+							"color": -1,
+							"uniform": true,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"5268e4f5-794f-7936-a029-3f189cf5da1b": {
+					"name": "TrainCar2Platform",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "29930641-9638-3ed9-5ed7-807d5735e4bb",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "2a06d016-c98b-67b9-58e0-470dc1e60247",
+							"time": 0.2,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0.5",
+									"z": "0"
+								}
+							],
+							"uuid": "16591365-def2-a05c-d7b4-ab9437538f0c",
+							"time": 0.1,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"6102af4d-d6f1-3f8a-94cb-696c0f6cb9c1": {
+					"name": "TrainCar2ControllerShineEffect",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "scale",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "31d952b1-f263-ac52-7d83-433573a044c8",
+							"time": 0,
+							"color": -1,
+							"uniform": true,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"34251676-7ba1-a0e9-8864-b7b6eebcbf05": {
+					"name": "TrainCar2Handle",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "-75",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "b8d70e26-5b96-79c2-a0b7-de203a9baed4",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"d7834a9d-bd23-5a19-a8b9-831fb39aabd2": {
+					"name": "TrainCar3Platform",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "03068160-3d25-2ae7-f930-abe6987a91b7",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "3d6b19ff-1d52-0b64-2ae3-b27c712ed4bc",
+							"time": 0.2,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0.5",
+									"z": "0"
+								}
+							],
+							"uuid": "be558849-c20f-17eb-1b00-c0062979a2de",
+							"time": 0.1,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				}
+			}
+		},
+		{
+			"uuid": "654eb055-9324-98f2-7773-4d56b4042c36",
+			"name": "train_go",
+			"loop": "loop",
+			"override": false,
+			"length": 0.8,
+			"snapping": 20,
+			"selected": true,
+			"anim_time_update": "",
+			"blend_weight": "",
+			"start_delay": "",
+			"loop_delay": "",
+			"animators": {
+				"a95ec596-ed1b-80d7-0dbd-77c416531ea9": {
+					"name": "TrainCar1RightWheel1",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "43847c15-26c5-e167-595f-374198e40e09",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "360",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "bce99eeb-a2d3-2174-7eea-78445f393f13",
+							"time": 0.8,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"56713710-e331-bc24-4e86-f75b23bfef29": {
+					"name": "TrainCar1RightWheelShaft",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "74968c06-44b6-1eb4-5336-c358b065633a",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "-360",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "b238bbe9-a118-d2d1-b5d7-4001dbc4f92e",
+							"time": 0.8,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"267fd583-732e-0ea1-1799-c774bb845688": {
+					"name": "TrainCar1RightWheel2",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "069026e7-bdc1-b226-dd5c-216cf3d68fdf",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "360",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "4548c2a4-4e26-0e2e-aa90-f21b5abf8969",
+							"time": 0.8,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"d21b106c-b026-956b-29b2-2506391e9ba3": {
+					"name": "TrainCar1LeftWheel1",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "4a05e5ac-7dd1-471b-c6dd-21492dbc2b51",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "360",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "34917d5d-7099-0d35-37a8-b90dc6c6d371",
+							"time": 0.8,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"a68410c0-017e-3bc6-437b-ea9977d39ab9": {
+					"name": "TrainCar1LeftWheelShaft",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "e81fd9c2-1494-7cd7-8317-0e64ea7760e3",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "-360",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "82e74c31-a7d5-fe94-36fd-b995e5d207f5",
+							"time": 0.8,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"970185a6-9b99-307c-0be9-088650e08f10": {
+					"name": "TrainCar1LeftWheel2",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "52a5fde6-5646-5e71-1fe0-ef8ddc5d61f8",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "360",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "55224200-9e33-72d6-67e1-958642082e7f",
+							"time": 0.8,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"5379e3d2-4289-5f43-63b2-b95c1ca09178": {
+					"name": "TrainCar1RightFlag2",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "cdbe6c38-46e3-104c-2ea3-20d227523d06",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "-12.5",
+									"z": "0"
+								}
+							],
+							"uuid": "4e1868f9-ef3a-0644-e336-c14776cde997",
+							"time": 0.1,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "12.5",
+									"z": "0"
+								}
+							],
+							"uuid": "291ffddf-f4cc-3497-6a53-8685d9af783f",
+							"time": 0.3,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "-12.5",
+									"z": "0"
+								}
+							],
+							"uuid": "92c25191-1f80-fdbf-bbc0-42ab79d4326b",
+							"time": 0.5,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "12.5",
+									"z": "0"
+								}
+							],
+							"uuid": "bd96120c-6f09-cac0-baa4-0ccaecaa8184",
+							"time": 0.7,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "ca079b19-d351-0f5f-8e75-0130e6a4f6c1",
+							"time": 0.8,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"19a5ca5b-93ca-5dd9-0d93-0b4c6f2ac6f7": {
+					"name": "TrainCar1LeftFlag2",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "8ef861f3-36bd-d5bb-2314-caceecc4b988",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "12.5",
+									"z": "0"
+								}
+							],
+							"uuid": "4d572fdf-8120-affb-8754-a8644609c8bd",
+							"time": 0.1,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "-12.5",
+									"z": "0"
+								}
+							],
+							"uuid": "bc128a54-57dc-1c90-1053-ad9dc7c6edc7",
+							"time": 0.3,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "12.5",
+									"z": "0"
+								}
+							],
+							"uuid": "257deee9-4d2a-d8cf-a401-de348d011513",
+							"time": 0.5,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "-12.5",
+									"z": "0"
+								}
+							],
+							"uuid": "fa18e7d7-e589-25e2-4316-9a0f23c281a1",
+							"time": 0.7,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "65f0b20d-fcaf-d0cf-d0c8-a955d8e2111e",
+							"time": 0.8,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"e4d644a7-0102-ee68-8820-29bc689b5094": {
+					"name": "TrainCar2RightWheel1",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "72f42703-1db3-7dc7-72fa-24f8d1412a5a",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "360",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "15a883d8-7145-a7df-087a-b7c304c71aa2",
+							"time": 0.8,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"f2f2c525-9166-a9d5-445b-b4eed8e084b9": {
+					"name": "TrainCar2RightWheelShaft",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "5c092183-a91a-a43c-a8d3-922f3870c62e",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "-360",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "2df549b3-fe3f-22c3-4caf-d36e72361251",
+							"time": 0.8,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"fe7d8209-466b-d3a7-53a8-3f6806dae715": {
+					"name": "TrainCar2RightWheel2",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "65cb09bd-b70f-0d48-7a29-0153a775daf5",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "360",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "759cf3af-7f94-e869-3e76-ec4eac3d071f",
+							"time": 0.8,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"07c1b67f-7946-13fc-9777-adffc12ffe2c": {
+					"name": "TrainCar2LeftWheel1",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "d40fdb70-d891-0d02-b38c-010b9e15db29",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "360",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "def143d6-822b-eca5-c25b-7f757d1d9db4",
+							"time": 0.8,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"b4382646-0c24-b807-1dbf-faffaa2700ab": {
+					"name": "TrainCar2LeftWheelShaft",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "3b48a854-4b81-13bf-05c0-0b2f569fcb4a",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "-360",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "580f8dd7-c406-bfeb-863a-b6255b31e81e",
+							"time": 0.8,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"742719fa-9671-b8bd-6d45-4151b2a32353": {
+					"name": "TrainCar2LeftWheel2",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "606c85a2-4cec-b97c-ab03-ee67ea9ac78f",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "360",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "b4a765e7-afd7-87f1-fb4d-9ce7c0bbb73c",
+							"time": 0.8,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"45888cb7-6a4d-4c0e-a91f-c01250c4bc13": {
+					"name": "TrainCar3RightWheel1",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "b31640a3-087c-abaf-83fc-ae9ff9e51752",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "360",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "1d75b70c-0b54-794a-24f3-9eca6c387e58",
+							"time": 0.8,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"a83d1e16-0acf-0068-4d5d-daf68193e2af": {
+					"name": "TrainCar3RightWheelShaft",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "2f0c8f6b-689d-2985-f4d5-cf246dcf81fa",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "-360",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "5e46bd7f-f674-ca60-871e-95a3acff2a53",
+							"time": 0.8,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"8881ec80-f5ac-c537-d32d-ce65fc14e065": {
+					"name": "TrainCar3RightWheel2",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "0a4e886d-e665-d3b5-02f1-d435e6e421a8",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "360",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "e44c9779-0ee2-5d72-6691-26d95b3b952f",
+							"time": 0.8,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"3b0b69fe-a86c-cfa0-fa3d-19e1236f2d16": {
+					"name": "TrainCar3LeftWheel1",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "7b01b393-0e16-5239-a562-a65ad0695b7d",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "360",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "538d17e3-0a24-a57f-6263-7a87c666b9ed",
+							"time": 0.8,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"34a1a5c5-56a4-c1b0-7c7f-8fd5a2f6019a": {
+					"name": "TrainCar3LeftWheelShaft",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "abe33de8-213e-14c8-54ba-0ece3107a9ed",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "-360",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "15d1e25a-f90d-c74e-3142-305351da8f2d",
+							"time": 0.8,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"b5ec6018-bf5d-6ec6-d762-afac6835f83a": {
+					"name": "TrainCar3LeftWheel2",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "b0292ac3-5874-1a31-24c4-6a87437908a0",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "360",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "92b091e5-ec29-b972-133e-58c7357f7b86",
+							"time": 0.8,
+							"color": -1,
 							"interpolation": "linear"
 						}
 					]

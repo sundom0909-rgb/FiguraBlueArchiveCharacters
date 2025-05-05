@@ -426,7 +426,9 @@ BlueArchiveCharacter = {
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Key.KeyModel:setVisible(true)
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Key:getTask("ex_skill_1_key_item"):setVisible(false)
                         end
+                        self.parent.trainManager:stopTrainAnimation()
                         self.parent.trainManager:spawnExSkillRail()
+                        models.models.main.Avatar.LowerBody.Train:setVisible(true)
                         self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMALL", 20, true)
                     end;
 
@@ -529,10 +531,14 @@ BlueArchiveCharacter = {
                     onPostAnimation = function (self, forcedStop)
                         self.parent.trainManager:stopExSkillRail()
                         self.exSkill[1].trainSoundCounter = 0
-                        if forcedStop and host:isHost() then
-                            events.RENDER:remove("ex_skill_1_background_render")
-                            models.models.main.Avatar:setColor(1, 1, 1)
-                            models.models.ex_skill_1.CameraBackground:setVisible(false)
+                        if forcedStop then
+                            if host:isHost() then
+                                events.RENDER:remove("ex_skill_1_background_render")
+                                models.models.main.Avatar:setColor(1, 1, 1)
+                                models.models.ex_skill_1.CameraBackground:setVisible(false)
+                            end
+                        else
+                            self.parent.trainManager:playTrainAnimation()
                         end
                     end;
                 };
@@ -823,5 +829,8 @@ BlueArchiveCharacter = {
 
         --生徒固有初期化処理
         --Player APIにアクセスする場合は、ENTITY_INIT後に実行されるようにする必要がある。
+        self.parent.avatarEvents.SCRIPT_INIT:register(function ()
+            --self.parent.trainManager:playTrainAnimation()
+        end)
     end;
 }

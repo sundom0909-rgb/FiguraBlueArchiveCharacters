@@ -51,7 +51,7 @@ RailObject = {
                 if self.pos:copy():sub(trainPos):length() >= backwardLength * 32 or self.lifeTime == 0 then
                     self.shouldDeinit = true
                 end
-                --self.lifeTime = self.lifeTime - 1
+                self.lifeTime = self.lifeTime - 1
             end;
         }
 
