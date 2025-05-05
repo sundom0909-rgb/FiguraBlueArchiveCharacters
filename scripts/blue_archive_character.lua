@@ -431,10 +431,58 @@ BlueArchiveCharacter = {
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "YUMMY", 32, true)
                         elseif tick == 92 then
                             self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "SMALL", 54, true)
+                        elseif tick == 114 and host:isHost() then
+                            models.models.main.Avatar:setColor(0, 0, 0)
+                            local windowSize = client:getWindowSize()
+                            models.models.ex_skill_1.CameraBackground.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(60))
+                            events.RENDER:register(function (delta, context)
+                                models.models.ex_skill_1.CameraBackground:setVisible(context == "RENDER")
+                                local backgroundPos = vectors.rotateAroundAxis(player:getBodyYaw(delta) + 180, renderer:getCameraOffsetPivot():copy():add(0, 1.62, 0):add(client:getCameraDir():copy():scale(2.6)), 0, 1, 0):scale(16 / 0.9375)
+                                models.models.ex_skill_1.CameraBackground:setOffsetPivot(backgroundPos)
+                                models.models.ex_skill_1.CameraBackground.Background:setPos(backgroundPos)
+                            end, "ex_skill_1_background_render")
+                        elseif tick == 117 and host:isHost() then
+                            events.RENDER:remove("ex_skill_1_background_render")
+                            models.models.main.Avatar:setColor(1, 1, 1)
+                            models.models.ex_skill_1.CameraBackground:setVisible(false)
                         elseif tick == 146 then
                             self.parent.faceParts:setEmotion("NORMAL", "CLOSED", "BIG", 77, true)
                         end
+
+                        local bodyYaw = player:getBodyYaw()
+                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.Train.TrainCar1.TrainCar1ChimneyParticleAnchor):add(vectors.rotateAroundAxis(bodyYaw * -1, 0, 0, tick < 146 and 1 or 0, 0, 1, 0))):setScale(5):setVelocity(0, 0.2, 0)
+                        if tick >= 15 then
+                            for i = 1, 3 do
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.Train["TrainCar"..i]["TrainCar"..i.."Platform"]["TrainCar"..i.."PlatformRightParticleAnchor"])):setScale(2):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * -0.5, math.random() * 1, 1, 0, 1, 0)):setColor(1, 0.953, 0.408)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.Train["TrainCar"..i]["TrainCar"..i.."Platform"]["TrainCar"..i.."PlatformLeftParticleAnchor"])):setScale(2):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 0.5, math.random() * 1, 1, 0, 1, 0)):setColor(1, 0.953, 0.408)
+                            end
+                            local dustColors = {vectors.vec3(1, 0.878, 0.592), vectors.vec3(0.824, 0.718, 0.49)}
+                            local randomNum = math.random() * 0.5 - 0.25
+                            randomNum = randomNum >= 0 and randomNum + 0.25 or randomNum - 0.25
+                            randomNum = (tick >= 126 and tick < 146) and randomNum / 2 or randomNum
+                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:poof"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.Train.TrainCar1.TrainCar1DustParticleAnchor)):setScale((tick >= 126 and tick < 146) and 20 or ((tick < 73 or tick >= 126) and 10 or 2)):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, randomNum, math.random() * 0.5, tick < 118 and 1 or (tick < 108 and 1.5 or 2), 0, 1, 0)):setColor(dustColors[1]:copy():add(dustColors[2]:copy():sub(dustColors[1]):scale(math.random())))
+                        end
+                        if tick >= 104 and tick < 118 then
+                            for _, modelPart in ipairs({models.models.main.Avatar.LowerBody.Train.TrainCar1.TrainCar1RightFirework.TrainCar1RightFireworkParticleAnchor, models.models.main.Avatar.LowerBody.Train.TrainCar1.TrainCar1LeftFirework.TrainCar1LeftFireworkParticleAnchor}) do
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:large_smoke"), self.parent.modelUtils.getModelWorldPos(modelPart):add(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 0.5 - 0.25, math.random() * 0.5 - 0.25, 1, 0, 1, 0))):setScale(1.5):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, 0, 0, 0.8, 0, 1, 0))
+                            end
+                        elseif tick >= 104 then
+                            for _, modelPart in ipairs({models.models.main.Avatar.LowerBody.Train.TrainCar1.TrainCar1RightFirework.TrainCar1RightFireworkParticleAnchor, models.models.main.Avatar.LowerBody.Train.TrainCar1.TrainCar1LeftFirework.TrainCar1LeftFireworkParticleAnchor}) do
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(modelPart)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:large_smoke"), self.parent.modelUtils.getModelWorldPos(modelPart):add(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 0.5 - 0.25, math.random() * 0.5 - 0.25, 2, 0, 1, 0))):setScale(2):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, 0, 0, 0.8, 0, 1, 0))
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:soul_fire_flame"), anchorPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 0.5 - 0.25, math.random() * 0.5 - 0.25, 2, 0, 1, 0))):setScale(2):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, 0, 0, 0.8, 0, 1, 0))
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), anchorPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 0.5 - 0.25, math.random() * 0.5 - 0.25, 2, 0, 1, 0))):setScale(1.5):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, 0, 0, 0.8, 0, 1, 0))
+                            end
+                        end
                     end;
+
+                    onPostAnimation = function (self, forcedStop)
+                        if forcedStop and host:isHost() then
+                            events.RENDER:remove("ex_skill_1_background_render")
+                            models.models.main.Avatar:setColor(1, 1, 1)
+                            models.models.ex_skill_1.CameraBackground:setVisible(false)
+                        end
+                    end
                 };
 
                 ---このExスキルの初期化処理が行われたかどうか

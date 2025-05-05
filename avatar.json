@@ -162,6 +162,10 @@
 			"parentType": "Camera",
 			"primaryRenderType": "EMISSIVE_SOLID"
 		},
+		"models.models.ex_skill_1.Train.TrainCar1.TrainCar1LeftFirework.TrainCar1LeftFireworkShineEffects": {
+			"parentType": "Camera",
+			"primaryRenderType": "EMISSIVE_SOLID"
+		},
 		"models.models.ex_skill_1.Train.TrainCar2.TrainCar2Controller.TrainCar2ControllerShineEffect": {
 			"primaryRenderType": "EMISSIVE_SOLID"
 		},
@@ -176,6 +180,10 @@
 		"models.models.ex_skill_1.HeadShineEffects": {
 			"visible": false,
 			"moveTo": "models.models.main.Avatar.Head",
+			"primaryRenderType": "EMISSIVE_SOLID"
+		},
+		"models.models.ex_skill_1.CameraBackground": {
+			"visible": false,
 			"primaryRenderType": "EMISSIVE_SOLID"
 		},
 		"models.models.ex_skill_1.HeadShineEffects.HeadShineEffect1": {
