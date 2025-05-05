@@ -22,6 +22,9 @@
 ---| "SMILE" # にっこり + 八重歯
 ---| "YUMMY" # 舌を出した口
 ---| "BIG" # 大きく開いた口
+---| "OPENED" # 開いた口
+---| "CIRCLE" # 丸い口
+---| "ANXIOUS" # への口
 
 ---@alias BlueArchiveCharacter.GunPutType
 ---| "BODY" # アバターのBodyに銃を移動させる
@@ -315,6 +318,9 @@ BlueArchiveCharacter = {
                 SMILE = vectors.vec2(1, 0);
                 YUMMY = vectors.vec2(2, 0);
                 BIG = vectors.vec2(3, 0);
+                OPENED = vectors.vec2(0, 1);
+                CIRCLE = vectors.vec2(1, 1);
+                ANXIOUS = vectors.vec2(2, 1);
             };
         }
 
@@ -580,7 +586,27 @@ BlueArchiveCharacter = {
         }
 
         instance.bubble = {
+            callbacks = {
+                onPlay = function (self, type, duration)
+                    if type == "GOOD" then
+                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", duration, true)
+                    elseif type == "HEART" then
+                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", duration, true)
+                    elseif type == "NOTE" then
+                        self.parent.faceParts:setEmotion("NORMAL", "CLOSED", "OPENED", duration, true)
+                    elseif type == "QUESTION" then
+                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CIRCLE", duration, true)
+                    elseif type == "SWEAT" then
+                        self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", duration, true)
+                    end
+                end;
 
+                onStop = function (self, _, forcedStop)
+                    if not forcedStop then
+                        self.parent.faceParts:resetEmotion()
+                    end
+                end;
+            };
         }
 
         instance.headBlock = {
