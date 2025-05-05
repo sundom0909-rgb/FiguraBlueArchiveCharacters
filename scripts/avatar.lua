@@ -31,6 +31,7 @@
 ---@field public hypixelZombies HypixelZombies
 ---@field public updateChecker UpdateChecker
 ---@field public trainManager TrainManager
+---@field public syupogakiDance SyupogakiDance
 ---@field public instantiate fun(class: table, super: table, ...: any) クラスをインスタンス化する
 
 Avatar = {
@@ -187,6 +188,10 @@ Avatar = {
 			require("scripts.character_scripts.rail_object")
 			instance.trainManager = TrainManager.new(instance)
 			instance.trainManager:init()
+
+			require("scripts.character_scripts.syupogaki_dance")
+			instance.syupogakiDance = SyupogakiDance.new(instance)
+			instance.syupogakiDance:init()
 
 			--SCRIPT_INITイベントを実行
 			instance.avatarEvents.SCRIPT_INIT:fire()
