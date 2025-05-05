@@ -53,7 +53,7 @@ SyupogakiDance = {
             end)
         end
 
-        avatar:store("FBAC_Hikari", true)
+        avatar:store("FBAC_Nozomi", true)
         avatar:store("dance_state", "NOT_STANDBY")
         avatar:store("dance_pos", vectors.vec3())
         avatar:store("dance_rot", 0)
@@ -80,7 +80,7 @@ SyupogakiDance = {
         local playerPos = player:getPos()
         local playerFound = false
         for uuid, avatarVar in pairs(world.avatarVars()) do
-            if avatarVar.FBAC_Nozomi and avatarVar.dance_state == "STANDBY" and avatarVar.dance_pos:copy():sub(playerPos):length() <= 2  then
+            if avatarVar.FBAC_Hikari and avatarVar.dance_state == "STANDBY" and avatarVar.dance_pos:copy():sub(playerPos):length() <= 2  then
                 self.danceState = "PLAYING"
                 avatar:store("dance_state", "PLAYING")
                 self.targetPlayer = uuid
@@ -112,7 +112,7 @@ SyupogakiDance = {
             ---ここで発見した場合、こちらが親になる。
             if self.danceState == "STANDBY" then
                 for uuid, avatarVar in pairs(world.avatarVars()) do
-                    if avatarVar.FBAC_Nozomi and avatarVar.dance_state == "STANDBY" and avatarVar.target_player == player:getUUID()  then
+                    if avatarVar.FBAC_Hikari and avatarVar.dance_state == "STANDBY" and avatarVar.target_player == player:getUUID()  then
                         self.danceState = "PLAYING"
                         avatar:store("dance_state", "PLAYING")
                         self.targetPlayer = uuid
