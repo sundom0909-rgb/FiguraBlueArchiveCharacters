@@ -73,7 +73,7 @@ SyupogakiDance = {
         local firstCheck = player:getPose() == "STANDING" and not player:isMoving() and player:isOnGround() and not player:isInWater() and not player:isInLava() and player:getFrozenTicks() == 0 and not renderer:isFirstPerson() and player:getSwingArm() == nil and player:getActiveItem().id == "minecraft:air" and not self.parent.costume.isChangingCostume and self.parent.exSkill.transitionCount == 0
         if self.targetPlayer ~= nil then
             local avatarVars = world.avatarVars()
-            if avatarVars[self.targetPlayer].FBAC_Nozomi then
+            if avatarVars[self.targetPlayer].FBAC_Nozomi ~= nil and avatarVars[self.targetPlayer].FBAC_Nozomi then
                 return firstCheck and avatarVars[self.targetPlayer].dance_state ~= "NOT_STANDBY"
             else
                 return false
