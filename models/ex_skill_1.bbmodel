@@ -12027,7 +12027,7 @@
 							"uuid": "8cf443ff-df0a-a515-dbfe-800c07edced5",
 							"export": true,
 							"mirror_uv": false,
-							"isOpen": false,
+							"isOpen": true,
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
@@ -12110,7 +12110,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
-									"selected": false,
+									"selected": true,
 									"children": [
 										"69138ca8-11f3-36ae-686e-e63f30ca9aa3",
 										"8195696f-1900-7063-026d-d66bd2e9ff37",
@@ -13028,7 +13028,7 @@
 					"locked": false,
 					"visibility": true,
 					"autouv": 0,
-					"selected": true,
+					"selected": false,
 					"children": []
 				}
 			]
@@ -13040,7 +13040,7 @@
 			"uuid": "f80a008a-5eb3-692a-3c47-0d184308bc16",
 			"export": true,
 			"mirror_uv": false,
-			"isOpen": false,
+			"isOpen": true,
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
@@ -13053,7 +13053,7 @@
 					"uuid": "77127d49-eaa0-fd93-8845-074058dc4fb4",
 					"export": true,
 					"mirror_uv": false,
-					"isOpen": true,
+					"isOpen": false,
 					"locked": false,
 					"visibility": true,
 					"autouv": 0,
@@ -13341,7 +13341,7 @@
 			"override": true,
 			"length": 11.15,
 			"snapping": 20,
-			"selected": false,
+			"selected": true,
 			"anim_time_update": "",
 			"blend_weight": "",
 			"start_delay": "",

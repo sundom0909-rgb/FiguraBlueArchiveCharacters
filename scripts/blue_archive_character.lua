@@ -420,7 +420,7 @@ BlueArchiveCharacter = {
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Key.KeyModel:setVisible(false)
                             local task = models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Key:getTask("ex_skill_1_key_item")
                             ---@cast task ItemTask
-                            task:setItem(math.random() >= 0.8 and "minecraft:ominous_trial_key" or "minecraft:trial_key")
+                            task:setItem(math.random() >= 0.8 and self.parent.compatibilityUtils:checkItem("minecraft:ominous_trial_key") or self.parent.compatibilityUtils:checkItem("minecraft:trial_key"))
                             task:setVisible(true)
                         else
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Key.KeyModel:setVisible(true)
@@ -431,18 +431,34 @@ BlueArchiveCharacter = {
                     end;
 
                     onAnimationTick = function (self, tick)
-                        if tick == 20 then
+                        if tick == 15 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.zombie.attack_wooden_door"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.Train), 0.25, 1.5)
+                        elseif tick == 20 then
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMILE", 2, true)
                         elseif tick == 22 then
                             self.parent.faceParts:setEmotion("CENTER", "NORMAL", "SMILE", 25, true)
+                        elseif tick == 23 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.Train), 1, 1.5)
                         elseif tick == 47 then
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMILE", 2, true)
                         elseif tick == 49 then
                             self.parent.faceParts:setEmotion("NORMAL", "CENTER", "YUMMY", 21, true)
+                        elseif tick == 53 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.Train), 1, 3)
                         elseif tick == 60 then
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "YUMMY", 32, true)
+                        elseif tick == 65 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.vault.insert_item"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.Train.TrainCar1.TrainCar1ChimneyParticleAnchor), 1, 1)
+                        elseif tick == 76 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.iron_trapdoor.open"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.Train.TrainCar1.TrainCar1RightHatch), 1, 1)
+                        elseif tick == 82 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.piston.extend"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.Train.TrainCar1.TrainCar1RightFirework), 1, 1.5)
                         elseif tick == 92 then
                             self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "SMALL", 54, true)
+                        elseif tick == 104 then
+                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.Train.TrainCar1.TrainCar1RightFirework)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.flintandsteel.use"), anchorPos, 1, 1)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.fire.extinguish"), anchorPos, 1, 0.5)
                         elseif tick == 114 and host:isHost() then
                             models.models.main.Avatar:setColor(0, 0, 0)
                             local windowSize = client:getWindowSize()
@@ -457,12 +473,21 @@ BlueArchiveCharacter = {
                             events.RENDER:remove("ex_skill_1_background_render")
                             models.models.main.Avatar:setColor(1, 1, 1)
                             models.models.ex_skill_1.CameraBackground:setVisible(false)
+                        elseif tick == 118 then
+                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.Train.TrainCar1.TrainCar1RightFirework)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.firework_rocket.large_blast"), anchorPos, 1, 1)
+                            self.exSkill[1].engineFireworkSound = sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.firework_rocket.launch"), anchorPos, 0.5, 0.5)
                         elseif tick == 146 then
                             self.parent.faceParts:setEmotion("NORMAL", "CLOSED", "BIG", 77, true)
+                            self.exSkill[1].whistleSound = sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.goat_horn.sound.1"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.Train), 1, 0.5)
                         end
 
                         local bodyYaw = player:getBodyYaw()
                         particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.Train.TrainCar1.TrainCar1ChimneyParticleAnchor):add(vectors.rotateAroundAxis(bodyYaw * -1, 0, 0, tick < 146 and 1 or 0, 0, 1, 0))):setScale(5):setVelocity(0, 0.2, 0)
+                        if tick % (tick < 114 and 4 or (tick < 140 and 3 or 2)) == 0 then
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound(self.exSkill[1].trainSoundCounter % 2 == 0 and "minecraft:block.piston.extend" or "minecraft:block.piston.contract"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.Train), 0.5, (tick < 114 and 0.25 or (tick < 140 and 0.3 or 0.35)) * (math.random() * 0.1 + 0.9))
+                            self.exSkill[1].trainSoundCounter = self.exSkill[1].trainSoundCounter + 1
+                        end
                         if tick >= 15 then
                             for i = 1, 3 do
                                 particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.Train["TrainCar"..i]["TrainCar"..i.."Platform"]["TrainCar"..i.."PlatformRightParticleAnchor"])):setScale(2):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * -0.5, math.random() * 1, 1, 0, 1, 0)):setColor(1, 0.953, 0.408)
@@ -473,6 +498,9 @@ BlueArchiveCharacter = {
                             randomNum = randomNum >= 0 and randomNum + 0.25 or randomNum - 0.25
                             randomNum = (tick >= 126 and tick < 146) and randomNum / 2 or randomNum
                             particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:poof"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.Train.TrainCar1.TrainCar1DustParticleAnchor)):setScale((tick >= 126 and tick < 146) and 20 or ((tick < 73 or tick >= 126) and 10 or 2)):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, randomNum, math.random() * 0.5, tick < 118 and 1 or (tick < 108 and 1.5 or 2), 0, 1, 0)):setColor(dustColors[1]:copy():add(dustColors[2]:copy():sub(dustColors[1]):scale(math.random())))
+                            if tick < 58 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.grindstone.use"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.Train), 0.5 * math.min(tick * -0.05 + 2.9, 1), 3)
+                            end
                         end
                         if tick >= 104 and tick < 118 then
                             for _, modelPart in ipairs({models.models.main.Avatar.LowerBody.Train.TrainCar1.TrainCar1RightFirework.TrainCar1RightFireworkParticleAnchor, models.models.main.Avatar.LowerBody.Train.TrainCar1.TrainCar1LeftFirework.TrainCar1LeftFireworkParticleAnchor}) do
@@ -486,20 +514,44 @@ BlueArchiveCharacter = {
                                 particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), anchorPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 0.5 - 0.25, math.random() * 0.5 - 0.25, 2, 0, 1, 0))):setScale(1.5):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, 0, 0, 0.8, 0, 1, 0))
                             end
                         end
+                        if tick >= 118 then
+                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.Train.TrainCar1.TrainCar1RightFirework)
+                            self.exSkill[1].engineFireworkSound:setPos(anchorPos)
+                            if (tick - 118) % 4 == 0 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.firecharge.use"), anchorPos, 0.25, 0.5)
+                            end
+                            if tick >= 146 then
+                                self.exSkill[1].whistleSound:setPos(anchorPos)
+                            end
+                        end
                     end;
 
                     onPostAnimation = function (self, forcedStop)
                         self.parent.trainManager:stopExSkillRail()
+                        self.exSkill[1].trainSoundCounter = 0
                         if forcedStop and host:isHost() then
                             events.RENDER:remove("ex_skill_1_background_render")
                             models.models.main.Avatar:setColor(1, 1, 1)
                             models.models.ex_skill_1.CameraBackground:setVisible(false)
                         end
-                    end
+                    end;
                 };
 
                 ---このExスキルの初期化処理が行われたかどうか
+                ---@type boolean
                 didInit = false;
+
+                ---汽車のシュポシュポ音の回数をカウントする変数
+                ---@type integer
+                trainSoundCounter = 0;
+
+                ---エンジンのロケット花火の音のインスタンス
+                ---@type Sound|nil
+                engineFireworkSound = nil;
+
+                ---汽笛の音のインスタンス
+                ---@type Sound|nil
+                whistleSound = nil;
             };
         }
 
