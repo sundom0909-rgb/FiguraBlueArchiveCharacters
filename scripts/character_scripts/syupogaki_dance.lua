@@ -9,6 +9,7 @@
 ---@field package offsetPos Vector3 ダンスを行う位置のオフセット
 ---@field package rot number ダンスをする際のアバターの向き
 ---@field package targetPlayer string|nil 相手プレイヤーのUUID
+---@field package animationTick integer ダンスアニメーションのタイミングを測るティック変数
 ---@field package canPlayDance fun(self: SyupogakiDance): boolean シュポガキダンスが再生可能か（スタンバイ可能か）を返す。
 ---@field public standby fun(self: SyupogakiDance) シュポガキダンスをスタンバイ状態にする。
 ---@field public stop fun(self: SyupogakiDance) シュポガキダンスを終了する（スタンバイ状態を含む）。
@@ -26,6 +27,7 @@ SyupogakiDance = {
         instance.offsetPos = vectors.vec3()
         instance.rot = 0
         instance.targetPlayer = nil
+        instance.animationTick = -1
 
         return instance
     end;
@@ -61,6 +63,7 @@ SyupogakiDance = {
         avatar:store("dance_pos", vectors.vec3())
         avatar:store("dance_rot", 0)
         avatar:store("target_player", "")
+        avatar:store("dance_tick", -1)
     end;
 
     ---シュポガキダンスが再生可能か（スタンバイ可能か）を返す。
@@ -137,8 +140,11 @@ SyupogakiDance = {
                 local avatarVars = world.avatarVars()
                 if self.isHost then
                     animations["models.main"]["syupogaki_dance"]:setTime(avatarVars[self.targetPlayer].dance_animation_time)
+                    self.animationTick = avatarVars[self.targetPlayer].animationTick
                 else
+                    self.animationTick = self.animationTick + 1
                     avatar:store("dance_animation_time", animations["models.main"]["syupogaki_dance"]:getTime())
+                    avatar:store("dance_tick", self.animationTick)
                 end
             end
         end, "syupogaki_dance_tick")
@@ -165,8 +171,12 @@ SyupogakiDance = {
         avatar:store("dance_animation_time", 0)
         self.offsetPos = vectors.vec3()
         avatar:store("dance_pos", vectors.vec3())
+        self.rot = 0
         avatar:store("dance_rot", 0)
+        self.targetPlayer = nil
         avatar:store("target_player", "")
+        self.animationTick = -1
+        avatar:store("dance_tick", -1)
     end;
 }
 
