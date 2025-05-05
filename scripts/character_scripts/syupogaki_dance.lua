@@ -105,7 +105,7 @@ SyupogakiDance = {
                 self.targetPlayer = uuid
                 avatar:store("target_player", uuid)
                 playerFound = true
-                self.offsetPos = avatarVar.dance_pos:copy():sub(playerPos)
+                self.offsetPos = avatarVar.dance_pos:copy():sub(playerPos):scale(1 / 0.9375)
                 self.rot = avatarVar.dance_rot
                 models.models.main.Avatar:setPos(vectors.rotateAroundAxis(self.rot, self.offsetPos:copy():scale(16):mul(-1, 1, -1), 0, 1, 0))
                 animations["models.main"]["syupogaki_dance_standby"]:stop()
@@ -190,7 +190,6 @@ SyupogakiDance = {
         if not self.isHost then
             self.cameraAdjustCount = 2
             events.TICK:register(function ()
-                print(self.cameraAdjustCount)
                 if self.cameraAdjustCount == -1 then
                     events.TICK:remove("syupogaki_dance_camera_tick")
                     events.RENDER:remove("syupogaki_dance_camera_render")
