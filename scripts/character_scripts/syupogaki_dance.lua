@@ -10,6 +10,7 @@
 ---@field package rot number ダンスをする際のアバターの向き
 ---@field package targetPlayer string|nil 相手プレイヤーのUUID
 ---@field package animationTick integer ダンスアニメーションのタイミングを測るティック変数
+---@field package cameraAdjustCount integer カメラの補正トランジションのタイミングを測るティック変数
 ---@field package canPlayDance fun(self: SyupogakiDance): boolean シュポガキダンスが再生可能か（スタンバイ可能か）を返す。
 ---@field public standby fun(self: SyupogakiDance) シュポガキダンスをスタンバイ状態にする。
 ---@field public stop fun(self: SyupogakiDance) シュポガキダンスを終了する（スタンバイ状態を含む）。
@@ -28,6 +29,7 @@ SyupogakiDance = {
         instance.rot = 0
         instance.targetPlayer = nil
         instance.animationTick = -1
+        instance.cameraAdjustCount = -1
 
         return instance
     end;
@@ -108,6 +110,14 @@ SyupogakiDance = {
                 models.models.main.Avatar:setPos(vectors.rotateAroundAxis(self.rot, self.offsetPos:copy():scale(16):mul(-1, 1, -1), 0, 1, 0))
                 animations["models.main"]["syupogaki_dance_standby"]:stop()
                 animations["models.main"]["syupogaki_dance"]:play()
+                self.cameraAdjustCount = 0
+                events.RENDER:register(function (delta, ctx, matrix)
+                    if self.danceState == "PLAYING" then
+                        self.parent.cameraManager.setCameraPivot(self.offsetPos:copy():scale(math.min(self.cameraAdjustCount + delta, 3) / 3))
+                    else
+                        self.parent.cameraManager.setCameraPivot(self.offsetPos:copy():scale(math.max(self.cameraAdjustCount - delta + 1, 0) / 3))
+                    end
+                end, "syupogaki_dance_camera_render")
             end
         end
         if not playerFound then
@@ -145,11 +155,12 @@ SyupogakiDance = {
                     self.animationTick = self.animationTick + 1
                     avatar:store("dance_animation_time", animations["models.main"]["syupogaki_dance"]:getTime())
                     avatar:store("dance_tick", self.animationTick)
+                    self.cameraAdjustCount = math.min(self.cameraAdjustCount + 1, 3)
                 end
             end
         end, "syupogaki_dance_tick")
 
-        events.RENDER:register(function (delta, ctx, matrix)
+        events.RENDER:register(function (delta)
             models.models.main:setRot(0, player:getBodyYaw(delta) + self.rot * -1, 0)
         end, "syupogaki_dance_render")
     end;
@@ -165,11 +176,9 @@ SyupogakiDance = {
             animations["models.main"][animationName]:stop()
         end
         self.parent.physics:enable()
-        self.isHost = false
         self.danceState = "NOT_STANDBY"
         avatar:store("dance_state", "NOT_STANDBY")
         avatar:store("dance_animation_time", 0)
-        self.offsetPos = vectors.vec3()
         avatar:store("dance_pos", vectors.vec3())
         self.rot = 0
         avatar:store("dance_rot", 0)
@@ -177,6 +186,21 @@ SyupogakiDance = {
         avatar:store("target_player", "")
         self.animationTick = -1
         avatar:store("dance_tick", -1)
+
+        if not self.isHost then
+            self.cameraAdjustCount = 2
+            events.TICK:register(function ()
+                print(self.cameraAdjustCount)
+                if self.cameraAdjustCount == -1 then
+                    events.TICK:remove("syupogaki_dance_camera_tick")
+                    events.RENDER:remove("syupogaki_dance_camera_render")
+                    self.offsetPos = vectors.vec3()
+                end
+                self.cameraAdjustCount = self.cameraAdjustCount - 1
+            end, "syupogaki_dance_camera_tick")
+        end
+
+        self.isHost = false
     end;
 }
 
