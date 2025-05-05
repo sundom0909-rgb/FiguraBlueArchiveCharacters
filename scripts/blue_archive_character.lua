@@ -413,7 +413,18 @@ BlueArchiveCharacter = {
                             for _, modelPart in ipairs({models.models.main.Avatar.LowerBody.Train.TrainCar1.TrainCar1RightFirework.TrainCar1RightFireworkItem, models.models.main.Avatar.LowerBody.Train.TrainCar1.TrainCar1LeftFirework.TrainCar1LeftFireworkItem}) do
                                 modelPart:setPrimaryTexture("RESOURCE", "minecraft:textures/item/firework_rocket.png")
                             end
+                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Key:newItem("ex_skill_1_key_item"):setPos(0, -1, 0):setScale(0.25, 0.25, 0.25):setVisible(false)
                             self.exSkill[1].didInit = true
+                        end
+                        if math.random() >= 0.95 and client:getVersion() >= "1.21" then
+                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Key.KeyModel:setVisible(false)
+                            local task = models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Key:getTask("ex_skill_1_key_item")
+                            ---@cast task ItemTask
+                            task:setItem(math.random() >= 0.8 and "minecraft:ominous_trial_key" or "minecraft:trial_key")
+                            task:setVisible(true)
+                        else
+                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Key.KeyModel:setVisible(true)
+                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Key:getTask("ex_skill_1_key_item"):setVisible(false)
                         end
                         self.parent.trainManager:spawnExSkillRail()
                         self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMALL", 20, true)
