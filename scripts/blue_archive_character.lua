@@ -415,6 +415,7 @@ BlueArchiveCharacter = {
                             end
                             self.exSkill[1].didInit = true
                         end
+                        self.parent.trainManager:spawnExSkillRail()
                         self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMALL", 20, true)
                     end;
 
@@ -477,6 +478,7 @@ BlueArchiveCharacter = {
                     end;
 
                     onPostAnimation = function (self, forcedStop)
+                        self.parent.trainManager:stopExSkillRail()
                         if forcedStop and host:isHost() then
                             events.RENDER:remove("ex_skill_1_background_render")
                             models.models.main.Avatar:setColor(1, 1, 1)
