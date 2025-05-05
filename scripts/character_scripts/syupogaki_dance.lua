@@ -5,6 +5,7 @@
 
 ---@class (exact) SyupogakiDance : AvatarModule シュポガキダンスを制御するクラス
 ---@field public danceState SyupogakiDance.DanceState シュポガキダンスの状態
+---@field package isHost boolean このアバターが親かどうか
 ---@field package offsetPos Vector3 ダンスを行う位置のオフセット
 ---@field package rot number ダンスをする際のアバターの向き
 ---@field package targetPlayer string 相手プレイヤーのUUID
@@ -21,6 +22,7 @@ SyupogakiDance = {
         local instance = Avatar.instantiate(SyupogakiDance, AvatarModule, parent)
 
         instance.danceState = "NOT_STANDBY"
+        instance.isHost = false
         instance.offsetPos = vectors.vec3()
         instance.rot = 0
         instance.targetPlayer = ""
@@ -55,6 +57,7 @@ SyupogakiDance = {
 
         avatar:store("FBAC_Nozomi", true)
         avatar:store("dance_state", "NOT_STANDBY")
+        avatar:store("dance_animation_time", 0)
         avatar:store("dance_pos", vectors.vec3())
         avatar:store("dance_rot", 0)
         avatar:store("target_player", "")
@@ -81,6 +84,7 @@ SyupogakiDance = {
         local playerFound = false
         for uuid, avatarVar in pairs(world.avatarVars()) do
             if avatarVar.FBAC_Hikari and avatarVar.dance_state == "STANDBY" and avatarVar.dance_pos:copy():sub(playerPos):length() <= 2  then
+                self.isHost = false
                 self.danceState = "PLAYING"
                 avatar:store("dance_state", "PLAYING")
                 self.targetPlayer = uuid
@@ -113,12 +117,19 @@ SyupogakiDance = {
             if self.danceState == "STANDBY" then
                 for uuid, avatarVar in pairs(world.avatarVars()) do
                     if avatarVar.FBAC_Hikari and avatarVar.target_player == player:getUUID()  then
+                        self.isHost = true
                         self.danceState = "PLAYING"
                         avatar:store("dance_state", "PLAYING")
                         self.targetPlayer = uuid
                         animations["models.main"]["syupogaki_dance_standby"]:stop()
                         animations["models.main"]["syupogaki_dance"]:play()
                     end
+                end
+            elseif self.danceState == "PLAYING" then
+                if self.isHost then
+                    animations["models.main"]["syupogaki_dance"]:setTime(world.avatarVars()[self.targetPlayer].dance_animation_time)
+                else
+                    avatar:store("dance_animation_time", animations["models.main"]["syupogaki_dance"]:getTime())
                 end
             end
         end, "syupogaki_dance_tick")
@@ -139,8 +150,10 @@ SyupogakiDance = {
             animations["models.main"][animationName]:stop()
         end
         self.parent.physics:enable()
+        self.isHost = false
         self.danceState = "NOT_STANDBY"
         avatar:store("dance_state", "NOT_STANDBY")
+        avatar:store("dance_animation_time", 0)
         self.offsetPos = vectors.vec3()
         avatar:store("dance_pos", vectors.vec3())
         avatar:store("dance_rot", 0)
