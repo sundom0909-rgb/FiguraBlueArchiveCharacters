@@ -13,6 +13,7 @@
 ---@field package animationTick integer ダンスアニメーションのタイミングを測るティック変数
 ---@field package isRotating boolean ダンスの回転パートかどうか
 ---@field package cameraAdjustCount integer カメラの補正トランジションのタイミングを測るティック変数
+---@field package isTipShowed boolean ヒント表示をしたかどうか
 ---@field package canPlayDance fun(self: SyupogakiDance): boolean シュポガキダンスが再生可能か（スタンバイ可能か）を返す。
 ---@field public standby fun(self: SyupogakiDance) シュポガキダンスをスタンバイ状態にする。
 ---@field public stop fun(self: SyupogakiDance) シュポガキダンスを終了する（スタンバイ状態を含む）。
@@ -34,6 +35,7 @@ SyupogakiDance = {
         instance.animationTick = -1
         instance.isRotating = false
         instance.cameraAdjustCount = -1
+        instance.isTipShowed = false
 
         return instance
     end;
@@ -46,6 +48,7 @@ SyupogakiDance = {
         if host:isHost() then
             local localeStrings = {
                 {"key_name.syupogaki_dance", "Syupogaki dance", "シュポガキダンス"};
+                {"syupogaki_dance.tip", "§9§l[TIP]§r You can dance with Nozomi! Let her also be on standby within the displayed area!", "§9§l[TIP]§r ノゾミと一緒にダンスができます！表示された範囲内でノゾミもスタンバイ状態にさせましょう！"};
             }
 
             for _, localeSet in ipairs(localeStrings) do
@@ -130,6 +133,10 @@ SyupogakiDance = {
             self.rot = player:getBodyYaw() % 360
             avatar:store("dance_rot", self.rot)
             self.waitTick = 0
+            if host:isHost() and not self.isTipShowed then
+                print(self.parent.locale:getLocale("syupogaki_dance.tip"))
+                self.isTipShowed = true
+            end
         end
 
         events.TICK:register(function ()
