@@ -4886,7 +4886,7 @@
 											"locked": false,
 											"visibility": true,
 											"autouv": 0,
-											"selected": true,
+											"selected": false,
 											"children": [
 												"10370ca9-c1db-3cbc-737f-1b736c5c4d49",
 												"0fc4bff5-e43c-5a56-bde6-c0d1b91bd334",
@@ -5510,7 +5510,7 @@
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
-			"selected": false,
+			"selected": true,
 			"children": []
 		},
 		{
@@ -12910,50 +12910,6 @@
 						}
 					]
 				},
-				"4ad021e9-2857-4e55-337b-f61da0762800": {
-					"name": "CameraAnchor",
-					"type": "bone",
-					"keyframes": [
-						{
-							"channel": "rotation",
-							"data_points": [
-								{
-									"x": "0",
-									"y": "720",
-									"z": "0"
-								}
-							],
-							"uuid": "b232a4bf-5ba5-d83b-295b-af39b61dbcd2",
-							"time": 5.8,
-							"color": -1,
-							"interpolation": "bezier",
-							"bezier_linked": true,
-							"bezier_left_time": [-0.1, -0.44667, -0.1],
-							"bezier_left_value": [0, 0, 0],
-							"bezier_right_time": [0.1, 0.44667, 0.1],
-							"bezier_right_value": [0, 0, 0]
-						},
-						{
-							"channel": "rotation",
-							"data_points": [
-								{
-									"x": "0",
-									"y": "0",
-									"z": "0"
-								}
-							],
-							"uuid": "0e056065-bf5b-f1e3-7193-b6348911d844",
-							"time": 4.45,
-							"color": -1,
-							"interpolation": "bezier",
-							"bezier_linked": true,
-							"bezier_left_time": [-0.1, -0.44667, -0.1],
-							"bezier_left_value": [0, 0, 0],
-							"bezier_right_time": [0.1, 0.44667, 0.1],
-							"bezier_right_value": [0, 0, 0]
-						}
-					]
-				},
 				"2b3c3a16-aa4c-613a-bc14-3e2e141cb5ef": {
 					"name": "BeltAccessories",
 					"type": "bone",
@@ -13195,6 +13151,50 @@
 							"time": 6.4,
 							"color": -1,
 							"interpolation": "catmullrom"
+						}
+					]
+				},
+				"fe45bcf8-9a4c-0d4e-4932-dcade8634a45": {
+					"name": "SyupogakiTurnTable",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "720",
+									"z": "0"
+								}
+							],
+							"uuid": "333b4018-e6f8-1d93-8b69-f766de8e8023",
+							"time": 5.8,
+							"color": -1,
+							"interpolation": "bezier",
+							"bezier_linked": true,
+							"bezier_left_time": [-0.1, -0.44667, -0.1],
+							"bezier_left_value": [0, 0, 0],
+							"bezier_right_time": [0.1, 0.44667, 0.1],
+							"bezier_right_value": [0, 0, 0]
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "9a0c7b86-1cfc-e33b-8d00-f635bae4be5d",
+							"time": 4.45,
+							"color": -1,
+							"interpolation": "bezier",
+							"bezier_linked": true,
+							"bezier_left_time": [-0.1, -0.44667, -0.1],
+							"bezier_left_value": [0, 0, 0],
+							"bezier_right_time": [0.1, 0.44667, 0.1],
+							"bezier_right_value": [0, 0, 0]
 						}
 					]
 				}
