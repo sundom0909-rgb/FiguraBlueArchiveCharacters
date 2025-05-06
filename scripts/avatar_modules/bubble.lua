@@ -97,7 +97,7 @@ Bubble = {
                     self:play("RELOAD", -1, vectors.vec2(), 0, false)
                     self.isAutoBubble = true
                 end
-            elseif self.isChatOpened and self.parent.exSkill.transitionCount == 0 and player:getPose() ~= "SLEEPING" then
+            elseif self.isChatOpened and self.parent.exSkill.transitionCount == 0 and player:getPose() ~= "SLEEPING" and self.parent.syupogakiDance.danceState ~= "PLAYING" then
                 if self.bubbleCount == 0 or (self.isAutoBubble and self.emoji ~= "DOTS") then
                     self:play("DOTS", -1, vectors.vec2(), 0, false)
                     self.isAutoBubble = true
