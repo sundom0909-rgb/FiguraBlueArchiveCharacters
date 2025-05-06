@@ -57,27 +57,27 @@ Bubble = {
         --エモートガイド
         if host:isHost() then
             self.parent.keyManager:register("bubble_1", "key.keyboard.j"):onPress(function ()
-                if self.parent.exSkill.animationCount == -1 and (self.bubbleCount == 0 or self.isAutoBubble) then
+                if self.parent.exSkill.animationCount == -1 and (self.bubbleCount == 0 or self.isAutoBubble) and self.parent.syupogakiDance.danceState == "NOT_STANDBY" then
                     pings.showBubbleEmote("GOOD")
                 end
             end)
             self.parent.keyManager:register("bubble_2", "key.keyboard.k"):onPress(function ()
-                if self.parent.exSkill.animationCount == -1 and (self.bubbleCount == 0 or self.isAutoBubble) then
+                if self.parent.exSkill.animationCount == -1 and (self.bubbleCount == 0 or self.isAutoBubble) and self.parent.syupogakiDance.danceState == "NOT_STANDBY" then
                     pings.showBubbleEmote("HEART")
                 end
             end)
             self.parent.keyManager:register("bubble_3", "key.keyboard.n"):onPress(function ()
-                if self.parent.exSkill.animationCount == -1 and (self.bubbleCount == 0 or self.isAutoBubble) then
+                if self.parent.exSkill.animationCount == -1 and (self.bubbleCount == 0 or self.isAutoBubble) and self.parent.syupogakiDance.danceState == "NOT_STANDBY" then
                     pings.showBubbleEmote("NOTE")
                 end
             end)
             self.parent.keyManager:register("bubble_4", "key.keyboard.m"):onPress(function ()
-                if self.parent.exSkill.animationCount == -1 and (self.bubbleCount == 0 or self.isAutoBubble) then
+                if self.parent.exSkill.animationCount == -1 and (self.bubbleCount == 0 or self.isAutoBubble) and self.parent.syupogakiDance.danceState == "NOT_STANDBY" then
                     pings.showBubbleEmote("QUESTION")
                 end
             end)
             self.parent.keyManager:register("bubble_5", "key.keyboard.comma"):onPress(function ()
-                if self.parent.exSkill.animationCount == -1 and (self.bubbleCount == 0 or self.isAutoBubble) then
+                if self.parent.exSkill.animationCount == -1 and (self.bubbleCount == 0 or self.isAutoBubble) and self.parent.syupogakiDance.danceState == "NOT_STANDBY" then
                     pings.showBubbleEmote("SWEAT")
                 end
             end)
