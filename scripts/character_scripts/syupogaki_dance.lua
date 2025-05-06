@@ -116,6 +116,7 @@ SyupogakiDance = {
                 self.rot = avatarVar.dance_rot
                 animations["models.main"]["syupogaki_dance_standby"]:stop()
                 animations["models.main"]["syupogaki_dance"]:play()
+                renderer:setShadowRadius(0)
                 self.cameraAdjustCount = 0
                 events.RENDER:register(function (delta)
                     if self.danceState == "PLAYING" then
@@ -239,6 +240,7 @@ SyupogakiDance = {
         for _, animationName in ipairs({"syupogaki_dance_standby", "syupogaki_dance"}) do
             animations["models.main"][animationName]:stop()
         end
+        renderer:setShadowRadius()
         self.parent.faceParts:resetEmotion()
         self.parent.physics:enable()
         self.danceState = "NOT_STANDBY"
