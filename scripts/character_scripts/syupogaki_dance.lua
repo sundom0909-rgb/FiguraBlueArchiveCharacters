@@ -48,7 +48,7 @@ SyupogakiDance = {
         if host:isHost() then
             local localeStrings = {
                 {"key_name.syupogaki_dance", "Syupogaki dance", "シュポガキダンス"};
-                {"syupogaki_dance.tip", "§9§l[TIP]§r You can dance with Nozomi! Let her also be on standby within the displayed area!", "§9§l[TIP]§r ノゾミと一緒にダンスができます！表示された範囲内でノゾミもスタンバイ状態にさせましょう！"};
+                {"syupogaki_dance.tip", "§9§l[TIP]§r You can dance with Hikari! Let her also be on standby within the displayed area!", "§9§l[TIP]§r ヒカリと一緒にダンスができます！表示された範囲内でヒカリもスタンバイ状態にさせましょう！"};
             }
 
             for _, localeSet in ipairs(localeStrings) do
