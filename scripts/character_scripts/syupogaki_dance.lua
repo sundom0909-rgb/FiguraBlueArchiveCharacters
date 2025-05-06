@@ -10,6 +10,7 @@
 ---@field package rot number ダンスをする際のアバターの向き
 ---@field package targetPlayer string|nil 相手プレイヤーのUUID
 ---@field package animationTick integer ダンスアニメーションのタイミングを測るティック変数
+---@field package isRotating boolean ダンスの回転パートかどうか
 ---@field package cameraAdjustCount integer カメラの補正トランジションのタイミングを測るティック変数
 ---@field package canPlayDance fun(self: SyupogakiDance): boolean シュポガキダンスが再生可能か（スタンバイ可能か）を返す。
 ---@field public standby fun(self: SyupogakiDance) シュポガキダンスをスタンバイ状態にする。
@@ -29,6 +30,7 @@ SyupogakiDance = {
         instance.rot = 0
         instance.targetPlayer = nil
         instance.animationTick = -1
+        instance.isRotating = false
         instance.cameraAdjustCount = -1
 
         return instance
@@ -107,7 +109,6 @@ SyupogakiDance = {
                 playerFound = true
                 self.offsetPos = avatarVar.dance_pos:copy():sub(playerPos):scale(1 / 0.9375)
                 self.rot = avatarVar.dance_rot
-                models.models.main.Avatar:setPos(vectors.rotateAroundAxis(self.rot, self.offsetPos:copy():scale(16):mul(-1, 1, -1), 0, 1, 0))
                 animations["models.main"]["syupogaki_dance_standby"]:stop()
                 animations["models.main"]["syupogaki_dance"]:play()
                 self.cameraAdjustCount = 0
@@ -159,13 +160,22 @@ SyupogakiDance = {
                 end
             end
 
-            if self.animationTick == 156 then
+            if self.animationTick == 89 then
+                self.isRotating = true
+            elseif self.animationTick == 116 then
+                self.isRotating = false
+            elseif self.animationTick == 156 then
                 self:stop()
             end
         end, "syupogaki_dance_tick")
 
         events.RENDER:register(function (delta)
-            models.models.main:setRot(0, player:getBodyYaw(delta) + self.rot * -1, 0)
+            local turnTableRot = models.models.main.SyupogakiTurnTable:getAnimRot().y
+            local bodyYaw = player:getBodyYaw(delta)
+            models.models.main:setPos(vectors.rotateAroundAxis(bodyYaw, self.offsetPos:copy():scale(16):mul(-1, 1, -1), 0, 1, 0))
+            local animPos = models.models.main.Avatar:getAnimPos()
+            models.models.main.Avatar:setPos(vectors.rotateAroundAxis(turnTableRot, animPos, 0, 1, 0):sub(animPos))
+            models.models.main:setRot(0, bodyYaw + self.rot * -1 + turnTableRot, 0)
         end, "syupogaki_dance_render")
     end;
 
@@ -174,7 +184,9 @@ SyupogakiDance = {
     stop = function (self)
         events.TICK:remove("syupogaki_dance_tick")
         events.RENDER:remove("syupogaki_dance_render")
-        models.models.main.Avatar:setPos()
+        for _, modelPart in ipairs({models.models.main, models.models.main.Avatar}) do
+            modelPart:setPos()
+        end
         models.models.main:setRot()
         for _, animationName in ipairs({"syupogaki_dance_standby", "syupogaki_dance"}) do
             animations["models.main"][animationName]:stop()
@@ -190,6 +202,7 @@ SyupogakiDance = {
         avatar:store("target_player", "")
         self.animationTick = -1
         avatar:store("dance_tick", -1)
+        self.isRotating = false
 
         if not self.isHost then
             self.cameraAdjustCount = 2
