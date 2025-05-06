@@ -183,6 +183,13 @@ SyupogakiDance = {
                 self.isRotating = false
             elseif self.animationTick == 119 then
                 self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 37, true)
+            elseif self.animationTick == 121 then
+                local anchorPos = player:getPos():add(self.offsetPos):add(0, 1, 0)
+                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), anchorPos, 1, 1.5)
+                for _ = 1, 20 do
+                    local offset = vectors.vec3(math.random() * 2 - 1, math.random() * 2 - 1, math.random() * 2 - 1)
+                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:happy_villager"), anchorPos:copy():add(offset)):setVelocity(offset:copy():scale(0.025)):setLifetime(35)
+                end
             elseif self.animationTick == 156 then
                 self:stop()
             end
