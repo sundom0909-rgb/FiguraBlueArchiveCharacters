@@ -147,6 +147,8 @@ SyupogakiDance = {
                         animations["models.main"]["syupogaki_dance"]:play()
                     end
                 end
+
+                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 1, true)
             elseif self.danceState == "PLAYING" then
                 local avatarVars = world.avatarVars()
                 if self.isHost then
@@ -160,10 +162,27 @@ SyupogakiDance = {
                 end
             end
 
-            if self.animationTick == 89 then
+            if self.animationTick == 0 then
+                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 8, true)
+            elseif self.animationTick == 8 then
+                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMILE", 2, true)
+            elseif self.animationTick == 10 then
+                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "ANXIOUS", 20, true)
+            elseif self.animationTick == 30 then
+                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", 2, true)
+            elseif self.animationTick == 32 then
+                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "TRIANGLE", 35, true)
+            elseif self.animationTick == 67 then
+                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "TRIANGLE", 2, true)
+            elseif self.animationTick == 69 then
+                self.parent.faceParts:setEmotion("CENTER", "NORMAL", "TRIANGLE", 20, true)
+            elseif self.animationTick == 89 then
+                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMILE", 30, true)
                 self.isRotating = true
             elseif self.animationTick == 116 then
                 self.isRotating = false
+            elseif self.animationTick == 119 then
+                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 37, true)
             elseif self.animationTick == 156 then
                 self:stop()
             end

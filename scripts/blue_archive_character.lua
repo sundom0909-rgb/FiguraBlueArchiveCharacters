@@ -4,6 +4,7 @@
 ---| "TIRED" # 疲れた目（死亡アニメーションなど）
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
 ---| "CLOSED2" # 閉じた目2
+---| "CENTER" # 少し反対側を見る目
 
 ---@alias BlueArchiveCharacter.LeftEyeTextures
 ---| "NORMAL" # 通常
@@ -292,6 +293,7 @@ BlueArchiveCharacter = {
                 TIRED = vectors.vec2(3, 0); --必須
                 CLOSED = vectors.vec2(4, 0); --必須
                 CLOSED2 = vectors.vec2(5, 0);
+                CENTER = vectors.vec2(7, 0);
             };
 
             leftEye = {
