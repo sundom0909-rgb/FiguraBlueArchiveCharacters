@@ -484,6 +484,9 @@ BlueArchiveCharacter = {
                                 end
                             end, "ex_skill_1_render")
                         elseif tick == 86 then
+                            if host:isHost() then
+                                models.models.main.Avatar.Head:setVisible(false)
+                            end
                             models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole15:setVisible(true)
                             for i = 23, 54 do
                                 models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket["Hole"..i]:setVisible(true)
@@ -508,6 +511,9 @@ BlueArchiveCharacter = {
                         elseif tick >= 111 and tick <= 121 and (tick - 111) % 2 == 0 then
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), player:getPos(), 0.5, 1.85)
                         elseif tick == 112 then
+                            if host:isHost() then
+                                models.models.main.Avatar.Head:setVisible(true)
+                            end
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMILE", 22, true)
                         elseif tick == 130 and host:isHost() then
                             local windowSize = client:getScaledWindowSize()
@@ -570,6 +576,7 @@ BlueArchiveCharacter = {
                         models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.TicketShineEffect:setOffsetPivot()
                         if forcedStop and host:isHost() then
                             events.RENDER:remove("ex_skill_1_render")
+                            models.models.main.Avatar.Head:setVisible(true)
                             models.models.ex_skill_1.Gui.ScreenFilter:setVisible(false)
                         end
                     end;
