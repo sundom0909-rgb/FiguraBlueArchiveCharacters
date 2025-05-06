@@ -534,6 +534,7 @@ BlueArchiveCharacter = {
                                 models.models.main.Avatar:setColor(1, 1, 1)
                                 models.models.ex_skill_1.CameraBackground:setVisible(false)
                             end
+                            self.parent.trainManager:removeAll()
                         else
                             self.parent.trainManager:playTrainAnimation()
                         end
