@@ -871,8 +871,5 @@ BlueArchiveCharacter = {
 
         --生徒固有初期化処理
         --Player APIにアクセスする場合は、ENTITY_INIT後に実行されるようにする必要がある。
-        self.parent.avatarEvents.SCRIPT_INIT:register(function ()
-            --self.parent.trainManager:playTrainAnimation()
-        end)
     end;
 }
