@@ -206,6 +206,10 @@ SyupogakiDance = {
             models.models.main.Avatar:setPos(vectors.rotateAroundAxis(turnTableRot, animPos, 0, 1, 0):sub(animPos))
             models.models.main:setRot(0, bodyYaw + self.rot * -1 + turnTableRot, 0)
         end, "syupogaki_dance_render")
+
+        events.DAMAGE:register(function ()
+            self:stop()
+        end, "syupogaki_dance_damage")
     end;
 
     ---シュポガキダンスを終了する（スタンバイ状態を含む）。
@@ -213,6 +217,7 @@ SyupogakiDance = {
     stop = function (self)
         events.TICK:remove("syupogaki_dance_tick")
         events.RENDER:remove("syupogaki_dance_render")
+        events.DAMAGE:remove("syupogaki_dance_damage")
         for _, modelPart in ipairs({models.models.main, models.models.main.Avatar}) do
             modelPart:setPos()
         end
