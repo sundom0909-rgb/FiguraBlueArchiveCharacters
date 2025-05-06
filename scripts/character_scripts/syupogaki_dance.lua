@@ -112,7 +112,7 @@ SyupogakiDance = {
                 animations["models.main"]["syupogaki_dance_standby"]:stop()
                 animations["models.main"]["syupogaki_dance"]:play()
                 self.cameraAdjustCount = 0
-                events.RENDER:register(function (delta, ctx, matrix)
+                events.RENDER:register(function (delta)
                     if self.danceState == "PLAYING" then
                         self.parent.cameraManager.setCameraPivot(self.offsetPos:copy():scale(math.min(self.cameraAdjustCount + delta, 3) / 3))
                     else
