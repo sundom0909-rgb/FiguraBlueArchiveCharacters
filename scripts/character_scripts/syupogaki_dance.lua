@@ -9,6 +9,7 @@
 ---@field package offsetPos Vector3 ダンスを行う位置のオフセット
 ---@field package rot number ダンスをする際のアバターの向き
 ---@field package targetPlayer string|nil 相手プレイヤーのUUID
+---@field package waitTick integer スタンバイ時間を測るカウンター
 ---@field package animationTick integer ダンスアニメーションのタイミングを測るティック変数
 ---@field package isRotating boolean ダンスの回転パートかどうか
 ---@field package cameraAdjustCount integer カメラの補正トランジションのタイミングを測るティック変数
@@ -29,6 +30,7 @@ SyupogakiDance = {
         instance.offsetPos = vectors.vec3()
         instance.rot = 0
         instance.targetPlayer = nil
+        instance.waitTick = -1
         instance.animationTick = -1
         instance.isRotating = false
         instance.cameraAdjustCount = -1
@@ -76,9 +78,9 @@ SyupogakiDance = {
     canPlayDance = function (self)
         local firstCheck = player:getPose() == "STANDING" and not player:isMoving() and player:isOnGround() and not player:isInWater() and not player:isInLava() and player:getFrozenTicks() == 0 and not renderer:isFirstPerson() and player:getSwingArm() == nil and player:getActiveItem().id == "minecraft:air" and not self.parent.costume.isChangingCostume and self.parent.exSkill.transitionCount == 0
         if self.targetPlayer ~= nil then
-            local avatarVars = world.avatarVars()
-            if avatarVars[self.targetPlayer].FBAC_Nozomi ~= nil and avatarVars[self.targetPlayer].FBAC_Nozomi then
-                return firstCheck and avatarVars[self.targetPlayer].dance_state ~= "NOT_STANDBY"
+            local targetVar = world.avatarVars()[self.targetPlayer]
+            if targetVar ~= nil and targetVar.FBAC_Nozomi then
+                return firstCheck and targetVar.dance_state ~= "NOT_STANDBY"
             else
                 return false
             end
@@ -127,6 +129,7 @@ SyupogakiDance = {
             avatar:store("dance_pos", playerPos)
             self.rot = player:getBodyYaw() % 360
             avatar:store("dance_rot", self.rot)
+            self.waitTick = 0
         end
 
         events.TICK:register(function ()
@@ -143,12 +146,19 @@ SyupogakiDance = {
                         self.danceState = "PLAYING"
                         avatar:store("dance_state", "PLAYING")
                         self.targetPlayer = uuid
+                        self.waitTick = -1
                         animations["models.main"]["syupogaki_dance_standby"]:stop()
                         animations["models.main"]["syupogaki_dance"]:play()
                     end
                 end
 
                 self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 1, true)
+                local anchorPos = player:getPos():add(0, 0.1, 0)
+                local targetVar = world.avatarVars()[client:getViewer():getUUID()]
+                if host:isHost() or (targetVar ~= nil and targetVar.FBAC_Nozomi) then
+                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:happy_villager"), anchorPos:copy():add(vectors.rotateAroundAxis((self.waitTick % 36) * 10, 0, 0, 2, 0, 1, 0))):setLifetime(27)
+                end
+                self.waitTick = self.waitTick + 1
             elseif self.danceState == "PLAYING" then
                 local avatarVars = world.avatarVars()
                 if self.isHost then
@@ -226,6 +236,7 @@ SyupogakiDance = {
         avatar:store("dance_rot", 0)
         self.targetPlayer = nil
         avatar:store("target_player", "")
+        self.waitTick = -1
         self.animationTick = -1
         avatar:store("dance_tick", -1)
         self.isRotating = false
