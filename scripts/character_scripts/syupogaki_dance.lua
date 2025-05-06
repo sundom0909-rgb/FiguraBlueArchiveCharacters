@@ -227,6 +227,7 @@ SyupogakiDance = {
         for _, animationName in ipairs({"syupogaki_dance_standby", "syupogaki_dance"}) do
             animations["models.main"][animationName]:stop()
         end
+        self.parent.faceParts:resetEmotion()
         self.parent.physics:enable()
         self.danceState = "NOT_STANDBY"
         avatar:store("dance_state", "NOT_STANDBY")
