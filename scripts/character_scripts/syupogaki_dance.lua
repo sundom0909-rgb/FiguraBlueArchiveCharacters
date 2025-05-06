@@ -112,7 +112,7 @@ SyupogakiDance = {
                 animations["models.main"]["syupogaki_dance_standby"]:stop()
                 animations["models.main"]["syupogaki_dance"]:play()
                 self.cameraAdjustCount = 0
-                events.RENDER:register(function (delta, ctx, matrix)
+                events.RENDER:register(function (delta)
                     if self.danceState == "PLAYING" then
                         self.parent.cameraManager.setCameraPivot(self.offsetPos:copy():scale(math.min(self.cameraAdjustCount + delta, 3) / 3))
                     else
@@ -147,6 +147,8 @@ SyupogakiDance = {
                         animations["models.main"]["syupogaki_dance"]:play()
                     end
                 end
+
+                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 1, true)
             elseif self.danceState == "PLAYING" then
                 local avatarVars = world.avatarVars()
                 if self.isHost then
@@ -160,10 +162,27 @@ SyupogakiDance = {
                 end
             end
 
-            if self.animationTick == 89 then
+            if self.animationTick == 0 then
+                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 8, true)
+            elseif self.animationTick == 8 then
+                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", 2, true)
+            elseif self.animationTick == 10 then
+                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CIRCLE", 20, true)
+            elseif self.animationTick == 30 then
+                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "CIRCLE", 2, true)
+            elseif self.animationTick == 32 then
+                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 35, true)
+            elseif self.animationTick == 67 then
+                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", 2, true)
+            elseif self.animationTick == 69 then
+                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", 20, true)
+            elseif self.animationTick == 89 then
+                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", 30, true)
                 self.isRotating = true
             elseif self.animationTick == 116 then
                 self.isRotating = false
+            elseif self.animationTick == 119 then
+                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 37, true)
             elseif self.animationTick == 156 then
                 self:stop()
             end
