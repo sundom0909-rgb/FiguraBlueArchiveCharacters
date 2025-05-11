@@ -54,7 +54,7 @@
 ---@field public skirt BlueArchiveCharacter.SkirtStruct スカート
 ---@field public gun BlueArchiveCharacter.GunStruct 銃
 ---@field public placementObjects BlueArchiveCharacter.PlacementObjectStruct[] 設置物
----@field public exSkill BlueArchiveCharacter.ExSkillStruct[] Exスキル
+---@field public exSkill BlueArchiveCharacter.ExSkillStruct Exスキル
 ---@field public costume BlueArchiveCharacter.CostumeStruct コスチューム
 ---@field public bubble BlueArchiveCharacter.BubbleStruct 吹き出しエモート
 ---@field public headBlock BlueArchiveCharacter.HeadBlockStruct 頭ブロック
@@ -99,11 +99,7 @@
 ---@field public callbacks? BlueArchiveCharacter.PlacementObjectCallbacksSet 設置物のコールバック関数
 
 ---@class BlueArchiveCharacter.ExSkillStruct Exスキルのデータ構造体
----@field public name BlueArchiveCharacter.LocaleStringSet Exスキルの名前
----@field public formationType BlueArchiveCharacter.FormationType この生徒の戦闘配置タイプ
----@field public models ModelPart[] Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
----@field public animations string[] Exスキルアニメーションが含まれるモデルファイル名。アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
----@field public camera BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワーク
+---@field public exSkills BlueArchiveCharacter.ExSkillDataSet[] Exスキルデータ
 ---@field public callbacks? BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数
 
 ---@class BlueArchiveCharacter.CostumeStruct コスチュームのデータ構造体
@@ -180,6 +176,17 @@
 ---@field public onRender? fun(self: BlueArchiveCharacter, placementObject: PlacementObject) 各レンダーティック毎に呼ばれる関数
 ---@field public onGround? fun(self: BlueArchiveCharacter, placementObject: PlacementObject) 設置物が接地した瞬間に呼ばれる関数
 
+---@class (exact) BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数のセット
+---@field public additionalCheckFunc? fun(self: BlueArchiveCharacter): boolean Exスキルを再生するかどうかの追加チェック関数
+
+---@class (exact) BlueArchiveCharacter.ExSkillDataSet Exスキルのデータセット
+---@field public name BlueArchiveCharacter.LocaleStringSet Exスキルの名前
+---@field public formationType BlueArchiveCharacter.FormationType この生徒の戦闘配置タイプ
+---@field public models ModelPart[] Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
+---@field public animations string[] Exスキルアニメーションが含まれるモデルファイル名。アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
+---@field public camera BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワーク
+---@field public callbacks? BlueArchiveCharacter.ExSkillAnimationCallbacks Exスキルアニメーションのコールバック関数
+
 ---@class (exact) BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワークのセット
 ---@field public start BlueArchiveCharacter.ExSkillCameraPositionSet Exスキルアニメーション開始地点
 ---@field public fin BlueArchiveCharacter.ExSkillCameraPositionSet Exスキルアニメーション終了地点
@@ -189,7 +196,7 @@
 ---@field public pos Vector3 カメラの位置
 ---@field public rot Vector3 カメラの方向
 
----@class (exact) BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数のセット
+---@class (exact) BlueArchiveCharacter.ExSkillAnimationCallbacks Exスキルアニメーションのコールバック関数のセット
 ---@field public onPreTransition? fun(self: BlueArchiveCharacter) Exスキルアニメーション開始前のトランジション開始前に実行されるコールバック関数
 ---@field public onPreAnimation? fun(self: BlueArchiveCharacter) Exスキルアニメーション開始前のトランジション終了後に実行されるコールバック関数
 ---@field public onAnimationTick? fun(self: BlueArchiveCharacter, tick: integer) Exスキルアニメーション再生中のみ実行されるティック関数
@@ -208,8 +215,9 @@
 ---@field public onArmorChange? fun(self: BlueArchiveCharacter, parts: Armor.ArmorPart, isVisible: boolean) 防具が変更された（防具が見える/見えない）ときに実行されるコールバック関数
 
 ---@class (exact) BlueArchiveCharacter.BubbleCallbacks 吹き出しエモートのコールバック関数のセット
+---@field public addtionalCheckFunc? fun(self: BlueArchiveCharacter): boolean 吹き出しエモートを表示するかどうかの追加チェック関数
 ---@field public onPlay? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, duration: integer, showInGui: boolean) 吹き出しエモートが再生された時に実行されるコールバック関数
----@field public  onStop? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, forcedStop: boolean) 吹き出しアニメーション終了時に実行されるコールバック関数
+---@field public onStop? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, forcedStop: boolean) 吹き出しアニメーション終了時に実行されるコールバック関数
 
 ---@class (exact) BlueArchiveCharacter.HeadBlockCallbacks 頭ブロックのコールバック関数のセット
 ---@field public onBeforeModelCopy? fun(self: BlueArchiveCharacter, isScriptLoaded: boolean) モデルのコピー直前に実行される関数
@@ -534,671 +542,673 @@ BlueArchiveCharacter = {
         }
 
         instance.exSkill = {
-            {
-                name = {
-                    en_us = "Tactical Suppression";
-                    ja_jp = "戦術的鎮圧";
-                };
-
-                formationType = "STRIKER";
-
-                models = {models.models.main.Avatar.UpperBody.Body.Gun.Barrel.ShineEffect};
-
-                animations = {"main", "gun", "ex_skill_1"};
-
-                camera = {
-                    start = {
-                        rot = vectors.vec3(0, -160, 0);
-                        pos = vectors.vec3(-4.5, 7.75, -44.5);
+            exSkills = {
+                {
+                    name = {
+                        en_us = "Tactical Suppression";
+                        ja_jp = "戦術的鎮圧";
                     };
 
-                    fin = {
-                        rot = vectors.vec3(-15, 215, 0);
-                        pos = vectors.vec3(-13.5, 13.5, -25);
+                    formationType = "STRIKER";
+
+                    models = {models.models.main.Avatar.UpperBody.Body.Gun.Barrel.ShineEffect};
+
+                    animations = {"main", "gun", "ex_skill_1"};
+
+                    camera = {
+                        start = {
+                            rot = vectors.vec3(0, -160, 0);
+                            pos = vectors.vec3(-4.5, 7.75, -44.5);
+                        };
+
+                        fin = {
+                            rot = vectors.vec3(-15, 215, 0);
+                            pos = vectors.vec3(-13.5, 13.5, -25);
+                        };
                     };
-                };
 
-                callbacks = {
-                    onPreAnimation = function (self)
-                        models.models.main.Avatar.UpperBody.Body.Gun.Barrel.ShineEffect:setColor(client:hasShaderPack() and vectors.vec3(1, 0.5, 0.5) or vectors.vec3(1, 1, 1))
-                        self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "CLOSED", 53, true)
-                    end;
+                    callbacks = {
+                        onPreAnimation = function (self)
+                            models.models.main.Avatar.UpperBody.Body.Gun.Barrel.ShineEffect:setColor(client:hasShaderPack() and vectors.vec3(1, 0.5, 0.5) or vectors.vec3(1, 1, 1))
+                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "CLOSED", 53, true)
+                        end;
 
-                    onAnimationTick = function (self, tick)
-                        if tick == 0 then
-                            self.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.Gun, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom, models.models.main.Avatar.UpperBody.Body)
-                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setPos()
-                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setRot()
-                            models.models.main.Avatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setVisible(false)
-                        elseif tick == 8 or tick == 15 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.chest.locked"), player:getPos(), 1, 2)
-                        elseif tick == 12 then
-                            local bodyYaw = player:getBodyYaw()
-                            local particlePos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Shield.Section2):add(vectors.rotateAroundAxis(bodyYaw * -1, 0, 3.66, -1, 0, 1, 0):scale(0.0625))
-                            for _ = 1, 10 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), particlePos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 0.6 - 0.3, math.random() * 0.2 - 0.1, 0, 0, 1, 0)):setColor(1, 0.64, 0.59):setLifetime(4)
-                            end
-                        elseif tick == 19 then
-                            local bodyYaw = player:getBodyYaw()
-                            local particlePos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Shield.Section2.Section1):add(vectors.rotateAroundAxis(bodyYaw * -1, 0, 3.66, -1, 0, 1, 0):scale(0.0625))
-                            for _ = 1, 10 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), particlePos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 0.6 - 0.3, math.random() * 0.2 - 0.1, 0, 0, 1, 0)):setColor(1, 0.64, 0.59):setLifetime(4)
-                            end
-                        elseif tick == 36 or tick == 45 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.anvil.place"), player:getPos(), 1, 2)
-                        elseif tick == 38 then
-                            for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.Shield.Section2.Section1.GasCylinder1.GasPiston1, models.models.main.Avatar.UpperBody.Body.Shield.Section2.Section1.GasCylinder2.GasPiston2}) do
+                        onAnimationTick = function (self, tick)
+                            if tick == 0 then
+                                self.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.Gun, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom, models.models.main.Avatar.UpperBody.Body)
+                                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setPos()
+                                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setRot()
+                                models.models.main.Avatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setVisible(false)
+                            elseif tick == 8 or tick == 15 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.chest.locked"), player:getPos(), 1, 2)
+                            elseif tick == 12 then
                                 local bodyYaw = player:getBodyYaw()
-                                local particlePos = self.parent.modelUtils.getModelWorldPos(modelPart):add(vectors.rotateAroundAxis(bodyYaw * -1, 0, 0, -0.5, 0, 1, 0):scale(0.0625))
-                                for _ = 1, 5 do
-                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), particlePos):setScale(0.25):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 0.06 - 0.03, -0.05, 0, 0, 1, 0)):setColor(1, 0.64, 0.59):setLifetime(4)
+                                local particlePos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Shield.Section2):add(vectors.rotateAroundAxis(bodyYaw * -1, 0, 3.66, -1, 0, 1, 0):scale(0.0625))
+                                for _ = 1, 10 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), particlePos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 0.6 - 0.3, math.random() * 0.2 - 0.1, 0, 0, 1, 0)):setColor(1, 0.64, 0.59):setLifetime(4)
                                 end
-                            end
-                        elseif tick == 47 then
-                            for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.Shield.Section2.GasCylinder3.GasPiston3, models.models.main.Avatar.UpperBody.Body.Shield.Section2.GasCylinder4.GasPiston4}) do
+                            elseif tick == 19 then
                                 local bodyYaw = player:getBodyYaw()
-                                local particlePos = self.parent.modelUtils.getModelWorldPos(modelPart):add(vectors.rotateAroundAxis(bodyYaw * -1, 0, 0, -0.5, 0, 1, 0):scale(0.0625))
+                                local particlePos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Shield.Section2.Section1):add(vectors.rotateAroundAxis(bodyYaw * -1, 0, 3.66, -1, 0, 1, 0):scale(0.0625))
+                                for _ = 1, 10 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), particlePos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 0.6 - 0.3, math.random() * 0.2 - 0.1, 0, 0, 1, 0)):setColor(1, 0.64, 0.59):setLifetime(4)
+                                end
+                            elseif tick == 36 or tick == 45 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.anvil.place"), player:getPos(), 1, 2)
+                            elseif tick == 38 then
+                                for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.Shield.Section2.Section1.GasCylinder1.GasPiston1, models.models.main.Avatar.UpperBody.Body.Shield.Section2.Section1.GasCylinder2.GasPiston2}) do
+                                    local bodyYaw = player:getBodyYaw()
+                                    local particlePos = self.parent.modelUtils.getModelWorldPos(modelPart):add(vectors.rotateAroundAxis(bodyYaw * -1, 0, 0, -0.5, 0, 1, 0):scale(0.0625))
+                                    for _ = 1, 5 do
+                                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), particlePos):setScale(0.25):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 0.06 - 0.03, -0.05, 0, 0, 1, 0)):setColor(1, 0.64, 0.59):setLifetime(4)
+                                    end
+                                end
+                            elseif tick == 47 then
+                                for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.Shield.Section2.GasCylinder3.GasPiston3, models.models.main.Avatar.UpperBody.Body.Shield.Section2.GasCylinder4.GasPiston4}) do
+                                    local bodyYaw = player:getBodyYaw()
+                                    local particlePos = self.parent.modelUtils.getModelWorldPos(modelPart):add(vectors.rotateAroundAxis(bodyYaw * -1, 0, 0, -0.5, 0, 1, 0):scale(0.0625))
+                                    for _ = 1, 5 do
+                                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), particlePos):setScale(0.25):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 0.06 - 0.03, -0.025, 0, 0, 1, 0)):setColor(1, 0.64, 0.59):setLifetime(4)
+                                    end
+                                end
+                            elseif tick == 53 then
+                                self.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.Shield, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom, models.models.main.Avatar.UpperBody.Body)
+                                self.parent.faceParts:setEmotion("ANGRY", "ANGRY_CENTER", "CLOSED", 19, true)
+                            elseif tick == 55 then
+                                local bodyYaw = player:getBodyYaw()
+                                local particlePos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Shield.Section2):add(vectors.rotateAroundAxis(bodyYaw * -1, 0, 10, 4, 0, 1, 0):scale(0.0625))
                                 for _ = 1, 5 do
-                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), particlePos):setScale(0.25):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 0.06 - 0.03, -0.025, 0, 0, 1, 0)):setColor(1, 0.64, 0.59):setLifetime(4)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), particlePos):setScale(0.5):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 0.25 - 0.125, math.random() * 0.25 - 0.125, 0, 0, 1, 0)):setColor(0.973, 0.714, 0.29):setLifetime(2)
                                 end
-                            end
-                        elseif tick == 53 then
-                            self.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.Shield, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom, models.models.main.Avatar.UpperBody.Body)
-                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY_CENTER", "CLOSED", 19, true)
-                        elseif tick == 55 then
-                            local bodyYaw = player:getBodyYaw()
-                            local particlePos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Shield.Section2):add(vectors.rotateAroundAxis(bodyYaw * -1, 0, 10, 4, 0, 1, 0):scale(0.0625))
-                            for _ = 1, 5 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), particlePos):setScale(0.5):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 0.25 - 0.125, math.random() * 0.25 - 0.125, 0, 0, 1, 0)):setColor(0.973, 0.714, 0.29):setLifetime(2)
-                            end
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.anvil.place"), player:getPos(), 0.25, 4)
-                        elseif tick == 70 then
-                            local bodyYaw = player:getBodyYaw()
-                            local particlePos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Shield.Section2):add(vectors.rotateAroundAxis(bodyYaw * -1, -2, 3, 4, 0, 1, 0):scale(0.0625))
-                            for _ = 1, 5 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), particlePos):setScale(0.5):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 0.25 - 0.125, math.random() * 0.25 - 0.125, 0, 0, 1, 0)):setColor(0.973, 0.714, 0.29):setLifetime(2)
-                            end
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.anvil.place"), player:getPos(), 0.25, 4)
-                        elseif tick == 72 then
-                            self.parent.faceParts:setEmotion("ANGRY", "CLOSED2", "CLOSED", 32, true)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.flintandsteel.use"), player:getPos(), 1, 2)
-                        elseif tick == 79 then
-                            local particlePos = player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 1, 0, -3, 0, 1, 0))
-                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:explosion_emitter"), particlePos)
-                            for _ = 1, 100 do
-                                local particleOffset = vectors.vec3(math.random() - 0.5, math.random() * 0.5, math.random() - 0.5)
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:poof"), particlePos:copy():add(particleOffset)):setScale(5):setVelocity(particleOffset)
-                            end
-                            local particleBlock = world.getBlockState(particlePos:copy():add(0, -1, 0)).id
-                            if particleBlock ~= "minecraft:air" and particleBlock ~= "minecraft:void_air" and particleBlock ~= "minecraft:cave_air" then
-                                for _ = 1, 50 do
-                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:block", particleBlock), particlePos):setScale(0.75):setVelocity(math.random() * 0.8 - 0.4, math.random() * 1, math.random() * 0.8 - 0.4):setLifetime(40)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.anvil.place"), player:getPos(), 0.25, 4)
+                            elseif tick == 70 then
+                                local bodyYaw = player:getBodyYaw()
+                                local particlePos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Shield.Section2):add(vectors.rotateAroundAxis(bodyYaw * -1, -2, 3, 4, 0, 1, 0):scale(0.0625))
+                                for _ = 1, 5 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), particlePos):setScale(0.5):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 0.25 - 0.125, math.random() * 0.25 - 0.125, 0, 0, 1, 0)):setColor(0.973, 0.714, 0.29):setLifetime(2)
                                 end
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.anvil.place"), player:getPos(), 0.25, 4)
+                            elseif tick == 72 then
+                                self.parent.faceParts:setEmotion("ANGRY", "CLOSED2", "CLOSED", 32, true)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.flintandsteel.use"), player:getPos(), 1, 2)
+                            elseif tick == 79 then
+                                local particlePos = player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 1, 0, -3, 0, 1, 0))
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:explosion_emitter"), particlePos)
+                                for _ = 1, 100 do
+                                    local particleOffset = vectors.vec3(math.random() - 0.5, math.random() * 0.5, math.random() - 0.5)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:poof"), particlePos:copy():add(particleOffset)):setScale(5):setVelocity(particleOffset)
+                                end
+                                local particleBlock = world.getBlockState(particlePos:copy():add(0, -1, 0)).id
+                                if particleBlock ~= "minecraft:air" and particleBlock ~= "minecraft:void_air" and particleBlock ~= "minecraft:cave_air" then
+                                    for _ = 1, 50 do
+                                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:block", particleBlock), particlePos):setScale(0.75):setVelocity(math.random() * 0.8 - 0.4, math.random() * 1, math.random() * 0.8 - 0.4):setLifetime(40)
+                                    end
+                                end
+                                local playerPos = player:getPos()
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.iron_door.open"), playerPos, 1, 2)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), playerPos, 0.5, 1.5)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.explode"), playerPos, 0.5, 0.5)
                             end
-                            local playerPos = player:getPos()
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.iron_door.open"), playerPos, 1, 2)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), playerPos, 0.5, 1.5)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.explode"), playerPos, 0.5, 0.5)
-                        end
 
-                        if tick % 2 == 0 then
-                            local particlePos = math.random()
-                            if particlePos < 0.4 then
-                                self.exSkill[1].showAmmoParticle(self, player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, -1, particlePos * 7.5, 4, 0, 1, 0)))
-                            elseif particlePos < 0.6 then
-                                self.exSkill[1].showAmmoParticle(self, player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, (particlePos - 0.4) * 10 - 1, 3, 4, 0, 1, 0)))
-                            else
-                                self.exSkill[1].showAmmoParticle(self, player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 1, (particlePos - 0.6) * 7.5, 4, 0, 1, 0)))
-                            end
-                        end
-                    end;
-
-                    onPostAnimation = function (self, forcedStop)
-                        if models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun ~= nil then
-                            self.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
-                        end
-                        if player:isLeftHanded() then
-                            models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(self.gun.gunPosition.put.pos.left))
-                            models.models.main.Avatar.UpperBody.Body.Gun:setRot(self.gun.gunPosition.put.rot.left)
-                        else
-                            models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(self.gun.gunPosition.put.pos.right))
-                            models.models.main.Avatar.UpperBody.Body.Gun:setRot(self.gun.gunPosition.put.rot.right)
-                        end
-                        if models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Shield ~= nil then
-                            self.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Shield, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
-                        end
-                        if self.parent.exSkill.animationCount >= 0 then
-                            models.models.main.Avatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setVisible(true)
-                        end
-                    end;
-                };
-
-                ---銃弾を表現するパーティクル
-                ---@param self BlueArchiveCharacter
-                ---@param pos Vector3 パーティクルをスポーンさせる場所
-                showAmmoParticle = function (self, pos)
-                    local bodyYaw = player:getBodyYaw()
-                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:flame"), pos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, 0, 0, -1, 0, 1, 0)):setLifetime(20)
-                    local smokePos = pos:copy()
-                    for _ = 1, 5 do
-                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:smoke"), smokePos:add(vectors.rotateAroundAxis(bodyYaw * -1, 0, 0, 0.5, 0, 1, 0))):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, 0, 0, -0.5, 0, 1, 0)):setGravity(0):setLifetime(20)
-                    end
-                end;
-            };
-
-            {
-                name = {
-                    en_us = "Aquatic Support";
-                    ja_jp = "水上支援";
-                };
-
-                formationType = "STRIKER";
-
-                models = {models.models.main.Avatar.LowerBody.WhaleFloat, models.models.ex_skill_2.Waves};
-
-                animations = {"main", "costume_swimsuit", "ex_skill_2"};
-
-                camera = {
-                    start = {
-                        rot = vectors.vec3(-15, -150, 0);
-                        pos = vectors.vec3(-54, 100.6, -147.4);
-                    };
-
-                    ---Exスキルアニメーション終了時
-                    fin = {
-                        rot = vectors.vec3(-15, -180, 30);
-                        pos = vectors.vec3(-248, 17.6, -340.6);
-                    };
-                };
-
-                callbacks = {
-                    onPreAnimation = function (self)
-                        if not self.exSkill[2].init then
-                            for _, modelPart in ipairs({models.models.ex_skill_2.Waves.Surface, models.models.ex_skill_2.Waves.Wave1}) do
-                                modelPart:setPrimaryTexture("RESOURCE", "textures/block/water_still.png")
-                            end
-                            models.models.ex_skill_2.Waves.Wave2:setPrimaryTexture("RESOURCE", "textures/block/water_flow.png")
-                            self.exSkill[2].init = true
-                        end
-                        self.exSkill[2].resetExSkill2Feature()
-                        models.models.ex_skill_2.Waves:setColor(world.getBiome(player:getPos()):getWaterColor())
-                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "W", 13, true)
-                    end;
-
-                    onAnimationTick = function (self, tick)
-                        if tick == 3 then
-                            local modelPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Waves.Wave1):add(0, 7, 0)
-                            local bodyYaw = player:getBodyYaw()
-                            for _ = 1, 500 do
-                                local offset = vectors.vec3(math.random() * 32 - 16, 0, math.random() * 5)
-                                local particleOffset = offset:copy()
-                                particleOffset.x = particleOffset.x * (math.random() * 0.025 + 0.025)
-                                particleOffset.y = 0.25
-                                particleOffset.z = (particleOffset.z - 2.5) * (math.random() * 0.025 + 0.025)
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), modelPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, offset, 0, 1, 0))):setScale(3):setColor(1, 1, 1):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, particleOffset, 0, 1, 0)):setGravity(1):setLifetime(40)
-                            end
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), modelPos, 1, 0.5)
-                        elseif tick == 13 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 29, true)
-                        elseif tick == 39 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.splash"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.WhaleFloat.WhaleParticleAnchor1), 1, 0.5)
-                        elseif tick == 42 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "W", 13, true)
-                        elseif tick == 52 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.swim"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.WhaleFloat.WhaleParticleAnchor1), 1, 0.5)
-                        elseif tick == 55 then
-                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "W", 13, true)
-                        elseif tick == 68 then
-                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", 2, true)
-                        elseif tick == 70 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 12, true)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.swim"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.WhaleFloat.WhaleParticleAnchor1), 1, 0.5)
-                        elseif tick == 82 then
-                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", 4, true)
-                        elseif tick == 85 then
-                            self.parent.faceParts:setEmotion("INVERTED", "CLOSED", "OPENED", 28, true)
-                        elseif tick == 86 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.WhaleFloat.WhaleParticleAnchor1), 1, 0.5)
-                        end
-
-                        if tick >= 8 and tick < 28 then
-                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Waves.Wave2.Wave2ParticleAnchor)
-                            local bodyYaw = player:getBodyYaw()
-                            for _ = 1, 20 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), anchorPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 32 - 16, 0, 0, 0, 1, 0))):setScale(3):setColor(1, 1, 1):setVelocity(math.random() * 0.2 - 0.1, 0.5, math.random() * 0.2 - 0.1):setGravity(1):setLifetime(20)
-                            end
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), anchorPos, 1, 0.5)
-                        elseif tick >= 41 then
-                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.WhaleFloat.WhaleParticleAnchor1)
-                            local dirVector = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.WhaleFloat.WhaleParticleAnchor2):sub(anchorPos):normalize()
-                            local YVector = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.WhaleFloat.WhaleParticleAnchor3):sub(anchorPos):normalize()
-                            for _ = 1, 20 do
-                                local particleDirection = math.random() * 60 - 30
-                                particleDirection = particleDirection > 0 and particleDirection + 30 or particleDirection - 30
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), anchorPos):setScale(2):setColor(1, 1, 1):setVelocity(vectors.rotateAroundAxis(particleDirection, dirVector, YVector):add(YVector:copy():scale(math.random())):normalize():scale(0.5)):setGravity(0.5):setLifetime(10)
-                            end
                             if tick % 2 == 0 then
-                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), anchorPos, 0.1, 0.5)
-                            end
-                        end
-
-                        if tick % 2 == 0 then
-                            for _, modelPart in ipairs({models.models.ex_skill_2.Waves.Surface, models.models.ex_skill_2.Waves.Wave1}) do
-                                modelPart:setUVPixels(0, modelPart:getUVPixels().y + 16)
-                            end
-                        end
-                        models.models.ex_skill_2.Waves.Wave2:setUVPixels(0, models.models.ex_skill_2.Waves.Wave2.Wave2:getUVPixels().y + 16)
-                    end;
-
-                    onPostTransition = function (self, forcedStop)
-                        if not forcedStop then
-                            local playerPos = player:getPos()
-                            for i = 1, 6 do
-                                for j = 0, 35 do
-                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), playerPos):setScale(2):setColor(1, 1, 1):setVelocity(vectors.rotateAroundAxis(j * 12, 0, -0.25, i * 0.05, 0, 1, 0)):setPower(0.25):setColor((i - 1) * 0.2, 1, 1)
+                                local particlePos = math.random()
+                                if particlePos < 0.4 then
+                                    self.exSkill.exSkills[1].showAmmoParticle(self, player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, -1, particlePos * 7.5, 4, 0, 1, 0)))
+                                elseif particlePos < 0.6 then
+                                    self.exSkill.exSkills[1].showAmmoParticle(self, player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, (particlePos - 0.4) * 10 - 1, 3, 4, 0, 1, 0)))
+                                else
+                                    self.exSkill.exSkills[1].showAmmoParticle(self, player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 1, (particlePos - 0.6) * 7.5, 4, 0, 1, 0)))
                                 end
                             end
-                            self.parent.waveParticleManager:play()
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), playerPos, 1, 0.5)
-                            for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.CSwimsuitB.RashGuardB, models.models.main.Avatar.UpperBody.Arms.RightArm.CSwimsuitRA, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.CSwimsuitRAB, models.models.main.Avatar.UpperBody.Arms.LeftArm.CSwimsuitLA, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.CSwimsuitLAB, models.models.main.Avatar.LowerBody.Legs.RightLeg.CSwimsuitRL, models.models.main.Avatar.LowerBody.Legs.LeftLeg.CSwimsuitLL}) do
-                                modelPart:setVisible(false)
+                        end;
+
+                        onPostAnimation = function (self, forcedStop)
+                            if models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun ~= nil then
+                                self.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
                             end
-                            models.models.main.Avatar.Head.CSwimsuitH.Glasses:setPos(0, -4, 0)
-                            self.exSkill[2].costumeChangeTimer = 1000
-                            events.TICK:register(function ()
-                                if not client:isPaused() then
-                                    if self.exSkill[2].costumeChangeTimer == 0 then
-                                        self.exSkill[2].resetExSkill2Feature()
-                                    end
-                                    self.exSkill[2].costumeChangeTimer = self.exSkill[2].costumeChangeTimer - 1
+                            if player:isLeftHanded() then
+                                models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(self.gun.gunPosition.put.pos.left))
+                                models.models.main.Avatar.UpperBody.Body.Gun:setRot(self.gun.gunPosition.put.rot.left)
+                            else
+                                models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(self.gun.gunPosition.put.pos.right))
+                                models.models.main.Avatar.UpperBody.Body.Gun:setRot(self.gun.gunPosition.put.rot.right)
+                            end
+                            if models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Shield ~= nil then
+                                self.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Shield, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
+                            end
+                            if self.parent.exSkill.animationCount >= 0 then
+                                models.models.main.Avatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setVisible(true)
+                            end
+                        end;
+                    };
+
+                    ---銃弾を表現するパーティクル
+                    ---@param self BlueArchiveCharacter
+                    ---@param pos Vector3 パーティクルをスポーンさせる場所
+                    showAmmoParticle = function (self, pos)
+                        local bodyYaw = player:getBodyYaw()
+                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:flame"), pos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, 0, 0, -1, 0, 1, 0)):setLifetime(20)
+                        local smokePos = pos:copy()
+                        for _ = 1, 5 do
+                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:smoke"), smokePos:add(vectors.rotateAroundAxis(bodyYaw * -1, 0, 0, 0.5, 0, 1, 0))):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, 0, 0, -0.5, 0, 1, 0)):setGravity(0):setLifetime(20)
+                        end
+                    end;
+                };
+
+                {
+                    name = {
+                        en_us = "Aquatic Support";
+                        ja_jp = "水上支援";
+                    };
+
+                    formationType = "STRIKER";
+
+                    models = {models.models.main.Avatar.LowerBody.WhaleFloat, models.models.ex_skill_2.Waves};
+
+                    animations = {"main", "costume_swimsuit", "ex_skill_2"};
+
+                    camera = {
+                        start = {
+                            rot = vectors.vec3(-15, -150, 0);
+                            pos = vectors.vec3(-54, 100.6, -147.4);
+                        };
+
+                        ---Exスキルアニメーション終了時
+                        fin = {
+                            rot = vectors.vec3(-15, -180, 30);
+                            pos = vectors.vec3(-248, 17.6, -340.6);
+                        };
+                    };
+
+                    callbacks = {
+                        onPreAnimation = function (self)
+                            if not self.exSkill.exSkills[2].init then
+                                for _, modelPart in ipairs({models.models.ex_skill_2.Waves.Surface, models.models.ex_skill_2.Waves.Wave1}) do
+                                    modelPart:setPrimaryTexture("RESOURCE", "textures/block/water_still.png")
                                 end
-                            end, "ex_skill_2_post_tick")
-                        end
-                    end;
-                };
-
-                ---このExスキルの初期化処理が行われたかどうか
-                ---@type boolean
-                init = false;
-
-                ---Exスキル2で衣装を変化させる時間を測るタイマー
-                ---@type integer
-                costumeChangeTimer = 1000;
-
-                ---Exスキル2の衣装変化機能をリセットする
-                resetExSkill2Feature = function ()
-                    for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.CSwimsuitB.RashGuardB, models.models.main.Avatar.UpperBody.Arms.RightArm.CSwimsuitRA, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.CSwimsuitRAB, models.models.main.Avatar.UpperBody.Arms.LeftArm.CSwimsuitLA, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.CSwimsuitLAB, models.models.main.Avatar.LowerBody.Legs.RightLeg.CSwimsuitRL, models.models.main.Avatar.LowerBody.Legs.LeftLeg.CSwimsuitLL}) do
-                        modelPart:setVisible(true)
-                    end
-                    models.models.main.Avatar.Head.CSwimsuitH.Glasses:setPos()
-                    events.TICK:remove("ex_skill_2_post_tick")
-                end;
-            };
-
-            {
-                name = {
-                    en_us = "Hardened defensive posture";
-                    ja_jp = "防御姿勢強化";
-                };
-
-                formationType = "STRIKER";
-
-                models = {models.models.ex_skill_3.Illagers};
-
-                animations = {"main", "gun", "costume_battle", "ex_skill_3"};
-
-                camera = {
-                    start = {
-                        rot = vectors.vec3(0, -123, 0);
-                        pos = vectors.vec3(96.8, 40.4, -27);
-                    };
-                    fin = {
-                        rot = vectors.vec3(-10, -155, -10);
-                        pos = vectors.vec3(-9, 14.9, -30);
-                    };
-                };
-
-                callbacks = {
-                    onPreAnimation = function (self)
-                        if not self.exSkill[3].init then
-                            models.models.ex_skill_3.Illagers.Ravager:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/illager/ravager.png")
-                            for index, modelPart in ipairs({models.models.ex_skill_3.Illagers.Ravager.Pillager1, models.models.ex_skill_3.Illagers.Pillager2}) do
-                                modelPart:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/illager/pillager.png")
-                                modelPart["P"..index.."RightArm"]:newItem("pillager_"..index.."_crossbow"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:crossbow")):setPos(0, -15, -2.5):setRot(0, 0, -135)
+                                models.models.ex_skill_2.Waves.Wave2:setPrimaryTexture("RESOURCE", "textures/block/water_flow.png")
+                                self.exSkill.exSkills[2].init = true
                             end
-                            for i = 1, 2 do
-                                models.models.ex_skill_3.Illagers["Vindicator"..i]:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/illager/vindicator.png")
-                                models.models.ex_skill_3.Illagers["Vindicator"..i]["V"..i.."RightArm"]:newItem("vindicator_"..i.."_iron_axe"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:iron_axe")):setPos(1, -9, -5):setRot(-90, -45, -90)
-                            end
-                            models.models.ex_skill_3.Firework:setPrimaryTexture("RESOURCE", "minecraft:textures/item/firework_rocket.png")
-                            self.exSkill[3].init = true
-                        end
-                        self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "OUT_OF_BREATH", 20, true)
-                    end;
+                            self.exSkill.exSkills[2].resetExSkill2Feature()
+                            models.models.ex_skill_2.Waves:setColor(world.getBiome(player:getPos()):getWaterColor())
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "W", 13, true)
+                        end;
 
-                    onAnimationTick = function (self, tick)
-                        if tick == 0 then
-                            models.models.main.Avatar.UpperBody.Body.Gun:setPos()
-                            models.models.main.Avatar.UpperBody.Body.Gun:setRot()
-                            self.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.Gun, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom, models.models.main.Avatar.UpperBody.Body)
-                        elseif tick == 1 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.5, 0.5)
-                        elseif tick == 13 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.chest.locked"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Shield), 0.5, 2)
-                        elseif tick == 14 then
-                            models.models.main.Avatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setVisible(false)
-                            self.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.Shield, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom, models.models.main.Avatar.UpperBody.Body)
-                        elseif tick == 19 then
-                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar):add(0, 0.25, 0)
-                            local bodyYaw = player:getBodyYaw()
-                            for _ = 1, 10 do
-                                local offset = vectors.vec3(math.random() * 1 - 0.5, 0, math.random() * 1 - 0.5)
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), anchorPos:copy():add(offset)):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, -0.1, 0, offset.z * -0.1, 0, 1, 0)):setLifetime(20)
-                            end
-                        elseif tick == 20 then
-                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "CLOSED", 68, true)
-                        elseif tick == 21 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.anvil.place"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Shield), 0.15, 2)
-                        elseif tick == 23 and host:isHost() then
-                            self.parent.compatibilityUtils.setPostEffect("phosphor")
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), self.parent.modelUtils.getModelWorldPos(models.models.main.CameraAnchor), 0.15, 0.5)
-                        elseif tick == 36 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.vindicator.ambient"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_3.Illagers.Vindicator1), 1, 1)
-                        elseif tick == 38 and host:isHost() then
-                            self.parent.compatibilityUtils.setPostEffect()
-                        elseif tick == 42 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.ravager.roar"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_3.Illagers.Ravager), 1, 1)
-                        elseif tick == 46 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.pillager.ambient"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_3.Illagers.Pillager2), 1, 1)
-                        elseif tick == 49 then
-                            models.models.ex_skill_3.Firework:setVisible(true)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.crossbow.shoot"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_3.Illagers.Ravager.Pillager1), 1, 1)
-                            self.exSkill[3].fireworkSound = sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.firework_rocket.launch"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_3.Firework), 1, 0.5)
-                        elseif tick == 88 then
-                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "TEETH", 21, true)
-                        elseif tick == 97 and host:isHost() then
-                            models.models.ex_skill_3.Gui:setScale(client:getScaledWindowSize():augmented(1))
-                            models.models.ex_skill_3.Gui:setVisible(true)
-                        elseif tick == 99 and host:isHost() then
-                            models.models.ex_skill_3.Gui.Filter:setUVPixels(1, 0)
-                        elseif tick == 100 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.anvil.place"), player:getPos(), 0.15, 2)
-                            self.exSkill[3].grindstoneSound = sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.grindstone.use"), player:getPos(), 1, 1.25)
-                        elseif tick == 102 and host:isHost() then
-                            models.models.ex_skill_3.Gui:setVisible(false)
-                        elseif tick == 109 then
-                            self.exSkill[3].grindstoneSound:stop()
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.anvil.place"), player:getPos(), 0.5, 0.75)
-                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:sweep_attack"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_3.Firework.ExSkill3ParticleAnchor2):add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0.75, 0, -0.4, 0, 1, 0))):setColor(1, 0.98, 0.69)
-                            self.parent.faceParts:setEmotion("ANGRY_INVERTED", "ANGRY", "OUT_OF_BREATH", 17, true)
-                        elseif tick == 122 then
-                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_3.Firework)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.explode"), anchorPos, 1, 0.75)
-                            for _ = 1, 100 do
-                                local particleOffset = vectors.vec3(math.random() - 0.5, math.random() * 0.5, math.random() - 0.5)
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:poof"), anchorPos:copy():add(particleOffset)):setScale(10):setVelocity(particleOffset:mul(1, 0.5, 1):scale(2)):setColor(vectors.vec3(0.45, 0.35, 0.35):scale(math.random() * 0.2 - 0.1 + 1)):setGravity(math.random() * -0.1):setLifetime(120)
-                            end
-                            models.models.ex_skill_3.Explosion:setColor(client:hasShaderPack() and vectors.vec3(1, 0.85, 0.5) or vectors.vec3(1, 1, 1))
-                            models.models.ex_skill_3.Firework:setVisible(false)
-                            models.models.ex_skill_3.Explosion:setVisible(true)
-                        elseif tick == 126 then
-                            self.parent.faceParts:setEmotion("ANGRY_INVERTED", "ANGRY", "W", 14, true)
-                        elseif tick == 131 then
-                            models.models.ex_skill_3.Explosion:setVisible(false)
-                        elseif tick == 138 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), player:getPos(), 0.5, 0.75)
-                        elseif tick == 140 then
-                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "W", 48, true)
-                        end
-                        if tick >= 49 and tick <= 109 then
-                            self.exSkill[3].fireworkSound:setPos(self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_3.Firework))
-                            local anchor2Pos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_3.Firework.ExSkill3ParticleAnchor2)
-                            local anchorPos = anchor2Pos:copy()
-                            if host:isHost() and tick < 100 then
-                                anchorPos:add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0, 0, -1.5, 0, 1, 0))
-                            elseif tick >= 100 then
+                        onAnimationTick = function (self, tick)
+                            if tick == 3 then
+                                local modelPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Waves.Wave1):add(0, 7, 0)
                                 local bodyYaw = player:getBodyYaw()
-                                anchorPos:add(vectors.rotateAroundAxis(bodyYaw * -1, 0, 0, 0.3, 0, 1, 0))
-                                for _ = 0, 3 do
-                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchor2Pos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 0.2 - 0.1, math.random() * 0.2 - 0.1, 0.05, 0, 1, 0)):setColor(1, 0.804, 0.357):setLifetime(2)
+                                for _ = 1, 500 do
+                                    local offset = vectors.vec3(math.random() * 32 - 16, 0, math.random() * 5)
+                                    local particleOffset = offset:copy()
+                                    particleOffset.x = particleOffset.x * (math.random() * 0.025 + 0.025)
+                                    particleOffset.y = 0.25
+                                    particleOffset.z = (particleOffset.z - 2.5) * (math.random() * 0.025 + 0.025)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), modelPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, offset, 0, 1, 0))):setScale(3):setColor(1, 1, 1):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, particleOffset, 0, 1, 0)):setGravity(1):setLifetime(40)
+                                end
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), modelPos, 1, 0.5)
+                            elseif tick == 13 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 29, true)
+                            elseif tick == 39 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.splash"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.WhaleFloat.WhaleParticleAnchor1), 1, 0.5)
+                            elseif tick == 42 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "W", 13, true)
+                            elseif tick == 52 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.swim"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.WhaleFloat.WhaleParticleAnchor1), 1, 0.5)
+                            elseif tick == 55 then
+                                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "W", 13, true)
+                            elseif tick == 68 then
+                                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", 2, true)
+                            elseif tick == 70 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 12, true)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.swim"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.WhaleFloat.WhaleParticleAnchor1), 1, 0.5)
+                            elseif tick == 82 then
+                                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", 4, true)
+                            elseif tick == 85 then
+                                self.parent.faceParts:setEmotion("INVERTED", "CLOSED", "OPENED", 28, true)
+                            elseif tick == 86 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.WhaleFloat.WhaleParticleAnchor1), 1, 0.5)
+                            end
+
+                            if tick >= 8 and tick < 28 then
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Waves.Wave2.Wave2ParticleAnchor)
+                                local bodyYaw = player:getBodyYaw()
+                                for _ = 1, 20 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), anchorPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 32 - 16, 0, 0, 0, 1, 0))):setScale(3):setColor(1, 1, 1):setVelocity(math.random() * 0.2 - 0.1, 0.5, math.random() * 0.2 - 0.1):setGravity(1):setLifetime(20)
+                                end
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), anchorPos, 1, 0.5)
+                            elseif tick >= 41 then
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.WhaleFloat.WhaleParticleAnchor1)
+                                local dirVector = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.WhaleFloat.WhaleParticleAnchor2):sub(anchorPos):normalize()
+                                local YVector = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.WhaleFloat.WhaleParticleAnchor3):sub(anchorPos):normalize()
+                                for _ = 1, 20 do
+                                    local particleDirection = math.random() * 60 - 30
+                                    particleDirection = particleDirection > 0 and particleDirection + 30 or particleDirection - 30
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), anchorPos):setScale(2):setColor(1, 1, 1):setVelocity(vectors.rotateAroundAxis(particleDirection, dirVector, YVector):add(YVector:copy():scale(math.random())):normalize():scale(0.5)):setGravity(0.5):setLifetime(10)
+                                end
+                                if tick % 2 == 0 then
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), anchorPos, 0.1, 0.5)
                                 end
                             end
-                            local axisVector = anchor2Pos:copy():sub(self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_3.Firework.ExSkill3ParticleAnchor1))
-                            for i = 0, 3 do
-                                local offset = vectors.rotateAroundAxis(i * 90 + tick * 20, 0, 0.1, 0, axisVector)
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:cloud"), anchorPos:copy():add(offset)):setScale(0.5):setVelocity(offset:scale(0.5)):setGravity(0):setColor(0.5, 0.5, 0.5):setLifetime(4)
-                            end
-                        end
-                        if tick >= 49 and tick < 122 then
-                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_3.Firework.ExSkill3ParticleAnchor1)
-                            if host:isHost() and tick < 100 then
-                                anchorPos:add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0, 0, -1.5, 0, 1, 0))
-                            end
-                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), anchorPos):setColor(1, 0.804, 0.357)
-                        end
-                    end;
 
-                    onPostAnimation = function (self, forcedStop)
-                        if models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun ~= nil then
-                            self.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
-                        end
-                        if player:isLeftHanded() then
-                            models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(self.gun.gunPosition.put.pos.left))
-                            models.models.main.Avatar.UpperBody.Body.Gun:setRot(self.gun.gunPosition.put.rot.left)
-                        else
-                            models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(self.gun.gunPosition.put.pos.right))
-                            models.models.main.Avatar.UpperBody.Body.Gun:setRot(self.gun.gunPosition.put.rot.right)
-                        end
-                        if models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Shield ~= nil then
-                            self.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Shield, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
-                        end
-                        models.models.main.Avatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setVisible(true)
-                        self.exSkill[3].fireworkSound = nil
-                        self.exSkill[3].grindstoneSound = nil
-                        if forcedStop then
-                            for _, modelPart in ipairs({models.models.ex_skill_3.Firework, models.models.ex_skill_3.Explosion}) do
-                                modelPart:setVisible(false)
+                            if tick % 2 == 0 then
+                                for _, modelPart in ipairs({models.models.ex_skill_2.Waves.Surface, models.models.ex_skill_2.Waves.Wave1}) do
+                                    modelPart:setUVPixels(0, modelPart:getUVPixels().y + 16)
+                                end
                             end
-                            models.models.ex_skill_3.Gui.Filter:setUVPixels()
-                            if host:isHost() then
+                            models.models.ex_skill_2.Waves.Wave2:setUVPixels(0, models.models.ex_skill_2.Waves.Wave2.Wave2:getUVPixels().y + 16)
+                        end;
+
+                        onPostTransition = function (self, forcedStop)
+                            if not forcedStop then
+                                local playerPos = player:getPos()
+                                for i = 1, 6 do
+                                    for j = 0, 35 do
+                                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), playerPos):setScale(2):setColor(1, 1, 1):setVelocity(vectors.rotateAroundAxis(j * 12, 0, -0.25, i * 0.05, 0, 1, 0)):setPower(0.25):setColor((i - 1) * 0.2, 1, 1)
+                                    end
+                                end
+                                self.parent.waveParticleManager:play()
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), playerPos, 1, 0.5)
+                                for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.CSwimsuitB.RashGuardB, models.models.main.Avatar.UpperBody.Arms.RightArm.CSwimsuitRA, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.CSwimsuitRAB, models.models.main.Avatar.UpperBody.Arms.LeftArm.CSwimsuitLA, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.CSwimsuitLAB, models.models.main.Avatar.LowerBody.Legs.RightLeg.CSwimsuitRL, models.models.main.Avatar.LowerBody.Legs.LeftLeg.CSwimsuitLL}) do
+                                    modelPart:setVisible(false)
+                                end
+                                models.models.main.Avatar.Head.CSwimsuitH.Glasses:setPos(0, -4, 0)
+                                self.exSkill.exSkills[2].costumeChangeTimer = 1000
+                                events.TICK:register(function ()
+                                    if not client:isPaused() then
+                                        if self.exSkill.exSkills[2].costumeChangeTimer == 0 then
+                                            self.exSkill.exSkills[2].resetExSkill2Feature()
+                                        end
+                                        self.exSkill.exSkills[2].costumeChangeTimer = self.exSkill.exSkills[2].costumeChangeTimer - 1
+                                    end
+                                end, "ex_skill_2_post_tick")
+                            end
+                        end;
+                    };
+
+                    ---このExスキルの初期化処理が行われたかどうか
+                    ---@type boolean
+                    init = false;
+
+                    ---Exスキル2で衣装を変化させる時間を測るタイマー
+                    ---@type integer
+                    costumeChangeTimer = 1000;
+
+                    ---Exスキル2の衣装変化機能をリセットする
+                    resetExSkill2Feature = function ()
+                        for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.CSwimsuitB.RashGuardB, models.models.main.Avatar.UpperBody.Arms.RightArm.CSwimsuitRA, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.CSwimsuitRAB, models.models.main.Avatar.UpperBody.Arms.LeftArm.CSwimsuitLA, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.CSwimsuitLAB, models.models.main.Avatar.LowerBody.Legs.RightLeg.CSwimsuitRL, models.models.main.Avatar.LowerBody.Legs.LeftLeg.CSwimsuitLL}) do
+                            modelPart:setVisible(true)
+                        end
+                        models.models.main.Avatar.Head.CSwimsuitH.Glasses:setPos()
+                        events.TICK:remove("ex_skill_2_post_tick")
+                    end;
+                };
+
+                {
+                    name = {
+                        en_us = "Hardened defensive posture";
+                        ja_jp = "防御姿勢強化";
+                    };
+
+                    formationType = "STRIKER";
+
+                    models = {models.models.ex_skill_3.Illagers};
+
+                    animations = {"main", "gun", "costume_battle", "ex_skill_3"};
+
+                    camera = {
+                        start = {
+                            rot = vectors.vec3(0, -123, 0);
+                            pos = vectors.vec3(96.8, 40.4, -27);
+                        };
+                        fin = {
+                            rot = vectors.vec3(-10, -155, -10);
+                            pos = vectors.vec3(-9, 14.9, -30);
+                        };
+                    };
+
+                    callbacks = {
+                        onPreAnimation = function (self)
+                            if not self.exSkill.exSkills[3].init then
+                                models.models.ex_skill_3.Illagers.Ravager:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/illager/ravager.png")
+                                for index, modelPart in ipairs({models.models.ex_skill_3.Illagers.Ravager.Pillager1, models.models.ex_skill_3.Illagers.Pillager2}) do
+                                    modelPart:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/illager/pillager.png")
+                                    modelPart["P"..index.."RightArm"]:newItem("pillager_"..index.."_crossbow"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:crossbow")):setPos(0, -15, -2.5):setRot(0, 0, -135)
+                                end
+                                for i = 1, 2 do
+                                    models.models.ex_skill_3.Illagers["Vindicator"..i]:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/illager/vindicator.png")
+                                    models.models.ex_skill_3.Illagers["Vindicator"..i]["V"..i.."RightArm"]:newItem("vindicator_"..i.."_iron_axe"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:iron_axe")):setPos(1, -9, -5):setRot(-90, -45, -90)
+                                end
+                                models.models.ex_skill_3.Firework:setPrimaryTexture("RESOURCE", "minecraft:textures/item/firework_rocket.png")
+                                self.exSkill.exSkills[3].init = true
+                            end
+                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "OUT_OF_BREATH", 20, true)
+                        end;
+
+                        onAnimationTick = function (self, tick)
+                            if tick == 0 then
+                                models.models.main.Avatar.UpperBody.Body.Gun:setPos()
+                                models.models.main.Avatar.UpperBody.Body.Gun:setRot()
+                                self.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.Gun, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom, models.models.main.Avatar.UpperBody.Body)
+                            elseif tick == 1 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.5, 0.5)
+                            elseif tick == 13 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.chest.locked"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Shield), 0.5, 2)
+                            elseif tick == 14 then
+                                models.models.main.Avatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setVisible(false)
+                                self.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.Shield, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom, models.models.main.Avatar.UpperBody.Body)
+                            elseif tick == 19 then
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar):add(0, 0.25, 0)
+                                local bodyYaw = player:getBodyYaw()
+                                for _ = 1, 10 do
+                                    local offset = vectors.vec3(math.random() * 1 - 0.5, 0, math.random() * 1 - 0.5)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), anchorPos:copy():add(offset)):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, -0.1, 0, offset.z * -0.1, 0, 1, 0)):setLifetime(20)
+                                end
+                            elseif tick == 20 then
+                                self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "CLOSED", 68, true)
+                            elseif tick == 21 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.anvil.place"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Shield), 0.15, 2)
+                            elseif tick == 23 and host:isHost() then
+                                self.parent.compatibilityUtils.setPostEffect("phosphor")
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), self.parent.modelUtils.getModelWorldPos(models.models.main.CameraAnchor), 0.15, 0.5)
+                            elseif tick == 36 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.vindicator.ambient"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_3.Illagers.Vindicator1), 1, 1)
+                            elseif tick == 38 and host:isHost() then
                                 self.parent.compatibilityUtils.setPostEffect()
+                            elseif tick == 42 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.ravager.roar"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_3.Illagers.Ravager), 1, 1)
+                            elseif tick == 46 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.pillager.ambient"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_3.Illagers.Pillager2), 1, 1)
+                            elseif tick == 49 then
+                                models.models.ex_skill_3.Firework:setVisible(true)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.crossbow.shoot"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_3.Illagers.Ravager.Pillager1), 1, 1)
+                                self.exSkill.exSkills[3].fireworkSound = sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.firework_rocket.launch"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_3.Firework), 1, 0.5)
+                            elseif tick == 88 then
+                                self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "TEETH", 21, true)
+                            elseif tick == 97 and host:isHost() then
+                                models.models.ex_skill_3.Gui:setScale(client:getScaledWindowSize():augmented(1))
+                                models.models.ex_skill_3.Gui:setVisible(true)
+                            elseif tick == 99 and host:isHost() then
+                                models.models.ex_skill_3.Gui.Filter:setUVPixels(1, 0)
+                            elseif tick == 100 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.anvil.place"), player:getPos(), 0.15, 2)
+                                self.exSkill.exSkills[3].grindstoneSound = sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.grindstone.use"), player:getPos(), 1, 1.25)
+                            elseif tick == 102 and host:isHost() then
                                 models.models.ex_skill_3.Gui:setVisible(false)
-                            end
-                        end
-                    end;
-                };
-
-                ---このExスキルの初期化処理が行われたかどうか
-                ---@type boolean
-                init = false;
-
-                ---花火の音のインスタンス
-                ---@type Sound|nil
-                fireworkSound = nil;
-
-                ---砥石の音のインスタンス
-                ---@type Sound|nil
-                grindstoneSound = nil;
-            };
-
-            {
-                name = {
-                    en_us = "Concentrated breakthrough";
-                    ja_jp = "集中突破";
-                };
-
-                formationType = "STRIKER";
-
-                models = {models.models.ex_skill_4.Zombie, models.models.ex_skill_4.Creeper, models.models.main.Avatar.UpperBody.Body.Gun.MuzzleFlash};
-
-                animations = {"main", "gun", "costume_battle", "ex_skill_4"};
-
-                camera = {
-                    start = {
-                        rot = vectors.vec3(0, 30, -10);
-                        pos = vectors.vec3(17, 12, 7);
-                    };
-
-                    fin = {
-                        rot = vectors.vec3(-5, 30, 15);
-                        pos = vectors.vec3(-1, 10, -235);
-                    };
-                };
-
-                callbacks = {
-                    onPreAnimation = function (self)
-                        if not self.exSkill[4].init then
-                            models.models.ex_skill_4.Zombie:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/zombie/zombie.png")
-                            local gameVersion = client:getVersion()
-                            for _, modelPart in ipairs({models.models.ex_skill_4.Zombie.ZHead.ZHelmet, models.models.ex_skill_4.Zombie.ZUpperBody.ZBody.ZChestPlateB, models.models.ex_skill_4.Zombie.ZUpperBody.ZArms.ZRightArm.ZChestPlateRA, models.models.ex_skill_4.Zombie.ZUpperBody.ZArms.ZLeftArm.ZChestPlateLA, models.models.ex_skill_4.Zombie.ZLowerBody.ZLegs.ZRightLeg.ZBootsRL, models.models.ex_skill_4.Zombie.ZLowerBody.ZLegs.ZLeftLeg.ZBootsLL}) do
-                                modelPart:setPrimaryTexture("RESOURCE", gameVersion >="1.21.2" and "minecraft:textures/entity/equipment/humanoid/iron.png" or "minecraft:textures/models/armor/iron_layer_1.png")
-                            end
-                            for _, modelPart in ipairs({models.models.ex_skill_4.Zombie.ZUpperBody.ZBody.ZLeggingsB,models.models.ex_skill_4.Zombie.ZLowerBody.ZLegs.ZRightLeg.ZLeggingsRL, models.models.ex_skill_4.Zombie.ZLowerBody.ZLegs.ZLeftLeg.ZLeggingsLL}) do
-                                modelPart:setPrimaryTexture("RESOURCE", gameVersion >="1.21.2" and "minecraft:textures/entity/equipment/humanoid_leggings/iron.png" or "minecraft:textures/models/armor/iron_layer_2.png")
-                            end
-                            models.models.ex_skill_4.Creeper:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/creeper/creeper.png")
-                            self.exSkill[4].init = true
-                        end
-                        self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED", 18, true)
-                    end;
-
-                    onAnimationTick = function (self, tick)
-                        if tick == 0 then
-                            models.models.main.Avatar.UpperBody.Body.Gun:setPos()
-                            models.models.main.Avatar.UpperBody.Body.Gun:setRot()
-                            self.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.Gun, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom, models.models.main.Avatar.UpperBody.Body)
-                            models.models.main.Avatar.UpperBody.Body.SubGun:setPos()
-                            models.models.main.Avatar.UpperBody.Body.SubGun:setRot()
-                            models.models.main.Avatar.UpperBody.Body.SubGun:setScale(1.5, 1.5, 1.5)
-                            models.models.main.Avatar.UpperBody.Body.SubGun:setParentType("None")
-                            self.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.SubGun, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom, models.models.main.Avatar.UpperBody.Body)
-                            models.models.main.Avatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setVisible(false)
-                        elseif tick == 1 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.zombie.ambient"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.5, 1)
-                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar)
-                            for _ = 1, 50 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), anchorPos:copy():add(math.random() * 5 - 2.5, 0.5, math.random() * 5 - 2.5)):scale(5):setVelocity(0, 0.01, 0):setLifetime(60)
-                            end
-                        elseif tick == 18 then
-                            self.parent.faceParts:setEmotion("NARROW", "NARROW", "CLOSED", 22, true)
-                        elseif tick == 40 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 19, true)
-                        elseif tick == 50 then
-                            models.models.main.Avatar.Head.EyeShine:setVisible(true)
-                        elseif tick == 52 and host:isHost() then
-                            self.parent.compatibilityUtils.setPostEffect("phosphor")
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 0.5)
-                        elseif tick == 59 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 16, true)
-                            if host:isHost() then
-                                self.parent.compatibilityUtils.setPostEffect()
-                            end
-                        elseif tick == 66 then
-                            models.models.main.Avatar.Head.EyeShine:setVisible(false)
-                        elseif tick == 70 or tick == 82 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.zombie.hurt"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_4.Zombie), 1, 1)
-                            if tick == 70 then
-                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_4.Zombie.ZUpperBody.ZBody.ExSkill4ParticleAnchor1)
-                                local bodyYaw = player:getBodyYaw()
-                                for _ = 1, 50 do
-                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1 + 90, math.random() * 0.6 - 0.3, math.random() * 0.6 - 0.3, math.random() * 0.4, 0, 1, 0)):setColor(1, 0.877, 0.436):setLifetime(4)
+                            elseif tick == 109 then
+                                self.exSkill.exSkills[3].grindstoneSound:stop()
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.anvil.place"), player:getPos(), 0.5, 0.75)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:sweep_attack"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_3.Firework.ExSkill3ParticleAnchor2):add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0.75, 0, -0.4, 0, 1, 0))):setColor(1, 0.98, 0.69)
+                                self.parent.faceParts:setEmotion("ANGRY_INVERTED", "ANGRY", "OUT_OF_BREATH", 17, true)
+                            elseif tick == 122 then
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_3.Firework)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.explode"), anchorPos, 1, 0.75)
+                                for _ = 1, 100 do
+                                    local particleOffset = vectors.vec3(math.random() - 0.5, math.random() * 0.5, math.random() - 0.5)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:poof"), anchorPos:copy():add(particleOffset)):setScale(10):setVelocity(particleOffset:mul(1, 0.5, 1):scale(2)):setColor(vectors.vec3(0.45, 0.35, 0.35):scale(math.random() * 0.2 - 0.1 + 1)):setGravity(math.random() * -0.1):setLifetime(120)
                                 end
+                                models.models.ex_skill_3.Explosion:setColor(client:hasShaderPack() and vectors.vec3(1, 0.85, 0.5) or vectors.vec3(1, 1, 1))
+                                models.models.ex_skill_3.Firework:setVisible(false)
+                                models.models.ex_skill_3.Explosion:setVisible(true)
+                            elseif tick == 126 then
+                                self.parent.faceParts:setEmotion("ANGRY_INVERTED", "ANGRY", "W", 14, true)
+                            elseif tick == 131 then
+                                models.models.ex_skill_3.Explosion:setVisible(false)
+                            elseif tick == 138 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), player:getPos(), 0.5, 0.75)
+                            elseif tick == 140 then
+                                self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "W", 48, true)
                             end
-                        elseif tick == 75 then
-                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED", 4, true)
-                        elseif tick == 79 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 11, true)
-                        elseif tick == 86 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.zombie.death"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_4.Zombie), 1, 1)
-                        elseif tick == 90 then
-                            self.parent.faceParts:setEmotion("NORMAL", "INVERTED", "CLOSED", 31, true)
-                        elseif tick == 95 or tick == 98 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.creeper.hurt"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_4.Creeper), 1, 1)
-                        elseif tick == 117 then
-                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.MuzzleAnchor)
-                            local dirVector = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.ExSkill4Anchor3):sub(anchorPos):normalize()
-                            local normalVector = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.ExSkill4Anchor4):sub(anchorPos):normalize()
-                            for i = 0, 4 do
-                                for j = 0, 11 do
-                                    local offsetLength = i / 4
-                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setVelocity(dirVector:copy():scale(math.cos(offsetLength * math.pi / 2) * 0.5):add(vectors.rotateAroundAxis(j * 30, normalVector:copy():scale(offsetLength * 0.45), dirVector))):setScale(5):setColor(1, 0.877, 0.436):setLifetime(8)
-                                    if i == 0 then
-                                        break
+                            if tick >= 49 and tick <= 109 then
+                                self.exSkill.exSkills[3].fireworkSound:setPos(self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_3.Firework))
+                                local anchor2Pos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_3.Firework.ExSkill3ParticleAnchor2)
+                                local anchorPos = anchor2Pos:copy()
+                                if host:isHost() and tick < 100 then
+                                    anchorPos:add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0, 0, -1.5, 0, 1, 0))
+                                elseif tick >= 100 then
+                                    local bodyYaw = player:getBodyYaw()
+                                    anchorPos:add(vectors.rotateAroundAxis(bodyYaw * -1, 0, 0, 0.3, 0, 1, 0))
+                                    for _ = 0, 3 do
+                                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchor2Pos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 0.2 - 0.1, math.random() * 0.2 - 0.1, 0.05, 0, 1, 0)):setColor(1, 0.804, 0.357):setLifetime(2)
                                     end
                                 end
+                                local axisVector = anchor2Pos:copy():sub(self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_3.Firework.ExSkill3ParticleAnchor1))
+                                for i = 0, 3 do
+                                    local offset = vectors.rotateAroundAxis(i * 90 + tick * 20, 0, 0.1, 0, axisVector)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:cloud"), anchorPos:copy():add(offset)):setScale(0.5):setVelocity(offset:scale(0.5)):setGravity(0):setColor(0.5, 0.5, 0.5):setLifetime(4)
+                                end
                             end
-                            for _ = 1, 10 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:large_smoke"), anchorPos:copy():add(math.random() * 0.5 - 0.25, math.random() * 0.5 - 0.25, math.random() * 0.5 - 0.25))
+                            if tick >= 49 and tick < 122 then
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_3.Firework.ExSkill3ParticleAnchor1)
+                                if host:isHost() and tick < 100 then
+                                    anchorPos:add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0, 0, -1.5, 0, 1, 0))
+                                end
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), anchorPos):setColor(1, 0.804, 0.357)
                             end
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.firework_rocket.large_blast"),  anchorPos, 1, 0.75)
-                            local anchorPos2 = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_4.Creeper)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.creeper.death"), anchorPos2, 1, 1)
-                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:explosion_emitter"), anchorPos2)
-                            for _ = 1, 30 do
-                                local offset = vectors.vec3(math.random() - 0.5, math.random() - 0.5, math.random() - 0.5)
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:poof"), anchorPos2:copy():add(offset.x * 2, offset.y * 2 + 0.5, offset.z * 2)):setVelocity(offset:copy():scale(0.5))
-                            end
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.explode"), anchorPos2, 1, 1)
-                            models.models.ex_skill_4.Creeper:setVisible(false)
-                        elseif tick == 121 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 11, true)
-                        elseif tick == 124 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 25, true)
-                        elseif tick == 149 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 39, true)
-                        elseif tick == 150 then
-                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.MuzzleFlash:setColor(client:hasShaderPack() and vectors.vec3(1, 0.85, 0.5) or vectors.vec3(1, 1, 1))
-                        elseif tick == 152 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.explode"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head), 1, 0.5)
-                        elseif tick == 157 then
-                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.MuzzleFlash)
-                            for _ = 1, 50 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:lava"), anchorPos):setVelocity(math.random() * 0.25 - 0.125, math.random() * 0.1, math.random() * 0.25 - 0.125):setColor(1, 0.877, 0.436):setLifetime(30)
-                            end
-                        end
-                        if tick == 70 or tick == 82 or tick == 86 or tick == 95 or tick == 98 then
-                            --ピストル発砲
-                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SubGun.MuzzleAnchor2)
-                            local velocityVector = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SubGun.ExSkill4Anchor1):sub(anchorPos):normalize():scale(0.5)
-                            local offsetVector = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SubGun.ExSkill4Anchor2):sub(anchorPos):normalize():scale(0.25)
-                            for i = 0, 5 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setVelocity(velocityVector:copy():add(vectors.rotateAroundAxis(i * 60, offsetVector, velocityVector))):setScale(1.5):setColor(1, 0.877, 0.436):setLifetime(2)
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:smoke"), anchorPos:copy():add(math.random() * 0.1 - 0.05, math.random() * 0.1 - 0.05, math.random() * 0.1 - 0.05))
-                            end
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.firework_rocket.blast"), anchorPos, 1, 0.5)
-                        end
-                    end;
+                        end;
 
-                    onPostAnimation = function (self, forcedStop)
-                        models.models.main.Avatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setVisible(true)
-                        if models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun ~= nil then
-                            self.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
-                        end
-                        if models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SubGun ~= nil then
-                            self.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SubGun, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
-                        end
-                        if player:isLeftHanded() then
-                            models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(self.gun.gunPosition.put.pos.left))
-                            models.models.main.Avatar.UpperBody.Body.Gun:setRot(self.gun.gunPosition.put.rot.left)
-                        else
-                            models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(self.gun.gunPosition.put.pos.right))
-                            models.models.main.Avatar.UpperBody.Body.Gun:setRot(self.gun.gunPosition.put.rot.right)
-                        end
-                        models.models.main.Avatar.UpperBody.Body.SubGun:setPos(-1, 17.5, -1.9)
-                        models.models.main.Avatar.UpperBody.Body.SubGun:setRot(-30, 90, 0)
-                        models.models.main.Avatar.UpperBody.Body.SubGun:setScale()
-                        if forcedStop then
-                            models.models.main.Avatar.Head.EyeShine:setVisible(false)
-                            if host:isHost() then
-                                self.parent.compatibilityUtils.setPostEffect()
+                        onPostAnimation = function (self, forcedStop)
+                            if models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun ~= nil then
+                                self.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
                             end
-                        end
-                    end;
+                            if player:isLeftHanded() then
+                                models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(self.gun.gunPosition.put.pos.left))
+                                models.models.main.Avatar.UpperBody.Body.Gun:setRot(self.gun.gunPosition.put.rot.left)
+                            else
+                                models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(self.gun.gunPosition.put.pos.right))
+                                models.models.main.Avatar.UpperBody.Body.Gun:setRot(self.gun.gunPosition.put.rot.right)
+                            end
+                            if models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Shield ~= nil then
+                                self.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Shield, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
+                            end
+                            models.models.main.Avatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setVisible(true)
+                            self.exSkill.exSkills[3].fireworkSound = nil
+                            self.exSkill.exSkills[3].grindstoneSound = nil
+                            if forcedStop then
+                                for _, modelPart in ipairs({models.models.ex_skill_3.Firework, models.models.ex_skill_3.Explosion}) do
+                                    modelPart:setVisible(false)
+                                end
+                                models.models.ex_skill_3.Gui.Filter:setUVPixels()
+                                if host:isHost() then
+                                    self.parent.compatibilityUtils.setPostEffect()
+                                    models.models.ex_skill_3.Gui:setVisible(false)
+                                end
+                            end
+                        end;
+                    };
+
+                    ---このExスキルの初期化処理が行われたかどうか
+                    ---@type boolean
+                    init = false;
+
+                    ---花火の音のインスタンス
+                    ---@type Sound|nil
+                    fireworkSound = nil;
+
+                    ---砥石の音のインスタンス
+                    ---@type Sound|nil
+                    grindstoneSound = nil;
                 };
 
-                ---このExスキルの初期化処理が行われたかどうか
-                ---@type boolean
-                init = false;
+                {
+                    name = {
+                        en_us = "Concentrated breakthrough";
+                        ja_jp = "集中突破";
+                    };
+
+                    formationType = "STRIKER";
+
+                    models = {models.models.ex_skill_4.Zombie, models.models.ex_skill_4.Creeper, models.models.main.Avatar.UpperBody.Body.Gun.MuzzleFlash};
+
+                    animations = {"main", "gun", "costume_battle", "ex_skill_4"};
+
+                    camera = {
+                        start = {
+                            rot = vectors.vec3(0, 30, -10);
+                            pos = vectors.vec3(17, 12, 7);
+                        };
+
+                        fin = {
+                            rot = vectors.vec3(-5, 30, 15);
+                            pos = vectors.vec3(-1, 10, -235);
+                        };
+                    };
+
+                    callbacks = {
+                        onPreAnimation = function (self)
+                            if not self.exSkill.exSkills[4].init then
+                                models.models.ex_skill_4.Zombie:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/zombie/zombie.png")
+                                local gameVersion = client:getVersion()
+                                for _, modelPart in ipairs({models.models.ex_skill_4.Zombie.ZHead.ZHelmet, models.models.ex_skill_4.Zombie.ZUpperBody.ZBody.ZChestPlateB, models.models.ex_skill_4.Zombie.ZUpperBody.ZArms.ZRightArm.ZChestPlateRA, models.models.ex_skill_4.Zombie.ZUpperBody.ZArms.ZLeftArm.ZChestPlateLA, models.models.ex_skill_4.Zombie.ZLowerBody.ZLegs.ZRightLeg.ZBootsRL, models.models.ex_skill_4.Zombie.ZLowerBody.ZLegs.ZLeftLeg.ZBootsLL}) do
+                                    modelPart:setPrimaryTexture("RESOURCE", gameVersion >="1.21.2" and "minecraft:textures/entity/equipment/humanoid/iron.png" or "minecraft:textures/models/armor/iron_layer_1.png")
+                                end
+                                for _, modelPart in ipairs({models.models.ex_skill_4.Zombie.ZUpperBody.ZBody.ZLeggingsB,models.models.ex_skill_4.Zombie.ZLowerBody.ZLegs.ZRightLeg.ZLeggingsRL, models.models.ex_skill_4.Zombie.ZLowerBody.ZLegs.ZLeftLeg.ZLeggingsLL}) do
+                                    modelPart:setPrimaryTexture("RESOURCE", gameVersion >="1.21.2" and "minecraft:textures/entity/equipment/humanoid_leggings/iron.png" or "minecraft:textures/models/armor/iron_layer_2.png")
+                                end
+                                models.models.ex_skill_4.Creeper:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/creeper/creeper.png")
+                                self.exSkill.exSkills[4].init = true
+                            end
+                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED", 18, true)
+                        end;
+
+                        onAnimationTick = function (self, tick)
+                            if tick == 0 then
+                                models.models.main.Avatar.UpperBody.Body.Gun:setPos()
+                                models.models.main.Avatar.UpperBody.Body.Gun:setRot()
+                                self.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.Gun, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom, models.models.main.Avatar.UpperBody.Body)
+                                models.models.main.Avatar.UpperBody.Body.SubGun:setPos()
+                                models.models.main.Avatar.UpperBody.Body.SubGun:setRot()
+                                models.models.main.Avatar.UpperBody.Body.SubGun:setScale(1.5, 1.5, 1.5)
+                                models.models.main.Avatar.UpperBody.Body.SubGun:setParentType("None")
+                                self.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Body.SubGun, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom, models.models.main.Avatar.UpperBody.Body)
+                                models.models.main.Avatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setVisible(false)
+                            elseif tick == 1 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.zombie.ambient"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.5, 1)
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar)
+                                for _ = 1, 50 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), anchorPos:copy():add(math.random() * 5 - 2.5, 0.5, math.random() * 5 - 2.5)):scale(5):setVelocity(0, 0.01, 0):setLifetime(60)
+                                end
+                            elseif tick == 18 then
+                                self.parent.faceParts:setEmotion("NARROW", "NARROW", "CLOSED", 22, true)
+                            elseif tick == 40 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 19, true)
+                            elseif tick == 50 then
+                                models.models.main.Avatar.Head.EyeShine:setVisible(true)
+                            elseif tick == 52 and host:isHost() then
+                                self.parent.compatibilityUtils.setPostEffect("phosphor")
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 0.5)
+                            elseif tick == 59 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 16, true)
+                                if host:isHost() then
+                                    self.parent.compatibilityUtils.setPostEffect()
+                                end
+                            elseif tick == 66 then
+                                models.models.main.Avatar.Head.EyeShine:setVisible(false)
+                            elseif tick == 70 or tick == 82 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.zombie.hurt"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_4.Zombie), 1, 1)
+                                if tick == 70 then
+                                    local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_4.Zombie.ZUpperBody.ZBody.ExSkill4ParticleAnchor1)
+                                    local bodyYaw = player:getBodyYaw()
+                                    for _ = 1, 50 do
+                                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1 + 90, math.random() * 0.6 - 0.3, math.random() * 0.6 - 0.3, math.random() * 0.4, 0, 1, 0)):setColor(1, 0.877, 0.436):setLifetime(4)
+                                    end
+                                end
+                            elseif tick == 75 then
+                                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED", 4, true)
+                            elseif tick == 79 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 11, true)
+                            elseif tick == 86 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.zombie.death"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_4.Zombie), 1, 1)
+                            elseif tick == 90 then
+                                self.parent.faceParts:setEmotion("NORMAL", "INVERTED", "CLOSED", 31, true)
+                            elseif tick == 95 or tick == 98 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.creeper.hurt"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_4.Creeper), 1, 1)
+                            elseif tick == 117 then
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.MuzzleAnchor)
+                                local dirVector = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.ExSkill4Anchor3):sub(anchorPos):normalize()
+                                local normalVector = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.ExSkill4Anchor4):sub(anchorPos):normalize()
+                                for i = 0, 4 do
+                                    for j = 0, 11 do
+                                        local offsetLength = i / 4
+                                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setVelocity(dirVector:copy():scale(math.cos(offsetLength * math.pi / 2) * 0.5):add(vectors.rotateAroundAxis(j * 30, normalVector:copy():scale(offsetLength * 0.45), dirVector))):setScale(5):setColor(1, 0.877, 0.436):setLifetime(8)
+                                        if i == 0 then
+                                            break
+                                        end
+                                    end
+                                end
+                                for _ = 1, 10 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:large_smoke"), anchorPos:copy():add(math.random() * 0.5 - 0.25, math.random() * 0.5 - 0.25, math.random() * 0.5 - 0.25))
+                                end
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.firework_rocket.large_blast"),  anchorPos, 1, 0.75)
+                                local anchorPos2 = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_4.Creeper)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.creeper.death"), anchorPos2, 1, 1)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:explosion_emitter"), anchorPos2)
+                                for _ = 1, 30 do
+                                    local offset = vectors.vec3(math.random() - 0.5, math.random() - 0.5, math.random() - 0.5)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:poof"), anchorPos2:copy():add(offset.x * 2, offset.y * 2 + 0.5, offset.z * 2)):setVelocity(offset:copy():scale(0.5))
+                                end
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.explode"), anchorPos2, 1, 1)
+                                models.models.ex_skill_4.Creeper:setVisible(false)
+                            elseif tick == 121 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 11, true)
+                            elseif tick == 124 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 25, true)
+                            elseif tick == 149 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 39, true)
+                            elseif tick == 150 then
+                                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.MuzzleFlash:setColor(client:hasShaderPack() and vectors.vec3(1, 0.85, 0.5) or vectors.vec3(1, 1, 1))
+                            elseif tick == 152 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.explode"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head), 1, 0.5)
+                            elseif tick == 157 then
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.MuzzleFlash)
+                                for _ = 1, 50 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:lava"), anchorPos):setVelocity(math.random() * 0.25 - 0.125, math.random() * 0.1, math.random() * 0.25 - 0.125):setColor(1, 0.877, 0.436):setLifetime(30)
+                                end
+                            end
+                            if tick == 70 or tick == 82 or tick == 86 or tick == 95 or tick == 98 then
+                                --ピストル発砲
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SubGun.MuzzleAnchor2)
+                                local velocityVector = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SubGun.ExSkill4Anchor1):sub(anchorPos):normalize():scale(0.5)
+                                local offsetVector = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SubGun.ExSkill4Anchor2):sub(anchorPos):normalize():scale(0.25)
+                                for i = 0, 5 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setVelocity(velocityVector:copy():add(vectors.rotateAroundAxis(i * 60, offsetVector, velocityVector))):setScale(1.5):setColor(1, 0.877, 0.436):setLifetime(2)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:smoke"), anchorPos:copy():add(math.random() * 0.1 - 0.05, math.random() * 0.1 - 0.05, math.random() * 0.1 - 0.05))
+                                end
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.firework_rocket.blast"), anchorPos, 1, 0.5)
+                            end
+                        end;
+
+                        onPostAnimation = function (self, forcedStop)
+                            models.models.main.Avatar.UpperBody.Body.Shield.Section2.ShoulderBelt:setVisible(true)
+                            if models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun ~= nil then
+                                self.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
+                            end
+                            if models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SubGun ~= nil then
+                                self.parent.modelUtils.moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SubGun, models.models.main.Avatar.UpperBody.Body, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
+                            end
+                            if player:isLeftHanded() then
+                                models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(self.gun.gunPosition.put.pos.left))
+                                models.models.main.Avatar.UpperBody.Body.Gun:setRot(self.gun.gunPosition.put.rot.left)
+                            else
+                                models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(self.gun.gunPosition.put.pos.right))
+                                models.models.main.Avatar.UpperBody.Body.Gun:setRot(self.gun.gunPosition.put.rot.right)
+                            end
+                            models.models.main.Avatar.UpperBody.Body.SubGun:setPos(-1, 17.5, -1.9)
+                            models.models.main.Avatar.UpperBody.Body.SubGun:setRot(-30, 90, 0)
+                            models.models.main.Avatar.UpperBody.Body.SubGun:setScale()
+                            if forcedStop then
+                                models.models.main.Avatar.Head.EyeShine:setVisible(false)
+                                if host:isHost() then
+                                    self.parent.compatibilityUtils.setPostEffect()
+                                end
+                            end
+                        end;
+                    };
+
+                    ---このExスキルの初期化処理が行われたかどうか
+                    ---@type boolean
+                    init = false;
+                };
             };
         }
 
@@ -1305,7 +1315,7 @@ BlueArchiveCharacter = {
                         modelPart:setUVPixels()
                     end
                     models.models.main.Avatar.Head.HatLayer:setUVPixels()
-                    self.exSkill[2]:resetExSkill2Feature()
+                    self.exSkill.exSkills[2]:resetExSkill2Feature()
                     for _, modelPart in ipairs({models.models.main.Avatar.Head.CMaskedH, models.models.main.Avatar.Head.CSwimsuitH, models.models.main.Avatar.UpperBody.Body.CSwimsuitB, models.models.main.Avatar.UpperBody.Arms.RightArm.CSwimsuitRA, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.CSwimsuitRAB, models.models.main.Avatar.UpperBody.Arms.LeftArm.CSwimsuitLA, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.CSwimsuitLAB, models.models.main.Avatar.LowerBody.Legs.RightLeg.CSwimsuitRL, models.models.main.Avatar.LowerBody.Legs.LeftLeg.CSwimsuitLL, models.models.main.Avatar.Head.CBattleH, models.models.main.Avatar.UpperBody.Body.CBattleB, models.models.main.Avatar.UpperBody.Body.SubGun}) do
                         modelPart:setVisible(false)
                     end
