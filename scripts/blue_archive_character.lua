@@ -45,7 +45,7 @@
 ---@field public skirt BlueArchiveCharacter.SkirtStruct スカート
 ---@field public gun BlueArchiveCharacter.GunStruct 銃
 ---@field public placementObjects BlueArchiveCharacter.PlacementObjectStruct[] 設置物
----@field public exSkill BlueArchiveCharacter.ExSkillStruct[] Exスキル
+---@field public exSkill BlueArchiveCharacter.ExSkillStruct Exスキル
 ---@field public costume BlueArchiveCharacter.CostumeStruct コスチューム
 ---@field public bubble BlueArchiveCharacter.BubbleStruct 吹き出しエモート
 ---@field public headBlock BlueArchiveCharacter.HeadBlockStruct 頭ブロック
@@ -90,11 +90,7 @@
 ---@field public callbacks? BlueArchiveCharacter.PlacementObjectCallbacksSet 設置物のコールバック関数
 
 ---@class BlueArchiveCharacter.ExSkillStruct Exスキルのデータ構造体
----@field public name BlueArchiveCharacter.LocaleStringSet Exスキルの名前
----@field public formationType BlueArchiveCharacter.FormationType この生徒の戦闘配置タイプ
----@field public models ModelPart[] Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
----@field public animations string[] Exスキルアニメーションが含まれるモデルファイル名。アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
----@field public camera BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワーク
+---@field public exSkills BlueArchiveCharacter.ExSkillDataSet[] Exスキルデータ
 ---@field public callbacks? BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数
 
 ---@class BlueArchiveCharacter.CostumeStruct コスチュームのデータ構造体
@@ -171,6 +167,17 @@
 ---@field public onRender? fun(self: BlueArchiveCharacter, placementObject: PlacementObject) 各レンダーティック毎に呼ばれる関数
 ---@field public onGround? fun(self: BlueArchiveCharacter, placementObject: PlacementObject) 設置物が接地した瞬間に呼ばれる関数
 
+---@class (exact) BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数のセット
+---@field public additionalCheckFunc? fun(self: BlueArchiveCharacter): boolean Exスキルを再生するかどうかの追加チェック関数
+
+---@class (exact) BlueArchiveCharacter.ExSkillDataSet Exスキルのデータセット
+---@field public name BlueArchiveCharacter.LocaleStringSet Exスキルの名前
+---@field public formationType BlueArchiveCharacter.FormationType この生徒の戦闘配置タイプ
+---@field public models ModelPart[] Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
+---@field public animations string[] Exスキルアニメーションが含まれるモデルファイル名。アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
+---@field public camera BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワーク
+---@field public callbacks? BlueArchiveCharacter.ExSkillAnimationCallbacks Exスキルアニメーションのコールバック関数
+
 ---@class (exact) BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワークのセット
 ---@field public start BlueArchiveCharacter.ExSkillCameraPositionSet Exスキルアニメーション開始地点
 ---@field public fin BlueArchiveCharacter.ExSkillCameraPositionSet Exスキルアニメーション終了地点
@@ -180,7 +187,7 @@
 ---@field public pos Vector3 カメラの位置
 ---@field public rot Vector3 カメラの方向
 
----@class (exact) BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数のセット
+---@class (exact) BlueArchiveCharacter.ExSkillAnimationCallbacks Exスキルアニメーションのコールバック関数のセット
 ---@field public onPreTransition? fun(self: BlueArchiveCharacter) Exスキルアニメーション開始前のトランジション開始前に実行されるコールバック関数
 ---@field public onPreAnimation? fun(self: BlueArchiveCharacter) Exスキルアニメーション開始前のトランジション終了後に実行されるコールバック関数
 ---@field public onAnimationTick? fun(self: BlueArchiveCharacter, tick: integer) Exスキルアニメーション再生中のみ実行されるティック関数
@@ -199,8 +206,9 @@
 ---@field public onArmorChange? fun(self: BlueArchiveCharacter, parts: Armor.ArmorPart, isVisible: boolean) 防具が変更された（防具が見える/見えない）ときに実行されるコールバック関数
 
 ---@class (exact) BlueArchiveCharacter.BubbleCallbacks 吹き出しエモートのコールバック関数のセット
+---@field public addtionalCheckFunc? fun(self: BlueArchiveCharacter): boolean 吹き出しエモートを表示するかどうかの追加チェック関数
 ---@field public onPlay? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, duration: integer, showInGui: boolean) 吹き出しエモートが再生された時に実行されるコールバック関数
----@field public  onStop? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, forcedStop: boolean) 吹き出しアニメーション終了時に実行されるコールバック関数
+---@field public onStop? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, forcedStop: boolean) 吹き出しアニメーション終了時に実行されるコールバック関数
 
 ---@class (exact) BlueArchiveCharacter.HeadBlockCallbacks 頭ブロックのコールバック関数のセット
 ---@field public onBeforeModelCopy? fun(self: BlueArchiveCharacter, isScriptLoaded: boolean) モデルのコピー直前に実行される関数
@@ -418,233 +426,235 @@ BlueArchiveCharacter = {
         }
 
         instance.exSkill = {
-            {
-                name = {
-                    en_us = "Intensive care set A";
-                    ja_jp = "集中治療セットA";
-                };
-
-                formationType = "SPECIAL";
-
-                models = {models.models.main.Avatar.Head.Sweat};
-
-                animations = {"main", "ex_skill_1"};
-
-                camera = {
-                    start = {
-                        rot = vectors.vec3(-5, 190, -5);
-                        pos = vectors.vec3(-2.5, 13, -16);
+            exSkills = {
+                {
+                    name = {
+                        en_us = "Intensive care set A";
+                        ja_jp = "集中治療セットA";
                     };
 
-                    fin = {
-                        rot = vectors.vec3(-20, 210, -30);
-                        pos = vectors.vec3(-7, 10, -11);
+                    formationType = "SPECIAL";
+
+                    models = {models.models.main.Avatar.Head.Sweat};
+
+                    animations = {"main", "ex_skill_1"};
+
+                    camera = {
+                        start = {
+                            rot = vectors.vec3(-5, 190, -5);
+                            pos = vectors.vec3(-2.5, 13, -16);
+                        };
+
+                        fin = {
+                            rot = vectors.vec3(-20, 210, -30);
+                            pos = vectors.vec3(-7, 10, -11);
+                        };
                     };
-                };
 
-                callbacks = {
-                    onPreAnimation = function (self)
-                        events.RENDER:register(function ()
-                            models.models.main.Avatar.Head.Sweat:setOpacity(models.models.main.Avatar.Head.Sweat.SweatOpacity:getAnimScale().x)
-                        end, "ex_skill_1_render")
-                        self.parent.placementObjectManager:removeAll()
-                        models.models.ex_skill_1.MedicalBox:setPos()
-                        models.models.ex_skill_1.MedicalBox:setRot()
-                        models.models.ex_skill_1.MedicalBox:setScale()
-                        models.models.ex_skill_1.MedicalBox:setParentType("None")
-                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 10, true)
-                    end;
+                    callbacks = {
+                        onPreAnimation = function (self)
+                            events.RENDER:register(function ()
+                                models.models.main.Avatar.Head.Sweat:setOpacity(models.models.main.Avatar.Head.Sweat.SweatOpacity:getAnimScale().x)
+                            end, "ex_skill_1_render")
+                            self.parent.placementObjectManager:removeAll()
+                            models.models.ex_skill_1.MedicalBox:setPos()
+                            models.models.ex_skill_1.MedicalBox:setRot()
+                            models.models.ex_skill_1.MedicalBox:setScale()
+                            models.models.ex_skill_1.MedicalBox:setParentType("None")
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 10, true)
+                        end;
 
-                    onAnimationTick = function (self, tick)
-                        if tick == 10 then
-                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMILE", 3, true)
-                        elseif tick == 13 then
-                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "TIRED", 11, true)
-                        elseif tick == 15 then
-                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:snowflake"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head.FaceParts.Mouth)):setScale(0.5):setVelocity(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0, -0.01, 0.01, 0, 1, 0)):setGravity(0):setLifetime(11)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), player:getPos(), 0.1, 0.7)
-                        elseif tick == 24 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "TIRED", 8, true)
-                        elseif tick == 32 then
-                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "TIRED", 1, true)
-                        elseif tick == 33 then
-                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMILE", 2, true)
-                        elseif tick == 35 then
-                            self.parent.faceParts:setEmotion("INVERTED", "NORMAL", "SMILE", 32, true)
-                            local anchorPos = player:getPos():add(0, 0.8, 0)
-                            local bodyYaw = player:getBodyYaw()
-                            local isHost = host:isHost()
-                            local colorTable = {vectors.vec3(0.337, 1, 1), vectors.vec3(0.984, 1, 0.533)}
-                            for _ = 1, 10 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:end_rod"), anchorPos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, (math.random() < 0.5 and (isHost and -0.075 or -0.1) or 0.1) * (math.random() * 0.2 + 0.8), math.random() * 0.2 - 0.05, 0, 0, 1, 0)):setColor(colorTable[math.floor(math.random() * 2) + 1])
+                        onAnimationTick = function (self, tick)
+                            if tick == 10 then
+                                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMILE", 3, true)
+                            elseif tick == 13 then
+                                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "TIRED", 11, true)
+                            elseif tick == 15 then
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:snowflake"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head.FaceParts.Mouth)):setScale(0.5):setVelocity(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0, -0.01, 0.01, 0, 1, 0)):setGravity(0):setLifetime(11)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), player:getPos(), 0.1, 0.7)
+                            elseif tick == 24 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "TIRED", 8, true)
+                            elseif tick == 32 then
+                                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "TIRED", 1, true)
+                            elseif tick == 33 then
+                                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMILE", 2, true)
+                            elseif tick == 35 then
+                                self.parent.faceParts:setEmotion("INVERTED", "NORMAL", "SMILE", 32, true)
+                                local anchorPos = player:getPos():add(0, 0.8, 0)
+                                local bodyYaw = player:getBodyYaw()
+                                local isHost = host:isHost()
+                                local colorTable = {vectors.vec3(0.337, 1, 1), vectors.vec3(0.984, 1, 0.533)}
+                                for _ = 1, 10 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:end_rod"), anchorPos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, (math.random() < 0.5 and (isHost and -0.075 or -0.1) or 0.1) * (math.random() * 0.2 + 0.8), math.random() * 0.2 - 0.05, 0, 0, 1, 0)):setColor(colorTable[math.floor(math.random() * 2) + 1])
+                                end
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), anchorPos, 1, 1.8)
                             end
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), anchorPos, 1, 1.8)
-                        end
-                    end;
+                        end;
 
-                    onPostAnimation = function (self, forcedStop)
-                        events.RENDER:remove("ex_skill_1_render")
-                        if not forcedStop then
-                            self.parent.placementObjectManager:spawn(1, player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0, 3, 5, 0, 1, 0)), 0)
+                        onPostAnimation = function (self, forcedStop)
+                            events.RENDER:remove("ex_skill_1_render")
+                            if not forcedStop then
+                                self.parent.placementObjectManager:spawn(1, player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0, 3, 5, 0, 1, 0)), 0)
+                            end
+                            models.models.ex_skill_1.MedicalBox:setParentType("Item")
+                        end;
+                    };
+                };
+
+                {
+                    name = {
+                        en_us = "The sound of blessings";
+                        ja_jp = "祝福の響き";
+                    };
+
+                    formationType = "STRIKER";
+
+                    models = {models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell.Camera, models.models.ex_skill_2.MusicStand, models.models.ex_skill_2.Bag, models.models.ex_skill_2.Presents, models.models.ex_skill_2.StuffedWolf, models.models.ex_skill_2.GroundEffect, models.models.ex_skill_2.Gui};
+
+                    animations = {"main", "ex_skill_2"};
+
+                    camera = {
+                        start = {
+                            rot = vectors.vec3(70, 60, 0);
+                            pos = vectors.vec3(12, 64.5, 5);
+                        };
+
+                        fin = {
+                            rot = vectors.vec3(-5, 270, 0);
+                            pos = vectors.vec3(-53.2, 17, -5);
+                        };
+                    };
+
+                    callbacks = {
+                        onPreAnimation = function (self)
+                            if not self.exSkill.exSkills[2].init then
+                                models.models.ex_skill_2.MusicStand.MusicStandBookHolder:newText("music_stand_book_holder"):setText("§8Cherry Berry Merry"):setPos(3, 2.5, -1):setScale(0.03, 0.03, 0.03):setWrap(true):setWidth(120):setAlignment("CENTER")
+                                self.exSkill.exSkills[2].init = true
+                            end
+                            events.RENDER:register(function ()
+                                for _, modelPart in ipairs({models.models.ex_skill_2.GroundEffect, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell.Camera.HandbellEffect1, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell.Camera.HandbellEffect2}) do
+                                    local opacity = modelPart[modelPart:getName().."Opacity"]:getAnimScale().x
+                                    modelPart:setOpacity(opacity)
+                                    modelPart:setColor(vectors.vec3(1, 1, 1):scale(opacity))
+                                end
+                                if host:isHost() then
+                                    models.models.ex_skill_2.Gui.Frame:setOpacity(models.models.ex_skill_2.Gui.FrameOpacity:getAnimScale().x)
+                                end
+                            end, "ex_skill_2_render")
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setPos()
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setRot()
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setParentType("None")
+                            self.exSkill.exSkills[2].noteParticleSpawnCount = math.random(2, 3)
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 17, true)
+                            pings.selectChristmasSong(math.random(1, #self.costume.costumes[2].songs))
+                            self.costume.costumes[2].bellStage = 1
+                        end;
+
+                        onAnimationTick = function (self, tick)
+                            if tick == 3 then
+                                self.exSkill.exSkills[2].spawnHandbellParticles(self)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 1, 1.887749)
+                            elseif tick == 6 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 0.25, 1.887749)
+                            elseif tick == 13 then
+                                self.exSkill.exSkills[2].spawnHandbellParticles(self)
+                            elseif tick == 17 then
+                                self.parent.faceParts:setEmotion("NORMAL", "INVERTED", "SMILE", 7, true)
+                            elseif tick == 24 then
+                                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMILE", 12, true)
+                            elseif tick == 36 then
+                                self.parent.faceParts:setEmotion("NORMAL", "CENTER", "OPENED_SMALL", 5, true)
+                            elseif tick == 41 then
+                                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 4, true)
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head):add(0, 0.25, 0)
+                                local bodyYaw = player:getBodyYaw()
+                                for i = 0, 7 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:end_rod"), anchorPos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, math.cos(i / 4 * math.pi) * 0.075, math.sin(i / 4 * math.pi) * 0.075, 0, 0, 1, 0)):setScale(2):setColor(1, 0.443, 0.631):setLifetime(20)
+                                end
+                                if host:isHost() then
+                                    local windowSize = client:getScaledWindowSize()
+                                    models.models.ex_skill_2.Gui.Frame:setScale(windowSize.x, windowSize.y, 1)
+                                end
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 1, 1.887749)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 0.5, 0.943874)
+                            elseif tick == 44 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 0.75, 1.887749)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 0.375, 0.943874)
+                            elseif tick == 45 then
+                                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", 14, true)
+                            elseif tick == 50 then
+                                models.models.ex_skill_2.GroundEffect:setVisible(false)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 0.5, 1.887749)
+                            elseif tick == 59 then
+                                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 6, true)
+                            elseif tick == 65 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 5, true)
+                            elseif tick == 70 then
+                                self.parent.faceParts:setEmotion("NARROW", "NARROW", "SMILE", 44, true)
+                            elseif tick == 71 then
+                                self.exSkill.exSkills[2].spawnHandbellParticles(self)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 1, 1.887749)
+                            elseif tick == 74 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 0.25, 1.887749)
+                            end
+
+                            local melodyParticlePos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.ExSkill2ParticleAnchor1)
+                            local melodyParticleDir = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.ExSkill2ParticleAnchor1.ExSkill2ParticleAnchor2):sub(melodyParticlePos):normalize():scale(0.1)
+                            if tick >= 1 then
+                                for i = 1, 8 do
+                                    local offsetPos = melodyParticlePos:copy():sub(self.exSkill.exSkills[2].melodyParticlePosPrev):scale(0.125 * i)
+                                    local offsetDir = melodyParticleDir:copy():sub(self.exSkill.exSkills[2].melodyParticleDirPrev):scale(0.125 * i)
+                                    for j = 1, 5 do
+                                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), self.exSkill.exSkills[2].melodyParticlePosPrev:copy():add(offsetPos):add(self.exSkill.exSkills[2].melodyParticleDirPrev:copy():add(offsetDir):normalize():scale(0.1 * j))):setScale(0.1):setColor(1, 0.902, 0.576):setGravity(0)
+                                    end
+                                end
+                            end
+                            if self.exSkill.exSkills[2].noteParticleSpawnCount == 0 then
+                                local offsetPos = math.random(0, 10) * 0.5
+                                self.parent.melodyParticleManager:spawn(melodyParticlePos:copy():add(melodyParticleDir:copy():scale(offsetPos + (offsetPos >= 2.5 and 0 or 2))), models.models.ex_skill_2.ExSkill2ParticleAnchor1:getAnimRot():mul(-1, 1, -1), vectors.vec2(0.8, 0.8), vectors.vec3(), 60, false)
+                                if offsetPos >= 2.5 then
+                                    self.parent.melodyParticleManager.objects[#self.parent.melodyParticleManager.objects].subObject:setScale(1, -1, 1)
+                                end
+                                self.exSkill.exSkills[2].noteParticleSpawnCount = math.random(2, 3)
+                            else
+                                self.exSkill.exSkills[2].noteParticleSpawnCount = self.exSkill.exSkills[2].noteParticleSpawnCount - 1
+                            end
+                            self.exSkill.exSkills[2].melodyParticlePosPrev = melodyParticlePos:copy()
+                            self.exSkill.exSkills[2].melodyParticleDirPrev = melodyParticleDir:copy()
+                        end;
+
+                        onPostAnimation = function (self, forcedStop)
+                            events.RENDER:remove("ex_skill_2_render")
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setParentType("Item")
+                        end;
+                    };
+
+                    ---このExスキルの初期化処理が行われたかどうか
+                    ---@type boolean
+                    init = false;
+
+                    ---前ティックの楽譜のパーティクルのアンカー位置
+                    ---@type Vector3
+                    melodyParticlePosPrev = vectors.vec3();
+
+                    ---前ティックの楽譜のパーティクルのアンカー方向
+                    ---@type Vector3
+                    melodyParticleDirPrev = vectors.vec3();
+
+                    ---楽譜の音符パーティクルをスポーンさせるまでのカウンター
+                    ---@type integer
+                    noteParticleSpawnCount = 0;
+
+                    ---ハンドベルの音符パーティクルを表示する。
+                    ---@param self BlueArchiveCharacter
+                    spawnHandbellParticles = function (self)
+                        local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell.Camera.HandbellEffect1)
+                        for _ = 1, 5 do
+                            self.parent.melodyParticleManager:spawn(anchorPos, vectors.vec3(), vectors.vec2(0.25, 0.25), vectors.vec3(math.random() * 2 - 1, math.random() * 2 - 1, math.random() * 2 - 1):normalize():scale(0.02), 20, true)
                         end
-                        models.models.ex_skill_1.MedicalBox:setParentType("Item")
                     end;
                 };
             };
-
-            {
-                name = {
-                    en_us = "The sound of blessings";
-                    ja_jp = "祝福の響き";
-                };
-
-                formationType = "STRIKER";
-
-                models = {models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell.Camera, models.models.ex_skill_2.MusicStand, models.models.ex_skill_2.Bag, models.models.ex_skill_2.Presents, models.models.ex_skill_2.StuffedWolf, models.models.ex_skill_2.GroundEffect, models.models.ex_skill_2.Gui};
-
-                animations = {"main", "ex_skill_2"};
-
-                camera = {
-                    start = {
-                        rot = vectors.vec3(70, 60, 0);
-                        pos = vectors.vec3(12, 64.5, 5);
-                    };
-
-                    fin = {
-                        rot = vectors.vec3(-5, 270, 0);
-                        pos = vectors.vec3(-53.2, 17, -5);
-                    };
-                };
-
-                callbacks = {
-                    onPreAnimation = function (self)
-                        if not self.exSkill[2].init then
-                            models.models.ex_skill_2.MusicStand.MusicStandBookHolder:newText("music_stand_book_holder"):setText("§8Cherry Berry Merry"):setPos(3, 2.5, -1):setScale(0.03, 0.03, 0.03):setWrap(true):setWidth(120):setAlignment("CENTER")
-                            self.exSkill[2].init = true
-                        end
-                        events.RENDER:register(function ()
-                            for _, modelPart in ipairs({models.models.ex_skill_2.GroundEffect, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell.Camera.HandbellEffect1, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell.Camera.HandbellEffect2}) do
-                                local opacity = modelPart[modelPart:getName().."Opacity"]:getAnimScale().x
-                                modelPart:setOpacity(opacity)
-                                modelPart:setColor(vectors.vec3(1, 1, 1):scale(opacity))
-                            end
-                            if host:isHost() then
-                                models.models.ex_skill_2.Gui.Frame:setOpacity(models.models.ex_skill_2.Gui.FrameOpacity:getAnimScale().x)
-                            end
-                        end, "ex_skill_2_render")
-                        models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setPos()
-                        models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setRot()
-                        models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setParentType("None")
-                        self.exSkill[2].noteParticleSpawnCount = math.random(2, 3)
-                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 17, true)
-                        pings.selectChristmasSong(math.random(1, #self.costume.costumes[2].songs))
-                        self.costume.costumes[2].bellStage = 1
-                    end;
-
-                    onAnimationTick = function (self, tick)
-                        if tick == 3 then
-                            self.exSkill[2].spawnHandbellParticles(self)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 1, 1.887749)
-                        elseif tick == 6 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 0.25, 1.887749)
-                        elseif tick == 13 then
-                            self.exSkill[2].spawnHandbellParticles(self)
-                        elseif tick == 17 then
-                            self.parent.faceParts:setEmotion("NORMAL", "INVERTED", "SMILE", 7, true)
-                        elseif tick == 24 then
-                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMILE", 12, true)
-                        elseif tick == 36 then
-                            self.parent.faceParts:setEmotion("NORMAL", "CENTER", "OPENED_SMALL", 5, true)
-                        elseif tick == 41 then
-                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 4, true)
-                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head):add(0, 0.25, 0)
-                            local bodyYaw = player:getBodyYaw()
-                            for i = 0, 7 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:end_rod"), anchorPos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, math.cos(i / 4 * math.pi) * 0.075, math.sin(i / 4 * math.pi) * 0.075, 0, 0, 1, 0)):setScale(2):setColor(1, 0.443, 0.631):setLifetime(20)
-                            end
-                            if host:isHost() then
-                                local windowSize = client:getScaledWindowSize()
-                                models.models.ex_skill_2.Gui.Frame:setScale(windowSize.x, windowSize.y, 1)
-                            end
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 1, 1.887749)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 0.5, 0.943874)
-                        elseif tick == 44 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 0.75, 1.887749)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 0.375, 0.943874)
-                        elseif tick == 45 then
-                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", 14, true)
-                        elseif tick == 50 then
-                            models.models.ex_skill_2.GroundEffect:setVisible(false)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 0.5, 1.887749)
-                        elseif tick == 59 then
-                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 6, true)
-                        elseif tick == 65 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 5, true)
-                        elseif tick == 70 then
-                            self.parent.faceParts:setEmotion("NARROW", "NARROW", "SMILE", 44, true)
-                        elseif tick == 71 then
-                            self.exSkill[2].spawnHandbellParticles(self)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 1, 1.887749)
-                        elseif tick == 74 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.chime"), player:getPos(), 0.25, 1.887749)
-                        end
-
-                        local melodyParticlePos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.ExSkill2ParticleAnchor1)
-                        local melodyParticleDir = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.ExSkill2ParticleAnchor1.ExSkill2ParticleAnchor2):sub(melodyParticlePos):normalize():scale(0.1)
-                        if tick >= 1 then
-                            for i = 1, 8 do
-                                local offsetPos = melodyParticlePos:copy():sub(self.exSkill[2].melodyParticlePosPrev):scale(0.125 * i)
-                                local offsetDir = melodyParticleDir:copy():sub(self.exSkill[2].melodyParticleDirPrev):scale(0.125 * i)
-                                for j = 1, 5 do
-                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), self.exSkill[2].melodyParticlePosPrev:copy():add(offsetPos):add(self.exSkill[2].melodyParticleDirPrev:copy():add(offsetDir):normalize():scale(0.1 * j))):setScale(0.1):setColor(1, 0.902, 0.576):setGravity(0)
-                                end
-                            end
-                        end
-                        if self.exSkill[2].noteParticleSpawnCount == 0 then
-                            local offsetPos = math.random(0, 10) * 0.5
-                            self.parent.melodyParticleManager:spawn(melodyParticlePos:copy():add(melodyParticleDir:copy():scale(offsetPos + (offsetPos >= 2.5 and 0 or 2))), models.models.ex_skill_2.ExSkill2ParticleAnchor1:getAnimRot():mul(-1, 1, -1), vectors.vec2(0.8, 0.8), vectors.vec3(), 60, false)
-                            if offsetPos >= 2.5 then
-                                self.parent.melodyParticleManager.objects[#self.parent.melodyParticleManager.objects].subObject:setScale(1, -1, 1)
-                            end
-                            self.exSkill[2].noteParticleSpawnCount = math.random(2, 3)
-                        else
-                            self.exSkill[2].noteParticleSpawnCount = self.exSkill[2].noteParticleSpawnCount - 1
-                        end
-                        self.exSkill[2].melodyParticlePosPrev = melodyParticlePos:copy()
-                        self.exSkill[2].melodyParticleDirPrev = melodyParticleDir:copy()
-                    end;
-
-                    onPostAnimation = function (self, forcedStop)
-                        events.RENDER:remove("ex_skill_2_render")
-                        models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell:setParentType("Item")
-                    end;
-                };
-
-                ---このExスキルの初期化処理が行われたかどうか
-                ---@type boolean
-                init = false;
-
-                ---前ティックの楽譜のパーティクルのアンカー位置
-                ---@type Vector3
-                melodyParticlePosPrev = vectors.vec3();
-
-                ---前ティックの楽譜のパーティクルのアンカー方向
-                ---@type Vector3
-                melodyParticleDirPrev = vectors.vec3();
-
-                ---楽譜の音符パーティクルをスポーンさせるまでのカウンター
-                ---@type integer
-                noteParticleSpawnCount = 0;
-
-                ---ハンドベルの音符パーティクルを表示する。
-                ---@param self BlueArchiveCharacter
-                spawnHandbellParticles = function (self)
-                    local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Handbell.Camera.HandbellEffect1)
-                    for _ = 1, 5 do
-                        self.parent.melodyParticleManager:spawn(anchorPos, vectors.vec3(), vectors.vec2(0.25, 0.25), vectors.vec3(math.random() * 2 - 1, math.random() * 2 - 1, math.random() * 2 - 1):normalize():scale(0.02), 20, true)
-                    end
-                end;
-            }
         }
 
         instance.costume = {
