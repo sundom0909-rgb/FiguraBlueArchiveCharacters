@@ -567,6 +567,12 @@ BlueArchiveCharacter = {
                     whistleSound = nil;
                 };
             };
+
+            callbacks = {
+                additionalCheckFunc = function (self)
+                    return self.parent.syupogakiDance.danceState == "NOT_STANDBY"
+                end;
+            };
         }
 
         instance.costume = {
@@ -598,6 +604,10 @@ BlueArchiveCharacter = {
 
         instance.bubble = {
             callbacks = {
+                addtionalCheckFunc = function (self)
+                    return self.parent.syupogakiDance.danceState == "NOT_STANDBY"
+                end;
+
                 onPlay = function (self, type, duration)
                     if type == "GOOD" then
                         self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", duration, true)
