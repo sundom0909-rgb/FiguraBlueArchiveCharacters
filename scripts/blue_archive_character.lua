@@ -56,7 +56,7 @@
 ---@field public skirt BlueArchiveCharacter.SkirtStruct スカート
 ---@field public gun BlueArchiveCharacter.GunStruct 銃
 ---@field public placementObjects BlueArchiveCharacter.PlacementObjectStruct[] 設置物
----@field public exSkill BlueArchiveCharacter.ExSkillStruct[] Exスキル
+---@field public exSkill BlueArchiveCharacter.ExSkillStruct Exスキル
 ---@field public costume BlueArchiveCharacter.CostumeStruct コスチューム
 ---@field public bubble BlueArchiveCharacter.BubbleStruct 吹き出しエモート
 ---@field public headBlock BlueArchiveCharacter.HeadBlockStruct 頭ブロック
@@ -101,11 +101,7 @@
 ---@field public callbacks? BlueArchiveCharacter.PlacementObjectCallbacksSet 設置物のコールバック関数
 
 ---@class BlueArchiveCharacter.ExSkillStruct Exスキルのデータ構造体
----@field public name BlueArchiveCharacter.LocaleStringSet Exスキルの名前
----@field public formationType BlueArchiveCharacter.FormationType この生徒の戦闘配置タイプ
----@field public models ModelPart[] Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
----@field public animations string[] Exスキルアニメーションが含まれるモデルファイル名。アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
----@field public camera BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワーク
+---@field public exSkills BlueArchiveCharacter.ExSkillDataSet[] Exスキルデータ
 ---@field public callbacks? BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数
 
 ---@class BlueArchiveCharacter.CostumeStruct コスチュームのデータ構造体
@@ -182,6 +178,17 @@
 ---@field public onRender? fun(self: BlueArchiveCharacter, placementObject: PlacementObject) 各レンダーティック毎に呼ばれる関数
 ---@field public onGround? fun(self: BlueArchiveCharacter, placementObject: PlacementObject) 設置物が接地した瞬間に呼ばれる関数
 
+---@class (exact) BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数のセット
+---@field public additionalCheckFunc? fun(self: BlueArchiveCharacter): boolean Exスキルを再生するかどうかの追加チェック関数
+
+---@class (exact) BlueArchiveCharacter.ExSkillDataSet Exスキルのデータセット
+---@field public name BlueArchiveCharacter.LocaleStringSet Exスキルの名前
+---@field public formationType BlueArchiveCharacter.FormationType この生徒の戦闘配置タイプ
+---@field public models ModelPart[] Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
+---@field public animations string[] Exスキルアニメーションが含まれるモデルファイル名。アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
+---@field public camera BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワーク
+---@field public callbacks? BlueArchiveCharacter.ExSkillAnimationCallbacks Exスキルアニメーションのコールバック関数
+
 ---@class (exact) BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワークのセット
 ---@field public start BlueArchiveCharacter.ExSkillCameraPositionSet Exスキルアニメーション開始地点
 ---@field public fin BlueArchiveCharacter.ExSkillCameraPositionSet Exスキルアニメーション終了地点
@@ -191,7 +198,7 @@
 ---@field public pos Vector3 カメラの位置
 ---@field public rot Vector3 カメラの方向
 
----@class (exact) BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数のセット
+---@class (exact) BlueArchiveCharacter.ExSkillAnimationCallbacks Exスキルアニメーションのコールバック関数のセット
 ---@field public onPreTransition? fun(self: BlueArchiveCharacter) Exスキルアニメーション開始前のトランジション開始前に実行されるコールバック関数
 ---@field public onPreAnimation? fun(self: BlueArchiveCharacter) Exスキルアニメーション開始前のトランジション終了後に実行されるコールバック関数
 ---@field public onAnimationTick? fun(self: BlueArchiveCharacter, tick: integer) Exスキルアニメーション再生中のみ実行されるティック関数
@@ -210,8 +217,9 @@
 ---@field public onArmorChange? fun(self: BlueArchiveCharacter, parts: Armor.ArmorPart, isVisible: boolean) 防具が変更された（防具が見える/見えない）ときに実行されるコールバック関数
 
 ---@class (exact) BlueArchiveCharacter.BubbleCallbacks 吹き出しエモートのコールバック関数のセット
+---@field public addtionalCheckFunc? fun(self: BlueArchiveCharacter): boolean 吹き出しエモートを表示するかどうかの追加チェック関数
 ---@field public onPlay? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, duration: integer, showInGui: boolean) 吹き出しエモートが再生された時に実行されるコールバック関数
----@field public  onStop? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, forcedStop: boolean) 吹き出しアニメーション終了時に実行されるコールバック関数
+---@field public onStop? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, forcedStop: boolean) 吹き出しアニメーション終了時に実行されるコールバック関数
 
 ---@class (exact) BlueArchiveCharacter.HeadBlockCallbacks 頭ブロックのコールバック関数のセット
 ---@field public onBeforeModelCopy? fun(self: BlueArchiveCharacter, isScriptLoaded: boolean) モデルのコピー直前に実行される関数
@@ -607,330 +615,332 @@ BlueArchiveCharacter = {
         }
 
         instance.exSkill = {
-            {
-                name = {
-                    en_us = "Summon Drone: Fire Support";
-                    ja_jp = "ドローン召喚：火力支援";
-                };
-
-                formationType = "STRIKER";
-
-                models = {models.models.ex_skill_1.Drone};
-
-                animations = {"main", "ex_skill_1"};
-
-                camera = {
-                    start = {
-                        rot = vectors.vec3(0, 180, 0);
-                        pos = vectors.vec3(7, 27, -10);
+            exSkills = {
+                {
+                    name = {
+                        en_us = "Summon Drone: Fire Support";
+                        ja_jp = "ドローン召喚：火力支援";
                     };
 
-                    fin = {
-                        rot = vectors.vec3(-15, 210, 5);
-                        pos = vectors.vec3(-14, 7, -30);
-                    };
-                };
+                    formationType = "STRIKER";
 
-                callbacks = {
-                    onPreAnimation = function (self)
-                        models.models.ex_skill_1.Drone.LauncherRight.ShineEffects:setColor(client:hasShaderPack() and vectors.vec3(0.5, 1, 1) or vectors.vec3(1, 1, 1))
-                        self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "TRIANGLE", 20, true)
-                    end;
+                    models = {models.models.ex_skill_1.Drone};
 
-                    onAnimationTick = function (self, tick)
-                        if tick == 20 then
-                            self.parent.faceParts:setEmotion("HALF", "HALF", "TRIANGLE", 5, true)
-                        elseif tick == 25 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "TRIANGLE", 10, true)
-                        elseif tick == 35 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "ANGRY", 10, true)
-                        elseif tick == 40 then
-                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "ANGRY", 30, true)
-                        elseif tick == 41 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 0.5, 1.5)
-                        end
-                    end;
-                };
-            };
+                    animations = {"main", "ex_skill_1"};
 
-            {
-                name = {
-                    en_us = "Big catch";
-                    ja_jp = "大物だ";
-                };
+                    camera = {
+                        start = {
+                            rot = vectors.vec3(0, 180, 0);
+                            pos = vectors.vec3(7, 27, -10);
+                        };
 
-                formationType = "SPECIAL";
-
-                models = {models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.FishingRod};
-
-                animations = {"main", "ex_skill_2"};
-
-                camera = {
-                    start = {
-                        rot = vectors.vec3(0, 160, 0);
-                        pos = vectors.vec3(13, 34, -33);
+                        fin = {
+                            rot = vectors.vec3(-15, 210, 5);
+                            pos = vectors.vec3(-14, 7, -30);
+                        };
                     };
 
-                    fin = {
-                        rot = vectors.vec3(-10, 160, 0);
-                        pos = vectors.vec3(-12, 36, -61);
+                    callbacks = {
+                        onPreAnimation = function (self)
+                            models.models.ex_skill_1.Drone.LauncherRight.ShineEffects:setColor(client:hasShaderPack() and vectors.vec3(0.5, 1, 1) or vectors.vec3(1, 1, 1))
+                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "TRIANGLE", 20, true)
+                        end;
+
+                        onAnimationTick = function (self, tick)
+                            if tick == 20 then
+                                self.parent.faceParts:setEmotion("HALF", "HALF", "TRIANGLE", 5, true)
+                            elseif tick == 25 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "TRIANGLE", 10, true)
+                            elseif tick == 35 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "ANGRY", 10, true)
+                            elseif tick == 40 then
+                                self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "ANGRY", 30, true)
+                            elseif tick == 41 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 0.5, 1.5)
+                            end
+                        end;
                     };
                 };
 
-                callbacks = {
-                    onPreTransition = function (self)
-                        if not self.exSkill[2].init then
-                            models.models.ex_skill_2.UnderWater:setLight(15)
-                            models.models.ex_skill_2.Stage.Reef:setPrimaryTexture("RESOURCE", "textures/block/stone.png")
-                            models.models.ex_skill_2.Stage.Ocean:setPrimaryTexture("RESOURCE", "textures/block/water_still.png")
-                            self.exSkill[2].init = true
-                        end
-                        models.models.ex_skill_2.Stage.Ocean:setColor(world.getBiome(player:getPos()):getWaterColor())
-                        models.models.ex_skill_2.Stage:setVisible(true)
-                        models.models.main.Avatar:setPos(0, 8, 0)
-                    end;
+                {
+                    name = {
+                        en_us = "Big catch";
+                        ja_jp = "大物だ";
+                    };
 
-                    onPreAnimation = function (self)
-                        models.models.main.Avatar:setPos()
-                        self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 107, true)
-                        if host:isHost() then
-                            local windowSize = client:getWindowSize()
-                            models.models.ex_skill_2.UnderWater.ForCameraOffset.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(23))
-                            local bodyYaw = player:getBodyYaw()
-                            local backgroundPos = vectors.rotateAroundAxis(bodyYaw + 180, vectors.rotateAroundAxis(bodyYaw * -1 + 180, self.exSkill[2].camera.start.pos, 0, 1, 0):add(client:getCameraDir()), 0, 1, 0):scale(16 / 0.9375)
-                            models.models.ex_skill_2.UnderWater:setOffsetPivot(backgroundPos)
-                            models.models.ex_skill_2.UnderWater.ForCameraOffset:setPos(backgroundPos)
-                            events.RENDER:register(function (_, context)
-                                models.models.ex_skill_2.UnderWater:setVisible(context == "RENDER")
-                            end, "ex_skill_2_render")
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.bubble_column.upwards_inside"), player:getPos(), 1, 0.5)
-                        end
-                    end;
+                    formationType = "SPECIAL";
 
-                    onAnimationTick = function (self, tick)
-                        if tick <= 28 and host:isHost() then
-                            local finPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.UnderWater.ForCameraOffset.Tuna.RearBody.TailFin)
-                            for _ = 1, 5 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:underwater"), finPos:copy():add(math.random() * 0.1 - 0.05, math.random() * 0.1 - 0.05, 0)):setScale(0.2)
-                            end
-                        elseif tick >= 37 and tick < 73 and host:isHost() then
-                            local headPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.UnderWater.ForCameraOffset.Tuna.FrontBody.Head)
-                            local tunaRotY = models.models.ex_skill_2.UnderWater.ForCameraOffset.Tuna:getAnimRot().y
-                            local cameraRotY = renderer:getCameraRot().y
-                            local particleCount = math.max(tick - 52, 0)
-                            for i = 0, 2 * math.pi, math.pi / 6 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), vectors.rotateAroundAxis(tunaRotY + cameraRotY, 0, math.cos(i) * 0.3, math.sin(i) * 0.3, 0, 1, 0):add(headPos)):setScale(particleCount / 27 + 1):setColor(math.random() * 0.5 + 0.5, 1, 1):setVelocity(vectors.rotateAroundAxis(tunaRotY - cameraRotY - 90, 0, 0, 0.1, 0, 1, 0)):setLifetime(20)
-                            end
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.squid.ambient"), player:getPos(), 1, 0.75)
-                        elseif tick == 78 and host:isHost() then
-                            events.RENDER:remove("ex_skill_2_render")
-                            models.models.ex_skill_2.UnderWater:setVisible(false)
-                        elseif tick == 107 then
-                            self.parent.faceParts:setEmotion("NARROW_CENTER", "NARROW", "CLOSED", 27, true)
-                        elseif tick == 134 then
-                            self.parent.faceParts:setEmotion("NARROW_ANGRY_CENTER", "NARROW_ANGRY", "TRIANGLE", 16, true)
-                        elseif tick == 139 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 1, 1.5)
-                            if host:isHost() then
-                                local windowSize = client:getWindowSize()
-                                models.models.ex_skill_2.Flash.ForCameraOffset2.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(22.5))
-                                local backgroundPos = vectors.rotateAroundAxis(player:getBodyYaw() + 180, renderer:getCameraOffsetPivot():copy():add(0, 1.62, 0):add(client:getCameraDir():copy()), 0, 1, 0):scale(16 / 0.9375)
-                                models.models.ex_skill_2.Flash:setOffsetPivot(backgroundPos)
-                                models.models.ex_skill_2.Flash.ForCameraOffset2:setPos(backgroundPos)
-                                models.models.ex_skill_2.Flash:setVisible(true)
-                            end
-                        elseif tick == 148 and host:isHost() then
-                            models.models.ex_skill_2.Flash:setVisible(false)
-                        elseif tick == 150 then
-                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED", 8, true)
-                            if host:isHost() then
-                                self.parent.compatibilityUtils.setPostEffect("phosphor")
-                            end
-                        elseif tick == 157 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), player:getPos(), 0.5, 2)
-                        elseif tick == 158 then
-                            self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 48, true)
-                        elseif tick >= 160 and tick <= 170 and host:isHost() then
-                            local cameraPos = renderer:getCameraOffsetPivot()
-                            for i = 0, 8 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), cameraPos:copy():add(player:getPos()):add((i % 3 - 1) * 0.25, 1.25, (math.floor(i / 3) - 1) * 0.25)):setScale(3):setColor(math.random() * 0.5 + 0.5, 1, 1):setVelocity(0, 0.25, 0):setLifetime(5)
-                            end
-                            if tick == 160 then
-                                local playerPos = player:getPos()
-                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), playerPos, 1, 0.25)
-                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), playerPos, 1, 0.5)
-                            elseif tick == 170 then
-                                self.parent.compatibilityUtils.setPostEffect()
-                            end
-                        elseif tick == 175 then
-                            models.models.ex_skill_2.UnderWater.ForCameraOffset.Tuna:moveTo(models.models.ex_skill_2)
-                            local playerPos = player:getPos()
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.splash"), playerPos, 1, 0.5)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:ambient.underwater.exit"), playerPos, 0.5, 0.5)
-                        elseif tick == 180 then
-                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Tuna)
-                            for _ = 1, 50 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), anchorPos:copy()):setVelocity(vectors.rotateAroundAxis(player:getBodyYaw() * -1, math.random() * 0.2, math.random() * 0.25 + 0.125, math.random() * 0.2 - 0.1, 0, 1, 0)):setScale(3):setColor(math.random() * 0.5 + 0.5, 1, 1):setGravity(0.5):setLifetime(25)
-                            end
-                        end
-                        if tick % 35 == 24 and tick <= 160 then
-                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Stage.Reef.ExSkill2ParticleAnchor)
-                            local bodyYaw = player:getBodyYaw()
-                            for _ = 1, 50 do
-                                local particleOffset = math.random()
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), anchorPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, particleOffset - 0.5, 0, 0, 0, 1, 0))):setScale(5):setColor(1, 1, 1):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, particleOffset * 0.5 - 0.25, math.random() * 0.5 + 0.25, math.random() * 0.25 - 0.125, 0, 1, 0)):setGravity(1):setLifetime(40)
-                            end
-                            if tick >= 80 or not host:isHost() then
-                                local playerPos = player:getPos()
-                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), playerPos, 1, 0.25)
-                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), playerPos, 1, 0.5)
-                            end
-                        end
-                        if tick <= 139 or tick % 2 == 0 then
-                            local currentFrame = models.models.ex_skill_2.Stage.Ocean:getUVPixels().y / 16
-                            if currentFrame < 31 then
-                                models.models.ex_skill_2.Stage.Ocean:setUVPixels(0, (currentFrame + 1) * 16)
-                            else
-                                models.models.ex_skill_2.Stage.Ocean:setUVPixels()
-                            end
-                        end
-                        if (tick >= 83 and tick < 110) or (tick >= 110 and tick <= 130 and tick % 2 == 0) then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.dispenser.fail"), player:getPos(), 0.5, 5)
-                        end
-                    end;
+                    models = {models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.FishingRod};
 
-                    onPostAnimation = function (self, forcedStop)
-                        if models.models.ex_skill_2.Tuna ~= nil then
-                            models.models.ex_skill_2.Tuna:moveTo(models.models.ex_skill_2.UnderWater.ForCameraOffset)
-                        end
-                        if forcedStop and host:isHost() then
-                            events.RENDER:remove("ex_skill_2_render")
-                            for _, modelPart in ipairs({models.models.ex_skill_2.UnderWater, models.models.ex_skill_2.Flash}) do
-                                modelPart:setVisible(false)
+                    animations = {"main", "ex_skill_2"};
+
+                    camera = {
+                        start = {
+                            rot = vectors.vec3(0, 160, 0);
+                            pos = vectors.vec3(13, 34, -33);
+                        };
+
+                        fin = {
+                            rot = vectors.vec3(-10, 160, 0);
+                            pos = vectors.vec3(-12, 36, -61);
+                        };
+                    };
+
+                    callbacks = {
+                        onPreTransition = function (self)
+                            if not self.exSkill.exSkills[2].init then
+                                models.models.ex_skill_2.UnderWater:setLight(15)
+                                models.models.ex_skill_2.Stage.Reef:setPrimaryTexture("RESOURCE", "textures/block/stone.png")
+                                models.models.ex_skill_2.Stage.Ocean:setPrimaryTexture("RESOURCE", "textures/block/water_still.png")
+                                self.exSkill.exSkills[2].init = true
                             end
-                            self.parent.compatibilityUtils.setPostEffect()
-                        elseif not forcedStop then
+                            models.models.ex_skill_2.Stage.Ocean:setColor(world.getBiome(player:getPos()):getWaterColor())
+                            models.models.ex_skill_2.Stage:setVisible(true)
                             models.models.main.Avatar:setPos(0, 8, 0)
-                        end
-                    end;
+                        end;
 
-                    onPostTransition = function ()
-                        models.models.ex_skill_2.Stage:setVisible(false)
-                        models.models.main.Avatar:setPos()
-                    end;
-                };
-
-                ---このExスキルの初期化処理が行われたかどうか
-                ---@type boolean
-                init = false;
-            };
-
-            {
-                name = {
-                    en_us = "Ride & Grenade";
-                    ja_jp = "ライド＆グレネード";
-                };
-
-                formationType = "STRIKER";
-
-                models = {models.models.main.Avatar.LowerBody.Bicycle};
-
-                animations = {"main", "ex_skill_3"};
-
-                camera = {
-                    start = {
-                        rot = vectors.vec3(60, 0, 0);
-                        pos = vectors.vec3(-71, 28, 0);
-                    };
-
-                    fin = {
-                        rot = vectors.vec3(0, 40, -25);
-                        pos = vectors.vec3(-119, 27, -938.5);
-                    };
-                };
-
-                callbacks = {
-                    onPreAnimation = function (self)
-                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED2", 40, true)
-                        self.exSkill[3].windSound = sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.elytra.flying"), player:getPos(), 0.05, 2)
-                    end;
-
-                    onAnimationTick = function (self, tick)
-                        if tick == 40 then
-                            self.parent.faceParts:setEmotion("NORMAL", "INVERTED", "CLOSED2", 7, true)
-                        elseif tick == 27 and host:isHost() then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.1, 0.75)
-                        elseif tick == 47 then
-                            self.parent.faceParts:setEmotion("NARROW_ANGRY", "NARROW_ANGRY_INVERTED", "TRIANGLE", 35, true)
-                        elseif tick >= 58 and tick < 80 then
-                            if tick == 58 then
-                                self.exSkill[3].windSound:stop()
-                                self.exSkill[3].windSound = nil
-                            end
-                            local bicycleYaw = models.models.main.Avatar:getAnimRot().y + player:getBodyYaw() * -1
-                            local bicyclePos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.Bicycle)
-                            local frontWheelPos = vectors.rotateAroundAxis(bicycleYaw, 0, 0, 0.5625, 0, 1, 0):add(bicyclePos)
-                            local backWheelPos = vectors.rotateAroundAxis(bicycleYaw, 0, 0, -0.5625, 0, 1, 0):add(bicyclePos)
-                            for _ = 1, 5 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), frontWheelPos):setColor(0.973, 0.714, 0.29):setScale(0.5):setVelocity(math.random() * 0.5 - 0.25, math.random() * 0.25, math.random() * 0.5 - 0.25)
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), backWheelPos):setColor(0.973, 0.714, 0.29):setScale(0.5):setVelocity(math.random() * 0.5 - 0.25, math.random() * 0.25, math.random() * 0.5 - 0.25)
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), frontWheelPos):setVelocity(math.random() * 0.2 - 0.1, 0.015, math.random() * 0.2 - 0.1)
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), backWheelPos):setVelocity(math.random() * 0.2 - 0.1, 0.015, math.random() * 0.2 - 0.1)
-                            end
-                            local particleBlock = world.getBlockState(bicyclePos:copy():sub(0, 0.5, 0)).id
-                            if particleBlock ~= "minecraft:air" and particleBlock ~= "minecraft:void_air" and particleBlock ~= "minecraft:cave_air" then
-                                for _ = 1, 5 do
-                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:block", particleBlock), frontWheelPos)
-                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:block", particleBlock), backWheelPos)
-                                end
-                            end
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.gravel.hit"), bicyclePos, 0.1, 0.5)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.grindstone.use"), bicyclePos, 0.1, 3)
-                        elseif tick == 82 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "TRIANGLE", 15, true)
-                            models.models.main.Avatar.LowerBody.Bicycle.Shaft.Shaft8.WaterBottle:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
-                        elseif tick == 97 then
-                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "TRIANGLE", 4, true)
-                        elseif tick == 101 then
-                            self.parent.faceParts:setEmotion("NARROW_ANGRY", "NARROW_ANGRY_INVERTED", "CLOSED2", 26, true)
-                        elseif tick == 109 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.25, 0.5)
+                        onPreAnimation = function (self)
+                            models.models.main.Avatar:setPos()
+                            self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 107, true)
                             if host:isHost() then
                                 local windowSize = client:getWindowSize()
-                                models.models.ex_skill_3.CameraBackground.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(38))
-                                local backgroundPos = vectors.rotateAroundAxis(player:getBodyYaw() + 180, renderer:getCameraOffsetPivot():copy():add(0, 1.62, 0):add(client:getCameraDir():copy():scale(1.5)), 0, 1, 0):scale(16 / 0.9375)
-                                models.models.ex_skill_3.CameraBackground:setOffsetPivot(backgroundPos)
-                                models.models.ex_skill_3.CameraBackground.Background:setPos(backgroundPos)
-                                if client:getVersion() >= "1.21" then
-                                    models.models.ex_skill_3.CameraBackground.Background:setRot(0, 0, renderer:getCameraRot().z)
-                                end
-                                models.models.ex_skill_3.CameraBackground:setVisible(true)
+                                models.models.ex_skill_2.UnderWater.ForCameraOffset.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(23))
+                                local bodyYaw = player:getBodyYaw()
+                                local backgroundPos = vectors.rotateAroundAxis(bodyYaw + 180, vectors.rotateAroundAxis(bodyYaw * -1 + 180, self.exSkill.exSkills[2].camera.start.pos, 0, 1, 0):add(client:getCameraDir()), 0, 1, 0):scale(16 / 0.9375)
+                                models.models.ex_skill_2.UnderWater:setOffsetPivot(backgroundPos)
+                                models.models.ex_skill_2.UnderWater.ForCameraOffset:setPos(backgroundPos)
+                                events.RENDER:register(function (_, context)
+                                    models.models.ex_skill_2.UnderWater:setVisible(context == "RENDER")
+                                end, "ex_skill_2_render")
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.bubble_column.upwards_inside"), player:getPos(), 1, 0.5)
                             end
-                        end
-                        if tick < 58 then
-                            models.models.main.Avatar.LowerBody.Bicycle.Wheels.Chain:setUVPixels(tick % 2, 0)
-                            self.exSkill[3].windSound:setVolume(math.clamp(16 - client:getCameraPos():sub(self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar)):length(), 0, 8) / 160)
-                        end
-                        if tick < 69 then
-                            local bodyYaw = player:getBodyYaw()
-                            local avatarPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar)
-                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:cloud"), vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 8 - 4, math.random() * 4, 10, 0, 1, 0):add(avatarPos)):setColor(1, 1, 1, 0.25):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, 0, 0, -0.5, 0, 1, 0))
-                        end
-                    end;
+                        end;
 
-                    onPostAnimation = function ()
-                        if models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.WaterBottle ~= nil then
-                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.WaterBottle:moveTo(models.models.main.Avatar.LowerBody.Bicycle.Shaft.Shaft8)
-                        end
-                        if host:isHost() then
-                            models.models.ex_skill_3.CameraBackground:setVisible(false)
-                        end
-                    end;
+                        onAnimationTick = function (self, tick)
+                            if tick <= 28 and host:isHost() then
+                                local finPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.UnderWater.ForCameraOffset.Tuna.RearBody.TailFin)
+                                for _ = 1, 5 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:underwater"), finPos:copy():add(math.random() * 0.1 - 0.05, math.random() * 0.1 - 0.05, 0)):setScale(0.2)
+                                end
+                            elseif tick >= 37 and tick < 73 and host:isHost() then
+                                local headPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.UnderWater.ForCameraOffset.Tuna.FrontBody.Head)
+                                local tunaRotY = models.models.ex_skill_2.UnderWater.ForCameraOffset.Tuna:getAnimRot().y
+                                local cameraRotY = renderer:getCameraRot().y
+                                local particleCount = math.max(tick - 52, 0)
+                                for i = 0, 2 * math.pi, math.pi / 6 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), vectors.rotateAroundAxis(tunaRotY + cameraRotY, 0, math.cos(i) * 0.3, math.sin(i) * 0.3, 0, 1, 0):add(headPos)):setScale(particleCount / 27 + 1):setColor(math.random() * 0.5 + 0.5, 1, 1):setVelocity(vectors.rotateAroundAxis(tunaRotY - cameraRotY - 90, 0, 0, 0.1, 0, 1, 0)):setLifetime(20)
+                                end
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.squid.ambient"), player:getPos(), 1, 0.75)
+                            elseif tick == 78 and host:isHost() then
+                                events.RENDER:remove("ex_skill_2_render")
+                                models.models.ex_skill_2.UnderWater:setVisible(false)
+                            elseif tick == 107 then
+                                self.parent.faceParts:setEmotion("NARROW_CENTER", "NARROW", "CLOSED", 27, true)
+                            elseif tick == 134 then
+                                self.parent.faceParts:setEmotion("NARROW_ANGRY_CENTER", "NARROW_ANGRY", "TRIANGLE", 16, true)
+                            elseif tick == 139 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 1, 1.5)
+                                if host:isHost() then
+                                    local windowSize = client:getWindowSize()
+                                    models.models.ex_skill_2.Flash.ForCameraOffset2.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(22.5))
+                                    local backgroundPos = vectors.rotateAroundAxis(player:getBodyYaw() + 180, renderer:getCameraOffsetPivot():copy():add(0, 1.62, 0):add(client:getCameraDir():copy()), 0, 1, 0):scale(16 / 0.9375)
+                                    models.models.ex_skill_2.Flash:setOffsetPivot(backgroundPos)
+                                    models.models.ex_skill_2.Flash.ForCameraOffset2:setPos(backgroundPos)
+                                    models.models.ex_skill_2.Flash:setVisible(true)
+                                end
+                            elseif tick == 148 and host:isHost() then
+                                models.models.ex_skill_2.Flash:setVisible(false)
+                            elseif tick == 150 then
+                                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED", 8, true)
+                                if host:isHost() then
+                                    self.parent.compatibilityUtils.setPostEffect("phosphor")
+                                end
+                            elseif tick == 157 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), player:getPos(), 0.5, 2)
+                            elseif tick == 158 then
+                                self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 48, true)
+                            elseif tick >= 160 and tick <= 170 and host:isHost() then
+                                local cameraPos = renderer:getCameraOffsetPivot()
+                                for i = 0, 8 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), cameraPos:copy():add(player:getPos()):add((i % 3 - 1) * 0.25, 1.25, (math.floor(i / 3) - 1) * 0.25)):setScale(3):setColor(math.random() * 0.5 + 0.5, 1, 1):setVelocity(0, 0.25, 0):setLifetime(5)
+                                end
+                                if tick == 160 then
+                                    local playerPos = player:getPos()
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), playerPos, 1, 0.25)
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), playerPos, 1, 0.5)
+                                elseif tick == 170 then
+                                    self.parent.compatibilityUtils.setPostEffect()
+                                end
+                            elseif tick == 175 then
+                                models.models.ex_skill_2.UnderWater.ForCameraOffset.Tuna:moveTo(models.models.ex_skill_2)
+                                local playerPos = player:getPos()
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.splash"), playerPos, 1, 0.5)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:ambient.underwater.exit"), playerPos, 0.5, 0.5)
+                            elseif tick == 180 then
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Tuna)
+                                for _ = 1, 50 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), anchorPos:copy()):setVelocity(vectors.rotateAroundAxis(player:getBodyYaw() * -1, math.random() * 0.2, math.random() * 0.25 + 0.125, math.random() * 0.2 - 0.1, 0, 1, 0)):setScale(3):setColor(math.random() * 0.5 + 0.5, 1, 1):setGravity(0.5):setLifetime(25)
+                                end
+                            end
+                            if tick % 35 == 24 and tick <= 160 then
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Stage.Reef.ExSkill2ParticleAnchor)
+                                local bodyYaw = player:getBodyYaw()
+                                for _ = 1, 50 do
+                                    local particleOffset = math.random()
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), anchorPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, particleOffset - 0.5, 0, 0, 0, 1, 0))):setScale(5):setColor(1, 1, 1):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, particleOffset * 0.5 - 0.25, math.random() * 0.5 + 0.25, math.random() * 0.25 - 0.125, 0, 1, 0)):setGravity(1):setLifetime(40)
+                                end
+                                if tick >= 80 or not host:isHost() then
+                                    local playerPos = player:getPos()
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), playerPos, 1, 0.25)
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), playerPos, 1, 0.5)
+                                end
+                            end
+                            if tick <= 139 or tick % 2 == 0 then
+                                local currentFrame = models.models.ex_skill_2.Stage.Ocean:getUVPixels().y / 16
+                                if currentFrame < 31 then
+                                    models.models.ex_skill_2.Stage.Ocean:setUVPixels(0, (currentFrame + 1) * 16)
+                                else
+                                    models.models.ex_skill_2.Stage.Ocean:setUVPixels()
+                                end
+                            end
+                            if (tick >= 83 and tick < 110) or (tick >= 110 and tick <= 130 and tick % 2 == 0) then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.dispenser.fail"), player:getPos(), 0.5, 5)
+                            end
+                        end;
+
+                        onPostAnimation = function (self, forcedStop)
+                            if models.models.ex_skill_2.Tuna ~= nil then
+                                models.models.ex_skill_2.Tuna:moveTo(models.models.ex_skill_2.UnderWater.ForCameraOffset)
+                            end
+                            if forcedStop and host:isHost() then
+                                events.RENDER:remove("ex_skill_2_render")
+                                for _, modelPart in ipairs({models.models.ex_skill_2.UnderWater, models.models.ex_skill_2.Flash}) do
+                                    modelPart:setVisible(false)
+                                end
+                                self.parent.compatibilityUtils.setPostEffect()
+                            elseif not forcedStop then
+                                models.models.main.Avatar:setPos(0, 8, 0)
+                            end
+                        end;
+
+                        onPostTransition = function ()
+                            models.models.ex_skill_2.Stage:setVisible(false)
+                            models.models.main.Avatar:setPos()
+                        end;
+                    };
+
+                    ---このExスキルの初期化処理が行われたかどうか
+                    ---@type boolean
+                    init = false;
                 };
 
-                ---風切り音
-                ---@type Sound|nil
-                windSound = nil;
+                {
+                    name = {
+                        en_us = "Ride & Grenade";
+                        ja_jp = "ライド＆グレネード";
+                    };
+
+                    formationType = "STRIKER";
+
+                    models = {models.models.main.Avatar.LowerBody.Bicycle};
+
+                    animations = {"main", "ex_skill_3"};
+
+                    camera = {
+                        start = {
+                            rot = vectors.vec3(60, 0, 0);
+                            pos = vectors.vec3(-71, 28, 0);
+                        };
+
+                        fin = {
+                            rot = vectors.vec3(0, 40, -25);
+                            pos = vectors.vec3(-119, 27, -938.5);
+                        };
+                    };
+
+                    callbacks = {
+                        onPreAnimation = function (self)
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED2", 40, true)
+                            self.exSkill.exSkills[3].windSound = sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.elytra.flying"), player:getPos(), 0.05, 2)
+                        end;
+
+                        onAnimationTick = function (self, tick)
+                            if tick == 40 then
+                                self.parent.faceParts:setEmotion("NORMAL", "INVERTED", "CLOSED2", 7, true)
+                            elseif tick == 27 and host:isHost() then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.1, 0.75)
+                            elseif tick == 47 then
+                                self.parent.faceParts:setEmotion("NARROW_ANGRY", "NARROW_ANGRY_INVERTED", "TRIANGLE", 35, true)
+                            elseif tick >= 58 and tick < 80 then
+                                if tick == 58 then
+                                    self.exSkill.exSkills[3].windSound:stop()
+                                    self.exSkill.exSkills[3].windSound = nil
+                                end
+                                local bicycleYaw = models.models.main.Avatar:getAnimRot().y + player:getBodyYaw() * -1
+                                local bicyclePos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.LowerBody.Bicycle)
+                                local frontWheelPos = vectors.rotateAroundAxis(bicycleYaw, 0, 0, 0.5625, 0, 1, 0):add(bicyclePos)
+                                local backWheelPos = vectors.rotateAroundAxis(bicycleYaw, 0, 0, -0.5625, 0, 1, 0):add(bicyclePos)
+                                for _ = 1, 5 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), frontWheelPos):setColor(0.973, 0.714, 0.29):setScale(0.5):setVelocity(math.random() * 0.5 - 0.25, math.random() * 0.25, math.random() * 0.5 - 0.25)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), backWheelPos):setColor(0.973, 0.714, 0.29):setScale(0.5):setVelocity(math.random() * 0.5 - 0.25, math.random() * 0.25, math.random() * 0.5 - 0.25)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), frontWheelPos):setVelocity(math.random() * 0.2 - 0.1, 0.015, math.random() * 0.2 - 0.1)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), backWheelPos):setVelocity(math.random() * 0.2 - 0.1, 0.015, math.random() * 0.2 - 0.1)
+                                end
+                                local particleBlock = world.getBlockState(bicyclePos:copy():sub(0, 0.5, 0)).id
+                                if particleBlock ~= "minecraft:air" and particleBlock ~= "minecraft:void_air" and particleBlock ~= "minecraft:cave_air" then
+                                    for _ = 1, 5 do
+                                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:block", particleBlock), frontWheelPos)
+                                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:block", particleBlock), backWheelPos)
+                                    end
+                                end
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.gravel.hit"), bicyclePos, 0.1, 0.5)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.grindstone.use"), bicyclePos, 0.1, 3)
+                            elseif tick == 82 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "TRIANGLE", 15, true)
+                                models.models.main.Avatar.LowerBody.Bicycle.Shaft.Shaft8.WaterBottle:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
+                            elseif tick == 97 then
+                                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "TRIANGLE", 4, true)
+                            elseif tick == 101 then
+                                self.parent.faceParts:setEmotion("NARROW_ANGRY", "NARROW_ANGRY_INVERTED", "CLOSED2", 26, true)
+                            elseif tick == 109 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.25, 0.5)
+                                if host:isHost() then
+                                    local windowSize = client:getWindowSize()
+                                    models.models.ex_skill_3.CameraBackground.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(38))
+                                    local backgroundPos = vectors.rotateAroundAxis(player:getBodyYaw() + 180, renderer:getCameraOffsetPivot():copy():add(0, 1.62, 0):add(client:getCameraDir():copy():scale(1.5)), 0, 1, 0):scale(16 / 0.9375)
+                                    models.models.ex_skill_3.CameraBackground:setOffsetPivot(backgroundPos)
+                                    models.models.ex_skill_3.CameraBackground.Background:setPos(backgroundPos)
+                                    if client:getVersion() >= "1.21" then
+                                        models.models.ex_skill_3.CameraBackground.Background:setRot(0, 0, renderer:getCameraRot().z)
+                                    end
+                                    models.models.ex_skill_3.CameraBackground:setVisible(true)
+                                end
+                            end
+                            if tick < 58 then
+                                models.models.main.Avatar.LowerBody.Bicycle.Wheels.Chain:setUVPixels(tick % 2, 0)
+                                self.exSkill.exSkills[3].windSound:setVolume(math.clamp(16 - client:getCameraPos():sub(self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar)):length(), 0, 8) / 160)
+                            end
+                            if tick < 69 then
+                                local bodyYaw = player:getBodyYaw()
+                                local avatarPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:cloud"), vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 8 - 4, math.random() * 4, 10, 0, 1, 0):add(avatarPos)):setColor(1, 1, 1, 0.25):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, 0, 0, -0.5, 0, 1, 0))
+                            end
+                        end;
+
+                        onPostAnimation = function ()
+                            if models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.WaterBottle ~= nil then
+                                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.WaterBottle:moveTo(models.models.main.Avatar.LowerBody.Bicycle.Shaft.Shaft8)
+                            end
+                            if host:isHost() then
+                                models.models.ex_skill_3.CameraBackground:setVisible(false)
+                            end
+                        end;
+                    };
+
+                    ---風切り音
+                    ---@type Sound|nil
+                    windSound = nil;
+                };
             };
         }
 
@@ -1425,5 +1435,6 @@ BlueArchiveCharacter = {
 
         --生徒固有初期化処理
         --Player APIにアクセスする場合は、ENTITY_INIT後に実行されるようにする必要がある。
+
     end;
 }
