@@ -46,7 +46,7 @@
 ---@field public skirt BlueArchiveCharacter.SkirtStruct スカート
 ---@field public gun BlueArchiveCharacter.GunStruct 銃
 ---@field public placementObjects BlueArchiveCharacter.PlacementObjectStruct[] 設置物
----@field public exSkill BlueArchiveCharacter.ExSkillStruct[] Exスキル
+---@field public exSkill BlueArchiveCharacter.ExSkillStruct Exスキル
 ---@field public costume BlueArchiveCharacter.CostumeStruct コスチューム
 ---@field public bubble BlueArchiveCharacter.BubbleStruct 吹き出しエモート
 ---@field public headBlock BlueArchiveCharacter.HeadBlockStruct 頭ブロック
@@ -91,11 +91,7 @@
 ---@field public callbacks? BlueArchiveCharacter.PlacementObjectCallbacksSet 設置物のコールバック関数
 
 ---@class BlueArchiveCharacter.ExSkillStruct Exスキルのデータ構造体
----@field public name BlueArchiveCharacter.LocaleStringSet Exスキルの名前
----@field public formationType BlueArchiveCharacter.FormationType この生徒の戦闘配置タイプ
----@field public models ModelPart[] Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
----@field public animations string[] Exスキルアニメーションが含まれるモデルファイル名。アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
----@field public camera BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワーク
+---@field public exSkills BlueArchiveCharacter.ExSkillDataSet[] Exスキルデータ
 ---@field public callbacks? BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数
 
 ---@class BlueArchiveCharacter.CostumeStruct コスチュームのデータ構造体
@@ -172,6 +168,17 @@
 ---@field public onRender? fun(self: BlueArchiveCharacter, placementObject: PlacementObject) 各レンダーティック毎に呼ばれる関数
 ---@field public onGround? fun(self: BlueArchiveCharacter, placementObject: PlacementObject) 設置物が接地した瞬間に呼ばれる関数
 
+---@class (exact) BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数のセット
+---@field public additionalCheckFunc? fun(self: BlueArchiveCharacter): boolean Exスキルを再生するかどうかの追加チェック関数
+
+---@class (exact) BlueArchiveCharacter.ExSkillDataSet Exスキルのデータセット
+---@field public name BlueArchiveCharacter.LocaleStringSet Exスキルの名前
+---@field public formationType BlueArchiveCharacter.FormationType この生徒の戦闘配置タイプ
+---@field public models ModelPart[] Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
+---@field public animations string[] Exスキルアニメーションが含まれるモデルファイル名。アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
+---@field public camera BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワーク
+---@field public callbacks? BlueArchiveCharacter.ExSkillAnimationCallbacks Exスキルアニメーションのコールバック関数
+
 ---@class (exact) BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワークのセット
 ---@field public start BlueArchiveCharacter.ExSkillCameraPositionSet Exスキルアニメーション開始地点
 ---@field public fin BlueArchiveCharacter.ExSkillCameraPositionSet Exスキルアニメーション終了地点
@@ -181,7 +188,7 @@
 ---@field public pos Vector3 カメラの位置
 ---@field public rot Vector3 カメラの方向
 
----@class (exact) BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数のセット
+---@class (exact) BlueArchiveCharacter.ExSkillAnimationCallbacks Exスキルアニメーションのコールバック関数のセット
 ---@field public onPreTransition? fun(self: BlueArchiveCharacter) Exスキルアニメーション開始前のトランジション開始前に実行されるコールバック関数
 ---@field public onPreAnimation? fun(self: BlueArchiveCharacter) Exスキルアニメーション開始前のトランジション終了後に実行されるコールバック関数
 ---@field public onAnimationTick? fun(self: BlueArchiveCharacter, tick: integer) Exスキルアニメーション再生中のみ実行されるティック関数
@@ -200,8 +207,9 @@
 ---@field public onArmorChange? fun(self: BlueArchiveCharacter, parts: Armor.ArmorPart, isVisible: boolean) 防具が変更された（防具が見える/見えない）ときに実行されるコールバック関数
 
 ---@class (exact) BlueArchiveCharacter.BubbleCallbacks 吹き出しエモートのコールバック関数のセット
+---@field public addtionalCheckFunc? fun(self: BlueArchiveCharacter): boolean 吹き出しエモートを表示するかどうかの追加チェック関数
 ---@field public onPlay? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, duration: integer, showInGui: boolean) 吹き出しエモートが再生された時に実行されるコールバック関数
----@field public  onStop? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, forcedStop: boolean) 吹き出しアニメーション終了時に実行されるコールバック関数
+---@field public onStop? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, forcedStop: boolean) 吹き出しアニメーション終了時に実行されるコールバック関数
 
 ---@class (exact) BlueArchiveCharacter.HeadBlockCallbacks 頭ブロックのコールバック関数のセット
 ---@field public onBeforeModelCopy? fun(self: BlueArchiveCharacter, isScriptLoaded: boolean) モデルのコピー直前に実行される関数
@@ -454,118 +462,120 @@ BlueArchiveCharacter = {
         }
 
         instance.exSkill = {
-            {
-                name = {
-                    en_us = "Let's go, Toramaru";
-                    ja_jp = "行きますよ、虎丸";
-                };
-
-                formationType = "SPECIAL";
-
-                models = {models.models.ex_skill_1.Tank, models.models.ex_skill_1.Tank.TankBody.Turret.Cannon.ShineEffect, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Book};
-
-                animations = {"main", "ex_skill_1"};
-
-                camera = {
-                    start = {
-                        rot = vectors.vec3(0, 155, 0);
-                        pos = vectors.vec3(0, 43, -28);
+            exSkills = {
+                {
+                    name = {
+                        en_us = "Let's go, Toramaru";
+                        ja_jp = "行きますよ、虎丸";
                     };
 
-                    fin = {
-                        rot = vectors.vec3(-5, 280, 0);
-                        pos = vectors.vec3(-8, 60.4, -388);
+                    formationType = "SPECIAL";
+
+                    models = {models.models.ex_skill_1.Tank, models.models.ex_skill_1.Tank.TankBody.Turret.Cannon.ShineEffect, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Book};
+
+                    animations = {"main", "ex_skill_1"};
+
+                    camera = {
+                        start = {
+                            rot = vectors.vec3(0, 155, 0);
+                            pos = vectors.vec3(0, 43, -28);
+                        };
+
+                        fin = {
+                            rot = vectors.vec3(-5, 280, 0);
+                            pos = vectors.vec3(-8, 60.4, -388);
+                        };
                     };
-                };
 
-                callbacks = {
-                    onPreAnimation = function (self)
-                        self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 13, true)
-                    end;
+                    callbacks = {
+                        onPreAnimation = function (self)
+                            self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 13, true)
+                        end;
 
-                    onAnimationTick = function (self, tick)
-                        if tick == 13 then
-                            self.parent.faceParts:setEmotion("NORMAL", "CENTER", "SMALL", 6, true)
-                            models.models.main.Avatar.Head.NoticeEffect:setVisible(true)
-                        elseif tick == 15 then
-                            models.models.main.Avatar.Head.NoticeEffect:setVisible(false)
-                        elseif tick == 17 then
-                            models.models.main.Avatar.Head.NoticeEffect:setVisible(true)
-                        elseif tick == 19 then
-                            self.parent.faceParts:setEmotion("NORMAL", "CENTER", "SIGH", 5, true)
-                            models.models.main.Avatar.Head.NoticeEffect:setVisible(false)
-                        elseif tick == 22 then
-                            local bodyYaw = player:getBodyYaw() * -1 - 60
-                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Book):add(vectors.rotateAroundAxis(bodyYaw, -0.25, 0.2, 0.1, 0, 1, 0))):setScale(0.5):setVelocity(vectors.rotateAroundAxis(bodyYaw, -0.1, 0.05, 0, 0, 1, 0)):setColor(1, 1, 0.608):setGravity(0.4)
-                        elseif tick == 24 then
-                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMALL", 10, true)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.chiseled_bookshelf.insert"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Book), 1, 1)
-                        elseif tick == 26 then
-                            local bodyYaw = player:getBodyYaw() * -1 - 60
-                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:snowflake"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head.FaceParts.Mouth):add(vectors.rotateAroundAxis(bodyYaw, 0, 0, 0.2, 0, 1, 0))):setScale(0.5):setVelocity(vectors.rotateAroundAxis(bodyYaw, 0, -0.01, 0.05, 0, 1, 0)):setGravity(0):setLifetime(8)
-                        elseif tick == 34 then
-                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", 3, true)
-                        elseif tick == 37 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "ANXIOUS", 35, true)
-                        elseif tick == 40 then
-                            self.exSkill[1].engineSound = sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.minecart.riding"), player:getPos(), 0.25, 0.5)
-                        elseif tick == 62 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 1, 1.5)
-                        elseif tick == 72 then
-                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", 6, true)
-                        elseif tick == 78 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 19, true)
-                        elseif tick == 97 then
-                            self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 16, true)
-                        end
-                        if (tick >= 51 and tick < 65) or (tick >= 74 and tick < 77) then
-                            for _, modelPart in ipairs({models.models.ex_skill_1.Tank.RightCrawler.ExSkill1ParticleAnchor1, models.models.ex_skill_1.Tank.LeftCrawler.ExSkill1ParticleAnchor2}) do
-                                local anchorPos = self.parent.modelUtils.getModelWorldPos(modelPart)
-                                for _ = 1, 5 do
-                                    local offsetPos = vectors.vec3(math.random() - 0.5, 0, math.random() - 0.5)
-                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos:copy():add(offsetPos)):setVelocity(offsetPos:copy():scale(0.1):add(0, 0.05, 0)):setColor(0.98, 0.784, 0.533)
+                        onAnimationTick = function (self, tick)
+                            if tick == 13 then
+                                self.parent.faceParts:setEmotion("NORMAL", "CENTER", "SMALL", 6, true)
+                                models.models.main.Avatar.Head.NoticeEffect:setVisible(true)
+                            elseif tick == 15 then
+                                models.models.main.Avatar.Head.NoticeEffect:setVisible(false)
+                            elseif tick == 17 then
+                                models.models.main.Avatar.Head.NoticeEffect:setVisible(true)
+                            elseif tick == 19 then
+                                self.parent.faceParts:setEmotion("NORMAL", "CENTER", "SIGH", 5, true)
+                                models.models.main.Avatar.Head.NoticeEffect:setVisible(false)
+                            elseif tick == 22 then
+                                local bodyYaw = player:getBodyYaw() * -1 - 60
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Book):add(vectors.rotateAroundAxis(bodyYaw, -0.25, 0.2, 0.1, 0, 1, 0))):setScale(0.5):setVelocity(vectors.rotateAroundAxis(bodyYaw, -0.1, 0.05, 0, 0, 1, 0)):setColor(1, 1, 0.608):setGravity(0.4)
+                            elseif tick == 24 then
+                                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMALL", 10, true)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.chiseled_bookshelf.insert"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Book), 1, 1)
+                            elseif tick == 26 then
+                                local bodyYaw = player:getBodyYaw() * -1 - 60
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:snowflake"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head.FaceParts.Mouth):add(vectors.rotateAroundAxis(bodyYaw, 0, 0, 0.2, 0, 1, 0))):setScale(0.5):setVelocity(vectors.rotateAroundAxis(bodyYaw, 0, -0.01, 0.05, 0, 1, 0)):setGravity(0):setLifetime(8)
+                            elseif tick == 34 then
+                                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", 3, true)
+                            elseif tick == 37 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "ANXIOUS", 35, true)
+                            elseif tick == 40 then
+                                self.exSkill.exSkills[1].engineSound = sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.minecart.riding"), player:getPos(), 0.25, 0.5)
+                            elseif tick == 62 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 1, 1.5)
+                            elseif tick == 72 then
+                                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", 6, true)
+                            elseif tick == 78 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 19, true)
+                            elseif tick == 97 then
+                                self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 16, true)
+                            end
+                            if (tick >= 51 and tick < 65) or (tick >= 74 and tick < 77) then
+                                for _, modelPart in ipairs({models.models.ex_skill_1.Tank.RightCrawler.ExSkill1ParticleAnchor1, models.models.ex_skill_1.Tank.LeftCrawler.ExSkill1ParticleAnchor2}) do
+                                    local anchorPos = self.parent.modelUtils.getModelWorldPos(modelPart)
+                                    for _ = 1, 5 do
+                                        local offsetPos = vectors.vec3(math.random() - 0.5, 0, math.random() - 0.5)
+                                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos:copy():add(offsetPos)):setVelocity(offsetPos:copy():scale(0.1):add(0, 0.05, 0)):setColor(0.98, 0.784, 0.533)
+                                    end
                                 end
                             end
-                        end
-                        if (tick >= 51 and tick < 65) or tick >= 74 then
-                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Tank)
-                            for _ = 1, 5 do
-                                local offsetPos = vectors.vec3(math.random() * 7 - 3.5, 0, math.random() * 7 - 3.5)
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), anchorPos:copy():add(offsetPos)):setScale(5):setVelocity(offsetPos:copy():scale(0.01):add(0, 0.025, 0))
+                            if (tick >= 51 and tick < 65) or tick >= 74 then
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Tank)
+                                for _ = 1, 5 do
+                                    local offsetPos = vectors.vec3(math.random() * 7 - 3.5, 0, math.random() * 7 - 3.5)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), anchorPos:copy():add(offsetPos)):setScale(5):setVelocity(offsetPos:copy():scale(0.01):add(0, 0.025, 0))
+                                end
                             end
-                        end
-                        if tick >= 51 and tick < 65 and tick % 2 == 0 then
-                            for _, modelPart in ipairs({models.models.ex_skill_1.Tank.RightCrawler.RightCrawlerBelt, models.models.ex_skill_1.Tank.LeftCrawler.LeftCrawlerBelt}) do
-                                modelPart:setUVPixels(0, (tick % 4) / 2)
+                            if tick >= 51 and tick < 65 and tick % 2 == 0 then
+                                for _, modelPart in ipairs({models.models.ex_skill_1.Tank.RightCrawler.RightCrawlerBelt, models.models.ex_skill_1.Tank.LeftCrawler.LeftCrawlerBelt}) do
+                                    modelPart:setUVPixels(0, (tick % 4) / 2)
+                                end
                             end
-                        end
-                        if tick >= 74 then
-                            for _, modelPart in ipairs({models.models.ex_skill_1.Tank.RightCrawler.RightCrawlerBelt, models.models.ex_skill_1.Tank.LeftCrawler.LeftCrawlerBelt}) do
-                                modelPart:setUVPixels(0, (tick % 2))
+                            if tick >= 74 then
+                                for _, modelPart in ipairs({models.models.ex_skill_1.Tank.RightCrawler.RightCrawlerBelt, models.models.ex_skill_1.Tank.LeftCrawler.LeftCrawlerBelt}) do
+                                    modelPart:setUVPixels(0, (tick % 2))
+                                end
                             end
-                        end
-                        if tick > 40 then
-                            self.exSkill[1].engineSound:setPos(self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Tank))
-                        end
-                        if tick > 73 then
-                            if tick % 2 == 0 then
-                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.piston.extend"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Tank), 0.5, 0.2 + (tick - 73) / 370)
-                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.piston.contract"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Tank), 0.5, 0.2 + (tick - 73) / 370)
+                            if tick > 40 then
+                                self.exSkill.exSkills[1].engineSound:setPos(self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Tank))
                             end
-                        end
-                    end;
+                            if tick > 73 then
+                                if tick % 2 == 0 then
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.piston.extend"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Tank), 0.5, 0.2 + (tick - 73) / 370)
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.piston.contract"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Tank), 0.5, 0.2 + (tick - 73) / 370)
+                                end
+                            end
+                        end;
 
-                    onPostAnimation = function (self, forcedStop)
-                        self.exSkill[1].engineSound = nil
-                        if forcedStop then
-                            models.models.main.Avatar.Head.NoticeEffect:setVisible(false)
-                        end
-                    end;
+                        onPostAnimation = function (self, forcedStop)
+                            self.exSkill.exSkills[1].engineSound = nil
+                            if forcedStop then
+                                models.models.main.Avatar.Head.NoticeEffect:setVisible(false)
+                            end
+                        end;
+                    };
+
+                    ---戦車のエンジン音のインスタンス
+                    ---@type Sound|nil
+                    engineSound = nil;
                 };
-
-                ---戦車のエンジン音のインスタンス
-                ---@type Sound|nil
-                engineSound = nil;
             };
         }
 
