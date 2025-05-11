@@ -41,7 +41,7 @@ ExSkill = {
         AvatarModule.init(self)
 
         if host:isHost() then
-            for _, exSkill in ipairs(self.parent.characterData.exSkill) do
+            for _, exSkill in ipairs(self.parent.characterData.exSkill.exSkills) do
                 local offset = (exSkill.camera.fixMode ~= nil and exSkill.camera.fixMode) and 1 or 0.9375
                 exSkill.camera.start.pos:mul(-1, 1, 1):scale(1 / 16 * offset)
                 exSkill.camera.fin.pos:mul(-1, 1, 1):scale(1 / 16 *  offset)
@@ -107,7 +107,12 @@ ExSkill = {
     ---@param self ExSkill
     ---@return boolean canPlayAnimation Exスキルアニメーションが再生可能かどうか
     canPlayAnimation = function (self)
-        return player:getPose() == "STANDING" and not player:isMoving() and self.bodyYaw[1] == self.bodyYaw[2] and player:isOnGround() and not player:isInWater() and not player:isInLava() and player:getFrozenTicks() == 0 and not renderer:isFirstPerson() and player:getSwingArm() == nil and player:getActiveItem().id == "minecraft:air" and not self.parent.costume.isChangingCostume and self.parent.syupogakiDance.danceState == "NOT_STANDBY"
+        local firstCheck = player:getPose() == "STANDING" and not player:isMoving() and self.bodyYaw[1] == self.bodyYaw[2] and player:isOnGround() and not player:isInWater() and not player:isInLava() and player:getFrozenTicks() == 0 and not renderer:isFirstPerson() and player:getSwingArm() == nil and player:getActiveItem().id == "minecraft:air" and not self.parent.costume.isChangingCostume
+        if self.parent.characterData.exSkill.callbacks ~= nil and self.parent.characterData.exSkill.callbacks.additionalCheckFunc ~= nil then
+            return firstCheck and self.parent.characterData.exSkill.callbacks.additionalCheckFunc(self.parent.characterData)
+        else
+            return firstCheck
+        end
     end;
 
     ---Exスキルのアニメーションの前後のカメラのトランジションを行う関数
@@ -171,11 +176,11 @@ ExSkill = {
                     local targetCameraPos = vectors.vec3()
                     local targetCameraRot = vectors.vec3()
                     if direction == "PRE" then
-                        targetCameraPos = vectors.rotateAroundAxis(self.bodyYaw[2] * -1 + 180, self.parent.characterData.exSkill[self.exSkillIndex].camera.start.pos, 0, 1):add(0, -1.62)
-                        targetCameraRot = self.parent.characterData.exSkill[self.exSkillIndex].camera.start.rot:copy():add(0, self.bodyYaw[2], 0)
+                        targetCameraPos = vectors.rotateAroundAxis(self.bodyYaw[2] * -1 + 180, self.parent.characterData.exSkill.exSkills[self.exSkillIndex].camera.start.pos, 0, 1):add(0, -1.62)
+                        targetCameraRot = self.parent.characterData.exSkill.exSkills[self.exSkillIndex].camera.start.rot:copy():add(0, self.bodyYaw[2], 0)
                     else
-                        targetCameraPos = vectors.rotateAroundAxis(self.bodyYaw[2] * -1 + 180, self.parent.characterData.exSkill[self.exSkillIndex].camera.fin.pos, 0, 1):add(0, -1.62)
-                        targetCameraRot = self.parent.characterData.exSkill[self.exSkillIndex].camera.fin.rot:copy():add(0, self.bodyYaw[2], 0)
+                        targetCameraPos = vectors.rotateAroundAxis(self.bodyYaw[2] * -1 + 180, self.parent.characterData.exSkill.exSkills[self.exSkillIndex].camera.fin.pos, 0, 1):add(0, -1.62)
+                        targetCameraRot = self.parent.characterData.exSkill.exSkills[self.exSkillIndex].camera.fin.rot:copy():add(0, self.bodyYaw[2], 0)
                     end
                     if math.abs(cameraRot.y - targetCameraRot.y) >= 180 then
                         if cameraRot.y < targetCameraRot.y then
@@ -254,13 +259,13 @@ ExSkill = {
             renderer:setFOV(70 / client:getFOV())
             renderer:setRenderHUD(false)
             self.parent.cameraManager:setCameraCollisionDenial(true)
-            models.models.ex_skill_frame.Gui:setColor(self.parent.characterData.exSkill[self.exSkillIndex].formationType == "STRIKER" and vectors.vec3(1, 0.75, 0.75) or vectors.vec3(0.75, 1, 1))
+            models.models.ex_skill_frame.Gui:setColor(self.parent.characterData.exSkill.exSkills[self.exSkillIndex].formationType == "STRIKER" and vectors.vec3(1, 0.75, 0.75) or vectors.vec3(0.75, 1, 1))
             models.models.ex_skill_frame.Gui.FrameBar:setScale(1, client:getScaledWindowSize().y * math.sqrt(2) / 16 + 1, 1)
         end
         self.parent.bubble:stop()
         sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 5, 2)
-        if self.parent.characterData.exSkill[self.exSkillIndex].callbacks ~= nil and self.parent.characterData.exSkill[self.exSkillIndex].callbacks.onPreTransition ~= nil then
-            self.parent.characterData.exSkill[self.exSkillIndex].callbacks.onPreTransition(self.parent.characterData)
+        if self.parent.characterData.exSkill.exSkills[self.exSkillIndex].callbacks ~= nil and self.parent.characterData.exSkill.exSkills[self.exSkillIndex].callbacks.onPreTransition ~= nil then
+            self.parent.characterData.exSkill.exSkills[self.exSkillIndex].callbacks.onPreTransition(self.parent.characterData)
         end
 
         events.TICK:register(function ()
@@ -274,17 +279,17 @@ ExSkill = {
             for _, itemModel in ipairs({vanilla_model.RIGHT_ITEM, vanilla_model.LEFT_ITEM}) do
                 itemModel:setVisible(false)
             end
-            for _, modelPart in ipairs(self.parent.characterData.exSkill[self.exSkillIndex].models) do
+            for _, modelPart in ipairs(self.parent.characterData.exSkill.exSkills[self.exSkillIndex].models) do
                 modelPart:setVisible(true)
             end
-            for _, modelPart in ipairs(self.parent.characterData.exSkill[self.exSkillIndex].animations) do
+            for _, modelPart in ipairs(self.parent.characterData.exSkill.exSkills[self.exSkillIndex].animations) do
                 animations["models."..modelPart]["ex_skill_"..self.exSkillIndex]:play()
             end
             if host:isHost() then
                 self.parent.cameraManager:setThirdPersonCameraDistance(0)
             end
-            if self.parent.characterData.exSkill[self.exSkillIndex].callbacks ~= nil and self.parent.characterData.exSkill[self.exSkillIndex].callbacks.onPreAnimation ~= nil then
-                self.parent.characterData.exSkill[self.exSkillIndex].callbacks.onPreAnimation(self.parent.characterData)
+            if self.parent.characterData.exSkill.exSkills[self.exSkillIndex].callbacks ~= nil and self.parent.characterData.exSkill.exSkills[self.exSkillIndex].callbacks.onPreAnimation ~= nil then
+                self.parent.characterData.exSkill.exSkills[self.exSkillIndex].callbacks.onPreAnimation(self.parent.characterData)
             end
 
             events.TICK:register(function ()
@@ -292,8 +297,8 @@ ExSkill = {
                     if self.animationCount == self.animationLength - 1 then
                         self:stop()
                     elseif self:canPlayAnimation() and animations["models.main"]["ex_skill_"..self.exSkillIndex]:isPlaying() then
-                        if self.parent.characterData.exSkill[self.exSkillIndex].callbacks ~= nil and self.parent.characterData.exSkill[self.exSkillIndex].callbacks.onAnimationTick ~= nil then
-                            self.parent.characterData.exSkill[self.exSkillIndex].callbacks.onAnimationTick(self.parent.characterData, self.animationCount)
+                        if self.parent.characterData.exSkill.exSkills[self.exSkillIndex].callbacks ~= nil and self.parent.characterData.exSkill.exSkills[self.exSkillIndex].callbacks.onAnimationTick ~= nil then
+                            self.parent.characterData.exSkill.exSkills[self.exSkillIndex].callbacks.onAnimationTick(self.parent.characterData, self.animationCount)
                         end
                         self.animationCount = self.animationCount > -1 and self.animationCount + 1 or self.animationCount
                     end
@@ -315,7 +320,7 @@ ExSkill = {
             if host:isHost() then
                 events.RENDER:register(function ()
                     if not client:isPaused() then
-                        self.parent.cameraManager.setCameraPivot(vectors.rotateAroundAxis(self.bodyYaw[2] * -1 + 180, models.models.main.CameraAnchor:getAnimPos():scale(1 / 16 * ((self.parent.characterData.exSkill[self.exSkillIndex].camera.fixMode ~= nil and self.parent.characterData.exSkill[self.exSkillIndex].camera.fixMode) and 1 or 0.9375)), 0, 1, 0):add(0, -1.62, 0))
+                        self.parent.cameraManager.setCameraPivot(vectors.rotateAroundAxis(self.bodyYaw[2] * -1 + 180, models.models.main.CameraAnchor:getAnimPos():scale(1 / 16 * ((self.parent.characterData.exSkill.exSkills[self.exSkillIndex].camera.fixMode ~= nil and self.parent.characterData.exSkill.exSkills[self.exSkillIndex].camera.fixMode) and 1 or 0.9375)), 0, 1, 0):add(0, -1.62, 0))
                         self.parent.cameraManager.setCameraRot(models.models.main.CameraAnchor:getAnimRot():scale(-1):add(0, self.bodyYaw[2], 0))
                     end
                 end, "ex_skill_animation_render")
@@ -337,17 +342,17 @@ ExSkill = {
         for _, itemModel in ipairs({vanilla_model.RIGHT_ITEM, vanilla_model.LEFT_ITEM}) do
             itemModel:setVisible(true)
         end
-        for _, modelPart in ipairs(self.parent.characterData.exSkill[self.exSkillIndex].models) do
+        for _, modelPart in ipairs(self.parent.characterData.exSkill.exSkills[self.exSkillIndex].models) do
             modelPart:setVisible(false)
         end
-        for _, modelPart in ipairs(self.parent.characterData.exSkill[self.exSkillIndex].animations) do
+        for _, modelPart in ipairs(self.parent.characterData.exSkill.exSkills[self.exSkillIndex].animations) do
             animations["models."..modelPart]["ex_skill_"..self.exSkillIndex]:stop()
         end
         self.parent.physics:enable()
         renderer:setFOV()
         self.animationCount = -1
-        if self.parent.characterData.exSkill[self.exSkillIndex].callbacks ~= nil and self.parent.characterData.exSkill[self.exSkillIndex].callbacks.onPostAnimation ~= nil then
-            self.parent.characterData.exSkill[self.exSkillIndex].callbacks.onPostAnimation(self.parent.characterData, false)
+        if self.parent.characterData.exSkill.exSkills[self.exSkillIndex].callbacks ~= nil and self.parent.characterData.exSkill.exSkills[self.exSkillIndex].callbacks.onPostAnimation ~= nil then
+            self.parent.characterData.exSkill.exSkills[self.exSkillIndex].callbacks.onPostAnimation(self.parent.characterData, false)
         end
         self:transition("POST", function ()
             events.TICK:remove("ex_skill_tick")
@@ -358,8 +363,8 @@ ExSkill = {
                 self.parent.cameraManager:setCameraCollisionDenial(false)
                 renderer:setRenderHUD(true)
             end
-            if self.parent.characterData.exSkill[self.exSkillIndex].callbacks ~= nil and self.parent.characterData.exSkill[self.exSkillIndex].callbacks.onPostTransition ~= nil then
-                self.parent.characterData.exSkill[self.exSkillIndex].callbacks.onPostTransition(self.parent.characterData, false)
+            if self.parent.characterData.exSkill.exSkills[self.exSkillIndex].callbacks ~= nil and self.parent.characterData.exSkill.exSkills[self.exSkillIndex].callbacks.onPostTransition ~= nil then
+                self.parent.characterData.exSkill.exSkills[self.exSkillIndex].callbacks.onPostTransition(self.parent.characterData, false)
             end
         end)
     end;
@@ -389,21 +394,21 @@ ExSkill = {
         for _, itemModel in ipairs({vanilla_model.RIGHT_ITEM, vanilla_model.LEFT_ITEM}) do
             itemModel:setVisible(true)
         end
-        for _, modelPart in ipairs(self.parent.characterData.exSkill[self.exSkillIndex].models) do
+        for _, modelPart in ipairs(self.parent.characterData.exSkill.exSkills[self.exSkillIndex].models) do
             modelPart:setVisible(false)
         end
-        for _, modelPart in ipairs(self.parent.characterData.exSkill[self.exSkillIndex].animations) do
+        for _, modelPart in ipairs(self.parent.characterData.exSkill.exSkills[self.exSkillIndex].animations) do
             animations["models."..modelPart]["ex_skill_"..self.exSkillIndex]:stop()
         end
         for _, eventName in ipairs({"ex_skill_tick", "ex_skill_animation_tick"}) do
             events.TICK:remove(eventName)
         end
         self.parent.physics:enable()
-        if self.animationCount >= 0 and self.parent.characterData.exSkill[self.exSkillIndex].callbacks ~= nil and self.parent.characterData.exSkill[self.exSkillIndex].callbacks.onPostAnimation ~= nil then
-            self.parent.characterData.exSkill[self.exSkillIndex].callbacks.onPostAnimation(self.parent.characterData, true)
+        if self.animationCount >= 0 and self.parent.characterData.exSkill.exSkills[self.exSkillIndex].callbacks ~= nil and self.parent.characterData.exSkill.exSkills[self.exSkillIndex].callbacks.onPostAnimation ~= nil then
+            self.parent.characterData.exSkill.exSkills[self.exSkillIndex].callbacks.onPostAnimation(self.parent.characterData, true)
         end
-        if self.parent.characterData.exSkill[self.exSkillIndex].callbacks ~= nil and self.parent.characterData.exSkill[self.exSkillIndex].callbacks.onPostTransition ~= nil then
-            self.parent.characterData.exSkill[self.exSkillIndex].callbacks.onPostTransition(self.parent.characterData, true)
+        if self.parent.characterData.exSkill.exSkills[self.exSkillIndex].callbacks ~= nil and self.parent.characterData.exSkill.exSkills[self.exSkillIndex].callbacks.onPostTransition ~= nil then
+            self.parent.characterData.exSkill.exSkills[self.exSkillIndex].callbacks.onPostTransition(self.parent.characterData, true)
         end
         self.animationCount = -1
         self.transitionCount = 0

@@ -40,7 +40,7 @@
 ---@field public skirt BlueArchiveCharacter.SkirtStruct スカート
 ---@field public gun BlueArchiveCharacter.GunStruct 銃
 ---@field public placementObjects BlueArchiveCharacter.PlacementObjectStruct[] 設置物
----@field public exSkill BlueArchiveCharacter.ExSkillStruct[] Exスキル
+---@field public exSkill BlueArchiveCharacter.ExSkillStruct Exスキル
 ---@field public costume BlueArchiveCharacter.CostumeStruct コスチューム
 ---@field public bubble BlueArchiveCharacter.BubbleStruct 吹き出しエモート
 ---@field public headBlock BlueArchiveCharacter.HeadBlockStruct 頭ブロック
@@ -85,11 +85,7 @@
 ---@field public callbacks? BlueArchiveCharacter.PlacementObjectCallbacksSet 設置物のコールバック関数
 
 ---@class BlueArchiveCharacter.ExSkillStruct Exスキルのデータ構造体
----@field public name BlueArchiveCharacter.LocaleStringSet Exスキルの名前
----@field public formationType BlueArchiveCharacter.FormationType この生徒の戦闘配置タイプ
----@field public models ModelPart[] Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
----@field public animations string[] Exスキルアニメーションが含まれるモデルファイル名。アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
----@field public camera BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワーク
+---@field public exSkills BlueArchiveCharacter.ExSkillDataSet[] Exスキルデータ
 ---@field public callbacks? BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数
 
 ---@class BlueArchiveCharacter.CostumeStruct コスチュームのデータ構造体
@@ -166,6 +162,17 @@
 ---@field public onRender? fun(self: BlueArchiveCharacter, placementObject: PlacementObject) 各レンダーティック毎に呼ばれる関数
 ---@field public onGround? fun(self: BlueArchiveCharacter, placementObject: PlacementObject) 設置物が接地した瞬間に呼ばれる関数
 
+---@class (exact) BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数のセット
+---@field public additionalCheckFunc? fun(self: BlueArchiveCharacter): boolean Exスキルを再生するかどうかの追加チェック関数
+
+---@class (exact) BlueArchiveCharacter.ExSkillDataSet Exスキルのデータセット
+---@field public name BlueArchiveCharacter.LocaleStringSet Exスキルの名前
+---@field public formationType BlueArchiveCharacter.FormationType この生徒の戦闘配置タイプ
+---@field public models ModelPart[] Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
+---@field public animations string[] Exスキルアニメーションが含まれるモデルファイル名。アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
+---@field public camera BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワーク
+---@field public callbacks? BlueArchiveCharacter.ExSkillAnimationCallbacks Exスキルアニメーションのコールバック関数
+
 ---@class (exact) BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワークのセット
 ---@field public start BlueArchiveCharacter.ExSkillCameraPositionSet Exスキルアニメーション開始地点
 ---@field public fin BlueArchiveCharacter.ExSkillCameraPositionSet Exスキルアニメーション終了地点
@@ -175,7 +182,7 @@
 ---@field public pos Vector3 カメラの位置
 ---@field public rot Vector3 カメラの方向
 
----@class (exact) BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数のセット
+---@class (exact) BlueArchiveCharacter.ExSkillAnimationCallbacks Exスキルアニメーションのコールバック関数のセット
 ---@field public onPreTransition? fun(self: BlueArchiveCharacter) Exスキルアニメーション開始前のトランジション開始前に実行されるコールバック関数
 ---@field public onPreAnimation? fun(self: BlueArchiveCharacter) Exスキルアニメーション開始前のトランジション終了後に実行されるコールバック関数
 ---@field public onAnimationTick? fun(self: BlueArchiveCharacter, tick: integer) Exスキルアニメーション再生中のみ実行されるティック関数
@@ -194,8 +201,9 @@
 ---@field public onArmorChange? fun(self: BlueArchiveCharacter, parts: Armor.ArmorPart, isVisible: boolean) 防具が変更された（防具が見える/見えない）ときに実行されるコールバック関数
 
 ---@class (exact) BlueArchiveCharacter.BubbleCallbacks 吹き出しエモートのコールバック関数のセット
+---@field public addtionalCheckFunc? fun(self: BlueArchiveCharacter): boolean 吹き出しエモートを表示するかどうかの追加チェック関数
 ---@field public onPlay? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, duration: integer, showInGui: boolean) 吹き出しエモートが再生された時に実行されるコールバック関数
----@field public  onStop? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, forcedStop: boolean) 吹き出しアニメーション終了時に実行されるコールバック関数
+---@field public onStop? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, forcedStop: boolean) 吹き出しアニメーション終了時に実行されるコールバック関数
 
 ---@class (exact) BlueArchiveCharacter.HeadBlockCallbacks 頭ブロックのコールバック関数のセット
 ---@field public onBeforeModelCopy? fun(self: BlueArchiveCharacter, isScriptLoaded: boolean) モデルのコピー直前に実行される関数
@@ -368,231 +376,233 @@ BlueArchiveCharacter = {
         }
 
         instance.exSkill = {
-            {
-                name = {
-                    en_us = "Ti~cket~ check";
-                    ja_jp = "にゅ～きょ～の時間";
-                };
-
-                formationType = "STRIKER";
-
-                models = {models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Puncher, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket, models.models.ex_skill_1.Gui.TransitionArea, models.models.ex_skill_1.PopEffectCenter, models.models.ex_skill_1.ShineEffect};
-
-                animations = {"main", "ex_skill_1"};
-
-                camera = {
-                    start = {
-                        rot = vectors.vec3(0, 180, 0);
-                        pos = vectors.vec3(-61, 32, -77);
+            exSkills = {
+                {
+                    name = {
+                        en_us = "Ti~cket~ check";
+                        ja_jp = "にゅ～きょ～の時間";
                     };
 
-                    fin = {
-                        rot = vectors.vec3(-10, 135, 5);
-                        pos = vectors.vec3(16, 25, -8.25);
+                    formationType = "STRIKER";
+
+                    models = {models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Puncher, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket, models.models.ex_skill_1.Gui.TransitionArea, models.models.ex_skill_1.PopEffectCenter, models.models.ex_skill_1.ShineEffect};
+
+                    animations = {"main", "ex_skill_1"};
+
+                    camera = {
+                        start = {
+                            rot = vectors.vec3(0, 180, 0);
+                            pos = vectors.vec3(-61, 32, -77);
+                        };
+
+                        fin = {
+                            rot = vectors.vec3(-10, 135, 5);
+                            pos = vectors.vec3(16, 25, -8.25);
+                        };
                     };
-                };
 
-                callbacks = {
-                    onPreAnimation = function (self)
-                        if not self.exSkill[1].didInit then
-                            if host:isHost() then
+                    callbacks = {
+                        onPreAnimation = function (self)
+                            if not self.exSkill.exSkills[1].didInit then
+                                if host:isHost() then
+                                    for i = 1, 8 do
+                                        models.models.ex_skill_1.Gui.TransitionArea:addChild(models.models.ex_skill_1.TransitionPart.TransitionPartLtoR:copy("TransitionPartLtoR"..i))
+                                        models.models.ex_skill_1.Gui.TransitionArea["TransitionPartLtoR"..i]:setRot(0, 0, -15)
+                                        models.models.ex_skill_1.Gui.TransitionArea["TransitionPartLtoR"..i]:setVisible(true)
+                                        models.models.ex_skill_1.Gui.TransitionArea:addChild(models.models.ex_skill_1.TransitionPart.TransitionPartRtoL:copy("TransitionPartRtoL"..i))
+                                        models.models.ex_skill_1.Gui.TransitionArea["TransitionPartRtoL"..i]:setRot(0, 0, -15)
+                                        models.models.ex_skill_1.Gui.TransitionArea["TransitionPartRtoL"..i]:setVisible(true)
+                                    end
+                                end
+                                ---@diagnostic disable-next-line: discard-returns
+                                models.models.ex_skill_1:newPart("VillagerArea")
                                 for i = 1, 8 do
-                                    models.models.ex_skill_1.Gui.TransitionArea:addChild(models.models.ex_skill_1.TransitionPart.TransitionPartLtoR:copy("TransitionPartLtoR"..i))
-                                    models.models.ex_skill_1.Gui.TransitionArea["TransitionPartLtoR"..i]:setRot(0, 0, -15)
-                                    models.models.ex_skill_1.Gui.TransitionArea["TransitionPartLtoR"..i]:setVisible(true)
-                                    models.models.ex_skill_1.Gui.TransitionArea:addChild(models.models.ex_skill_1.TransitionPart.TransitionPartRtoL:copy("TransitionPartRtoL"..i))
-                                    models.models.ex_skill_1.Gui.TransitionArea["TransitionPartRtoL"..i]:setRot(0, 0, -15)
-                                    models.models.ex_skill_1.Gui.TransitionArea["TransitionPartRtoL"..i]:setVisible(true)
+                                    models.models.ex_skill_1.VillagerArea:newEntity("ex_skill_1_villager_"..i):setNbt("minecraft:villager", "{}")
+                                end
+                                models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_1"):setPos(12, 0, -18):setRot(0, -30, 0)
+                                models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_2"):setPos(-12, 0, -18):setRot(0, 30, 0)
+                                models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_3"):setPos(64, 0, -64):setRot(0, -45, 0)
+                                models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_4"):setPos(28, 0, -64):setRot(0, -25, 0)
+                                models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_5"):setPos(48, 0, -40):setRot(0, -50, 0)
+                                models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_6"):setPos(24, 0, -40):setRot(0, -35, 0)
+                                models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_7"):setPos(0, 0, -64):setRot(0, 0, 0)
+                                models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_8"):setPos(-24, 0, -40):setRot(0, 35, 0)
+                                for i = 1, 2 do
+                                    models.models.ex_skill_1.VillagerArea:addChild(models.models.ex_skill_1.ShockEffect:copy("ShockEffect"..i))
+                                    models.models.ex_skill_1.VillagerArea["ShockEffect"..i]:setVisible(true)
+                                end
+                                models.models.ex_skill_1.VillagerArea.ShockEffect1:setPos(-9, 29, -22)
+                                models.models.ex_skill_1.VillagerArea.ShockEffect1:setRot(0, -60, 0)
+                                models.models.ex_skill_1.VillagerArea.ShockEffect2:setPos(62, 29, -64)
+                                models.models.ex_skill_1.VillagerArea.ShockEffect2:setRot(0, 45, 0)
+                                for i = 1, 2 do
+                                    models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Stamp1["Stamp1ShineEffect"..i]:setColor(0.996, 1, 0.663)
+                                    models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Stamp2["Stamp2ShineEffect"..i]:setColor(1, 0.698, 0.624)
+                                    models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Stamp3["Stamp3ShineEffect"..i]:setColor(0.714, 0.996, 0.812)
+                                    models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Stamp4["Stamp4ShineEffect"..i]:setColor(0.714, 0.996, 0.812)
+                                    models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Stamp6["Stamp6ShineEffect"..i]:setColor(1, 0.769, 0.988)
+                                    models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Stamp7["Stamp7ShineEffect"..i]:setColor(1, 0.635, 0.996)
+                                end
+                                self.exSkill.exSkills[1].didInit = true
+                            else
+                                models.models.ex_skill_1.VillagerArea:setVisible(true)
+                            end
+                            if host:isHost() then
+                                local windowSize = client:getScaledWindowSize()
+                                models.models.ex_skill_1.Gui.TransitionArea:setPos(windowSize:copy():scale(-0.5):augmented(0))
+                                local height = math.sqrt(windowSize.y ^ 2 + (math.tan(math.rad(15)) * windowSize.y) ^ 2) + math.tan(math.rad(15)) * 64
+                                local halfWidth = windowSize.x / 2 + math.tan(math.rad(15)) * windowSize.y + 1
+                                for i = 1, 8 do
+                                    models.models.ex_skill_1.Gui.TransitionArea["TransitionPartLtoR"..i]:setPos(halfWidth, 0, 0)
+                                    models.models.ex_skill_1.Gui.TransitionArea["TransitionPartLtoR"..i]:setScale(16, height, 1)
+                                    models.models.ex_skill_1.Gui.TransitionArea["TransitionPartRtoL"..i]:setPos(halfWidth * -1, 0, 0)
+                                    models.models.ex_skill_1.Gui.TransitionArea["TransitionPartRtoL"..i]:setScale(16, height, 1)
                                 end
                             end
-                            ---@diagnostic disable-next-line: discard-returns
-                            models.models.ex_skill_1:newPart("VillagerArea")
+                            local villagerTypes = client.getRegistry("minecraft:villager_type")
+                            local villagerProfessions = client.getRegistry("minecraft:villager_profession")
                             for i = 1, 8 do
-                                models.models.ex_skill_1.VillagerArea:newEntity("ex_skill_1_villager_"..i):setNbt("minecraft:villager", "{}")
+                                models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_"..i):setNbt("minecraft:villager", "{\"VillagerData\": {\"level\": "..math.random(1, 5)..", \"profession\": \""..villagerProfessions[math.random(1, #villagerProfessions)].."\", \"type\": \""..villagerTypes[math.random(1, #villagerTypes)].."\"}}")
                             end
-                            models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_1"):setPos(12, 0, -18):setRot(0, -30, 0)
-                            models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_2"):setPos(-12, 0, -18):setRot(0, 30, 0)
-                            models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_3"):setPos(64, 0, -64):setRot(0, -45, 0)
-                            models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_4"):setPos(28, 0, -64):setRot(0, -25, 0)
-                            models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_5"):setPos(48, 0, -40):setRot(0, -50, 0)
-                            models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_6"):setPos(24, 0, -40):setRot(0, -35, 0)
-                            models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_7"):setPos(0, 0, -64):setRot(0, 0, 0)
-                            models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_8"):setPos(-24, 0, -40):setRot(0, 35, 0)
-                            for i = 1, 2 do
-                                models.models.ex_skill_1.VillagerArea:addChild(models.models.ex_skill_1.ShockEffect:copy("ShockEffect"..i))
-                                models.models.ex_skill_1.VillagerArea["ShockEffect"..i]:setVisible(true)
+                            for i = 15, 54 do
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket["Hole"..i]:setVisible(false)
                             end
-                            models.models.ex_skill_1.VillagerArea.ShockEffect1:setPos(-9, 29, -22)
-                            models.models.ex_skill_1.VillagerArea.ShockEffect1:setRot(0, -60, 0)
-                            models.models.ex_skill_1.VillagerArea.ShockEffect2:setPos(62, 29, -64)
-                            models.models.ex_skill_1.VillagerArea.ShockEffect2:setRot(0, 45, 0)
-                            for i = 1, 2 do
-                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Stamp1["Stamp1ShineEffect"..i]:setColor(0.996, 1, 0.663)
-                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Stamp2["Stamp2ShineEffect"..i]:setColor(1, 0.698, 0.624)
-                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Stamp3["Stamp3ShineEffect"..i]:setColor(0.714, 0.996, 0.812)
-                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Stamp4["Stamp4ShineEffect"..i]:setColor(0.714, 0.996, 0.812)
-                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Stamp6["Stamp6ShineEffect"..i]:setColor(1, 0.769, 0.988)
-                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Stamp7["Stamp7ShineEffect"..i]:setColor(1, 0.635, 0.996)
-                            end
-                            self.exSkill[1].didInit = true
-                        else
-                            models.models.ex_skill_1.VillagerArea:setVisible(true)
-                        end
-                        if host:isHost() then
-                            local windowSize = client:getScaledWindowSize()
-                            models.models.ex_skill_1.Gui.TransitionArea:setPos(windowSize:copy():scale(-0.5):augmented(0))
-                            local height = math.sqrt(windowSize.y ^ 2 + (math.tan(math.rad(15)) * windowSize.y) ^ 2) + math.tan(math.rad(15)) * 64
-                            local halfWidth = windowSize.x / 2 + math.tan(math.rad(15)) * windowSize.y + 1
-                            for i = 1, 8 do
-                                models.models.ex_skill_1.Gui.TransitionArea["TransitionPartLtoR"..i]:setPos(halfWidth, 0, 0)
-                                models.models.ex_skill_1.Gui.TransitionArea["TransitionPartLtoR"..i]:setScale(16, height, 1)
-                                models.models.ex_skill_1.Gui.TransitionArea["TransitionPartRtoL"..i]:setPos(halfWidth * -1, 0, 0)
-                                models.models.ex_skill_1.Gui.TransitionArea["TransitionPartRtoL"..i]:setScale(16, height, 1)
-                            end
-                        end
-                        local villagerTypes = client.getRegistry("minecraft:villager_type")
-                        local villagerProfessions = client.getRegistry("minecraft:villager_profession")
-                        for i = 1, 8 do
-                            models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_"..i):setNbt("minecraft:villager", "{\"VillagerData\": {\"level\": "..math.random(1, 5)..", \"profession\": \""..villagerProfessions[math.random(1, #villagerProfessions)].."\", \"type\": \""..villagerTypes[math.random(1, #villagerTypes)].."\"}}")
-                        end
-                        for i = 15, 54 do
-                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket["Hole"..i]:setVisible(false)
-                        end
-                        models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Stamp1.Stamp1:setUVPixels(0, math.random() >= 0.95 and 32 or 0)
-                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "ANXIOUS", 47, true)
-                    end;
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Stamp1.Stamp1:setUVPixels(0, math.random() >= 0.95 and 32 or 0)
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "ANXIOUS", 47, true)
+                        end;
 
-                    onAnimationTick = function (self, tick)
-                        if tick == 9 then
-                            self.exSkill[1].playAngryVillagerEffect(self, player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, -1.5, 0, 2.5, 0, 1, 0)))
-                        elseif tick == 22 then
-                            self.exSkill[1].playAngryVillagerEffect(self, player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, -1.75, 0, 4, 0, 1, 0)))
-                        elseif tick == 39 then
-                            self.exSkill[1].playAngryVillagerEffect(self, player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0, 0, 4, 0, 1, 0)))
-                        elseif tick == 47 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "TRIANGLE", 15, true)
-                        elseif tick == 62 then
-                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "TRIANGLE", 2, true)
-                        elseif tick == 64 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "TRIANGLE", 48, true)
-                        elseif tick == 80 and host:isHost() then
-                            local windowSize = client:getScaledWindowSize()
-                            local moveWidth = windowSize.x + math.tan(math.rad(15)) * windowSize.y * 2 + 2
-                            events.RENDER:register(function ()
-                                for i = 1, 8 do
-                                    models.models.ex_skill_1.Gui.TransitionArea["TransitionPartRtoL"..i]:setPos(models.models.ex_skill_1.Gui.TransitionArea["TransitionAnchorRtoL"..i]:getAnimPos().x * moveWidth, 0, 0)
+                        onAnimationTick = function (self, tick)
+                            if tick == 9 then
+                                self.exSkill.exSkills[1].playAngryVillagerEffect(self, player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, -1.5, 0, 2.5, 0, 1, 0)))
+                            elseif tick == 22 then
+                                self.exSkill.exSkills[1].playAngryVillagerEffect(self, player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, -1.75, 0, 4, 0, 1, 0)))
+                            elseif tick == 39 then
+                                self.exSkill.exSkills[1].playAngryVillagerEffect(self, player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0, 0, 4, 0, 1, 0)))
+                            elseif tick == 47 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "TRIANGLE", 15, true)
+                            elseif tick == 62 then
+                                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "TRIANGLE", 2, true)
+                            elseif tick == 64 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "TRIANGLE", 48, true)
+                            elseif tick == 80 and host:isHost() then
+                                local windowSize = client:getScaledWindowSize()
+                                local moveWidth = windowSize.x + math.tan(math.rad(15)) * windowSize.y * 2 + 2
+                                events.RENDER:register(function ()
+                                    for i = 1, 8 do
+                                        models.models.ex_skill_1.Gui.TransitionArea["TransitionPartRtoL"..i]:setPos(models.models.ex_skill_1.Gui.TransitionArea["TransitionAnchorRtoL"..i]:getAnimPos().x * moveWidth, 0, 0)
+                                    end
+                                end, "ex_skill_1_render")
+                            elseif tick == 86 then
+                                if host:isHost() then
+                                    models.models.main.Avatar.Head:setVisible(false)
                                 end
-                            end, "ex_skill_1_render")
-                        elseif tick == 86 then
-                            if host:isHost() then
-                                models.models.main.Avatar.Head:setVisible(false)
-                            end
-                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole15:setVisible(true)
-                            for i = 23, 54 do
-                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket["Hole"..i]:setVisible(true)
-                            end
-                        elseif tick == 88 then
-                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole22:setVisible(true)
-                        elseif tick == 91 then
-                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole21:setVisible(true)
-                        elseif tick == 93 then
-                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole20:setVisible(true)
-                        elseif tick == 94 then
-                            if host:isHost() then
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole15:setVisible(true)
+                                for i = 23, 54 do
+                                    models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket["Hole"..i]:setVisible(true)
+                                end
+                            elseif tick == 88 then
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole22:setVisible(true)
+                            elseif tick == 91 then
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole21:setVisible(true)
+                            elseif tick == 93 then
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole20:setVisible(true)
+                            elseif tick == 94 then
+                                if host:isHost() then
+                                    events.RENDER:remove("ex_skill_1_render")
+                                end
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole19:setVisible(true)
+                            elseif tick == 96 then
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole18:setVisible(true)
+                            elseif tick == 99 then
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole17:setVisible(true)
+                            elseif tick == 100 then
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole16:setVisible(true)
+                            elseif tick >= 111 and tick <= 121 and (tick - 111) % 2 == 0 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), player:getPos(), 0.5, 1.85)
+                            elseif tick == 112 then
+                                if host:isHost() then
+                                    models.models.main.Avatar.Head:setVisible(true)
+                                end
+                                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMILE", 22, true)
+                            elseif tick == 130 and host:isHost() then
+                                local windowSize = client:getScaledWindowSize()
+                                local moveWidth = windowSize.x + math.tan(math.rad(15)) * windowSize.y * 2 + 2
+                                local height = math.sqrt(windowSize.y ^ 2 + (math.tan(math.rad(15)) * windowSize.y) ^ 2) + math.tan(math.rad(15)) * 64
+                                events.RENDER:register(function ()
+                                    for i = 1, 8 do
+                                        models.models.ex_skill_1.Gui.TransitionArea["TransitionPartLtoR"..i]:setPos(models.models.ex_skill_1.Gui.TransitionArea["TransitionAnchorLtoR"..i]:getAnimPos().x * moveWidth, 0, 0)
+                                        models.models.ex_skill_1.Gui.TransitionArea["TransitionPartLtoR"..i]:setScale(models.models.ex_skill_1.Gui.TransitionArea["TransitionAnchorLtoR"..i]:getAnimScale():mul(16, height, 1))
+                                        models.models.ex_skill_1.Gui.TransitionArea["TransitionPartRtoL"..i]:setPos(models.models.ex_skill_1.Gui.TransitionArea["TransitionAnchorRtoL"..i]:getAnimPos().x * moveWidth, 0, 0)
+                                        models.models.ex_skill_1.Gui.TransitionArea["TransitionPartRtoL"..i]:setScale(models.models.ex_skill_1.Gui.TransitionArea["TransitionAnchorRtoL"..i]:getAnimScale():mul(16, height, 1))
+                                    end
+                                end, "ex_skill_1_render")
+                            elseif tick == 134 then
+                                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", 16, true)
+                            elseif tick == 141 and host:isHost() then
                                 events.RENDER:remove("ex_skill_1_render")
+                            elseif tick == 143 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), player:getPos(), 0.25, 1)
+                            elseif tick == 147 and host:isHost() then
+                                models.models.ex_skill_1.Gui.ScreenFilter:setScale(client:getScaledWindowSize():augmented(1))
+                                models.models.ex_skill_1.Gui.ScreenFilter:setVisible(true)
+                                events.RENDER:register(function ()
+                                    models.models.ex_skill_1.Gui.ScreenFilter:setOpacity(models.models.ex_skill_1.Gui.ScreenFilterOpacity:getAnimScale().x)
+                                end, "ex_skill_1_render")
+                            elseif tick == 150 then
+                                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "TRIANGLE", 2, true)
+                            elseif tick == 152 then
+                                self.parent.faceParts:setEmotion("NORMAL", "CENTER", "TRIANGLE", 40, true)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 1, 1.5)
+                            elseif tick == 154 and host:isHost() then
+                                events.RENDER:remove("ex_skill_1_render")
+                                models.models.ex_skill_1.Gui.ScreenFilter:setVisible(false)
+                            elseif tick == 160 then
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.TicketShineEffect:setOffsetPivot(-0.5, 0, 0)
                             end
-                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole19:setVisible(true)
-                        elseif tick == 96 then
-                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole18:setVisible(true)
-                        elseif tick == 99 then
-                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole17:setVisible(true)
-                        elseif tick == 100 then
-                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.Hole16:setVisible(true)
-                        elseif tick >= 111 and tick <= 121 and (tick - 111) % 2 == 0 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), player:getPos(), 0.5, 1.85)
-                        elseif tick == 112 then
-                            if host:isHost() then
+
+                            for _, villagerId in ipairs({1, 5}) do
+                                local anchorPos = player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_"..villagerId):getPos():scale(-0.0575):add(0, 1.5, 0), 0, 1, 0))
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:splash"), anchorPos):setPower(1.2)
+                            end
+                            if tick < 47 and tick % 4 == 0 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.bubble_column.bubble_pop"), player:getPos(), 0.25, 2 - math.random() * 0.5)
+                            elseif ((tick >= 47 and tick < 61) or (tick >= 69 and tick < 108)) and (tick - 47) % 6 == 0 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.sheep.shear"), player:getPos(), 0.25, 2)
+                            end
+                            if tick < 86 and tick % 2 == 0 then
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:angry_villager"), player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, math.random() * 2 - 1, math.random() * 2, 0, 0, 1, 0)))
+                            end
+                            if math.random() > 0.95 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.villager.ambient"), player:getPos(), 0.25, 1)
+                            end
+                        end;
+
+                        onPostAnimation = function (self, forcedStop)
+                            models.models.ex_skill_1.VillagerArea:setVisible(false)
+                            for i = 15, 54 do
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket["Hole"..i]:setVisible(false)
+                            end
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.TicketShineEffect:setOffsetPivot()
+                            if forcedStop and host:isHost() then
+                                events.RENDER:remove("ex_skill_1_render")
                                 models.models.main.Avatar.Head:setVisible(true)
+                                models.models.ex_skill_1.Gui.ScreenFilter:setVisible(false)
                             end
-                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMILE", 22, true)
-                        elseif tick == 130 and host:isHost() then
-                            local windowSize = client:getScaledWindowSize()
-                            local moveWidth = windowSize.x + math.tan(math.rad(15)) * windowSize.y * 2 + 2
-                            local height = math.sqrt(windowSize.y ^ 2 + (math.tan(math.rad(15)) * windowSize.y) ^ 2) + math.tan(math.rad(15)) * 64
-                            events.RENDER:register(function ()
-                                for i = 1, 8 do
-                                    models.models.ex_skill_1.Gui.TransitionArea["TransitionPartLtoR"..i]:setPos(models.models.ex_skill_1.Gui.TransitionArea["TransitionAnchorLtoR"..i]:getAnimPos().x * moveWidth, 0, 0)
-                                    models.models.ex_skill_1.Gui.TransitionArea["TransitionPartLtoR"..i]:setScale(models.models.ex_skill_1.Gui.TransitionArea["TransitionAnchorLtoR"..i]:getAnimScale():mul(16, height, 1))
-                                    models.models.ex_skill_1.Gui.TransitionArea["TransitionPartRtoL"..i]:setPos(models.models.ex_skill_1.Gui.TransitionArea["TransitionAnchorRtoL"..i]:getAnimPos().x * moveWidth, 0, 0)
-                                    models.models.ex_skill_1.Gui.TransitionArea["TransitionPartRtoL"..i]:setScale(models.models.ex_skill_1.Gui.TransitionArea["TransitionAnchorRtoL"..i]:getAnimScale():mul(16, height, 1))
-                                end
-                            end, "ex_skill_1_render")
-                        elseif tick == 134 then
-                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", 16, true)
-                        elseif tick == 141 and host:isHost() then
-                            events.RENDER:remove("ex_skill_1_render")
-                        elseif tick == 143 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), player:getPos(), 0.25, 1)
-                        elseif tick == 147 and host:isHost() then
-                            models.models.ex_skill_1.Gui.ScreenFilter:setScale(client:getScaledWindowSize():augmented(1))
-                            models.models.ex_skill_1.Gui.ScreenFilter:setVisible(true)
-                            events.RENDER:register(function ()
-                                models.models.ex_skill_1.Gui.ScreenFilter:setOpacity(models.models.ex_skill_1.Gui.ScreenFilterOpacity:getAnimScale().x)
-                            end, "ex_skill_1_render")
-                        elseif tick == 150 then
-                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "TRIANGLE", 2, true)
-                        elseif tick == 152 then
-                            self.parent.faceParts:setEmotion("NORMAL", "CENTER", "TRIANGLE", 40, true)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 1, 1.5)
-                        elseif tick == 154 and host:isHost() then
-                            events.RENDER:remove("ex_skill_1_render")
-                            models.models.ex_skill_1.Gui.ScreenFilter:setVisible(false)
-                        elseif tick == 160 then
-                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.TicketShineEffect:setOffsetPivot(-0.5, 0, 0)
-                        end
+                        end;
+                    };
 
-                        for _, villagerId in ipairs({1, 5}) do
-                            local anchorPos = player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, models.models.ex_skill_1.VillagerArea:getTask("ex_skill_1_villager_"..villagerId):getPos():scale(-0.0575):add(0, 1.5, 0), 0, 1, 0))
-                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:splash"), anchorPos):setPower(1.2)
-                        end
-                        if tick < 47 and tick % 4 == 0 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.bubble_column.bubble_pop"), player:getPos(), 0.25, 2 - math.random() * 0.5)
-                        elseif ((tick >= 47 and tick < 61) or (tick >= 69 and tick < 108)) and (tick - 47) % 6 == 0 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.sheep.shear"), player:getPos(), 0.25, 2)
-                        end
-                        if tick < 86 and tick % 2 == 0 then
-                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:angry_villager"), player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, math.random() * 2 - 1, math.random() * 2, 0, 0, 1, 0)))
-                        end
-                        if math.random() > 0.95 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.villager.ambient"), player:getPos(), 0.25, 1)
-                        end
-                    end;
+                    ---このExスキルの初期化処理がされたかどうか
+                    ---@type boolean
+                    didInit = false;
 
-                    onPostAnimation = function (self, forcedStop)
-                        models.models.ex_skill_1.VillagerArea:setVisible(false)
-                        for i = 15, 54 do
-                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket["Hole"..i]:setVisible(false)
+                    ---村人が怒っている演出を再生する。
+                    playAngryVillagerEffect = function (self, anchorPos)
+                        for _ = 1, 5 do
+                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:angry_villager"), anchorPos:copy():add(math.random() * 1 - 0.5, math.random() * 1 + 0.5, math.random() * 1 - 0.5))
                         end
-                        models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Ticket.TicketShineEffect:setOffsetPivot()
-                        if forcedStop and host:isHost() then
-                            events.RENDER:remove("ex_skill_1_render")
-                            models.models.main.Avatar.Head:setVisible(true)
-                            models.models.ex_skill_1.Gui.ScreenFilter:setVisible(false)
-                        end
+                        sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.villager.no"), anchorPos, 1, 1)
                     end;
                 };
-
-                ---このExスキルの初期化処理がされたかどうか
-                ---@type boolean
-                didInit = false;
-
-                ---村人が怒っている演出を再生する。
-                playAngryVillagerEffect = function (self, anchorPos)
-                    for _ = 1, 5 do
-                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:angry_villager"), anchorPos:copy():add(math.random() * 1 - 0.5, math.random() * 1 + 0.5, math.random() * 1 - 0.5))
-                    end
-                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.villager.no"), anchorPos, 1, 1)
-                end;
             };
         }
 
@@ -891,5 +901,6 @@ BlueArchiveCharacter = {
 
         --生徒固有初期化処理
         --Player APIにアクセスする場合は、ENTITY_INIT後に実行されるようにする必要がある。
+
     end;
 }
