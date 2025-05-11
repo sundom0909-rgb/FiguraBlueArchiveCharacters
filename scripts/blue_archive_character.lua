@@ -57,7 +57,7 @@
 ---@field public skirt BlueArchiveCharacter.SkirtStruct スカート
 ---@field public gun BlueArchiveCharacter.GunStruct 銃
 ---@field public placementObjects BlueArchiveCharacter.PlacementObjectStruct[] 設置物
----@field public exSkill BlueArchiveCharacter.ExSkillStruct[] Exスキル
+---@field public exSkill BlueArchiveCharacter.ExSkillStruct Exスキル
 ---@field public costume BlueArchiveCharacter.CostumeStruct コスチューム
 ---@field public bubble BlueArchiveCharacter.BubbleStruct 吹き出しエモート
 ---@field public headBlock BlueArchiveCharacter.HeadBlockStruct 頭ブロック
@@ -102,11 +102,7 @@
 ---@field public callbacks? BlueArchiveCharacter.PlacementObjectCallbacksSet 設置物のコールバック関数
 
 ---@class BlueArchiveCharacter.ExSkillStruct Exスキルのデータ構造体
----@field public name BlueArchiveCharacter.LocaleStringSet Exスキルの名前
----@field public formationType BlueArchiveCharacter.FormationType この生徒の戦闘配置タイプ
----@field public models ModelPart[] Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
----@field public animations string[] Exスキルアニメーションが含まれるモデルファイル名。アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
----@field public camera BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワーク
+---@field public exSkills BlueArchiveCharacter.ExSkillDataSet[] Exスキルデータ
 ---@field public callbacks? BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数
 
 ---@class BlueArchiveCharacter.CostumeStruct コスチュームのデータ構造体
@@ -183,6 +179,17 @@
 ---@field public onRender? fun(self: BlueArchiveCharacter, placementObject: PlacementObject) 各レンダーティック毎に呼ばれる関数
 ---@field public onGround? fun(self: BlueArchiveCharacter, placementObject: PlacementObject) 設置物が接地した瞬間に呼ばれる関数
 
+---@class (exact) BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数のセット
+---@field public additionalCheckFunc? fun(self: BlueArchiveCharacter): boolean Exスキルを再生するかどうかの追加チェック関数
+
+---@class (exact) BlueArchiveCharacter.ExSkillDataSet Exスキルのデータセット
+---@field public name BlueArchiveCharacter.LocaleStringSet Exスキルの名前
+---@field public formationType BlueArchiveCharacter.FormationType この生徒の戦闘配置タイプ
+---@field public models ModelPart[] Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
+---@field public animations string[] Exスキルアニメーションが含まれるモデルファイル名。アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
+---@field public camera BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワーク
+---@field public callbacks? BlueArchiveCharacter.ExSkillAnimationCallbacks Exスキルアニメーションのコールバック関数
+
 ---@class (exact) BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワークのセット
 ---@field public start BlueArchiveCharacter.ExSkillCameraPositionSet Exスキルアニメーション開始地点
 ---@field public fin BlueArchiveCharacter.ExSkillCameraPositionSet Exスキルアニメーション終了地点
@@ -192,7 +199,7 @@
 ---@field public pos Vector3 カメラの位置
 ---@field public rot Vector3 カメラの方向
 
----@class (exact) BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数のセット
+---@class (exact) BlueArchiveCharacter.ExSkillAnimationCallbacks Exスキルアニメーションのコールバック関数のセット
 ---@field public onPreTransition? fun(self: BlueArchiveCharacter) Exスキルアニメーション開始前のトランジション開始前に実行されるコールバック関数
 ---@field public onPreAnimation? fun(self: BlueArchiveCharacter) Exスキルアニメーション開始前のトランジション終了後に実行されるコールバック関数
 ---@field public onAnimationTick? fun(self: BlueArchiveCharacter, tick: integer) Exスキルアニメーション再生中のみ実行されるティック関数
@@ -211,8 +218,9 @@
 ---@field public onArmorChange? fun(self: BlueArchiveCharacter, parts: Armor.ArmorPart, isVisible: boolean) 防具が変更された（防具が見える/見えない）ときに実行されるコールバック関数
 
 ---@class (exact) BlueArchiveCharacter.BubbleCallbacks 吹き出しエモートのコールバック関数のセット
+---@field public addtionalCheckFunc? fun(self: BlueArchiveCharacter): boolean 吹き出しエモートを表示するかどうかの追加チェック関数
 ---@field public onPlay? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, duration: integer, showInGui: boolean) 吹き出しエモートが再生された時に実行されるコールバック関数
----@field public  onStop? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, forcedStop: boolean) 吹き出しアニメーション終了時に実行されるコールバック関数
+---@field public onStop? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, forcedStop: boolean) 吹き出しアニメーション終了時に実行されるコールバック関数
 
 ---@class (exact) BlueArchiveCharacter.HeadBlockCallbacks 頭ブロックのコールバック関数のセット
 ---@field public onBeforeModelCopy? fun(self: BlueArchiveCharacter, isScriptLoaded: boolean) モデルのコピー直前に実行される関数
@@ -412,478 +420,480 @@ BlueArchiveCharacter = {
         }
 
         instance.exSkill = {
-            {
-                name = {
-                    en_us = "Game Start!";
-                    ja_jp = "ゲームスタート！";
-                };
-
-                formationType = "STRIKER";
-
-                models = {models.models.main.Avatar.Head.ShineRing};
-
-                animations = {"main", "gun", "ex_skill_1"};
-
-                camera = {
-                    start = {
-                        rot = vectors.vec3(-10, 130, 0);
-                        pos = vectors.vec3(9, 22, -12.7);
+            exSkills = {
+                {
+                    name = {
+                        en_us = "Game Start!";
+                        ja_jp = "ゲームスタート！";
                     };
 
-                    fin = {
-                        rot = vectors.vec3(0, 180, -15);
-                        pos = vectors.vec3(0, 24, -16.7);
+                    formationType = "STRIKER";
+
+                    models = {models.models.main.Avatar.Head.ShineRing};
+
+                    animations = {"main", "gun", "ex_skill_1"};
+
+                    camera = {
+                        start = {
+                            rot = vectors.vec3(-10, 130, 0);
+                            pos = vectors.vec3(9, 22, -12.7);
+                        };
+
+                        fin = {
+                            rot = vectors.vec3(0, 180, -15);
+                            pos = vectors.vec3(0, 24, -16.7);
+                        };
                     };
-                };
 
-                callbacks = {
-                    onPreAnimation = function (self)
-                        if not self.exSkill[1].init then
-                            if host:isHost() then
-                                models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:newText("ex_skill_1_action_text"):setAlignment("CENTER"):setOutlineColor(0.33, 1, 1)
-                                models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelTextAnchor:newText("ex_skill_1_cancel_text"):setText("CANCEL"):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.33, 1, 1)
-                                models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionBackground:setColor(0.055, 0.341, 0.702)
-                                models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelBackground:setColor(0.698, 0.016, 0.184)
-                                models.models.ex_skill_1.Gui.NameArea:setScale(4, 4, 4)
-                                models.models.ex_skill_1.Gui.NameArea.NameAreaRight:newText("ex_skill_1_name_text_1"):setText("§lYUZU"):setPos(30, 5.5, -1):setScale(1.2, 1.2, 1):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.33, 1, 1)
-                                models.models.ex_skill_1.Gui.NameArea.NameAreaRight:newText("ex_skill_1_name_text_2"):setText("§lYUZU"):setPos(30, 4.5, -0.5):setScale(1.2, 1.2, 1):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.33, 0.5, 0.5)
-                            end
-                            self.exSkill[1].init = false
-                        end
-                        if host:isHost() then
-                            local randomNum = math.random()
-                            self.exSkill[1].actionTextIndex = randomNum < 0.95 and 1 or (randomNum < 0.975 and 2 or 3)
-                            models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setText("§7"..(self.exSkill[1].actionTextIndex == 1 and "ACTION" or (self.exSkill[1].actionTextIndex == 2 and "MINE" or "CRAFT")))
-                            models.models.ex_skill_1.Gui.NameArea:setPos(client:getScaledWindowSize():scale(-1):augmented(0))
-                        end
-                        self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "SHOCK", 9, true)
-                        sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:ui.toast.in"), player:getPos(), 1, 1)
-                    end;
-
-                    onAnimationTick = function (self, tick)
-                        if tick == 0 then
-                            models.models.main.Avatar.UpperBody.Body.Gun:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
-                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setPos()
-                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setRot()
-                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.Grenade:setVisible(true)
-                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.GameDisplay.Display:setColor(0, 0, 0)
-                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.GameDisplay.DisplayFlash:setVisible(true)
-                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setVisible(true)
-                        end
-
-                        if tick == 8 then
-                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.GameDisplay.ExSkill1ParticleAnchor)
-                            for i = -2, 5 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setScale(0.25):setVelocity(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0.01, i * 0.01, -0.025, 0, 1, 0)):setColor(0.996, 1, 0.039)
-                            end
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.chiseled_bookshelf.insert"), anchorPos, 0.5, 5)
-                        elseif tick == 9 then
-                            self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "FRUST", 9, true)
-                        elseif tick == 18 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "FRUST", 8, true)
-                        elseif tick == 21 then
-                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.GameDisplay.Display:setColor()
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.GameDisplay), 0.25, 2)
-                            if host:isHost() then
-                                models.models.ex_skill_1.Background:setVisible(true)
-                                local barWidthScale = 0.135 * client:getScaledWindowSize().x
-                                for _, modelPart in ipairs({models.models.ex_skill_1.Background.Background2.Action.ActionBackground, models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground}) do
-                                    modelPart:setScale(barWidthScale, 1, 1)
+                    callbacks = {
+                        onPreAnimation = function (self)
+                            if not self.exSkill.exSkills[1].init then
+                                if host:isHost() then
+                                    models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:newText("ex_skill_1_action_text"):setAlignment("CENTER"):setOutlineColor(0.33, 1, 1)
+                                    models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelTextAnchor:newText("ex_skill_1_cancel_text"):setText("CANCEL"):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.33, 1, 1)
+                                    models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionBackground:setColor(0.055, 0.341, 0.702)
+                                    models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelBackground:setColor(0.698, 0.016, 0.184)
+                                    models.models.ex_skill_1.Gui.NameArea:setScale(4, 4, 4)
+                                    models.models.ex_skill_1.Gui.NameArea.NameAreaRight:newText("ex_skill_1_name_text_1"):setText("§lYUZU"):setPos(30, 5.5, -1):setScale(1.2, 1.2, 1):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.33, 1, 1)
+                                    models.models.ex_skill_1.Gui.NameArea.NameAreaRight:newText("ex_skill_1_name_text_2"):setText("§lYUZU"):setPos(30, 4.5, -0.5):setScale(1.2, 1.2, 1):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.33, 0.5, 0.5)
                                 end
-                                for _, modelPart in ipairs({models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor, models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelTextAnchor}) do
-                                    modelPart:setPos(1 / barWidthScale * -15, 0, 0)
-                                end
-                                models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setPos(0, 1.4, 0)
-                                models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelTextAnchor:getTask("ex_skill_1_cancel_text"):setPos(0, 1.4, 0)
-                                events.RENDER:register(function ()
-                                    local backgroundPos = vectors.rotateAroundAxis(player:getBodyYaw() + 180, renderer:getCameraOffsetPivot():copy():add(0, 1.62, 0):add(client:getCameraDir():copy():scale(1.3)), 0, 1, 0):scale(16 / 0.9375)
-                                    models.models.ex_skill_1.Background:setOffsetPivot(backgroundPos)
-                                    models.models.ex_skill_1.Background.Background2:setPos(backgroundPos)
-                                    models.models.ex_skill_1.Background.Background2:setRot(0, 0, renderer:getCameraRot().z)
-                                    local actionTextScale = models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getScale().x
-                                    models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setScale(vectors.vec3(1 / barWidthScale, 1, 1):scale(0.4 * actionTextScale))
-                                    local cancelTextScale = models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelTextAnchor:getScale().x
-                                    models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelTextAnchor:getTask("ex_skill_1_cancel_text"):setScale(vectors.vec3(1 / barWidthScale, 1, 1):scale(0.4 * cancelTextScale))
-                                end, "ex_skill_1_background_render")
+                                self.exSkill.exSkills[1].init = false
                             end
-                        elseif tick == 26 then
-                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "FRUST", 3, true)
-                        elseif tick == 29 then
-                            self.parent.faceParts:setEmotion("INVERTED", "NORMAL", "SMALL", 4, true)
-                        elseif tick == 33 then
-                            self.parent.faceParts:setEmotion("INVERTED", "NORMAL", "SMALL", 2, true)
-                        elseif tick == 31 and host:isHost() then
-                            models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setText(self.exSkill[1].actionTextIndex == 1 and "ACTION" or (self.exSkill[1].actionTextIndex == 2 and "MINE" or "CRAFT")):setOutline(true)
-                            models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelTextAnchor:getTask("ex_skill_1_cancel_text"):setText("§7CANCEL"):setOutline(false)
-                            models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionBackground:setVisible(true)
-                            models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelBackground:setVisible(false)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:ui.button.click"), player:getPos(), 0.25, 1.5)
-                        elseif tick == 35 then
-                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "SMALL", 2, true)
-                        elseif tick == 36 and host:isHost() then
-                            models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setOutlineColor(1, 1, 1)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:ui.button.click"), player:getPos(), 0.5, 1)
-                        elseif tick == 38 then
-                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "CLOSED", 16, true)
-                        elseif tick == 40 and host:isHost() then
-                            models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setOutlineColor(0.33, 1, 1)
-                        elseif tick == 44 and host:isHost() then
-                            events.RENDER:remove("ex_skill_1_background_render")
-                            models.models.ex_skill_1.Background:setVisible(false)
-                        elseif tick == 47 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 1, 1.5)
-                        elseif tick == 54 then
-                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED", 2, true)
-                        elseif tick == 56 then
-                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "CLOSED", 2, true)
-                        elseif tick == 58 then
-                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "ANGRY", 28, true)
                             if host:isHost() then
-                                models.models.ex_skill_1.Gui:setVisible(true)
-                                events.RENDER:register(function ()
-                                    local windowSize = client:getScaledWindowSize()
-                                    models.models.ex_skill_1.Gui.NameArea.NameAreaLeft:setPos(models.models.ex_skill_1.Gui.NameArea.NameAreaLeftAnchor:getAnimPos().x * (windowSize.x / 427), 24.5, 0)
-                                    models.models.ex_skill_1.Gui.NameArea.NameAreaRight:setPos(models.models.ex_skill_1.Gui.NameArea.NameAreaRightAnchor:getAnimPos().x * (windowSize.x / 427), 17, 0)
-                                end, "ex_skill_1_name_render")
+                                local randomNum = math.random()
+                                self.exSkill.exSkills[1].actionTextIndex = randomNum < 0.95 and 1 or (randomNum < 0.975 and 2 or 3)
+                                models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setText("§7"..(self.exSkill.exSkills[1].actionTextIndex == 1 and "ACTION" or (self.exSkill.exSkills[1].actionTextIndex == 2 and "MINE" or "CRAFT")))
+                                models.models.ex_skill_1.Gui.NameArea:setPos(client:getScaledWindowSize():scale(-1):augmented(0))
                             end
-                        elseif tick == 61 then
-                            for i = 0, 5 do
-                                self.parent.itemSpriteManager:spawn("ITEM", i * 60 + math.random() * 60 - 30)
-                            end
-                            for _ = 1, 5 do
-                                self.parent.itemSpriteManager:spawn("CROSS")
-                            end
-                            for _ = 1, 10 do
-                                self.parent.itemSpriteManager:spawn("DOT")
-                            end
-                        elseif tick == 70 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bit"), player:getPos(), 1, 1.5)
-                        elseif tick == 72 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bit"), player:getPos(), 1, 1.75)
-                        elseif tick == 74 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bit"), player:getPos(), 1, 2)
-                        end
-                    end;
+                            self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "SHOCK", 9, true)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:ui.toast.in"), player:getPos(), 1, 1)
+                        end;
 
-                    onPostAnimation = function (self, forcedStop)
-                        models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:moveTo(models.models.main.Avatar.UpperBody.Body)
-                        models.models.main.Avatar.UpperBody.Body.Gun.Grenade:setVisible(false)
-                        models.models.main.Avatar.UpperBody.Body.Gun.GameDisplay.Display:setColor()
-                        models.models.main.Avatar.UpperBody.Body.Gun.GameDisplay.DisplayFlash:setVisible(false)
-                        models.models.main.Avatar.UpperBody.Body.Gun:setVisible(self.parent.gun.currentGunPosition ~= "NONE")
-                        if host:isHost() then
-                            events.RENDER:remove("ex_skill_1_name_render")
-                            models.models.ex_skill_1.Gui:setVisible(false)
-                            models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setOutline(false)
-                            models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelTextAnchor:getTask("ex_skill_1_cancel_text"):setText("CANCEL"):setOutline(true)
-                            models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionBackground:setVisible(false)
-                            models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelBackground:setVisible(true)
-                        end
-                        if forcedStop then
-                            self.parent.itemSpriteManager:removeAll()
-                            if host:isHost() then
+                        onAnimationTick = function (self, tick)
+                            if tick == 0 then
+                                models.models.main.Avatar.UpperBody.Body.Gun:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
+                                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setPos()
+                                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setRot()
+                                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.Grenade:setVisible(true)
+                                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.GameDisplay.Display:setColor(0, 0, 0)
+                                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.GameDisplay.DisplayFlash:setVisible(true)
+                                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setVisible(true)
+                            end
+
+                            if tick == 8 then
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.GameDisplay.ExSkill1ParticleAnchor)
+                                for i = -2, 5 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setScale(0.25):setVelocity(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0.01, i * 0.01, -0.025, 0, 1, 0)):setColor(0.996, 1, 0.039)
+                                end
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.chiseled_bookshelf.insert"), anchorPos, 0.5, 5)
+                            elseif tick == 9 then
+                                self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "FRUST", 9, true)
+                            elseif tick == 18 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "FRUST", 8, true)
+                            elseif tick == 21 then
+                                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.GameDisplay.Display:setColor()
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun.GameDisplay), 0.25, 2)
+                                if host:isHost() then
+                                    models.models.ex_skill_1.Background:setVisible(true)
+                                    local barWidthScale = 0.135 * client:getScaledWindowSize().x
+                                    for _, modelPart in ipairs({models.models.ex_skill_1.Background.Background2.Action.ActionBackground, models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground}) do
+                                        modelPart:setScale(barWidthScale, 1, 1)
+                                    end
+                                    for _, modelPart in ipairs({models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor, models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelTextAnchor}) do
+                                        modelPart:setPos(1 / barWidthScale * -15, 0, 0)
+                                    end
+                                    models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setPos(0, 1.4, 0)
+                                    models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelTextAnchor:getTask("ex_skill_1_cancel_text"):setPos(0, 1.4, 0)
+                                    events.RENDER:register(function ()
+                                        local backgroundPos = vectors.rotateAroundAxis(player:getBodyYaw() + 180, renderer:getCameraOffsetPivot():copy():add(0, 1.62, 0):add(client:getCameraDir():copy():scale(1.3)), 0, 1, 0):scale(16 / 0.9375)
+                                        models.models.ex_skill_1.Background:setOffsetPivot(backgroundPos)
+                                        models.models.ex_skill_1.Background.Background2:setPos(backgroundPos)
+                                        models.models.ex_skill_1.Background.Background2:setRot(0, 0, renderer:getCameraRot().z)
+                                        local actionTextScale = models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getScale().x
+                                        models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setScale(vectors.vec3(1 / barWidthScale, 1, 1):scale(0.4 * actionTextScale))
+                                        local cancelTextScale = models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelTextAnchor:getScale().x
+                                        models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelTextAnchor:getTask("ex_skill_1_cancel_text"):setScale(vectors.vec3(1 / barWidthScale, 1, 1):scale(0.4 * cancelTextScale))
+                                    end, "ex_skill_1_background_render")
+                                end
+                            elseif tick == 26 then
+                                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "FRUST", 3, true)
+                            elseif tick == 29 then
+                                self.parent.faceParts:setEmotion("INVERTED", "NORMAL", "SMALL", 4, true)
+                            elseif tick == 33 then
+                                self.parent.faceParts:setEmotion("INVERTED", "NORMAL", "SMALL", 2, true)
+                            elseif tick == 31 and host:isHost() then
+                                models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setText(self.exSkill.exSkills[1].actionTextIndex == 1 and "ACTION" or (self.exSkill.exSkills[1].actionTextIndex == 2 and "MINE" or "CRAFT")):setOutline(true)
+                                models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelTextAnchor:getTask("ex_skill_1_cancel_text"):setText("§7CANCEL"):setOutline(false)
+                                models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionBackground:setVisible(true)
+                                models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelBackground:setVisible(false)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:ui.button.click"), player:getPos(), 0.25, 1.5)
+                            elseif tick == 35 then
+                                self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "SMALL", 2, true)
+                            elseif tick == 36 and host:isHost() then
+                                models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setOutlineColor(1, 1, 1)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:ui.button.click"), player:getPos(), 0.5, 1)
+                            elseif tick == 38 then
+                                self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "CLOSED", 16, true)
+                            elseif tick == 40 and host:isHost() then
+                                models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setOutlineColor(0.33, 1, 1)
+                            elseif tick == 44 and host:isHost() then
                                 events.RENDER:remove("ex_skill_1_background_render")
                                 models.models.ex_skill_1.Background:setVisible(false)
-                                models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setOutlineColor(0.33, 1, 1)
+                            elseif tick == 47 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 1, 1.5)
+                            elseif tick == 54 then
+                                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED", 2, true)
+                            elseif tick == 56 then
+                                self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "CLOSED", 2, true)
+                            elseif tick == 58 then
+                                self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "ANGRY", 28, true)
+                                if host:isHost() then
+                                    models.models.ex_skill_1.Gui:setVisible(true)
+                                    events.RENDER:register(function ()
+                                        local windowSize = client:getScaledWindowSize()
+                                        models.models.ex_skill_1.Gui.NameArea.NameAreaLeft:setPos(models.models.ex_skill_1.Gui.NameArea.NameAreaLeftAnchor:getAnimPos().x * (windowSize.x / 427), 24.5, 0)
+                                        models.models.ex_skill_1.Gui.NameArea.NameAreaRight:setPos(models.models.ex_skill_1.Gui.NameArea.NameAreaRightAnchor:getAnimPos().x * (windowSize.x / 427), 17, 0)
+                                    end, "ex_skill_1_name_render")
+                                end
+                            elseif tick == 61 then
+                                for i = 0, 5 do
+                                    self.parent.itemSpriteManager:spawn("ITEM", i * 60 + math.random() * 60 - 30)
+                                end
+                                for _ = 1, 5 do
+                                    self.parent.itemSpriteManager:spawn("CROSS")
+                                end
+                                for _ = 1, 10 do
+                                    self.parent.itemSpriteManager:spawn("DOT")
+                                end
+                            elseif tick == 70 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bit"), player:getPos(), 1, 1.5)
+                            elseif tick == 72 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bit"), player:getPos(), 1, 1.75)
+                            elseif tick == 74 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bit"), player:getPos(), 1, 2)
                             end
-                        end
-                    end;
-                };
+                        end;
 
-                ---このExスキルの初期化処理が行われたかどうか
-                ---@type boolean
-                init = false;
-
-                ---「Action」の項目に出すテキスト
-                ---1.ACTION, 2.MINE, 3.CRAFT
-                ---@type integer
-                actionTextIndex = 1;
-            };
-
-            {
-                name = {
-                    ja_jp = "潜入スタート！";
-                    en_us = "Starting infiltration!";
-                };
-
-                formationType = "SPECIAL";
-
-                models = {models.models.main.Avatar.Head.ExSkill2H.ShineEffect, models.models.ex_skill_2.Pillagers, models.models.ex_skill_2.Gui.Hotbar, models.models.ex_skill_2.Gui.Map};
-
-                animations = {"main", "gun", "costume_maid", "ex_skill_2"};
-
-                camera = {
-                    start = {
-                        rot = vectors.vec3(0, 175, 0);
-                        pos = vectors.vec3(13, 23, -24);
-                    };
-
-                    fin = {
-                        rot = vectors.vec3(5, 195, 0);
-                        pos = vectors.vec3(-5.75, 17, -18.5);
-                    };
-                };
-
-                callbacks = {
-                    onPreAnimation = function (self)
-                        if not self.exSkill[2].init then
-                            ---@diagnostic disable-next-line: discard-returns
-                            models:newPart("script_ex_skill_2_wall_model")
-                            models.script_ex_skill_2_wall_model:setPos(-8, 0, 8)
-                            for i = 1, 4 do
-                                models.script_ex_skill_2_wall_model:newBlock("ex_skill_2_block_"..i):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:stripped_dark_oak_log")):setPos(0, (i - 1) * 16, 0)
+                        onPostAnimation = function (self, forcedStop)
+                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:moveTo(models.models.main.Avatar.UpperBody.Body)
+                            models.models.main.Avatar.UpperBody.Body.Gun.Grenade:setVisible(false)
+                            models.models.main.Avatar.UpperBody.Body.Gun.GameDisplay.Display:setColor()
+                            models.models.main.Avatar.UpperBody.Body.Gun.GameDisplay.DisplayFlash:setVisible(false)
+                            models.models.main.Avatar.UpperBody.Body.Gun:setVisible(self.parent.gun.currentGunPosition ~= "NONE")
+                            if host:isHost() then
+                                events.RENDER:remove("ex_skill_1_name_render")
+                                models.models.ex_skill_1.Gui:setVisible(false)
+                                models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setOutline(false)
+                                models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelTextAnchor:getTask("ex_skill_1_cancel_text"):setText("CANCEL"):setOutline(true)
+                                models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionBackground:setVisible(false)
+                                models.models.ex_skill_1.Background.Background2.Cancel.CancelBackground.CancelBackground:setVisible(true)
                             end
-                            for i = 1, 3 do
-                                for j = 1, 4 do
-                                    models.script_ex_skill_2_wall_model:newBlock("ex_skill_2_block_"..((i - 1) * 4) + j + 4):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:dark_oak_planks")):setPos((i - 1) * 16 + 16, (j - 1) * 16, 0)
+                            if forcedStop then
+                                self.parent.itemSpriteManager:removeAll()
+                                if host:isHost() then
+                                    events.RENDER:remove("ex_skill_1_background_render")
+                                    models.models.ex_skill_1.Background:setVisible(false)
+                                    models.models.ex_skill_1.Background.Background2.Action.ActionBackground.ActionTextAnchor:getTask("ex_skill_1_action_text"):setOutlineColor(0.33, 1, 1)
                                 end
                             end
-                            for _, modelPart in ipairs({models.models.ex_skill_2.Pillagers.Pillager1.Pillager1Head.PillagerHead, models.models.ex_skill_2.Pillagers.Pillager1.Pillager1Head.Pillager1Nose, models.models.ex_skill_2.Pillagers.Pillager1.Pillager1Body, models.models.ex_skill_2.Pillagers.Pillager1.Pillager1RightArm, models.models.ex_skill_2.Pillagers.Pillager1.Pillager1LeftArm, models.models.ex_skill_2.Pillagers.Pillager1.Pillager1RightLeg, models.models.ex_skill_2.Pillagers.Pillager1.Pillager1LeftLeg}) do
-                                modelPart:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/illager/pillager.png")
-                            end
-                            for _, part in ipairs({"Head", "Body", "RightArm", "LeftArm", "RightLeg", "LeftLeg"}) do
-                                models.models.ex_skill_2.Pillagers.Pillager2["Pillager2"..part]:addChild(self.parent.modelUtils:copyModel(models.models.ex_skill_2.Pillagers.Pillager1["Pillager1"..part]))
-                            end
-                            for i = 1, 2 do
-                                models.models.ex_skill_2.Pillagers["Pillager"..i]["Pillager"..i.."RightArm"]:newItem("ex_skill_2_pillager_"..i.."_crossbow"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:crossbow")):setPos(0, -12, -2):setRot(0, 0, -135)
-                                models.models.ex_skill_2.Pillagers["Pillager"..i]["Pillager"..i.."Question"]["Pillager"..i.."Question2"]:newText("ex_skill_2_pillager_question_"..i):setText("§e?"):setPos(0, 7, 0):setAlignment("CENTER")
+                        end;
+                    };
+
+                    ---このExスキルの初期化処理が行われたかどうか
+                    ---@type boolean
+                    init = false;
+
+                    ---「Action」の項目に出すテキスト
+                    ---1.ACTION, 2.MINE, 3.CRAFT
+                    ---@type integer
+                    actionTextIndex = 1;
+                };
+
+                {
+                    name = {
+                        ja_jp = "潜入スタート！";
+                        en_us = "Starting infiltration!";
+                    };
+
+                    formationType = "SPECIAL";
+
+                    models = {models.models.main.Avatar.Head.ExSkill2H.ShineEffect, models.models.ex_skill_2.Pillagers, models.models.ex_skill_2.Gui.Hotbar, models.models.ex_skill_2.Gui.Map};
+
+                    animations = {"main", "gun", "costume_maid", "ex_skill_2"};
+
+                    camera = {
+                        start = {
+                            rot = vectors.vec3(0, 175, 0);
+                            pos = vectors.vec3(13, 23, -24);
+                        };
+
+                        fin = {
+                            rot = vectors.vec3(5, 195, 0);
+                            pos = vectors.vec3(-5.75, 17, -18.5);
+                        };
+                    };
+
+                    callbacks = {
+                        onPreAnimation = function (self)
+                            if not self.exSkill.exSkills[2].init then
+                                ---@diagnostic disable-next-line: discard-returns
+                                models:newPart("script_ex_skill_2_wall_model")
+                                models.script_ex_skill_2_wall_model:setPos(-8, 0, 8)
+                                for i = 1, 4 do
+                                    models.script_ex_skill_2_wall_model:newBlock("ex_skill_2_block_"..i):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:stripped_dark_oak_log")):setPos(0, (i - 1) * 16, 0)
+                                end
+                                for i = 1, 3 do
+                                    for j = 1, 4 do
+                                        models.script_ex_skill_2_wall_model:newBlock("ex_skill_2_block_"..((i - 1) * 4) + j + 4):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:dark_oak_planks")):setPos((i - 1) * 16 + 16, (j - 1) * 16, 0)
+                                    end
+                                end
+                                for _, modelPart in ipairs({models.models.ex_skill_2.Pillagers.Pillager1.Pillager1Head.PillagerHead, models.models.ex_skill_2.Pillagers.Pillager1.Pillager1Head.Pillager1Nose, models.models.ex_skill_2.Pillagers.Pillager1.Pillager1Body, models.models.ex_skill_2.Pillagers.Pillager1.Pillager1RightArm, models.models.ex_skill_2.Pillagers.Pillager1.Pillager1LeftArm, models.models.ex_skill_2.Pillagers.Pillager1.Pillager1RightLeg, models.models.ex_skill_2.Pillagers.Pillager1.Pillager1LeftLeg}) do
+                                    modelPart:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/illager/pillager.png")
+                                end
+                                for _, part in ipairs({"Head", "Body", "RightArm", "LeftArm", "RightLeg", "LeftLeg"}) do
+                                    models.models.ex_skill_2.Pillagers.Pillager2["Pillager2"..part]:addChild(self.parent.modelUtils:copyModel(models.models.ex_skill_2.Pillagers.Pillager1["Pillager1"..part]))
+                                end
+                                for i = 1, 2 do
+                                    models.models.ex_skill_2.Pillagers["Pillager"..i]["Pillager"..i.."RightArm"]:newItem("ex_skill_2_pillager_"..i.."_crossbow"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:crossbow")):setPos(0, -12, -2):setRot(0, 0, -135)
+                                    models.models.ex_skill_2.Pillagers["Pillager"..i]["Pillager"..i.."Question"]["Pillager"..i.."Question2"]:newText("ex_skill_2_pillager_question_"..i):setText("§e?"):setPos(0, 7, 0):setAlignment("CENTER")
+                                end
+                                if host:isHost() then
+                                    models.models.ex_skill_2.Gui.Hotbar.HotbarSection1:newItem("ex_skill_2_hotbar_section1"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:firework_rocket")):setPos(0, 11, 0)
+                                    models.models.ex_skill_2.Gui.Hotbar.HotbarSection2:newItem("ex_skill_2_hotbar_section2"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:comparator")):setPos(0, 11, 0)
+                                    models.models.ex_skill_2.Gui.Hotbar.HotbarSection3:newItem("ex_skill_2_hotbar_section3"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:name_tag")):setPos(0, 11, 0)
+                                    models.models.ex_skill_2.Gui.Hotbar.HotbarSection4:newItem("ex_skill_2_hotbar_section4"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:arrow")):setPos(0, 11, 0)
+                                    models.models.ex_skill_2.Gui.Hotbar.HotbarSection5:newItem("ex_skill_2_hotbar_section5"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:book")):setPos(0, 11, 0)
+                                    models.models.ex_skill_2.Gui.Hotbar.HotbarSection6:newItem("ex_skill_2_hotbar_section6"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:crossbow")):setPos(0, 11, -5)
+                                    models.models.ex_skill_2.Gui.Hotbar.HotbarSection7:newItem("ex_skill_2_hotbar_section7"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:brush")):setPos(0, 11, -5)
+                                    models.models.ex_skill_2.Gui.Hotbar.HotbarSection9:newItem("ex_skill_2_hotbar_section9"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:diamond")):setPos(0, 11, -5)
+                                    models.models.ex_skill_2.Gui.Map.MapBackground:setPrimaryTexture("RESOURCE", "minecraft:textures/map/map_background.png")
+                                    models.models.ex_skill_2.YuzuChest:setVisible(true)
+                                    local chestModel = self.parent.modelUtils:copyModel(models.models.ex_skill_2.YuzuChest)
+                                    chestModel:setPos(-60, -16, -2)
+                                    chestModel:setRot(-33.4, 39.86, -22.91)
+                                    chestModel:setScale(0.5, 0.5, 0.5)
+                                    models.models.ex_skill_2.Gui.Hotbar.HotbarSection8:addChild(chestModel)
+                                    models.models.ex_skill_2.Gui.ScreenEffects:setScale(8, 8, 8)
+                                    for _, modelName in ipairs({"ScreenEffectTLBack", "ScreenEffectBRFront", "ScreenEffectBRBack"}) do
+                                        models.models.ex_skill_2.Gui.ScreenEffects:addChild(models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectTLFront:copy(modelName))
+                                    end
+                                    for _, modelPart in ipairs({models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectBRFront, models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectBRBack}) do
+                                        modelPart:setRot(0, 0, 180)
+                                    end
+                                    for _, modelPart in ipairs({models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectTLFront, models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectBRFront}) do
+                                        modelPart:setColor(0.996, 0.4, 0.455)
+                                    end
+                                    for _, modelPart in ipairs({models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectTLBack, models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectBRBack}) do
+                                        modelPart:setColor(0.231, 0.725, 0.988)
+                                    end
+                                    if client:getVersion() >= "1.20.2" then
+                                        for i = 1, 9 do
+                                            models.models.ex_skill_2.Gui.Hotbar["HotbarSection"..i]["HotbarSection"..i]:setPrimaryTexture("RESOURCE", "minecraft:textures/gui/sprites/hud/hotbar.png")
+                                        end
+                                        models.models.ex_skill_2.Gui.Hotbar.HotbarSelection:setPrimaryTexture("RESOURCE", "minecraft:textures/gui/sprites/hud/hotbar_selection.png")
+                                        models.models.ex_skill_2.Gui.Map.PlayerMarker:setPrimaryTexture("RESOURCE", "minecraft:textures/map/decorations/player.png")
+                                        for i = 1, 2 do
+                                            models.models.ex_skill_2.Gui.Map["EnemyMarker"..i]:setPrimaryTexture("RESOURCE", "minecraft:textures/map/decorations/red_marker.png")
+                                        end
+                                    else
+                                        textures:fromVanilla("widgets", "minecraft:textures/gui/widgets.png")
+                                        local hotbarTextureScale = textures["widgets"]:getDimensions().x / 256
+                                        textures:newTexture("hotbar", 182 * hotbarTextureScale, 22 * hotbarTextureScale)
+                                        for y = 0, 21 do
+                                            for x = 0, 181 do
+                                                textures["hotbar"]:setPixel(x, y, textures["widgets"]:getPixel(x, y))
+                                            end
+                                        end
+                                        for i = 1, 9 do
+                                            models.models.ex_skill_2.Gui.Hotbar["HotbarSection"..i]["HotbarSection"..i]:setPrimaryTexture("CUSTOM", textures["hotbar"])
+                                        end
+                                        textures:newTexture("hotbar_selection", 24 * hotbarTextureScale, 24 * hotbarTextureScale)
+                                        for y = 0, 23 do
+                                            for x = 0, 23 do
+                                                textures["hotbar_selection"]:setPixel(x, y, textures["widgets"]:getPixel(x, y + 22))
+                                            end
+                                        end
+                                        models.models.ex_skill_2.Gui.Hotbar.HotbarSelection:setPrimaryTexture("CUSTOM", textures["hotbar_selection"])
+                                        textures:fromVanilla("map_icons", "minecraft:textures/map/map_icons.png")
+                                        local mapTextureScale = textures["map_icons"]:getDimensions().x / 128
+                                        textures:newTexture("player", 8 * mapTextureScale, 8 * mapTextureScale)
+                                        for y = 0, 7 do
+                                            for x = 0, 7 do
+                                                textures["player"]:setPixel(x, y, textures["map_icons"]:getPixel(x, y))
+                                            end
+                                        end
+                                        models.models.ex_skill_2.Gui.Map.PlayerMarker:setPrimaryTexture("CUSTOM", textures["player"])
+                                        textures:newTexture("red_marker", 8 * mapTextureScale, 8 * mapTextureScale)
+                                        for y = 0, 7 do
+                                            for x = 0, 7 do
+                                                textures["red_marker"]:setPixel(x, y, textures["map_icons"]:getPixel(x + 16, y))
+                                            end
+                                        end
+                                        for i = 1, 2 do
+                                            models.models.ex_skill_2.Gui.Map["EnemyMarker"..i]:setPrimaryTexture("CUSTOM", textures["red_marker"])
+                                        end
+                                    end
+
+                                end
+                                self.exSkill.exSkills[2].init = true
+                            else
+                                models.script_ex_skill_2_wall_model:setVisible(true)
                             end
                             if host:isHost() then
-                                models.models.ex_skill_2.Gui.Hotbar.HotbarSection1:newItem("ex_skill_2_hotbar_section1"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:firework_rocket")):setPos(0, 11, 0)
-                                models.models.ex_skill_2.Gui.Hotbar.HotbarSection2:newItem("ex_skill_2_hotbar_section2"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:comparator")):setPos(0, 11, 0)
-                                models.models.ex_skill_2.Gui.Hotbar.HotbarSection3:newItem("ex_skill_2_hotbar_section3"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:name_tag")):setPos(0, 11, 0)
-                                models.models.ex_skill_2.Gui.Hotbar.HotbarSection4:newItem("ex_skill_2_hotbar_section4"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:arrow")):setPos(0, 11, 0)
-                                models.models.ex_skill_2.Gui.Hotbar.HotbarSection5:newItem("ex_skill_2_hotbar_section5"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:book")):setPos(0, 11, 0)
-                                models.models.ex_skill_2.Gui.Hotbar.HotbarSection6:newItem("ex_skill_2_hotbar_section6"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:crossbow")):setPos(0, 11, -5)
-                                models.models.ex_skill_2.Gui.Hotbar.HotbarSection7:newItem("ex_skill_2_hotbar_section7"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:brush")):setPos(0, 11, -5)
-                                models.models.ex_skill_2.Gui.Hotbar.HotbarSection9:newItem("ex_skill_2_hotbar_section9"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:diamond")):setPos(0, 11, -5)
-                                models.models.ex_skill_2.Gui.Map.MapBackground:setPrimaryTexture("RESOURCE", "minecraft:textures/map/map_background.png")
-                                models.models.ex_skill_2.YuzuChest:setVisible(true)
-                                local chestModel = self.parent.modelUtils:copyModel(models.models.ex_skill_2.YuzuChest)
-                                chestModel:setPos(-60, -16, -2)
-                                chestModel:setRot(-33.4, 39.86, -22.91)
-                                chestModel:setScale(0.5, 0.5, 0.5)
-                                models.models.ex_skill_2.Gui.Hotbar.HotbarSection8:addChild(chestModel)
-                                models.models.ex_skill_2.Gui.ScreenEffects:setScale(8, 8, 8)
-                                for _, modelName in ipairs({"ScreenEffectTLBack", "ScreenEffectBRFront", "ScreenEffectBRBack"}) do
-                                    models.models.ex_skill_2.Gui.ScreenEffects:addChild(models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectTLFront:copy(modelName))
-                                end
-                                for _, modelPart in ipairs({models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectBRFront, models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectBRBack}) do
-                                    modelPart:setRot(0, 0, 180)
-                                end
-                                for _, modelPart in ipairs({models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectTLFront, models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectBRFront}) do
-                                    modelPart:setColor(0.996, 0.4, 0.455)
-                                end
-                                for _, modelPart in ipairs({models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectTLBack, models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectBRBack}) do
-                                    modelPart:setColor(0.231, 0.725, 0.988)
-                                end
-                                if client:getVersion() >= "1.20.2" then
-                                    for i = 1, 9 do
-                                        models.models.ex_skill_2.Gui.Hotbar["HotbarSection"..i]["HotbarSection"..i]:setPrimaryTexture("RESOURCE", "minecraft:textures/gui/sprites/hud/hotbar.png")
-                                    end
-                                    models.models.ex_skill_2.Gui.Hotbar.HotbarSelection:setPrimaryTexture("RESOURCE", "minecraft:textures/gui/sprites/hud/hotbar_selection.png")
-                                    models.models.ex_skill_2.Gui.Map.PlayerMarker:setPrimaryTexture("RESOURCE", "minecraft:textures/map/decorations/player.png")
-                                    for i = 1, 2 do
-                                        models.models.ex_skill_2.Gui.Map["EnemyMarker"..i]:setPrimaryTexture("RESOURCE", "minecraft:textures/map/decorations/red_marker.png")
-                                    end
-                                else
-                                    textures:fromVanilla("widgets", "minecraft:textures/gui/widgets.png")
-                                    local hotbarTextureScale = textures["widgets"]:getDimensions().x / 256
-                                    textures:newTexture("hotbar", 182 * hotbarTextureScale, 22 * hotbarTextureScale)
-                                    for y = 0, 21 do
-                                        for x = 0, 181 do
-                                            textures["hotbar"]:setPixel(x, y, textures["widgets"]:getPixel(x, y))
-                                        end
-                                    end
-                                    for i = 1, 9 do
-                                        models.models.ex_skill_2.Gui.Hotbar["HotbarSection"..i]["HotbarSection"..i]:setPrimaryTexture("CUSTOM", textures["hotbar"])
-                                    end
-                                    textures:newTexture("hotbar_selection", 24 * hotbarTextureScale, 24 * hotbarTextureScale)
-                                    for y = 0, 23 do
-                                        for x = 0, 23 do
-                                            textures["hotbar_selection"]:setPixel(x, y, textures["widgets"]:getPixel(x, y + 22))
-                                        end
-                                    end
-                                    models.models.ex_skill_2.Gui.Hotbar.HotbarSelection:setPrimaryTexture("CUSTOM", textures["hotbar_selection"])
-                                    textures:fromVanilla("map_icons", "minecraft:textures/map/map_icons.png")
-                                    local mapTextureScale = textures["map_icons"]:getDimensions().x / 128
-                                    textures:newTexture("player", 8 * mapTextureScale, 8 * mapTextureScale)
-                                    for y = 0, 7 do
-                                        for x = 0, 7 do
-                                            textures["player"]:setPixel(x, y, textures["map_icons"]:getPixel(x, y))
-                                        end
-                                    end
-                                    models.models.ex_skill_2.Gui.Map.PlayerMarker:setPrimaryTexture("CUSTOM", textures["player"])
-                                    textures:newTexture("red_marker", 8 * mapTextureScale, 8 * mapTextureScale)
-                                    for y = 0, 7 do
-                                        for x = 0, 7 do
-                                            textures["red_marker"]:setPixel(x, y, textures["map_icons"]:getPixel(x + 16, y))
-                                        end
-                                    end
-                                    for i = 1, 2 do
-                                        models.models.ex_skill_2.Gui.Map["EnemyMarker"..i]:setPrimaryTexture("CUSTOM", textures["red_marker"])
-                                    end
-                                end
-
-                            end
-                            self.exSkill[2].init = true
-                        else
-                            models.script_ex_skill_2_wall_model:setVisible(true)
-                        end
-                        if host:isHost() then
-                            local windowSize = client:getScaledWindowSize()
-                            models.models.ex_skill_2.Gui.Hotbar:setPos(windowSize.x / 2 * -1, windowSize.y * -1, 0)
-                            models.models.ex_skill_2.Gui.Map:setPos(windowSize.x * -1 + 50, -30, 0)
-                        end
-                        self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "CLOSED", 6)
-                    end;
-
-                    onAnimationTick = function (self, tick)
-                        if tick == 0 then
-                            models.models.main.Avatar.UpperBody.Body.Gun:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
-                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setPos()
-                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setRot()
-                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setVisible(true)
-                        elseif tick == 6 then
-                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED", 2)
-                        elseif tick == 8 then
-                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "SMALL", 22)
-                        elseif tick == 21 then
-                            local bodyYaw = player:getBodyYaw()
-                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Pillagers.Pillager1.Pillager1Question):add(0, 0.25, 0)
-                            for j = 0, 5 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, vectors.rotateAroundAxis(j * 60, 0.1, 0, 0, 0, 0, 1), 0, 1, 0)):setColor(1, 1, 0.33):setLifetime(5)
-                            end
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.pillager.ambient"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Pillagers.Pillager1), 0.5, 1)
-                        elseif tick == 23 then
-                            local bodyYaw = player:getBodyYaw()
-                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Pillagers.Pillager2.Pillager2Question):add(0, 0.25, 0)
-                            for j = 0, 5 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, vectors.rotateAroundAxis(j * 60, 0.1, 0, 0, 0, 0, 1), 0, 1, 0)):setColor(1, 1, 0.33):setLifetime(5)
-                            end
-                        elseif tick == 29 then
-                            models.models.main.Avatar.Head.ExSkill2H.NoticeEffect:setVisible(true)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.experience_orb.pickup"), player:getPos(), 0.25, 1.5)
-                        elseif tick == 30 then
-                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMALL", 2)
-                        elseif tick == 31 then
-                            models.models.main.Avatar.Head.ExSkill2H.NoticeEffect:setVisible(false)
-                        elseif tick == 32 then
-                            for _, modelPart in ipairs({models.models.main.Avatar.Head.ExSkill2H.FearEffect, models.models.main.Avatar.Head.ExSkill2H.NoticeEffect}) do
-                                modelPart:setVisible(true)
-                            end
-                            self.parent.faceParts:setEmotion("FEAR_CENTER", "FEAR", "FRUST", 2)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.experience_orb.pickup"), player:getPos(), 0.25, 1.5)
-                        elseif tick == 34 then
-                            models.models.main.Avatar.Head.ExSkill2H.NoticeEffect:setVisible(false)
-                            self.parent.faceParts:setEmotion("FEAR_CENTER", "FEAR", "FEAR", 8)
-                        elseif tick == 42 then
-                            self.parent.faceParts:setEmotion("FEAR", "FEAR_CENTER", "FEAR", 4)
-                        elseif tick == 46 then
-                            self.parent.faceParts:setEmotion("FEAR_CENTER", "FEAR", "FEAR", 4)
-                        elseif tick == 50 then
-                            self.parent.faceParts:setEmotion("FEAR", "FEAR_CENTER", "FEAR", 4)
-                        elseif tick == 54 then
-                            self.parent.faceParts:setEmotion("FEAR_CENTER", "FEAR", "FEAR", 4)
-                        elseif tick == 58 then
-                            self.parent.faceParts:setEmotion("FEAR", "FEAR_CENTER", "FEAR", 4)
-                        elseif tick == 62 then
-                            self.parent.faceParts:setEmotion("FEAR_CENTER", "FEAR", "FEAR", 4)
-                        elseif tick == 66 then
-                            self.parent.faceParts:setEmotion("FEAR", "FEAR_CENTER", "FEAR", 10)
-                        elseif tick == 71 and host:isHost() then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:ui.button.click"), player:getPos(), 0.5, 1)
-                        elseif tick == 74 then
-                            models.models.ex_skill_2.YuzuChest:setVisible(true)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.YuzuChest), 1, 1)
-                        elseif tick == 76 then
-                            self.parent.faceParts:setEmotion("CLOSED2_WITH_TEAR", "CLOSED2_WITH_TEAR", "SHOCK", 17)
-                        elseif tick == 82 then
-                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.YuzuChest)
-                            for i = 0, 11 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), anchorPos:copy():add(vectors.rotateAroundAxis(i * 30, 0, 0, 0.5, 0, 1, 0))):setVelocity(vectors.rotateAroundAxis(i * 30, 0, 0, 0.05, 0, 1, 0)):setLifetime(20)
-                            end
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.zombie.attack_wooden_door"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.YuzuChest), 0.2, 1.5)
-                        elseif tick == 84 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.pillager.hurt"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Pillagers.Pillager1), 0.5, 1)
-                        elseif tick == 93 then
-                            models.models.main.Avatar.Head.ExSkill2H.FearEffect:setVisible(false)
-                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "SMALL", 44)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.chest.open"), player:getPos(), 0.1, 0.75)
-                        elseif tick == 105 and host:isHost() then
-                            events.RENDER:register(function (delta)
-                                local opacity = (self.parent.exSkill.animationCount + delta - 1) * -0.2 + 22
-                                for _, modelPart in ipairs({models.models.ex_skill_2.YuzuChest.YuzuChestBottom.YuzuChestBottomFront, models.models.ex_skill_2.YuzuChest.TheYuzu, models.models.ex_skill_2.YuzuChest.YuzuChestTop.YuzuChestTopFront, models.models.ex_skill_2.YuzuChest.YuzuChestTop.YuzuChestHook}) do
-                                    modelPart:setOpacity(opacity)
-                                end
-                            end, "ex_skill_2_yuzu_chest")
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 0.5, 1.5)
-                        elseif tick == 106 and host:isHost() then
-                            models.models.ex_skill_2.Gui.ScreenEffects:setVisible(true)
-                            events.RENDER:register(function ()
                                 local windowSize = client:getScaledWindowSize()
-                                models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectTLFront:setPos(models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectFrontAnchor:getAnimPos().x * (windowSize.x / 427), -10, -1)
-                                models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectTLBack:setPos(models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectBackAnchor:getAnimPos().x * (windowSize.x / 427), -11, 0)
-                                models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectBRFront:setPos(models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectFrontAnchor:getAnimPos().x * (windowSize.x / 427) * -1 + ((windowSize.x + math.sin(math.rad(-18.8)) * windowSize.y) * -1) / 8, (windowSize.y * -1 + math.sin(math.rad(-18.8)) * windowSize.x) / 8 + 10, -1)
-                                models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectBRBack:setPos(models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectBackAnchor:getAnimPos().x * (windowSize.x / 427) * -1 + ((windowSize.x + math.sin(math.rad(-18.8)) * windowSize.y) * -1) / 8, (windowSize.y * -1 + math.sin(math.rad(-18.8)) * windowSize.x) / 8 + 11, 0)
-                            end, "ex_skill_2_screen_effects")
-                        elseif tick == 107 and host:isHost() then
-                            models.script_ex_skill_2_sprite:setPos(client:getScaledWindowSize():scale(-0.5):augmented(0))
-                            local windowSize = client:getScaledWindowSize()
-                            for i = 0, 5 do
-                                local offset = vectors.vec2(math.cos(math.rad(i * 60)), math.sin(math.rad(i * 60))):mul(windowSize.x / windowSize.y, 1)
-                                self.parent.exSkill2SpriteManager:spawn("STAR", offset:copy():scale(50), offset:copy():scale(math.random() * 5 + 10))
+                                models.models.ex_skill_2.Gui.Hotbar:setPos(windowSize.x / 2 * -1, windowSize.y * -1, 0)
+                                models.models.ex_skill_2.Gui.Map:setPos(windowSize.x * -1 + 50, -30, 0)
                             end
-                            for _ = 1, 5 do
-                                local rot = math.random() * 360
-                                local offset = vectors.vec2(math.cos(math.rad(rot)), math.sin(math.rad(rot))):mul(windowSize.x / windowSize.y, 1)
-                                self.parent.exSkill2SpriteManager:spawn(math.random() < 0.5 and "MINISTAR" or "MINISTAR2", offset:copy():scale(50), offset:copy():scale(math.random() * 5 + 10))
-                            end
-                        elseif tick == 110 and host:isHost() then
-                            events.RENDER:remove("ex_skill_2_yuzu_chest")
-                            for _, modelPart in ipairs({models.models.ex_skill_2.YuzuChest.YuzuChestBottom.YuzuChestBottomFront, models.models.ex_skill_2.YuzuChest.TheYuzu, models.models.ex_skill_2.YuzuChest.YuzuChestTop.YuzuChestTopFront, models.models.ex_skill_2.YuzuChest.YuzuChestTop.YuzuChestHook}) do
-                                modelPart:setOpacity(0)
-                            end
-                        end
-                        if tick >= 32 and tick < 76 then
-                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:splash"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head)):setPower(2)
-                            if (tick - 32) % 4 == 0 then
-                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.bubble_column.bubble_pop"), player:getPos(), 0.15, 2 - math.random() * 0.5)
-                            end
-                        end
-                        if tick >= 37 and tick <= 67 and (tick - 37) % 4 == 0 and host:isHost() then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:ui.button.click"), player:getPos(), 0.25, 1.5)
-                        end
-                    end;
+                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "CLOSED", 6)
+                        end;
 
-                    onPostAnimation = function (self, forcedStop)
-                        models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:moveTo(models.models.main.Avatar.UpperBody.Body)
-                        models.models.main.Avatar.UpperBody.Body.Gun:setVisible(self.parent.gun.currentGunPosition ~= "NONE")
-                        models.script_ex_skill_2_wall_model:setVisible(false)
-                        models.models.ex_skill_2.YuzuChest:setVisible(self.costume.costumes[2].shouldShowChest)
-                        if host:isHost() then
-                            events.RENDER:remove("ex_skill_2_screen_effects")
-                            models.models.ex_skill_2.Gui.ScreenEffects:setVisible(false)
-                            for _, modelPart in ipairs({models.models.ex_skill_2.YuzuChest.YuzuChestBottom.YuzuChestBottomFront, models.models.ex_skill_2.YuzuChest.TheYuzu, models.models.ex_skill_2.YuzuChest.YuzuChestTop.YuzuChestTopFront, models.models.ex_skill_2.YuzuChest.YuzuChestTop.YuzuChestHook}) do
-                                modelPart:setOpacity(1)
+                        onAnimationTick = function (self, tick)
+                            if tick == 0 then
+                                models.models.main.Avatar.UpperBody.Body.Gun:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
+                                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setPos()
+                                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setRot()
+                                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:setVisible(true)
+                            elseif tick == 6 then
+                                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED", 2)
+                            elseif tick == 8 then
+                                self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "SMALL", 22)
+                            elseif tick == 21 then
+                                local bodyYaw = player:getBodyYaw()
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Pillagers.Pillager1.Pillager1Question):add(0, 0.25, 0)
+                                for j = 0, 5 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, vectors.rotateAroundAxis(j * 60, 0.1, 0, 0, 0, 0, 1), 0, 1, 0)):setColor(1, 1, 0.33):setLifetime(5)
+                                end
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.pillager.ambient"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Pillagers.Pillager1), 0.5, 1)
+                            elseif tick == 23 then
+                                local bodyYaw = player:getBodyYaw()
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Pillagers.Pillager2.Pillager2Question):add(0, 0.25, 0)
+                                for j = 0, 5 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, vectors.rotateAroundAxis(j * 60, 0.1, 0, 0, 0, 0, 1), 0, 1, 0)):setColor(1, 1, 0.33):setLifetime(5)
+                                end
+                            elseif tick == 29 then
+                                models.models.main.Avatar.Head.ExSkill2H.NoticeEffect:setVisible(true)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.experience_orb.pickup"), player:getPos(), 0.25, 1.5)
+                            elseif tick == 30 then
+                                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMALL", 2)
+                            elseif tick == 31 then
+                                models.models.main.Avatar.Head.ExSkill2H.NoticeEffect:setVisible(false)
+                            elseif tick == 32 then
+                                for _, modelPart in ipairs({models.models.main.Avatar.Head.ExSkill2H.FearEffect, models.models.main.Avatar.Head.ExSkill2H.NoticeEffect}) do
+                                    modelPart:setVisible(true)
+                                end
+                                self.parent.faceParts:setEmotion("FEAR_CENTER", "FEAR", "FRUST", 2)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.experience_orb.pickup"), player:getPos(), 0.25, 1.5)
+                            elseif tick == 34 then
+                                models.models.main.Avatar.Head.ExSkill2H.NoticeEffect:setVisible(false)
+                                self.parent.faceParts:setEmotion("FEAR_CENTER", "FEAR", "FEAR", 8)
+                            elseif tick == 42 then
+                                self.parent.faceParts:setEmotion("FEAR", "FEAR_CENTER", "FEAR", 4)
+                            elseif tick == 46 then
+                                self.parent.faceParts:setEmotion("FEAR_CENTER", "FEAR", "FEAR", 4)
+                            elseif tick == 50 then
+                                self.parent.faceParts:setEmotion("FEAR", "FEAR_CENTER", "FEAR", 4)
+                            elseif tick == 54 then
+                                self.parent.faceParts:setEmotion("FEAR_CENTER", "FEAR", "FEAR", 4)
+                            elseif tick == 58 then
+                                self.parent.faceParts:setEmotion("FEAR", "FEAR_CENTER", "FEAR", 4)
+                            elseif tick == 62 then
+                                self.parent.faceParts:setEmotion("FEAR_CENTER", "FEAR", "FEAR", 4)
+                            elseif tick == 66 then
+                                self.parent.faceParts:setEmotion("FEAR", "FEAR_CENTER", "FEAR", 10)
+                            elseif tick == 71 and host:isHost() then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:ui.button.click"), player:getPos(), 0.5, 1)
+                            elseif tick == 74 then
+                                models.models.ex_skill_2.YuzuChest:setVisible(true)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.YuzuChest), 1, 1)
+                            elseif tick == 76 then
+                                self.parent.faceParts:setEmotion("CLOSED2_WITH_TEAR", "CLOSED2_WITH_TEAR", "SHOCK", 17)
+                            elseif tick == 82 then
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.YuzuChest)
+                                for i = 0, 11 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), anchorPos:copy():add(vectors.rotateAroundAxis(i * 30, 0, 0, 0.5, 0, 1, 0))):setVelocity(vectors.rotateAroundAxis(i * 30, 0, 0, 0.05, 0, 1, 0)):setLifetime(20)
+                                end
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.zombie.attack_wooden_door"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.YuzuChest), 0.2, 1.5)
+                            elseif tick == 84 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.pillager.hurt"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Pillagers.Pillager1), 0.5, 1)
+                            elseif tick == 93 then
+                                models.models.main.Avatar.Head.ExSkill2H.FearEffect:setVisible(false)
+                                self.parent.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "SMALL", 44)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.chest.open"), player:getPos(), 0.1, 0.75)
+                            elseif tick == 105 and host:isHost() then
+                                events.RENDER:register(function (delta)
+                                    local opacity = (self.parent.exSkill.animationCount + delta - 1) * -0.2 + 22
+                                    for _, modelPart in ipairs({models.models.ex_skill_2.YuzuChest.YuzuChestBottom.YuzuChestBottomFront, models.models.ex_skill_2.YuzuChest.TheYuzu, models.models.ex_skill_2.YuzuChest.YuzuChestTop.YuzuChestTopFront, models.models.ex_skill_2.YuzuChest.YuzuChestTop.YuzuChestHook}) do
+                                        modelPart:setOpacity(opacity)
+                                    end
+                                end, "ex_skill_2_yuzu_chest")
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 0.5, 1.5)
+                            elseif tick == 106 and host:isHost() then
+                                models.models.ex_skill_2.Gui.ScreenEffects:setVisible(true)
+                                events.RENDER:register(function ()
+                                    local windowSize = client:getScaledWindowSize()
+                                    models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectTLFront:setPos(models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectFrontAnchor:getAnimPos().x * (windowSize.x / 427), -10, -1)
+                                    models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectTLBack:setPos(models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectBackAnchor:getAnimPos().x * (windowSize.x / 427), -11, 0)
+                                    models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectBRFront:setPos(models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectFrontAnchor:getAnimPos().x * (windowSize.x / 427) * -1 + ((windowSize.x + math.sin(math.rad(-18.8)) * windowSize.y) * -1) / 8, (windowSize.y * -1 + math.sin(math.rad(-18.8)) * windowSize.x) / 8 + 10, -1)
+                                    models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectBRBack:setPos(models.models.ex_skill_2.Gui.ScreenEffects.ScreenEffectBackAnchor:getAnimPos().x * (windowSize.x / 427) * -1 + ((windowSize.x + math.sin(math.rad(-18.8)) * windowSize.y) * -1) / 8, (windowSize.y * -1 + math.sin(math.rad(-18.8)) * windowSize.x) / 8 + 11, 0)
+                                end, "ex_skill_2_screen_effects")
+                            elseif tick == 107 and host:isHost() then
+                                models.script_ex_skill_2_sprite:setPos(client:getScaledWindowSize():scale(-0.5):augmented(0))
+                                local windowSize = client:getScaledWindowSize()
+                                for i = 0, 5 do
+                                    local offset = vectors.vec2(math.cos(math.rad(i * 60)), math.sin(math.rad(i * 60))):mul(windowSize.x / windowSize.y, 1)
+                                    self.parent.exSkill2SpriteManager:spawn("STAR", offset:copy():scale(50), offset:copy():scale(math.random() * 5 + 10))
+                                end
+                                for _ = 1, 5 do
+                                    local rot = math.random() * 360
+                                    local offset = vectors.vec2(math.cos(math.rad(rot)), math.sin(math.rad(rot))):mul(windowSize.x / windowSize.y, 1)
+                                    self.parent.exSkill2SpriteManager:spawn(math.random() < 0.5 and "MINISTAR" or "MINISTAR2", offset:copy():scale(50), offset:copy():scale(math.random() * 5 + 10))
+                                end
+                            elseif tick == 110 and host:isHost() then
+                                events.RENDER:remove("ex_skill_2_yuzu_chest")
+                                for _, modelPart in ipairs({models.models.ex_skill_2.YuzuChest.YuzuChestBottom.YuzuChestBottomFront, models.models.ex_skill_2.YuzuChest.TheYuzu, models.models.ex_skill_2.YuzuChest.YuzuChestTop.YuzuChestTopFront, models.models.ex_skill_2.YuzuChest.YuzuChestTop.YuzuChestHook}) do
+                                    modelPart:setOpacity(0)
+                                end
                             end
-                        end
-                        if forcedStop then
-                            for _, modelPart in ipairs({models.models.main.Avatar.Head.ExSkill2H.FearEffect, models.models.main.Avatar.Head.ExSkill2H.NoticeEffect}) do
-                                modelPart:setVisible(false)
+                            if tick >= 32 and tick < 76 then
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:splash"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head)):setPower(2)
+                                if (tick - 32) % 4 == 0 then
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.bubble_column.bubble_pop"), player:getPos(), 0.15, 2 - math.random() * 0.5)
+                                end
                             end
+                            if tick >= 37 and tick <= 67 and (tick - 37) % 4 == 0 and host:isHost() then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:ui.button.click"), player:getPos(), 0.25, 1.5)
+                            end
+                        end;
+
+                        onPostAnimation = function (self, forcedStop)
+                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Gun:moveTo(models.models.main.Avatar.UpperBody.Body)
+                            models.models.main.Avatar.UpperBody.Body.Gun:setVisible(self.parent.gun.currentGunPosition ~= "NONE")
+                            models.script_ex_skill_2_wall_model:setVisible(false)
+                            models.models.ex_skill_2.YuzuChest:setVisible(self.costume.costumes[2].shouldShowChest)
                             if host:isHost() then
-                                self.parent.exSkill2SpriteManager:removeAll()
+                                events.RENDER:remove("ex_skill_2_screen_effects")
+                                models.models.ex_skill_2.Gui.ScreenEffects:setVisible(false)
+                                for _, modelPart in ipairs({models.models.ex_skill_2.YuzuChest.YuzuChestBottom.YuzuChestBottomFront, models.models.ex_skill_2.YuzuChest.TheYuzu, models.models.ex_skill_2.YuzuChest.YuzuChestTop.YuzuChestTopFront, models.models.ex_skill_2.YuzuChest.YuzuChestTop.YuzuChestHook}) do
+                                    modelPart:setOpacity(1)
+                                end
                             end
-                        end
-                    end;
+                            if forcedStop then
+                                for _, modelPart in ipairs({models.models.main.Avatar.Head.ExSkill2H.FearEffect, models.models.main.Avatar.Head.ExSkill2H.NoticeEffect}) do
+                                    modelPart:setVisible(false)
+                                end
+                                if host:isHost() then
+                                    self.parent.exSkill2SpriteManager:removeAll()
+                                end
+                            end
+                        end;
 
+                    };
+
+                    ---このExスキルの初期化処理が行われたかどうか。
+                    ---@type boolean
+                    init = false;
                 };
-
-                ---このExスキルの初期化処理が行われたかどうか。
-                ---@type boolean
-                init = false;
-            }
+            };
         }
 
         instance.costume = {
