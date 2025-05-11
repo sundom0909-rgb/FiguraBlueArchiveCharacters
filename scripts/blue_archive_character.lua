@@ -44,7 +44,7 @@
 ---@field public skirt BlueArchiveCharacter.SkirtStruct スカート
 ---@field public gun BlueArchiveCharacter.GunStruct 銃
 ---@field public placementObjects BlueArchiveCharacter.PlacementObjectStruct[] 設置物
----@field public exSkill BlueArchiveCharacter.ExSkillStruct[] Exスキル
+---@field public exSkill BlueArchiveCharacter.ExSkillStruct Exスキル
 ---@field public costume BlueArchiveCharacter.CostumeStruct コスチューム
 ---@field public bubble BlueArchiveCharacter.BubbleStruct 吹き出しエモート
 ---@field public headBlock BlueArchiveCharacter.HeadBlockStruct 頭ブロック
@@ -89,11 +89,7 @@
 ---@field public callbacks? BlueArchiveCharacter.PlacementObjectCallbacksSet 設置物のコールバック関数
 
 ---@class BlueArchiveCharacter.ExSkillStruct Exスキルのデータ構造体
----@field public name BlueArchiveCharacter.LocaleStringSet Exスキルの名前
----@field public formationType BlueArchiveCharacter.FormationType この生徒の戦闘配置タイプ
----@field public models ModelPart[] Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
----@field public animations string[] Exスキルアニメーションが含まれるモデルファイル名。アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
----@field public camera BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワーク
+---@field public exSkills BlueArchiveCharacter.ExSkillDataSet[] Exスキルデータ
 ---@field public callbacks? BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数
 
 ---@class BlueArchiveCharacter.CostumeStruct コスチュームのデータ構造体
@@ -170,6 +166,17 @@
 ---@field public onRender? fun(self: BlueArchiveCharacter, placementObject: PlacementObject) 各レンダーティック毎に呼ばれる関数
 ---@field public onGround? fun(self: BlueArchiveCharacter, placementObject: PlacementObject) 設置物が接地した瞬間に呼ばれる関数
 
+---@class (exact) BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数のセット
+---@field public additionalCheckFunc? fun(self: BlueArchiveCharacter): boolean Exスキルを再生するかどうかの追加チェック関数
+
+---@class (exact) BlueArchiveCharacter.ExSkillDataSet Exスキルのデータセット
+---@field public name BlueArchiveCharacter.LocaleStringSet Exスキルの名前
+---@field public formationType BlueArchiveCharacter.FormationType この生徒の戦闘配置タイプ
+---@field public models ModelPart[] Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
+---@field public animations string[] Exスキルアニメーションが含まれるモデルファイル名。アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
+---@field public camera BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワーク
+---@field public callbacks? BlueArchiveCharacter.ExSkillAnimationCallbacks Exスキルアニメーションのコールバック関数
+
 ---@class (exact) BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワークのセット
 ---@field public start BlueArchiveCharacter.ExSkillCameraPositionSet Exスキルアニメーション開始地点
 ---@field public fin BlueArchiveCharacter.ExSkillCameraPositionSet Exスキルアニメーション終了地点
@@ -179,7 +186,7 @@
 ---@field public pos Vector3 カメラの位置
 ---@field public rot Vector3 カメラの方向
 
----@class (exact) BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数のセット
+---@class (exact) BlueArchiveCharacter.ExSkillAnimationCallbacks Exスキルアニメーションのコールバック関数のセット
 ---@field public onPreTransition? fun(self: BlueArchiveCharacter) Exスキルアニメーション開始前のトランジション開始前に実行されるコールバック関数
 ---@field public onPreAnimation? fun(self: BlueArchiveCharacter) Exスキルアニメーション開始前のトランジション終了後に実行されるコールバック関数
 ---@field public onAnimationTick? fun(self: BlueArchiveCharacter, tick: integer) Exスキルアニメーション再生中のみ実行されるティック関数
@@ -198,8 +205,9 @@
 ---@field public onArmorChange? fun(self: BlueArchiveCharacter, parts: Armor.ArmorPart, isVisible: boolean) 防具が変更された（防具が見える/見えない）ときに実行されるコールバック関数
 
 ---@class (exact) BlueArchiveCharacter.BubbleCallbacks 吹き出しエモートのコールバック関数のセット
+---@field public addtionalCheckFunc? fun(self: BlueArchiveCharacter): boolean 吹き出しエモートを表示するかどうかの追加チェック関数
 ---@field public onPlay? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, duration: integer, showInGui: boolean) 吹き出しエモートが再生された時に実行されるコールバック関数
----@field public  onStop? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, forcedStop: boolean) 吹き出しアニメーション終了時に実行されるコールバック関数
+---@field public onStop? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, forcedStop: boolean) 吹き出しアニメーション終了時に実行されるコールバック関数
 
 ---@class (exact) BlueArchiveCharacter.HeadBlockCallbacks 頭ブロックのコールバック関数のセット
 ---@field public onBeforeModelCopy? fun(self: BlueArchiveCharacter, isScriptLoaded: boolean) モデルのコピー直前に実行される関数
@@ -360,211 +368,213 @@ BlueArchiveCharacter = {
         }
 
         instance.exSkill = {
-            {
-                name = {
-                    en_us = "Garden of Slumber";
-                    ja_jp = "まどろみの庭";
-                };
-
-                formationType = "STRIKER";
-
-                models = {models.models.ex_skill_1.Bench, models.models.main.Avatar.Head.NoticeEffects, models.models.ex_skill_1.Gui};
-
-                animations = {"main", "ex_skill_1"};
-
-                camera = {
-                    start = {
-                        rot = vectors.vec3(25, -25, 0);
-                        pos = vectors.vec3(-39.3, 53.3, 79);
+            exSkills = {
+                {
+                    name = {
+                        en_us = "Garden of Slumber";
+                        ja_jp = "まどろみの庭";
                     };
 
-                    fin = {
-                        rot = vectors.vec3(-2.5, 65, 0);
-                        pos = vectors.vec3(-29.7, 23.3, -59);
-                    };
-                };
+                    formationType = "STRIKER";
 
-                callbacks = {
-                    onPreAnimation = function (self)
-                        if not self.exSkill[1].init then
-                            if models.models.main.Avatar.Head.Allay ~= nil then
-                                models.models.main.Avatar.Head.Allay:moveTo(models.models.ex_skill_1)
-                                models.models.main.Avatar.Head:removeChild(models.models.ex_skill_1.Allay)
-                            end
-                            for i = 2, 7 do
-                                models.models.ex_skill_1.AnimAllays["Allay"..i]["Allay"..i.."Head"]:addChild(models.models.ex_skill_1.Allay.AllayHead.AllayHead:copy("Allay"..i.."Head"))
-                                for j = 1, 2 do
-                                    models.models.ex_skill_1.AnimAllays["Allay"..i]["Allay"..i.."Body"]:addChild(models.models.ex_skill_1.Allay.AllayBody["AllayBody"..j]:copy("Allay"..i.."Body"..j))
+                    models = {models.models.ex_skill_1.Bench, models.models.main.Avatar.Head.NoticeEffects, models.models.ex_skill_1.Gui};
+
+                    animations = {"main", "ex_skill_1"};
+
+                    camera = {
+                        start = {
+                            rot = vectors.vec3(25, -25, 0);
+                            pos = vectors.vec3(-39.3, 53.3, 79);
+                        };
+
+                        fin = {
+                            rot = vectors.vec3(-2.5, 65, 0);
+                            pos = vectors.vec3(-29.7, 23.3, -59);
+                        };
+                    };
+
+                    callbacks = {
+                        onPreAnimation = function (self)
+                            if not self.exSkill.exSkills[1].init then
+                                if models.models.main.Avatar.Head.Allay ~= nil then
+                                    models.models.main.Avatar.Head.Allay:moveTo(models.models.ex_skill_1)
+                                    models.models.main.Avatar.Head:removeChild(models.models.ex_skill_1.Allay)
                                 end
-                                models.models.ex_skill_1.AnimAllays["Allay"..i]["Allay"..i.."Body"]["Allay"..i.."RA"]:addChild(models.models.ex_skill_1.Allay.AllayBody.AllayRA.AllayRA:copy("Allay"..i.."RA"))
-                                models.models.ex_skill_1.AnimAllays["Allay"..i]["Allay"..i.."Body"]["Allay"..i.."LA"]:addChild(models.models.ex_skill_1.Allay.AllayBody.AllayLA.AllayLA:copy("Allay"..i.."LA"))
-                                models.models.ex_skill_1.AnimAllays["Allay"..i]["Allay"..i.."Body"]["Allay"..i.."RightWing"]:addChild(models.models.ex_skill_1.Allay.AllayBody.AllayRightWing.AllayRightWing:copy("Allay"..i.."RightWing"))
-                                models.models.ex_skill_1.AnimAllays["Allay"..i]["Allay"..i.."Body"]["Allay"..i.."LeftWing"]:addChild(models.models.ex_skill_1.Allay.AllayBody.AllayLeftWing.AllayLeftWing:copy("Allay"..i.."LeftWing"))
-                            end
-                            models.models.ex_skill_1.AnimAllays:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/allay/allay.png")
-                            if host:isHost() then
-                                for i = 1, 4 do
-                                    models.models.ex_skill_1.WindowAnchor:newBlock("ex_skill_1_block_"..i):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:smooth_quartz_stairs", "[facing=south]")):setPos((i - 1) * 16 - 32, -40, -32)
-                                end
-                                for i = 1, 2 do
-                                    for j = 1, 4 do
-                                        models.models.ex_skill_1.WindowAnchor:newBlock("ex_skill_1_block_"..((i - 1) * 4 + (j - 1) + 5)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:smooth_quartz")):setPos((i - 1) * 80 + -48, (j - 1) * 16 - 40, -24)
+                                for i = 2, 7 do
+                                    models.models.ex_skill_1.AnimAllays["Allay"..i]["Allay"..i.."Head"]:addChild(models.models.ex_skill_1.Allay.AllayHead.AllayHead:copy("Allay"..i.."Head"))
+                                    for j = 1, 2 do
+                                        models.models.ex_skill_1.AnimAllays["Allay"..i]["Allay"..i.."Body"]:addChild(models.models.ex_skill_1.Allay.AllayBody["AllayBody"..j]:copy("Allay"..i.."Body"..j))
                                     end
+                                    models.models.ex_skill_1.AnimAllays["Allay"..i]["Allay"..i.."Body"]["Allay"..i.."RA"]:addChild(models.models.ex_skill_1.Allay.AllayBody.AllayRA.AllayRA:copy("Allay"..i.."RA"))
+                                    models.models.ex_skill_1.AnimAllays["Allay"..i]["Allay"..i.."Body"]["Allay"..i.."LA"]:addChild(models.models.ex_skill_1.Allay.AllayBody.AllayLA.AllayLA:copy("Allay"..i.."LA"))
+                                    models.models.ex_skill_1.AnimAllays["Allay"..i]["Allay"..i.."Body"]["Allay"..i.."RightWing"]:addChild(models.models.ex_skill_1.Allay.AllayBody.AllayRightWing.AllayRightWing:copy("Allay"..i.."RightWing"))
+                                    models.models.ex_skill_1.AnimAllays["Allay"..i]["Allay"..i.."Body"]["Allay"..i.."LeftWing"]:addChild(models.models.ex_skill_1.Allay.AllayBody.AllayLeftWing.AllayLeftWing:copy("Allay"..i.."LeftWing"))
                                 end
-                                for i = 1, 6 do
-                                    models.models.ex_skill_1.WindowAnchor:newBlock("ex_skill_1_block_"..(i + 12)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:smooth_quartz")):setPos((i - 1) * 16 + -48, 24, -24)
-                                end
-                                for i = 1, 2 do
-                                    for j = 1, 5 do
-                                        for k = 1, 5 do
-                                            models.models.ex_skill_1.WindowAnchor:newBlock("ex_skill_1_block_"..((i - 1) * 25 + (j - 1) * 5 + (k - 1) + 19)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:polished_andesite")):setPos((i - 1) * 112 - 64, (k - 1) * 16 - 40, (j - 1) * 16 - 24)
+                                models.models.ex_skill_1.AnimAllays:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/allay/allay.png")
+                                if host:isHost() then
+                                    for i = 1, 4 do
+                                        models.models.ex_skill_1.WindowAnchor:newBlock("ex_skill_1_block_"..i):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:smooth_quartz_stairs", "[facing=south]")):setPos((i - 1) * 16 - 32, -40, -32)
+                                    end
+                                    for i = 1, 2 do
+                                        for j = 1, 4 do
+                                            models.models.ex_skill_1.WindowAnchor:newBlock("ex_skill_1_block_"..((i - 1) * 4 + (j - 1) + 5)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:smooth_quartz")):setPos((i - 1) * 80 + -48, (j - 1) * 16 - 40, -24)
                                         end
                                     end
-                                end
-                                for i = 1, 6 do
-                                    for j = 1, 5 do
-                                        models.models.ex_skill_1.WindowAnchor:newBlock("ex_skill_1_block_"..((i - 1) * 5 + (j - 1) + 69)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:polished_andesite")):setPos((i - 1) * 16 - 48, (j - 1) * 16 - 40, 40)
+                                    for i = 1, 6 do
+                                        models.models.ex_skill_1.WindowAnchor:newBlock("ex_skill_1_block_"..(i + 12)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:smooth_quartz")):setPos((i - 1) * 16 + -48, 24, -24)
                                     end
-                                end
-                                for i = 1, 8 do
-                                    for j = 1, 5 do
-                                        models.models.ex_skill_1.WindowAnchor:newBlock("ex_skill_1_block_"..((i - 1) * 5 + (j - 1) + 99)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:spruce_planks")):setPos((i - 1) * 16 - 64, -56, (j - 1) * 16 - 24)
+                                    for i = 1, 2 do
+                                        for j = 1, 5 do
+                                            for k = 1, 5 do
+                                                models.models.ex_skill_1.WindowAnchor:newBlock("ex_skill_1_block_"..((i - 1) * 25 + (j - 1) * 5 + (k - 1) + 19)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:polished_andesite")):setPos((i - 1) * 112 - 64, (k - 1) * 16 - 40, (j - 1) * 16 - 24)
+                                            end
+                                        end
                                     end
-                                end
-                                for i = 1, 8 do
-                                    for j = 1, 5 do
-                                        models.models.ex_skill_1.WindowAnchor:newBlock("ex_skill_1_block_"..((i - 1) * 5 + (j - 1) + 139)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:polished_andesite")):setPos((i - 1) * 16 - 64, 40, (j - 1) * 16 - 24)
+                                    for i = 1, 6 do
+                                        for j = 1, 5 do
+                                            models.models.ex_skill_1.WindowAnchor:newBlock("ex_skill_1_block_"..((i - 1) * 5 + (j - 1) + 69)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:polished_andesite")):setPos((i - 1) * 16 - 48, (j - 1) * 16 - 40, 40)
+                                        end
                                     end
-                                end
-                                for i = 1, 2 do
-                                    for j = 1, 3 do
-                                        models.models.ex_skill_1.WindowAnchor.WindowFrameAnchor1:newBlock("ex_skill_1_block_"..((i - 1) * 3 + (j - 1) + 179)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:glass_pane", "[east=true,west=true]")):setPos((i - 1) * 16, (j - 1) * 16, -8)
+                                    for i = 1, 8 do
+                                        for j = 1, 5 do
+                                            models.models.ex_skill_1.WindowAnchor:newBlock("ex_skill_1_block_"..((i - 1) * 5 + (j - 1) + 99)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:spruce_planks")):setPos((i - 1) * 16 - 64, -56, (j - 1) * 16 - 24)
+                                        end
                                     end
-                                end
-                                for i = 1, 2 do
-                                    for j = 1, 3 do
-                                        models.models.ex_skill_1.WindowAnchor.WindowFrameAnchor2:newBlock("ex_skill_1_block_"..((i - 1) * 3 + (j - 1) + 186)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:glass_pane", "[east=true,west=true]")):setPos((i - 1) * 16 - 32, (j - 1) * 16, -8)
+                                    for i = 1, 8 do
+                                        for j = 1, 5 do
+                                            models.models.ex_skill_1.WindowAnchor:newBlock("ex_skill_1_block_"..((i - 1) * 5 + (j - 1) + 139)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:polished_andesite")):setPos((i - 1) * 16 - 64, 40, (j - 1) * 16 - 24)
+                                        end
                                     end
+                                    for i = 1, 2 do
+                                        for j = 1, 3 do
+                                            models.models.ex_skill_1.WindowAnchor.WindowFrameAnchor1:newBlock("ex_skill_1_block_"..((i - 1) * 3 + (j - 1) + 179)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:glass_pane", "[east=true,west=true]")):setPos((i - 1) * 16, (j - 1) * 16, -8)
+                                        end
+                                    end
+                                    for i = 1, 2 do
+                                        for j = 1, 3 do
+                                            models.models.ex_skill_1.WindowAnchor.WindowFrameAnchor2:newBlock("ex_skill_1_block_"..((i - 1) * 3 + (j - 1) + 186)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:glass_pane", "[east=true,west=true]")):setPos((i - 1) * 16 - 32, (j - 1) * 16, -8)
+                                        end
+                                    end
+                                    models.models.ex_skill_1.WindowAnchor:newBlock("ex_skill_1_block_192"):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:potted_azure_bluet")):setPos(-24, -24, -28)
                                 end
-                                models.models.ex_skill_1.WindowAnchor:newBlock("ex_skill_1_block_192"):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:potted_azure_bluet")):setPos(-24, -24, -28)
+                                self.exSkill.exSkills[1].init= true
                             end
-                            self.exSkill[1].init= true
-                        end
-                        if host:isHost() then
-                            models.models.ex_skill_1.WindowAnchor:setVisible(true)
-                            events.RENDER:register(function ()
-                                models.models.ex_skill_1.Gui.Frame:setOpacity(models.models.ex_skill_1.Gui.FrameOpacity:getAnimScale().x)
-                            end, "ex_skill_1_render")
-                        end
-                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 13, true)
-                    end;
-
-                    onAnimationTick = function (self, tick)
-                        if tick == 1 and host:isHost() then
-                            models.models.ex_skill_1.Allay:setVisible(true)
-                        elseif tick == 13 then
-                            self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 14, true)
-                        elseif tick == 20 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.allay.ambient_with_item"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Allay), 0.15, 1)
-                        elseif tick == 27 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 9, true)
-                        elseif tick == 38 then
                             if host:isHost() then
-                                models.models.ex_skill_1.WindowAnchor:setVisible(false)
+                                models.models.ex_skill_1.WindowAnchor:setVisible(true)
+                                events.RENDER:register(function ()
+                                    models.models.ex_skill_1.Gui.Frame:setOpacity(models.models.ex_skill_1.Gui.FrameOpacity:getAnimScale().x)
+                                end, "ex_skill_1_render")
                             end
-                            for _, modelPart in ipairs({models.models.ex_skill_1.Allay, models.models.ex_skill_1.AnimAllays, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Book, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Cushion}) do
-                                modelPart:setVisible(true)
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 13, true)
+                        end;
+
+                        onAnimationTick = function (self, tick)
+                            if tick == 1 and host:isHost() then
+                                models.models.ex_skill_1.Allay:setVisible(true)
+                            elseif tick == 13 then
+                                self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 14, true)
+                            elseif tick == 20 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.allay.ambient_with_item"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Allay), 0.15, 1)
+                            elseif tick == 27 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 9, true)
+                            elseif tick == 38 then
+                                if host:isHost() then
+                                    models.models.ex_skill_1.WindowAnchor:setVisible(false)
+                                end
+                                for _, modelPart in ipairs({models.models.ex_skill_1.Allay, models.models.ex_skill_1.AnimAllays, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Book, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Cushion}) do
+                                    modelPart:setVisible(true)
+                                end
+                                self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 65, true)
+                            elseif tick == 64 and host:isHost() then
+                                models.models.ex_skill_1.Gui.Frame:setScale(client:getScaledWindowSize():augmented(1))
+                            elseif tick == 101 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.bat.takeoff"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Bench), 0.15, 1.5)
+                            elseif tick == 103 then
+                                self.parent.faceParts:setEmotion("NORMAL", "CENTER", "CLOSED", 3, true)
+                            elseif tick == 106 then
+                                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "CLOSED", 2, true)
+                            elseif tick == 108 then
+                                self.parent.faceParts:setEmotion("NORMAL", "CENTER", "SMALL", 6, true)
+                            elseif tick == 114 then
+                                models.models.ex_skill_1.Allay:setVisible(false)
+                                for i = 2, 7 do
+                                    models.models.ex_skill_1.AnimAllays["Allay"..i]:setVisible(false)
+                                end
+                                self.parent.faceParts:setEmotion("CENTER", "NORMAL", "SMALL", 19, true)
+                            elseif tick == 133 then
+                                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMALL", 2, true)
+                            elseif tick == 134 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 1.5)
+                            elseif tick == 135 then
+                                for i = 1, 3 do
+                                    models.models.main.Avatar.Head.NoticeEffects["NoticeEffect"..i]["NoticeEffect"..i.."Pivot"]:setOffsetPivot(-4, 0, 0)
+                                end
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMALL", 16, true)
+                            elseif tick == 146 then
+                                if host:isHost() then
+                                    models.models.ex_skill_1.Gui.Frame:setUVPixels(16, 0)
+                                end
+                                local bodyYaw = player:getBodyYaw()
+                                for _ = 1, 20 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head):add(0, 0.25, 0)):setVelocity(vectors.rotateAroundAxis(math.random() * 120 - 60, vectors.rotateAroundAxis(bodyYaw * -1 + 30 - math.random() * 240, 0, 0, math.random() * 0.05 + 0.05, 0, 1, 0), 1, 0, 0)):setGravity(0):setLifetime(70)
+                                end
+                            elseif tick == 151 then
+                                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMALL", 2, true)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.5, 1.5)
+                            elseif tick == 153 then
+                                for _, modelPart in ipairs({models.models.ex_skill_1.Allay, models.models.ex_skill_1.AnimAllays.Allay2}) do
+                                    modelPart:setVisible(true)
+                                end
+                                self.parent.faceParts:setEmotion("NARROW", "NARROW_CENTER", "OPENED", 63, true)
+                            elseif tick == 160 then
+                                models.models.ex_skill_1.AnimAllays.Allay3:setVisible(true)
+                            elseif tick == 163 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.allay.ambient_with_item"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.AnimAllays.Allay3), 0.15, 1)
                             end
-                            self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 65, true)
-                        elseif tick == 64 and host:isHost() then
-                            models.models.ex_skill_1.Gui.Frame:setScale(client:getScaledWindowSize():augmented(1))
-                        elseif tick == 101 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.bat.takeoff"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Bench), 0.15, 1.5)
-                        elseif tick == 103 then
-                            self.parent.faceParts:setEmotion("NORMAL", "CENTER", "CLOSED", 3, true)
-                        elseif tick == 106 then
-                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "CLOSED", 2, true)
-                        elseif tick == 108 then
-                            self.parent.faceParts:setEmotion("NORMAL", "CENTER", "SMALL", 6, true)
-                        elseif tick == 114 then
-                            models.models.ex_skill_1.Allay:setVisible(false)
-                            for i = 2, 7 do
-                                models.models.ex_skill_1.AnimAllays["Allay"..i]:setVisible(false)
+
+                            if tick >= 101 and tick < 114 then
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Allay)):setScale(0.25):setColor(0.25, 1, 1):setGravity(0)
+                                for i = 2, 7 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.AnimAllays["Allay"..i])):setScale(0.25):setColor(0.25, 1, 1):setGravity(0)
+                                end
                             end
-                            self.parent.faceParts:setEmotion("CENTER", "NORMAL", "SMALL", 19, true)
-                        elseif tick == 133 then
-                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMALL", 2, true)
-                        elseif tick == 134 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 1.5)
-                        elseif tick == 135 then
-                            for i = 1, 3 do
-                                models.models.main.Avatar.Head.NoticeEffects["NoticeEffect"..i]["NoticeEffect"..i.."Pivot"]:setOffsetPivot(-4, 0, 0)
+
+                            if tick >= 38 and tick < 101 and math.random() >= 0.95 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.allay.ambient_with_item"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Bench), 0.15, 1)
                             end
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMALL", 16, true)
-                        elseif tick == 146 then
+
+                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:cherry_leaves"), player:getPos():add(vectors.rotateAroundAxis( player:getBodyYaw() * -1, -3, 5, 4, 0, 1, 0)):add(math.random() * 5 - 2.5, 0, math.random() * 5 - 2.5))
+                        end;
+
+                        onPostAnimation = function (_, forcedStop)
                             if host:isHost() then
-                                models.models.ex_skill_1.Gui.Frame:setUVPixels(16, 0)
+                                events.RENDER:remove("ex_skill_1_render")
+                                models.models.ex_skill_1.Gui.Frame:setUVPixels()
                             end
-                            local bodyYaw = player:getBodyYaw()
-                            for _ = 1, 20 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head):add(0, 0.25, 0)):setVelocity(vectors.rotateAroundAxis(math.random() * 120 - 60, vectors.rotateAroundAxis(bodyYaw * -1 + 30 - math.random() * 240, 0, 0, math.random() * 0.05 + 0.05, 0, 1, 0), 1, 0, 0)):setGravity(0):setLifetime(70)
-                            end
-                        elseif tick == 151 then
-                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMALL", 2, true)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.5, 1.5)
-                        elseif tick == 153 then
-                            for _, modelPart in ipairs({models.models.ex_skill_1.Allay, models.models.ex_skill_1.AnimAllays.Allay2}) do
-                                modelPart:setVisible(true)
-                            end
-                            self.parent.faceParts:setEmotion("NARROW", "NARROW_CENTER", "OPENED", 63, true)
-                        elseif tick == 160 then
-                            models.models.ex_skill_1.AnimAllays.Allay3:setVisible(true)
-                        elseif tick == 163 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.allay.ambient_with_item"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.AnimAllays.Allay3), 0.15, 1)
-                        end
-
-                        if tick >= 101 and tick < 114 then
-                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Allay)):setScale(0.25):setColor(0.25, 1, 1):setGravity(0)
-                            for i = 2, 7 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.AnimAllays["Allay"..i])):setScale(0.25):setColor(0.25, 1, 1):setGravity(0)
-                            end
-                        end
-
-                        if tick >= 38 and tick < 101 and math.random() >= 0.95 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.allay.ambient_with_item"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Bench), 0.15, 1)
-                        end
-
-                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:cherry_leaves"), player:getPos():add(vectors.rotateAroundAxis( player:getBodyYaw() * -1, -3, 5, 4, 0, 1, 0)):add(math.random() * 5 - 2.5, 0, math.random() * 5 - 2.5))
-                    end;
-
-                    onPostAnimation = function (_, forcedStop)
-                        if host:isHost() then
-                            events.RENDER:remove("ex_skill_1_render")
-                            models.models.ex_skill_1.Gui.Frame:setUVPixels()
-                        end
-                        for i = 4, 7 do
-                            models.models.ex_skill_1.AnimAllays["Allay"..i]:setVisible(true)
-                        end
-                        for _, modelPart in ipairs({models.models.ex_skill_1.AnimAllays, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Book, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Cushion}) do
-                            modelPart:setVisible(false)
-                        end
-                        for i = 1, 3 do
-                            models.models.main.Avatar.Head.NoticeEffects["NoticeEffect"..i]["NoticeEffect"..i.."Pivot"]:setOffsetPivot()
-                        end
-                        if forcedStop then
-                            if host:isHost() then
-                                models.models.ex_skill_1.WindowAnchor:setVisible(false)
-                            end
-                            for i = 2, 3 do
+                            for i = 4, 7 do
                                 models.models.ex_skill_1.AnimAllays["Allay"..i]:setVisible(true)
                             end
-                        end
-                    end;
-                };
+                            for _, modelPart in ipairs({models.models.ex_skill_1.AnimAllays, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Book, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Cushion}) do
+                                modelPart:setVisible(false)
+                            end
+                            for i = 1, 3 do
+                                models.models.main.Avatar.Head.NoticeEffects["NoticeEffect"..i]["NoticeEffect"..i.."Pivot"]:setOffsetPivot()
+                            end
+                            if forcedStop then
+                                if host:isHost() then
+                                    models.models.ex_skill_1.WindowAnchor:setVisible(false)
+                                end
+                                for i = 2, 3 do
+                                    models.models.ex_skill_1.AnimAllays["Allay"..i]:setVisible(true)
+                                end
+                            end
+                        end;
+                    };
 
-                ---このExスキルの初期化処理が行われたかどうか。
-                ---@type boolean
-                init = false;
+                    ---このExスキルの初期化処理が行われたかどうか。
+                    ---@type boolean
+                    init = false;
+                };
             };
         }
 
