@@ -47,7 +47,7 @@
 ---@field public skirt BlueArchiveCharacter.SkirtStruct スカート
 ---@field public gun BlueArchiveCharacter.GunStruct 銃
 ---@field public placementObjects BlueArchiveCharacter.PlacementObjectStruct[] 設置物
----@field public exSkill BlueArchiveCharacter.ExSkillStruct[] Exスキル
+---@field public exSkill BlueArchiveCharacter.ExSkillStruct Exスキル
 ---@field public costume BlueArchiveCharacter.CostumeStruct コスチューム
 ---@field public bubble BlueArchiveCharacter.BubbleStruct 吹き出しエモート
 ---@field public headBlock BlueArchiveCharacter.HeadBlockStruct 頭ブロック
@@ -92,11 +92,7 @@
 ---@field public callbacks? BlueArchiveCharacter.PlacementObjectCallbacksSet 設置物のコールバック関数
 
 ---@class BlueArchiveCharacter.ExSkillStruct Exスキルのデータ構造体
----@field public name BlueArchiveCharacter.LocaleStringSet Exスキルの名前
----@field public formationType BlueArchiveCharacter.FormationType この生徒の戦闘配置タイプ
----@field public models ModelPart[] Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
----@field public animations string[] Exスキルアニメーションが含まれるモデルファイル名。アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
----@field public camera BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワーク
+---@field public exSkills BlueArchiveCharacter.ExSkillDataSet[] Exスキルデータ
 ---@field public callbacks? BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数
 
 ---@class BlueArchiveCharacter.CostumeStruct コスチュームのデータ構造体
@@ -173,6 +169,17 @@
 ---@field public onRender? fun(self: BlueArchiveCharacter, placementObject: PlacementObject, delta: number) 各レンダーティック毎に呼ばれる関数
 ---@field public onGround? fun(self: BlueArchiveCharacter, placementObject: PlacementObject) 設置物が接地した瞬間に呼ばれる関数
 
+---@class (exact) BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数のセット
+---@field public additionalCheckFunc? fun(self: BlueArchiveCharacter): boolean Exスキルを再生するかどうかの追加チェック関数
+
+---@class (exact) BlueArchiveCharacter.ExSkillDataSet Exスキルのデータセット
+---@field public name BlueArchiveCharacter.LocaleStringSet Exスキルの名前
+---@field public formationType BlueArchiveCharacter.FormationType この生徒の戦闘配置タイプ
+---@field public models ModelPart[] Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
+---@field public animations string[] Exスキルアニメーションが含まれるモデルファイル名。アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
+---@field public camera BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワーク
+---@field public callbacks? BlueArchiveCharacter.ExSkillAnimationCallbacks Exスキルアニメーションのコールバック関数
+
 ---@class (exact) BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワークのセット
 ---@field public start BlueArchiveCharacter.ExSkillCameraPositionSet Exスキルアニメーション開始地点
 ---@field public fin BlueArchiveCharacter.ExSkillCameraPositionSet Exスキルアニメーション終了地点
@@ -182,7 +189,7 @@
 ---@field public pos Vector3 カメラの位置
 ---@field public rot Vector3 カメラの方向
 
----@class (exact) BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数のセット
+---@class (exact) BlueArchiveCharacter.ExSkillAnimationCallbacks Exスキルアニメーションのコールバック関数のセット
 ---@field public onPreTransition? fun(self: BlueArchiveCharacter) Exスキルアニメーション開始前のトランジション開始前に実行されるコールバック関数
 ---@field public onPreAnimation? fun(self: BlueArchiveCharacter) Exスキルアニメーション開始前のトランジション終了後に実行されるコールバック関数
 ---@field public onAnimationTick? fun(self: BlueArchiveCharacter, tick: integer) Exスキルアニメーション再生中のみ実行されるティック関数
@@ -201,8 +208,9 @@
 ---@field public onArmorChange? fun(self: BlueArchiveCharacter, parts: Armor.ArmorPart, isVisible: boolean) 防具が変更された（防具が見える/見えない）ときに実行されるコールバック関数
 
 ---@class (exact) BlueArchiveCharacter.BubbleCallbacks 吹き出しエモートのコールバック関数のセット
+---@field public addtionalCheckFunc? fun(self: BlueArchiveCharacter): boolean 吹き出しエモートを表示するかどうかの追加チェック関数
 ---@field public onPlay? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, duration: integer, showInGui: boolean) 吹き出しエモートが再生された時に実行されるコールバック関数
----@field public  onStop? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, forcedStop: boolean) 吹き出しアニメーション終了時に実行されるコールバック関数
+---@field public onStop? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, forcedStop: boolean) 吹き出しアニメーション終了時に実行されるコールバック関数
 
 ---@class (exact) BlueArchiveCharacter.HeadBlockCallbacks 頭ブロックのコールバック関数のセット
 ---@field public onBeforeModelCopy? fun(self: BlueArchiveCharacter, isScriptLoaded: boolean) モデルのコピー直前に実行される関数
@@ -438,235 +446,237 @@ BlueArchiveCharacter = {
         }
 
         instance.exSkill = {
-            {
-                name = {
-                    en_us = "The festival has begun!";
-                    ja_jp = "お祭り開始です！";
-                };
-
-                formationType = "STRIKER";
-
-                models = {models.models.ex_skill_1, models.models.main.Avatar.Head.FaceParts.Eyes.EyeShines, models.models.main.LaughterLines};
-
-                animations = {"main", "ex_skill_1"};
-
-                camera = {
-                    start = {
-                        rot = vectors.vec3(0, 160, 0);
-                        pos = vectors.vec3(-9, 24, -23);
+            exSkills = {
+                {
+                    name = {
+                        en_us = "The festival has begun!";
+                        ja_jp = "お祭り開始です！";
                     };
 
-                    fin = {
-                        rot = vectors.vec3(0, 180, -5);
-                        pos = vectors.vec3(25.9, 22.75, -43.4);
+                    formationType = "STRIKER";
+
+                    models = {models.models.ex_skill_1, models.models.main.Avatar.Head.FaceParts.Eyes.EyeShines, models.models.main.LaughterLines};
+
+                    animations = {"main", "ex_skill_1"};
+
+                    camera = {
+                        start = {
+                            rot = vectors.vec3(0, 160, 0);
+                            pos = vectors.vec3(-9, 24, -23);
+                        };
+
+                        fin = {
+                            rot = vectors.vec3(0, 180, -5);
+                            pos = vectors.vec3(25.9, 22.75, -43.4);
+                        };
                     };
-                };
 
-                callbacks = {
-                    onPreTransition = function (self)
-                        if #self.parent.placementObjectManager.objects == 5 then
-                            self.parent.placementObjectManager:remove(1)
-                        end
-                    end;
+                    callbacks = {
+                        onPreTransition = function (self)
+                            if #self.parent.placementObjectManager.objects == 5 then
+                                self.parent.placementObjectManager:remove(1)
+                            end
+                        end;
 
-                    onPreAnimation = function (self)
-                        if not self.exSkill[1].init then
-                            self.exSkill[1].makeTakoyakiText(models.models.ex_skill_1.Stalls.TakoyakiStall.TakoyakiStallRoof.StallRoofFront, vectors.vec3(0, -6, -1.01), 0)
-                            self.exSkill[1].makeTakoyakiText(models.models.ex_skill_1.Stalls.TakoyakiStall.TakoyakiStallRoof.StallRoofRight, vectors.vec3(0.501, -6, 22.5), -90)
-                            self.exSkill[1].makeTakoyakiText(models.models.ex_skill_1.Stalls.TakoyakiStall.TakoyakiStallRoof.StallRoofLeft, vectors.vec3(-0.501, -6, 22.5), 90)
-                            for i = 1, 2 do
-                                models.models.ex_skill_1.Stalls.TakoyakiStall.TakoyakiStallTable["MenuLabel"..i]:newText("MenuLabel"..i.."_takoyaki_text"):setText("§4§lた\nこ\nや\nき"):setPos(-0.25, -0.25, -0.01):setScale(0.25, 0.25, 0.25):setAlignment("CENTER"):setOutline(true)
-                                models.models.ex_skill_1.Stalls.TakoyakiStall.TakoyakiStallTable["MenuLabel"..i]:newItem("MenuLabel"..i.."_emerald_item"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:emerald")):setPos(0.75, -10.75, -0.01):setScale(0.1, 0.1, 0)
-                                models.models.ex_skill_1.Stalls.TakoyakiStall.TakoyakiStallTable["MenuLabel"..i]:newText("MenuLabel"..i.."_price_text"):setText("§0§lx5"):setPos(-0.5, -10.5, -0.01):setScale(0.1, 0.1, 0.1):setAlignment("CENTER")
-                            end
-                            models.models.ex_skill_1.Stalls.TakoyakiStall.TakoyakiStallFrames.MenuSign:newText("MenuSign_takoyaki_text"):setText("§4§lたこ\n焼き"):setPos(-3.25, 4.25, -0.01):setScale(0.35, 0.35, 0.35):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.8, 0.8, 0.8)
-                            models.models.ex_skill_1.Stalls.TakoyakiStall.TakoyakiStallFrames.MenuSign:newItem("MenuSign_emerald_item"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:emerald")):setPos(3, -3.25, -0.01):setScale(0.175, 0.175, 0)
-                            models.models.ex_skill_1.Stalls.TakoyakiStall.TakoyakiStallFrames.MenuSign:newText("MenuSign_price_text"):setText("§0§lx5"):setPos(0.5, -3, -0.01):setScale(0.15, 0.15, 0.15):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.8, 0.8, 0.8)
-                            models.models.ex_skill_1.Stalls.TakoyakiStall:newBlock("TakoyakiStall_step"):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:scaffolding")):setPos(20, -6, 16)
+                        onPreAnimation = function (self)
+                            if not self.exSkill.exSkills[1].init then
+                                self.exSkill.exSkills[1].makeTakoyakiText(models.models.ex_skill_1.Stalls.TakoyakiStall.TakoyakiStallRoof.StallRoofFront, vectors.vec3(0, -6, -1.01), 0)
+                                self.exSkill.exSkills[1].makeTakoyakiText(models.models.ex_skill_1.Stalls.TakoyakiStall.TakoyakiStallRoof.StallRoofRight, vectors.vec3(0.501, -6, 22.5), -90)
+                                self.exSkill.exSkills[1].makeTakoyakiText(models.models.ex_skill_1.Stalls.TakoyakiStall.TakoyakiStallRoof.StallRoofLeft, vectors.vec3(-0.501, -6, 22.5), 90)
+                                for i = 1, 2 do
+                                    models.models.ex_skill_1.Stalls.TakoyakiStall.TakoyakiStallTable["MenuLabel"..i]:newText("MenuLabel"..i.."_takoyaki_text"):setText("§4§lた\nこ\nや\nき"):setPos(-0.25, -0.25, -0.01):setScale(0.25, 0.25, 0.25):setAlignment("CENTER"):setOutline(true)
+                                    models.models.ex_skill_1.Stalls.TakoyakiStall.TakoyakiStallTable["MenuLabel"..i]:newItem("MenuLabel"..i.."_emerald_item"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:emerald")):setPos(0.75, -10.75, -0.01):setScale(0.1, 0.1, 0)
+                                    models.models.ex_skill_1.Stalls.TakoyakiStall.TakoyakiStallTable["MenuLabel"..i]:newText("MenuLabel"..i.."_price_text"):setText("§0§lx5"):setPos(-0.5, -10.5, -0.01):setScale(0.1, 0.1, 0.1):setAlignment("CENTER")
+                                end
+                                models.models.ex_skill_1.Stalls.TakoyakiStall.TakoyakiStallFrames.MenuSign:newText("MenuSign_takoyaki_text"):setText("§4§lたこ\n焼き"):setPos(-3.25, 4.25, -0.01):setScale(0.35, 0.35, 0.35):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.8, 0.8, 0.8)
+                                models.models.ex_skill_1.Stalls.TakoyakiStall.TakoyakiStallFrames.MenuSign:newItem("MenuSign_emerald_item"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:emerald")):setPos(3, -3.25, -0.01):setScale(0.175, 0.175, 0)
+                                models.models.ex_skill_1.Stalls.TakoyakiStall.TakoyakiStallFrames.MenuSign:newText("MenuSign_price_text"):setText("§0§lx5"):setPos(0.5, -3, -0.01):setScale(0.15, 0.15, 0.15):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.8, 0.8, 0.8)
+                                models.models.ex_skill_1.Stalls.TakoyakiStall:newBlock("TakoyakiStall_step"):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:scaffolding")):setPos(20, -6, 16)
 
-                            models.models.ex_skill_1.Stalls.IkayakiStall.IkayakiStallTable.PlanksSheet:setPrimaryTexture("RESOURCE", "minecraft:textures/block/oak_planks.png")
-                            self.exSkill[1].makeIkayakiText(models.models.ex_skill_1.Stalls.IkayakiStall.IkayakiStallRoof.StallRoofFront, vectors.vec3(0, -6, -1.01), 0)
-                            self.exSkill[1].makeIkayakiText(models.models.ex_skill_1.Stalls.IkayakiStall.IkayakiStallRoof.StallRoofRight, vectors.vec3(0.501, -6, 22.5), -90)
-                            self.exSkill[1].makeIkayakiText(models.models.ex_skill_1.Stalls.IkayakiStall.IkayakiStallRoof.StallRoofLeft, vectors.vec3(-0.501, -6, 22.5), 90)
-                            for i = 1, 3 do
-                                models.models.ex_skill_1.Stalls.IkayakiStall.IkayakiStallTable["MenuLabel"..i]:newItem("MenuLabel"..i.."_emerald_item"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:emerald")):setPos(1.75, -2, -0.01):setScale(0.25, 0.25, 0)
-                                models.models.ex_skill_1.Stalls.IkayakiStall.IkayakiStallTable["MenuLabel"..i]:newText("MenuLabel"..i.."_price_text"):setText("§0§lx"..(i - 1) * 2 + 1):setPos(-1.5, -1.75, -0.01):setScale(0.25, 0.25, 0.25):setAlignment("CENTER")
+                                models.models.ex_skill_1.Stalls.IkayakiStall.IkayakiStallTable.PlanksSheet:setPrimaryTexture("RESOURCE", "minecraft:textures/block/oak_planks.png")
+                                self.exSkill.exSkills[1].makeIkayakiText(models.models.ex_skill_1.Stalls.IkayakiStall.IkayakiStallRoof.StallRoofFront, vectors.vec3(0, -6, -1.01), 0)
+                                self.exSkill.exSkills[1].makeIkayakiText(models.models.ex_skill_1.Stalls.IkayakiStall.IkayakiStallRoof.StallRoofRight, vectors.vec3(0.501, -6, 22.5), -90)
+                                self.exSkill.exSkills[1].makeIkayakiText(models.models.ex_skill_1.Stalls.IkayakiStall.IkayakiStallRoof.StallRoofLeft, vectors.vec3(-0.501, -6, 22.5), 90)
+                                for i = 1, 3 do
+                                    models.models.ex_skill_1.Stalls.IkayakiStall.IkayakiStallTable["MenuLabel"..i]:newItem("MenuLabel"..i.."_emerald_item"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:emerald")):setPos(1.75, -2, -0.01):setScale(0.25, 0.25, 0)
+                                    models.models.ex_skill_1.Stalls.IkayakiStall.IkayakiStallTable["MenuLabel"..i]:newText("MenuLabel"..i.."_price_text"):setText("§0§lx"..(i - 1) * 2 + 1):setPos(-1.5, -1.75, -0.01):setScale(0.25, 0.25, 0.25):setAlignment("CENTER")
+                                end
+                                models.models.ex_skill_1.Stalls.IkayakiStall:newBlock("IkayakiStall_step"):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:scaffolding")):setPos(15, -6, 16)
+                                self.exSkill.exSkills[1].init = true
                             end
-                            models.models.ex_skill_1.Stalls.IkayakiStall:newBlock("IkayakiStall_step"):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:scaffolding")):setPos(15, -6, 16)
-                            self.exSkill[1].init = true
-                        end
 
-                        events.RENDER:register(function ()
-                            models.models.main.LaughterLines:setOffsetPivot(models.models.main.LaughterLines.LaughterLinesInner:getAnimPos())
-                        end, "ex_skill_1_render")
-                        self.parent.faceParts:setEmotion("NORMAL", "CENTER", "CIRCLE", 11, true)
-                    end;
+                            events.RENDER:register(function ()
+                                models.models.main.LaughterLines:setOffsetPivot(models.models.main.LaughterLines.LaughterLinesInner:getAnimPos())
+                            end, "ex_skill_1_render")
+                            self.parent.faceParts:setEmotion("NORMAL", "CENTER", "CIRCLE", 11, true)
+                        end;
 
-                    onAnimationTick = function (self, tick)
-                        if tick == 11 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 10, true)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.25, 0.75)
-                        elseif tick == 21 then
-                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMILE", 7, true)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.25, 0.75)
-                        elseif tick == 28 then
-                            self.parent.faceParts:setEmotion("INVERTED", "NORMAL", "SMILE", 6, true)
-                        elseif tick == 34 then
-                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", 6, true)
-                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightItemPivot)
-                            local bodyYaw = player:getBodyYaw()
-                            for i = 0, 7 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:wax_off"), anchorPos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, vectors.rotateAroundAxis(i * 45 + 0.1, 0, -0.015, 0, 0, 0, 1), 0, 1, 0)):setScale(0.25):setColor(1, 1, 0.71):setLifetime(20)
-                            end
-                            self.parent.bubble:play("GOOD", 20, vectors.vec2(), 0, false)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.egg.throw"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.5, 2)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.experience_orb.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 1.5)
-                        elseif tick == 40 then
-                            self.parent.faceParts:setEmotion("INVERTED", "NORMAL", "OPENED", 14, true)
-                        elseif tick == 54 then
-                            for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Dumplings, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Takoyaki3, models.models.ex_skill_1.Dogs.Dog2.Dog2Head.Sweat}) do
-                                modelPart:setVisible(true)
-                            end
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "DROOL", 26, true)
-                            if host:isHost() then
-                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.fire.extinguish"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Stalls.IkayakiStall.IkayakiStallTable.IkayakiTableItems.IkayakiPlate.ExSkill1ParticleAnchor3), 0.25, 0.5)
-                            end
-                        elseif tick == 80 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "YUMMY", 12, true)
-                        elseif tick == 92 then
-                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "YUMMY", 2, true)
-                        elseif tick == 94 then
-                            self.parent.faceParts:setEmotion("NORMAL", "CENTER", "CIRCLE", 28, true)
-                        elseif tick == 97 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 1.25)
-                        elseif tick == 110 then
-                            models.models.ex_skill_1.Dogs.Dog2.Dog2Head.Sweat:setVisible(false)
-                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Ikayaki9:setVisible(true)
-                        elseif tick == 122 then
-                            self.parent.faceParts:setEmotion("NARROW", "NARROW_CENTER", "SMILE", 29, true)
-                        elseif tick == 129 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 0.75)
-                        elseif tick == 132 then
-                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Ikayaki9:moveTo(models.models.ex_skill_1.Dogs.Dog3.Dog3UpperBody.Dog3RightArm)
-                            models.models.ex_skill_1.Dogs.Dog3.Dog3UpperBody.Dog3RightArm.ChocoBanana:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
-                        elseif tick == 151 then
-                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 5, true)
-                        elseif tick == 156 then
-                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED2", 34, true)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 1)
-                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.ExSkill1ParticleAnchor5)
-                            local bodyYaw = player:getBodyYaw()
-                            for i = 1, 6 do
-                                local particleColor = i <= 3 and (vectors.vec3(0.667, 0.949, 0.561):add(vectors.vec3(-0.02,- 0.137, -0.094):scale((i - 1) / 2))) or (vectors.vec3(1, 0.78, 0.38):add(vectors.vec3(0, 0.22, 0.165):scale((i - 4) / 2)))
-                                for j = 0, 4 * i do
-                                    local offset = vectors.rotateAroundAxis(bodyYaw * -1, vectors.rotateAroundAxis(j * (360 / (8 * i)) - 90.1, 0, 0.25, 0, 0, 0, 1), 0, 1, 0)
-                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:wax_off"), anchorPos:copy():add(offset:copy():scale(i))):setVelocity(offset:copy():scale(0.35)):setScale(2):setLifetime(32):setColor(particleColor)
+                        onAnimationTick = function (self, tick)
+                            if tick == 11 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 10, true)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.25, 0.75)
+                            elseif tick == 21 then
+                                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "SMILE", 7, true)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.25, 0.75)
+                            elseif tick == 28 then
+                                self.parent.faceParts:setEmotion("INVERTED", "NORMAL", "SMILE", 6, true)
+                            elseif tick == 34 then
+                                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", 6, true)
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightItemPivot)
+                                local bodyYaw = player:getBodyYaw()
+                                for i = 0, 7 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:wax_off"), anchorPos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, vectors.rotateAroundAxis(i * 45 + 0.1, 0, -0.015, 0, 0, 0, 1), 0, 1, 0)):setScale(0.25):setColor(1, 1, 0.71):setLifetime(20)
+                                end
+                                self.parent.bubble:play("GOOD", 20, vectors.vec2(), 0, false)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.egg.throw"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.5, 2)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.experience_orb.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 1.5)
+                            elseif tick == 40 then
+                                self.parent.faceParts:setEmotion("INVERTED", "NORMAL", "OPENED", 14, true)
+                            elseif tick == 54 then
+                                for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Dumplings, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Takoyaki3, models.models.ex_skill_1.Dogs.Dog2.Dog2Head.Sweat}) do
+                                    modelPart:setVisible(true)
+                                end
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "DROOL", 26, true)
+                                if host:isHost() then
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.fire.extinguish"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Stalls.IkayakiStall.IkayakiStallTable.IkayakiTableItems.IkayakiPlate.ExSkill1ParticleAnchor3), 0.25, 0.5)
+                                end
+                            elseif tick == 80 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "YUMMY", 12, true)
+                            elseif tick == 92 then
+                                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "YUMMY", 2, true)
+                            elseif tick == 94 then
+                                self.parent.faceParts:setEmotion("NORMAL", "CENTER", "CIRCLE", 28, true)
+                            elseif tick == 97 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 1.25)
+                            elseif tick == 110 then
+                                models.models.ex_skill_1.Dogs.Dog2.Dog2Head.Sweat:setVisible(false)
+                                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Ikayaki9:setVisible(true)
+                            elseif tick == 122 then
+                                self.parent.faceParts:setEmotion("NARROW", "NARROW_CENTER", "SMILE", 29, true)
+                            elseif tick == 129 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 0.75)
+                            elseif tick == 132 then
+                                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Ikayaki9:moveTo(models.models.ex_skill_1.Dogs.Dog3.Dog3UpperBody.Dog3RightArm)
+                                models.models.ex_skill_1.Dogs.Dog3.Dog3UpperBody.Dog3RightArm.ChocoBanana:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
+                            elseif tick == 151 then
+                                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 5, true)
+                            elseif tick == 156 then
+                                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED2", 34, true)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 1)
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.ExSkill1ParticleAnchor5)
+                                local bodyYaw = player:getBodyYaw()
+                                for i = 1, 6 do
+                                    local particleColor = i <= 3 and (vectors.vec3(0.667, 0.949, 0.561):add(vectors.vec3(-0.02,- 0.137, -0.094):scale((i - 1) / 2))) or (vectors.vec3(1, 0.78, 0.38):add(vectors.vec3(0, 0.22, 0.165):scale((i - 4) / 2)))
+                                    for j = 0, 4 * i do
+                                        local offset = vectors.rotateAroundAxis(bodyYaw * -1, vectors.rotateAroundAxis(j * (360 / (8 * i)) - 90.1, 0, 0.25, 0, 0, 0, 1), 0, 1, 0)
+                                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:wax_off"), anchorPos:copy():add(offset:copy():scale(i))):setVelocity(offset:copy():scale(0.35)):setScale(2):setLifetime(32):setColor(particleColor)
+                                    end
                                 end
                             end
-                        end
 
-                        if tick >= 54 and tick < 92 and (tick - 54) % 8 == 0 then
-                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head):add(0, 0.25, 0)
+                            if tick >= 54 and tick < 92 and (tick - 54) % 8 == 0 then
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head):add(0, 0.25, 0)
+                                local bodyYaw = player:getBodyYaw()
+                                for i = 1, 7 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:happy_villager"), anchorPos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, vectors.rotateAroundAxis(i * 45, 0, -0.1, 0, 0, 0, 1), 0, 1, 0)):setScale(0.75):setLifetime(10)
+                                end
+                                if tick >= 66 then
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.egg.throw"), anchorPos, 0.25, 2)
+                                end
+                            end
+                            local vaporAnchor1 = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Stalls.TakoyakiStall.TakoyakiStallTable.TakoyakiTableItems.TakoyakiPlate.TakoyakiPlate2.ExSkill1ParticleAnchor1)
                             local bodyYaw = player:getBodyYaw()
-                            for i = 1, 7 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:happy_villager"), anchorPos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, vectors.rotateAroundAxis(i * 45, 0, -0.1, 0, 0, 0, 1), 0, 1, 0)):setScale(0.75):setLifetime(10)
+                            for _ = 1, 2 do
+                                self.exSkill.exSkills[1].spawnVaporParticle(self, vaporAnchor1:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 1.874375 - 0.921875, 0, math.random() * 0.484375 - 0.2421875, 0, 1, 0)))
                             end
-                            if tick >= 66 then
-                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.egg.throw"), anchorPos, 0.25, 2)
+                            local vaporAnchor2 = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Stalls.TakoyakiStall.TakoyakiStallTable.TakoyakiTableItems.Takoyaki.ExSkill1ParticleAnchor2)
+                            self.exSkill.exSkills[1].spawnVaporParticle(self, vaporAnchor2:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 0.6875 - 0.34375, 0, math.random() * 0.4375 - 0.21875, 0, 1, 0)))
+                            local vaporAnchor3 = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Stalls.IkayakiStall.IkayakiStallTable.IkayakiTableItems.IkayakiPlate.ExSkill1ParticleAnchor3)
+                            for _ = 1, 2 do
+                                self.exSkill.exSkills[1].spawnVaporParticle(self, vaporAnchor3:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 1.6875 - 0.84375, 0, math.random() * 0.484375 - 0.2421875, 0, 1, 0)))
                             end
-                        end
-                        local vaporAnchor1 = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Stalls.TakoyakiStall.TakoyakiStallTable.TakoyakiTableItems.TakoyakiPlate.TakoyakiPlate2.ExSkill1ParticleAnchor1)
-                        local bodyYaw = player:getBodyYaw()
-                        for _ = 1, 2 do
-                            self.exSkill[1].spawnVaporParticle(self, vaporAnchor1:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 1.874375 - 0.921875, 0, math.random() * 0.484375 - 0.2421875, 0, 1, 0)))
-                        end
-                        local vaporAnchor2 = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Stalls.TakoyakiStall.TakoyakiStallTable.TakoyakiTableItems.Takoyaki.ExSkill1ParticleAnchor2)
-                        self.exSkill[1].spawnVaporParticle(self, vaporAnchor2:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 0.6875 - 0.34375, 0, math.random() * 0.4375 - 0.21875, 0, 1, 0)))
-                        local vaporAnchor3 = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Stalls.IkayakiStall.IkayakiStallTable.IkayakiTableItems.IkayakiPlate.ExSkill1ParticleAnchor3)
-                        for _ = 1, 2 do
-                            self.exSkill[1].spawnVaporParticle(self, vaporAnchor3:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 1.6875 - 0.84375, 0, math.random() * 0.484375 - 0.2421875, 0, 1, 0)))
-                        end
-                        if tick >= 54 and tick % 2 == 0 then
-                            local vaporAnchor4 = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Takoyaki3.ExSkill1ParticleAnchor4)
-                            self.exSkill[1].spawnVaporParticle(self, vaporAnchor4:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 0.265625 - 0.1328125, 0, math.random() * 0.265625 - 0.1328125, 0, 1, 0)))
-                        end
-                        if tick % 4 == 0 and not host:isHost() then
-                            for _, anchorPos in ipairs({vaporAnchor1, vaporAnchor3}) do
-                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.fire.extinguish"), anchorPos, 0.005, 0.5)
+                            if tick >= 54 and tick % 2 == 0 then
+                                local vaporAnchor4 = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Takoyaki3.ExSkill1ParticleAnchor4)
+                                self.exSkill.exSkills[1].spawnVaporParticle(self, vaporAnchor4:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 0.265625 - 0.1328125, 0, math.random() * 0.265625 - 0.1328125, 0, 1, 0)))
                             end
-                        end
+                            if tick % 4 == 0 and not host:isHost() then
+                                for _, anchorPos in ipairs({vaporAnchor1, vaporAnchor3}) do
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.fire.extinguish"), anchorPos, 0.005, 0.5)
+                                end
+                            end
+                        end;
+
+                        onPostAnimation = function (self, forcedStop)
+                            if models.models.ex_skill_1.Dogs.Dog3.Dog3UpperBody.Dog3RightArm.Ikayaki9 ~= nil then
+                                models.models.ex_skill_1.Dogs.Dog3.Dog3UpperBody.Dog3RightArm.Ikayaki9:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
+                            end
+                            if models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.ChocoBanana ~= nil then
+                                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.ChocoBanana:moveTo(models.models.ex_skill_1.Dogs.Dog3.Dog3UpperBody.Dog3RightArm)
+                            end
+                            for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Dumplings, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Takoyaki3, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Ikayaki9}) do
+                                modelPart:setVisible(false)
+                            end
+                            events.RENDER:remove("ex_skill_1_render")
+                            if forcedStop then
+                                self.parent.bubble:stop()
+                            else
+                                local bodyYaw = player:getBodyYaw()
+                                self.parent.placementObjectManager:spawn(1, player:getPos():add(vectors.rotateAroundAxis(bodyYaw * -1, 0, 1, 4, 0, 1, 0)), (bodyYaw * -1 + 180) % 360)
+                            end
+                        end;
+
+                        onPostTransition = function (self, forcedStop)
+                            if not forcedStop and not self.exSkill.exSkills[1].didTipShow and host:isHost() then
+                                print(self.parent.locale:getLocale("ex_skill_1.tip_1_pre")..self.parent.keyManager.keyMappings["ex_skill"].keybind:getKeyName()..self.parent.locale:getLocale("ex_skill_1.tip_1_post"))
+                                print(self.parent.locale:getLocale("ex_skill_1.tip_2_pre")..self.parent.keyManager.keyMappings["firework_launch"].keybind:getKeyName()..self.parent.locale:getLocale("ex_skill_1.tip_2_post"))
+                                self.exSkill.exSkills[1].didTipShow = true
+                            end
+                        end;
+                    };
+
+                    ---このExスキルの初期化処理が行われたかどうか
+                    ---@type boolean
+                    init = false;
+
+                    ---ヒントメッセージを表示したかどうか
+                    ---@type boolean
+                    didTipShow = false;
+
+                    ---花火台発射のクールダウン
+                    ---@type integer
+                    launcherCooldown = 0;
+
+                    ---屋台のたこ焼き看板のテキストレンダータスクを作成する。
+                    ---@param parentModel ModelPart テキストレンダータスクを作成する対象の親パーツ
+                    ---@param posOffset Vector3 テキストレンダータスクの位置オフセット
+                    ---@param rot number テキストレンダータスク設置の基準となるY軸の向き
+                    makeTakoyakiText = function (parentModel, posOffset, rot)
+                        local parentName = parentModel:getName()
+                        parentModel:newText(parentName.."_takoyaki_text_1"):setText("§0§lたこやき"):setPos(vectors.rotateAroundAxis(rot, 0, 3, 0, 0, 1, 0):add(posOffset)):setRot(0, rot, 0):setScale(0.85, 0.85, 0.85):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.8, 0.8, 0.8)
+                        parentModel:newText(parentName.."_flavor_text_1"):setText("§2§l本場の味"):setPos(vectors.rotateAroundAxis(rot, -9, 5, 0, 0, 1, 0):add(posOffset)):setRot(0, rot, 0):setScale(0.25, 0.25, 0.25):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.8, 0.8, 0.8)
+                        parentModel:newText(parentName.."_takoyaki_text_2"):setText("§0§lたこやき"):setPos(vectors.rotateAroundAxis(rot + 180, 0, 3, -1.02, 0, 1, 0):add(posOffset)):setRot(0, rot + 180, 0):setScale(0.85, 0.85, 0.85):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.8, 0.8, 0.8)
+                        parentModel:newText(parentName.."_flavor_text_2"):setText("§2§l本場の味"):setPos(vectors.rotateAroundAxis(rot + 180, -9, 5, -1.02, 0, 1, 0):add(posOffset)):setRot(0, rot + 180, 0):setScale(0.25, 0.25, 0.25):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.8, 0.8, 0.8)
                     end;
 
-                    onPostAnimation = function (self, forcedStop)
-                        if models.models.ex_skill_1.Dogs.Dog3.Dog3UpperBody.Dog3RightArm.Ikayaki9 ~= nil then
-                            models.models.ex_skill_1.Dogs.Dog3.Dog3UpperBody.Dog3RightArm.Ikayaki9:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
-                        end
-                        if models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.ChocoBanana ~= nil then
-                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.ChocoBanana:moveTo(models.models.ex_skill_1.Dogs.Dog3.Dog3UpperBody.Dog3RightArm)
-                        end
-                        for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Dumplings, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Takoyaki3, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Ikayaki9}) do
-                            modelPart:setVisible(false)
-                        end
-                        events.RENDER:remove("ex_skill_1_render")
-                        if forcedStop then
-                            self.parent.bubble:stop()
-                        else
-                            local bodyYaw = player:getBodyYaw()
-                            self.parent.placementObjectManager:spawn(1, player:getPos():add(vectors.rotateAroundAxis(bodyYaw * -1, 0, 1, 4, 0, 1, 0)), (bodyYaw * -1 + 180) % 360)
-                        end
+                    ---屋台のいか焼き看板のテキストレンダータスクを作成する。
+                    ---@param parentModel ModelPart テキストレンダータスクを作成する対象の親パーツ
+                    ---@param posOffset Vector3 テキストレンダータスクの位置オフセット
+                    ---@param rot number テキストレンダータスク設置の基準となるY軸の向き
+                    makeIkayakiText = function (parentModel, posOffset, rot)
+                        local parentName = parentModel:getName()
+                        parentModel:newText(parentName.."_ikayaki_text_1"):setText("§4§lいかやき"):setPos(vectors.rotateAroundAxis(rot, 0, 3, 0, 0, 1, 0):add(posOffset)):setRot(0, rot, 0):setScale(0.85, 0.85, 0.85):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.8, 0.8, 0.8)
+                        parentModel:newText(parentName.."_flavor_text_1"):setText("§1§l海の味"):setPos(vectors.rotateAroundAxis(rot, 15, 5, 0, 0, 1, 0):add(posOffset)):setRot(rot % 360 == 90 and vectors.vec3(-90, 80, -90) or (rot % 360 == 270 and vectors.vec3(90, -80, -90) or vectors.vec3(0, 0, -10))):setScale(0.35, 0.35, 0.35):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.8, 0.8, 0.8)
+                        parentModel:newText(parentName.."_ikayaki_text_2"):setText("§4§lいかやき"):setPos(vectors.rotateAroundAxis(rot + 180, 0, 3, -1.02, 0, 1, 0):add(posOffset)):setRot(0, rot + 180, 0):setScale(0.85, 0.85, 0.85):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.8, 0.8, 0.8)
+                        parentModel:newText(parentName.."_flavor_text_2"):setText("§1§l海の味"):setPos(vectors.rotateAroundAxis(rot + 180, 15, 5, -1.02, 0, 1, 0):add(posOffset)):setRot((rot + 180) % 360 == 90 and vectors.vec3(-90, 80, -90) or ((rot + 180) % 360 == 270 and vectors.vec3(90, -80, -90) or vectors.vec3(0, 0, -10))):setScale(0.35, 0.35, 0.35):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.8, 0.8, 0.8)
                     end;
 
-                    onPostTransition = function (self, forcedStop)
-                        if not forcedStop and not self.exSkill[1].didTipShow and host:isHost() then
-                            print(self.parent.locale:getLocale("ex_skill_1.tip_1_pre")..self.parent.keyManager.keyMappings["ex_skill"].keybind:getKeyName()..self.parent.locale:getLocale("ex_skill_1.tip_1_post"))
-                            print(self.parent.locale:getLocale("ex_skill_1.tip_2_pre")..self.parent.keyManager.keyMappings["firework_launch"].keybind:getKeyName()..self.parent.locale:getLocale("ex_skill_1.tip_2_post"))
-                            self.exSkill[1].didTipShow = true
-                        end
+                    ---湯気のパーティクルを1つスポーンさせる。
+                    ---@param self BlueArchiveCharacter
+                    ---@param pos Vector3 パーティクルのスポーン座標
+                    spawnVaporParticle = function (self, pos)
+                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:poof"), pos):setVelocity(math.random() * 0.05 - 0.025, 0.035, math.random() * 0.05 - 0.025):setScale(0.25)
                     end;
                 };
-
-                ---このExスキルの初期化処理が行われたかどうか
-                ---@type boolean
-                init = false;
-
-                ---ヒントメッセージを表示したかどうか
-                ---@type boolean
-                didTipShow = false;
-
-                ---花火台発射のクールダウン
-                ---@type integer
-                launcherCooldown = 0;
-
-                ---屋台のたこ焼き看板のテキストレンダータスクを作成する。
-                ---@param parentModel ModelPart テキストレンダータスクを作成する対象の親パーツ
-                ---@param posOffset Vector3 テキストレンダータスクの位置オフセット
-                ---@param rot number テキストレンダータスク設置の基準となるY軸の向き
-                makeTakoyakiText = function (parentModel, posOffset, rot)
-                    local parentName = parentModel:getName()
-                    parentModel:newText(parentName.."_takoyaki_text_1"):setText("§0§lたこやき"):setPos(vectors.rotateAroundAxis(rot, 0, 3, 0, 0, 1, 0):add(posOffset)):setRot(0, rot, 0):setScale(0.85, 0.85, 0.85):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.8, 0.8, 0.8)
-                    parentModel:newText(parentName.."_flavor_text_1"):setText("§2§l本場の味"):setPos(vectors.rotateAroundAxis(rot, -9, 5, 0, 0, 1, 0):add(posOffset)):setRot(0, rot, 0):setScale(0.25, 0.25, 0.25):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.8, 0.8, 0.8)
-                    parentModel:newText(parentName.."_takoyaki_text_2"):setText("§0§lたこやき"):setPos(vectors.rotateAroundAxis(rot + 180, 0, 3, -1.02, 0, 1, 0):add(posOffset)):setRot(0, rot + 180, 0):setScale(0.85, 0.85, 0.85):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.8, 0.8, 0.8)
-                    parentModel:newText(parentName.."_flavor_text_2"):setText("§2§l本場の味"):setPos(vectors.rotateAroundAxis(rot + 180, -9, 5, -1.02, 0, 1, 0):add(posOffset)):setRot(0, rot + 180, 0):setScale(0.25, 0.25, 0.25):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.8, 0.8, 0.8)
-                end;
-
-                ---屋台のいか焼き看板のテキストレンダータスクを作成する。
-                ---@param parentModel ModelPart テキストレンダータスクを作成する対象の親パーツ
-                ---@param posOffset Vector3 テキストレンダータスクの位置オフセット
-                ---@param rot number テキストレンダータスク設置の基準となるY軸の向き
-                makeIkayakiText = function (parentModel, posOffset, rot)
-                    local parentName = parentModel:getName()
-                    parentModel:newText(parentName.."_ikayaki_text_1"):setText("§4§lいかやき"):setPos(vectors.rotateAroundAxis(rot, 0, 3, 0, 0, 1, 0):add(posOffset)):setRot(0, rot, 0):setScale(0.85, 0.85, 0.85):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.8, 0.8, 0.8)
-                    parentModel:newText(parentName.."_flavor_text_1"):setText("§1§l海の味"):setPos(vectors.rotateAroundAxis(rot, 15, 5, 0, 0, 1, 0):add(posOffset)):setRot(rot % 360 == 90 and vectors.vec3(-90, 80, -90) or (rot % 360 == 270 and vectors.vec3(90, -80, -90) or vectors.vec3(0, 0, -10))):setScale(0.35, 0.35, 0.35):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.8, 0.8, 0.8)
-                    parentModel:newText(parentName.."_ikayaki_text_2"):setText("§4§lいかやき"):setPos(vectors.rotateAroundAxis(rot + 180, 0, 3, -1.02, 0, 1, 0):add(posOffset)):setRot(0, rot + 180, 0):setScale(0.85, 0.85, 0.85):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.8, 0.8, 0.8)
-                    parentModel:newText(parentName.."_flavor_text_2"):setText("§1§l海の味"):setPos(vectors.rotateAroundAxis(rot + 180, 15, 5, -1.02, 0, 1, 0):add(posOffset)):setRot((rot + 180) % 360 == 90 and vectors.vec3(-90, 80, -90) or ((rot + 180) % 360 == 270 and vectors.vec3(90, -80, -90) or vectors.vec3(0, 0, -10))):setScale(0.35, 0.35, 0.35):setAlignment("CENTER"):setOutline(true):setOutlineColor(0.8, 0.8, 0.8)
-                end;
-
-                ---湯気のパーティクルを1つスポーンさせる。
-                ---@param self BlueArchiveCharacter
-                ---@param pos Vector3 パーティクルのスポーン座標
-                spawnVaporParticle = function (self, pos)
-                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:poof"), pos):setVelocity(math.random() * 0.05 - 0.025, 0.035, math.random() * 0.05 - 0.025):setScale(0.25)
-                end;
             };
         }
 
@@ -1257,7 +1267,7 @@ BlueArchiveCharacter = {
         if host:isHost() then
             events.TICK:register(function ()
                 if not client:isPaused() then
-                    self.exSkill[1].launcherCooldown = math.max(self.exSkill[1].launcherCooldown - 1, 0)
+                    self.exSkill.exSkills[1].launcherCooldown = math.max(self.exSkill.exSkills[1].launcherCooldown - 1, 0)
                 end
             end)
 
@@ -1279,12 +1289,12 @@ BlueArchiveCharacter = {
 
                 self.parent.keyManager:register("firework_launch", "key.keyboard.v"):onPress(function ()
                     if #self.parent.placementObjectManager.objects > 0 then
-                        if self.exSkill[1].launcherCooldown == 0 then
+                        if self.exSkill.exSkills[1].launcherCooldown == 0 then
                             pings.launchFireworks()
-                            self.exSkill[1].launcherCooldown = 200
+                            self.exSkill.exSkills[1].launcherCooldown = 200
                         else
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bass"), player:getPos(), 1, 0.5)
-                            print(self.parent.locale:getLocale("ex_skill_1.in_cool_down_pre")..math.ceil(self.exSkill[1].launcherCooldown / 20)..self.parent.locale:getLocale("ex_skill_1.in_cool_down_post"))
+                            print(self.parent.locale:getLocale("ex_skill_1.in_cool_down_pre")..math.ceil(self.exSkill.exSkills[1].launcherCooldown / 20)..self.parent.locale:getLocale("ex_skill_1.in_cool_down_post"))
                         end
                     end
                 end)
