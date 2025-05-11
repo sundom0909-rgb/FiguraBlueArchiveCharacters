@@ -51,7 +51,7 @@
 ---@field public skirt BlueArchiveCharacter.SkirtStruct スカート
 ---@field public gun BlueArchiveCharacter.GunStruct 銃
 ---@field public placementObjects BlueArchiveCharacter.PlacementObjectStruct[] 設置物
----@field public exSkill BlueArchiveCharacter.ExSkillStruct[] Exスキル
+---@field public exSkill BlueArchiveCharacter.ExSkillStruct Exスキル
 ---@field public costume BlueArchiveCharacter.CostumeStruct コスチューム
 ---@field public bubble BlueArchiveCharacter.BubbleStruct 吹き出しエモート
 ---@field public headBlock BlueArchiveCharacter.HeadBlockStruct 頭ブロック
@@ -96,11 +96,7 @@
 ---@field public callbacks? BlueArchiveCharacter.PlacementObjectCallbacksSet 設置物のコールバック関数
 
 ---@class BlueArchiveCharacter.ExSkillStruct Exスキルのデータ構造体
----@field public name BlueArchiveCharacter.LocaleStringSet Exスキルの名前
----@field public formationType BlueArchiveCharacter.FormationType この生徒の戦闘配置タイプ
----@field public models ModelPart[] Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
----@field public animations string[] Exスキルアニメーションが含まれるモデルファイル名。アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
----@field public camera BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワーク
+---@field public exSkills BlueArchiveCharacter.ExSkillDataSet[] Exスキルデータ
 ---@field public callbacks? BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数
 
 ---@class BlueArchiveCharacter.CostumeStruct コスチュームのデータ構造体
@@ -177,6 +173,17 @@
 ---@field public onRender? fun(self: BlueArchiveCharacter, placementObject: PlacementObject) 各レンダーティック毎に呼ばれる関数
 ---@field public onGround? fun(self: BlueArchiveCharacter, placementObject: PlacementObject) 設置物が接地した瞬間に呼ばれる関数
 
+---@class (exact) BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数のセット
+---@field public additionalCheckFunc? fun(self: BlueArchiveCharacter): boolean Exスキルを再生するかどうかの追加チェック関数
+
+---@class (exact) BlueArchiveCharacter.ExSkillDataSet Exスキルのデータセット
+---@field public name BlueArchiveCharacter.LocaleStringSet Exスキルの名前
+---@field public formationType BlueArchiveCharacter.FormationType この生徒の戦闘配置タイプ
+---@field public models ModelPart[] Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
+---@field public animations string[] Exスキルアニメーションが含まれるモデルファイル名。アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
+---@field public camera BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワーク
+---@field public callbacks? BlueArchiveCharacter.ExSkillAnimationCallbacks Exスキルアニメーションのコールバック関数
+
 ---@class (exact) BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワークのセット
 ---@field public start BlueArchiveCharacter.ExSkillCameraPositionSet Exスキルアニメーション開始地点
 ---@field public fin BlueArchiveCharacter.ExSkillCameraPositionSet Exスキルアニメーション終了地点
@@ -186,7 +193,7 @@
 ---@field public pos Vector3 カメラの位置
 ---@field public rot Vector3 カメラの方向
 
----@class (exact) BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数のセット
+---@class (exact) BlueArchiveCharacter.ExSkillAnimationCallbacks Exスキルアニメーションのコールバック関数のセット
 ---@field public onPreTransition? fun(self: BlueArchiveCharacter) Exスキルアニメーション開始前のトランジション開始前に実行されるコールバック関数
 ---@field public onPreAnimation? fun(self: BlueArchiveCharacter) Exスキルアニメーション開始前のトランジション終了後に実行されるコールバック関数
 ---@field public onAnimationTick? fun(self: BlueArchiveCharacter, tick: integer) Exスキルアニメーション再生中のみ実行されるティック関数
@@ -205,8 +212,9 @@
 ---@field public onArmorChange? fun(self: BlueArchiveCharacter, parts: Armor.ArmorPart, isVisible: boolean) 防具が変更された（防具が見える/見えない）ときに実行されるコールバック関数
 
 ---@class (exact) BlueArchiveCharacter.BubbleCallbacks 吹き出しエモートのコールバック関数のセット
+---@field public addtionalCheckFunc? fun(self: BlueArchiveCharacter): boolean 吹き出しエモートを表示するかどうかの追加チェック関数
 ---@field public onPlay? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, duration: integer, showInGui: boolean) 吹き出しエモートが再生された時に実行されるコールバック関数
----@field public  onStop? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, forcedStop: boolean) 吹き出しアニメーション終了時に実行されるコールバック関数
+---@field public onStop? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, forcedStop: boolean) 吹き出しアニメーション終了時に実行されるコールバック関数
 
 ---@class (exact) BlueArchiveCharacter.HeadBlockCallbacks 頭ブロックのコールバック関数のセット
 ---@field public onBeforeModelCopy? fun(self: BlueArchiveCharacter, isScriptLoaded: boolean) モデルのコピー直前に実行される関数
@@ -441,369 +449,371 @@ BlueArchiveCharacter = {
         }
 
         instance.exSkill = {
-            {
-                name = {
-                    en_us = "I'm breaking the world's rules!";
-                    ja_jp = "世界の 法則が 崩壊します！";
-                };
-
-                formationType = "STRIKER";
-
-                models = {models.models.main.Avatar.UpperBody.Body.Gun.LightEffect, models.models.ex_skill_1.BodySignages, models.models.ex_skill_1.Gui};
-
-                animations = {"main", "gun", "ex_skill_1"};
-
-                camera = {
-                    start = {
-                        rot = vectors.vec3(0, 198, 0);
-                        pos = vectors.vec3(-14.8, 10.25, -12.5);
+            exSkills = {
+                {
+                    name = {
+                        en_us = "I'm breaking the world's rules!";
+                        ja_jp = "世界の 法則が 崩壊します！";
                     };
 
-                    fin = {
-                        rot = vectors.vec3(10, 180, 0);
-                        pos = vectors.vec3(0, 25.8, -28.4);
-                    };
-                };
+                    formationType = "STRIKER";
 
-                callbacks = {
-                    onPreAnimation = function (self)
-                        if not self.exSkill[1].init then
-                            models.models.ex_skill_1.SideHUDs.SideHUDBackground:setOpacity(0.5)
-                            models.models.ex_skill_1.SideHUDs.SideHUDContents:newText("ex_skill_1_text_1"):setText("§bARIS"):setPos(0.05, 1.75, 0):setRot(0, -90, 0):setScale(0.075, 0.075, 1):setAlignment("CENTER"):setShadow(true):setLight(15)
-                            models.models.ex_skill_1.SideHUDs.SideHUDContents:newText("ex_skill_1_text_2"):setText("Model complexity:"):setPos(0.05, 1.1, 2.5):setRot(0, -90, 0):setScale(0.05, 0.05, 1):setAlignment("LEFT"):setShadow(true):setLight(15)
-                            models.models.ex_skill_1.SideHUDs.SideHUDContents:newText("ex_skill_1_text_3"):setText("§e> §cnil"):setPos(0.05, 0.65, 2.3):setRot(0, -90, 0):setScale(0.05, 0.05, 1):setAlignment("LEFT"):setShadow(true):setLight(15)
-                            models.models.ex_skill_1.SideHUDs.SideHUDContents:newText("ex_skill_1_text_4"):setText("Tick instructions:"):setPos(0.05, 0.1, 2.5):setRot(0, -90, 0):setScale(0.05, 0.05, 1):setAlignment("LEFT"):setShadow(true):setLight(15)
-                            models.models.ex_skill_1.SideHUDs.SideHUDContents:newText("ex_skill_1_text_5"):setText("§e> §cnil"):setPos(0.05, -0.35, 2.3):setRot(0, -90, 0):setScale(0.05, 0.05, 1):setAlignment("LEFT"):setShadow(true):setLight(15)
-                            models.models.ex_skill_1.SideHUDs.SideHUDContents:newText("ex_skill_1_text_6"):setText("Render instructions:"):setPos(0.05, -0.9, 2.5):setRot(0, -90, 0):setScale(0.05, 0.05, 1):setAlignment("LEFT"):setShadow(true):setLight(15)
-                            models.models.ex_skill_1.SideHUDs.SideHUDContents:newText("ex_skill_1_text_7"):setText("§e> §cnil"):setPos(0.05, -1.35, 2.3):setRot(0, -90, 0):setScale(0.05, 0.05, 1):setAlignment("LEFT"):setShadow(true):setLight(15)
-                            ---@diagnostic disable-next-line: discard-returns
-                            models:newPart("script_ex_skill_1")
-                            models.script_ex_skill_1:addChild(models.models.main.Avatar:copy("exSkill1Outline"))
-                            models.script_ex_skill_1.exSkill1Outline:setVisible(false)
-                            models.script_ex_skill_1.exSkill1Outline:setOffsetPivot(0, 16, 0)
-                            models.script_ex_skill_1.exSkill1Outline:setScale(1.35, 1.3, 1.35)
-                            models.script_ex_skill_1.exSkill1Outline:setPrimaryTexture("CUSTOM", textures["textures.ex_skill_1_white"])
-                            models.script_ex_skill_1.exSkill1Outline:setPrimaryRenderType("EMISSIVE_SOLID")
-                            models.script_ex_skill_1.exSkill1Outline:setColor(0.988, 0.522, 1)
-                            self.exSkill[1].init = true
-                        end
-                        events.RENDER:register(function (delta)
-                            if host:isHost() then
-                                models.models.ex_skill_1.Gui.ScreenFilter:setOpacity(models.models.ex_skill_1.Gui.ScreenFilterOpacity:getAnimScale().x)
-                                if models.models.ex_skill_1.CameraBackground:getVisible() then
-                                    local opacity = models.models.ex_skill_1.CameraBackground.BackgroundOpacity:getAnimScale().x
-                                    models.models.ex_skill_1.CameraBackground:setOpacity(opacity)
-                                    models.models.ex_skill_1.CameraBackground:setColor(vectors.vec3(1, 1, 1):scale(opacity))
-                                    local backgroundPos = vectors.rotateAroundAxis(player:getBodyYaw(delta) + 180, renderer:getCameraOffsetPivot():copy():add(0, 1.62, 0):add(client:getCameraDir():copy():scale(1.65)), 0, 1, 0):scale(16 / 0.9375)
-                                    models.models.ex_skill_1.CameraBackground:setOffsetPivot(backgroundPos)
-                                    models.models.ex_skill_1.CameraBackground.Background:setPos(backgroundPos)
-                                    local windowSize = client:getWindowSize()
-                                    models.models.ex_skill_1.CameraBackground.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(40))
-                                end
-                            end
-                            if models.script_ex_skill_1.exSkill1Outline:getVisible() then
-                                local animRot = models.models.main.Avatar:getAnimRot()
-                                models.script_ex_skill_1.exSkill1Outline:setPos(vectors.rotateAroundAxis(player:getBodyYaw(delta) + 180, player:getPos(delta):add(0, 1, 0):sub(client:getCameraPos()):normalize(), 0, 1, 0):scale(10))
-                                models.script_ex_skill_1.exSkill1Outline:setRot(animRot)
-                            end
-                        end, "ex_skill_1_render")
-                        self.parent.railGun.chargePercent = 0
-                        self.parent.railGun.chargeState = "STRONG"
-                        self.parent.railGun.animationLength = 35
-                        models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(true)
-                        self.parent.faceParts:setEmotion("NARROW", "NARROW", "CLOSED", 65, true)
-                    end;
+                    models = {models.models.main.Avatar.UpperBody.Body.Gun.LightEffect, models.models.ex_skill_1.BodySignages, models.models.ex_skill_1.Gui};
 
-                    onAnimationTick = function (self, tick)
-                        if tick == 0 then
-                            models.models.main.Avatar.UpperBody.Body.Gun:setPos()
-                            models.models.main.Avatar.UpperBody.Body.Gun:setRot()
-                        elseif tick == 13 then
-                            models.models.main.Avatar.UpperBody.Body.Gun.LightEffect:setOffsetPivot(0, 0, -1)
-                        elseif tick == 16 then
-                            local gunPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun)
-                            local axisZ = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.GunZ):sub(gunPos):normalize()
-                            for _ = 1, 50 do
-                                local anchorPos = gunPos:copy():add(axisZ:copy():scale(math.random() * 0.6 - 0.1))
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setVelocity(vectors.rotateAroundAxis(math.random() * 360, 0, 0.1, 0, axisZ)):setColor(0.996, 0.859, 0.365)
-                            end
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.chest.locked"), player:getPos(), 0.25, 2)
-                        elseif tick == 26 or tick == 30 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.chest.locked"), player:getPos(), 0.25, 2)
-                        elseif tick == 51 then
-                            for _, modelPart in ipairs({models.models.main.Avatar.Head.EyeHUDs, models.models.ex_skill_1.SideHUDs}) do
-                                modelPart:setVisible(true)
-                            end
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.beacon.activate"), player:getPos(), 0.25, 5)
-                        elseif tick == 57 then
-                            models.models.ex_skill_1.SideHUDs.SideHUDContents:setVisible(true)
-                        elseif tick == 65 then
-                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED", 7, true)
-                        elseif tick == 68 and host:isHost() then
-                            models.models.ex_skill_1.Gui.ScreenFilter:setScale(client:getScaledWindowSize():augmented(1))
-                            models.models.ex_skill_1.CameraBackground:setVisible(true)
-                        elseif tick == 70 then
-                            models.models.main.Avatar.Head.EyeHUDs.LeftEyeHUDs:setVisible(false)
-                        elseif tick == 72 then
-                            self.parent.faceParts:setEmotion("STARE", "STARE", "CLOSED", 28, true)
-                            models.models.main.Avatar.Head.EyeLights:setColor(vectors.vec3(1, 1, 1):scale(client:hasShaderPack() and 0.75 or 1))
-                            models.models.main.Avatar.Head.EyeLights:setVisible(true)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 1, 1.5)
-                            models.script_ex_skill_1.exSkill1Outline:setVisible(true)
-                        elseif tick == 76 and host:isHost() then
-                            models.models.ex_skill_1.CameraBackground:setVisible(false)
-                        end
+                    animations = {"main", "gun", "ex_skill_1"};
 
-                        if tick >= 57 and tick < 70 then
-                            local modelComplexity = avatar:getComplexity()
-                            local modelComplexityPercent = modelComplexity / avatar:getMaxComplexity()
-                            models.models.ex_skill_1.SideHUDs.SideHUDContents:getTask("ex_skill_1_text_3"):setText("§e> §"..(modelComplexityPercent > 0.9 and "c" or (modelComplexityPercent > 0.75 and "e" or "a"))..modelComplexity)
-                            local tickCount = avatar:getTickCount()
-                            local tickCountPercent = tickCount / avatar:getMaxTickCount()
-                            models.models.ex_skill_1.SideHUDs.SideHUDContents:getTask("ex_skill_1_text_5"):setText("§e> §"..(tickCountPercent > 0.9 and "c" or (tickCountPercent > 0.75 and "e" or "a"))..tickCount)
-                            local renderCount = avatar:getRenderCount()
-                            local renderCountPercent = renderCount / avatar:getMaxRenderCount()
-                            models.models.ex_skill_1.SideHUDs.SideHUDContents:getTask("ex_skill_1_text_7"):setText("§e> §"..(renderCountPercent > 0.9 and "c" or (renderCountPercent > 0.75 and "e" or "a"))..renderCount)
-                        elseif tick >= 70 then
-                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.script_ex_skill_1.exSkill1Outline)
-                            local particleVec = player:getPos():add(0, 1, 0):sub(anchorPos):normalize()
-                            local particleRot = math.deg(math.atan2(particleVec.z, particleVec.x))
-                            for _ = 1, 2 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:end_rod"), anchorPos:copy():add(vectors.rotateAroundAxis(particleRot * -1 + 90, math.random() * 2.4 - 1.2, math.random() * 2, 0, 0, 1, 0))):setScale(0.25):setVelocity(0, 0.1, 0):setColor(0.988, 0.522, 1)
-                            end
-                        end
-                    end;
+                    camera = {
+                        start = {
+                            rot = vectors.vec3(0, 198, 0);
+                            pos = vectors.vec3(-14.8, 10.25, -12.5);
+                        };
 
-                    onPostAnimation = function (self, forcedStop)
-                        if host:isHost() then
-                            events.RENDER:remove("ex_skill_1_render")
-                            if forcedStop then
-                                models.models.ex_skill_1.CameraBackground:setVisible(false)
-                            end
-                        end
-                        if self.parent.gun.currentGunPosition == "NONE" then
-                            local isLeftHanded = player:isLeftHanded()
-                            models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(self.gun.gunPosition.put.pos[isLeftHanded and "left" or "right"]))
-                            models.models.main.Avatar.UpperBody.Body.Gun:setRot(self.gun.gunPosition.put.rot[isLeftHanded and "left" or "right"])
-                            models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(false)
-                        end
-                        for _, modelPart in ipairs({models.models.main.Avatar.Head.EyeHUDs, models.models.ex_skill_1.SideHUDs, models.models.ex_skill_1.SideHUDs.SideHUDContents, models.models.main.Avatar.Head.EyeLights, models.script_ex_skill_1.exSkill1Outline}) do
-                            modelPart:setVisible(false)
-                        end
-                        models.models.main.Avatar.Head.EyeHUDs.LeftEyeHUDs:setVisible(true)
-                        models.models.main.Avatar.UpperBody.Body.Gun.LightEffect:setOffsetPivot()
-                        if not forcedStop then
-                            self.parent.railGun.isSpecialCharge = true
-                        end
-                    end;
-                };
-
-                ---このExスキルの初期化処理が行われたかどうか
-                ---@type boolean
-                init = false;
-            };
-
-            {
-                name = {
-                    ja_jp = "アリス、お掃除します！";
-                    en_us = "Aris, clean up!";
-                };
-
-                formationType = "STRIKER";
-
-                models = {models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom};
-
-                animations = {"main", "gun", "costume_maid", "ex_skill_2"};
-
-                camera = {
-                    start = {
-                        rot = vectors.vec3(0, 180, 0);
-                        pos = vectors.vec3(-56, 11, -28);
+                        fin = {
+                            rot = vectors.vec3(10, 180, 0);
+                            pos = vectors.vec3(0, 25.8, -28.4);
+                        };
                     };
 
-                    fin = {
-                        rot = vectors.vec3(-10, 180, -35);
-                        pos = vectors.vec3(-335, 11.3, -30);
-                    };
-                };
-
-                callbacks = {
-                    onPreAnimation = function (self)
-                        if not self.exSkill[2].init then
-                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom.BroomBase:setPrimaryTexture("RESOURCE", "minecraft:textures/block/oak_planks.png")
-                            if host:isHost() then
-                                if client:getVersion() >= "1.20.2" then
-                                    textures:fromVanilla("heart_base", "minecraft:textures/gui/sprites/hud/heart/container.png")
-                                    textures:fromVanilla("heart", "minecraft:textures/gui/sprites/hud/heart/full.png")
-                                else
-                                    textures:fromVanilla("icons", "minecraft:textures/gui/icons.png")
-                                end
-
+                    callbacks = {
+                        onPreAnimation = function (self)
+                            if not self.exSkill.exSkills[1].init then
+                                models.models.ex_skill_1.SideHUDs.SideHUDBackground:setOpacity(0.5)
+                                models.models.ex_skill_1.SideHUDs.SideHUDContents:newText("ex_skill_1_text_1"):setText("§bARIS"):setPos(0.05, 1.75, 0):setRot(0, -90, 0):setScale(0.075, 0.075, 1):setAlignment("CENTER"):setShadow(true):setLight(15)
+                                models.models.ex_skill_1.SideHUDs.SideHUDContents:newText("ex_skill_1_text_2"):setText("Model complexity:"):setPos(0.05, 1.1, 2.5):setRot(0, -90, 0):setScale(0.05, 0.05, 1):setAlignment("LEFT"):setShadow(true):setLight(15)
+                                models.models.ex_skill_1.SideHUDs.SideHUDContents:newText("ex_skill_1_text_3"):setText("§e> §cnil"):setPos(0.05, 0.65, 2.3):setRot(0, -90, 0):setScale(0.05, 0.05, 1):setAlignment("LEFT"):setShadow(true):setLight(15)
+                                models.models.ex_skill_1.SideHUDs.SideHUDContents:newText("ex_skill_1_text_4"):setText("Tick instructions:"):setPos(0.05, 0.1, 2.5):setRot(0, -90, 0):setScale(0.05, 0.05, 1):setAlignment("LEFT"):setShadow(true):setLight(15)
+                                models.models.ex_skill_1.SideHUDs.SideHUDContents:newText("ex_skill_1_text_5"):setText("§e> §cnil"):setPos(0.05, -0.35, 2.3):setRot(0, -90, 0):setScale(0.05, 0.05, 1):setAlignment("LEFT"):setShadow(true):setLight(15)
+                                models.models.ex_skill_1.SideHUDs.SideHUDContents:newText("ex_skill_1_text_6"):setText("Render instructions:"):setPos(0.05, -0.9, 2.5):setRot(0, -90, 0):setScale(0.05, 0.05, 1):setAlignment("LEFT"):setShadow(true):setLight(15)
+                                models.models.ex_skill_1.SideHUDs.SideHUDContents:newText("ex_skill_1_text_7"):setText("§e> §cnil"):setPos(0.05, -1.35, 2.3):setRot(0, -90, 0):setScale(0.05, 0.05, 1):setAlignment("LEFT"):setShadow(true):setLight(15)
                                 ---@diagnostic disable-next-line: discard-returns
-                                models:newPart("ex_skill_2_gui", "Gui")
-                                ---@diagnostic disable-next-line: discard-returns
-                                models.ex_skill_2_gui:newPart("hearts")
-                                models.ex_skill_2_gui.hearts:setPos(-17.5, -17.5, 0)
-                                for i = 1, 3 do
-                                    local baseSprite = models.ex_skill_2_gui.hearts:newSprite("ex_skill_2_heart_"..i.."_base")
-                                    if textures.heart_base ~= nil then
-                                        baseSprite:setTexture(textures.heart_base)
-                                        baseSprite:setDimensions(9, 9)
-                                        baseSprite:setRegion(9, 9)
-                                        baseSprite:setSize(18, 18)
-                                    else
-                                        baseSprite:setTexture(textures.icons)
-                                        baseSprite:setDimensions(256, 256)
-                                        baseSprite:setRegion(9, 9)
-                                        baseSprite:setUVPixels(16, 0)
-                                        baseSprite:setSize(18, 18)
+                                models:newPart("script_ex_skill_1")
+                                models.script_ex_skill_1:addChild(models.models.main.Avatar:copy("exSkill1Outline"))
+                                models.script_ex_skill_1.exSkill1Outline:setVisible(false)
+                                models.script_ex_skill_1.exSkill1Outline:setOffsetPivot(0, 16, 0)
+                                models.script_ex_skill_1.exSkill1Outline:setScale(1.35, 1.3, 1.35)
+                                models.script_ex_skill_1.exSkill1Outline:setPrimaryTexture("CUSTOM", textures["textures.ex_skill_1_white"])
+                                models.script_ex_skill_1.exSkill1Outline:setPrimaryRenderType("EMISSIVE_SOLID")
+                                models.script_ex_skill_1.exSkill1Outline:setColor(0.988, 0.522, 1)
+                                self.exSkill.exSkills[1].init = true
+                            end
+                            events.RENDER:register(function (delta)
+                                if host:isHost() then
+                                    models.models.ex_skill_1.Gui.ScreenFilter:setOpacity(models.models.ex_skill_1.Gui.ScreenFilterOpacity:getAnimScale().x)
+                                    if models.models.ex_skill_1.CameraBackground:getVisible() then
+                                        local opacity = models.models.ex_skill_1.CameraBackground.BackgroundOpacity:getAnimScale().x
+                                        models.models.ex_skill_1.CameraBackground:setOpacity(opacity)
+                                        models.models.ex_skill_1.CameraBackground:setColor(vectors.vec3(1, 1, 1):scale(opacity))
+                                        local backgroundPos = vectors.rotateAroundAxis(player:getBodyYaw(delta) + 180, renderer:getCameraOffsetPivot():copy():add(0, 1.62, 0):add(client:getCameraDir():copy():scale(1.65)), 0, 1, 0):scale(16 / 0.9375)
+                                        models.models.ex_skill_1.CameraBackground:setOffsetPivot(backgroundPos)
+                                        models.models.ex_skill_1.CameraBackground.Background:setPos(backgroundPos)
+                                        local windowSize = client:getWindowSize()
+                                        models.models.ex_skill_1.CameraBackground.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(40))
                                     end
-                                    baseSprite:setPos((i - 1) * -19, 0, 0)
-                                    local heartSprite = models.ex_skill_2_gui.hearts:newSprite("ex_skill_2_heart_"..i)
-                                    if textures.heart ~= nil then
-                                        heartSprite:setTexture(textures.heart)
-                                        heartSprite:setDimensions(9, 9)
-                                        heartSprite:setRegion(9, 9)
-                                        heartSprite:setSize(18, 18)
-                                    else
-                                        heartSprite:setTexture(textures.icons)
-                                        heartSprite:setDimensions(256, 256)
-                                        heartSprite:setRegion(9, 9)
-                                        heartSprite:setUVPixels(52, 0)
-                                        heartSprite:setSize(18, 18)
-                                    end
-                                    heartSprite:setPos((i - 1) * -19, 0, 0)
                                 end
-                                ---@diagnostic disable-next-line: discard-returns
-                                models.ex_skill_2_gui:newPart("coins")
-                                models.ex_skill_2_gui.coins:addChild(models.models.ex_skill_2.Coin:copy("Coin"))
-                                models.ex_skill_2_gui.coins.Coin:setPos(51, -11.5, 0)
-                                models.ex_skill_2_gui.coins.Coin:setScale(1.6, 1.6, 1)
-                                models.ex_skill_2_gui.coins.Coin:setPivot(0, 12, 0)
-                                models.ex_skill_2_gui.coins.Coin:setPrimaryRenderType()
-                                models.ex_skill_2_gui.coins.Coin:setVisible(true)
-                                models.ex_skill_2_gui.coins:newText("ex_skill_2_coin_counter"):setText("215"):setPos(38, -1, 0):setScale(2, 2, 2):setOutline(true):setOutlineColor(0.35, 0.35, 0.35)
-                            end
-                            self.exSkill[2].init = true
-                        elseif host:isHost() then
-                            models.ex_skill_2_gui:setVisible(true)
-                        end
-                        if host:isHost() then
-                            models.ex_skill_2_gui.coins:setPos(client:getScaledWindowSize().x * -1 + 17.5, -18.5, 0)
-                        end
-                        self.exSkill[2].coinCount = 215
-                        for i = -1, 4 do
-                            for j = 0, 18 do
-                                self.parent.coinManager:spawn(vectors.vec3(j * 32 - 96, 0, i * 32))
-                            end
-                        end
-                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 66, true)
-                    end;
-
-                    onAnimationTick = function (self, tick)
-                        if tick == 0 then
-                            models.models.main.Avatar.UpperBody.Body.Gun:setPos()
-                            models.models.main.Avatar.UpperBody.Body.Gun:setRot()
-                            models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(false)
-                        elseif tick == 66 then
-                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 4, true)
-                        elseif tick == 70 then
-                            self.parent.faceParts:setEmotion("NORMAL", "CENTER", "SMALL", 15, true)
-                        elseif tick == 80 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.5, 1.25)
-                        elseif tick == 85 then
-                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMALL", 2, true)
-                        elseif tick == 87 then
-                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 19, true)
-                            self.exSkill[1].broomTipAnchorPosPrev = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom)
-                        elseif tick >= 88 and tick < 92 then
-                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom)
-                            if tick == 88 then
-                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), anchorPos, 1, 0.75)
-                            end
-                            local directionVec = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom.BroomParticleNAnchor):copy():sub(anchorPos)
-                            for i = -2, 2 do
-                                local offsetPos = directionVec:copy():scale(i)
-                                for j = 0, 1, 0.25 do
-                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), anchorPos:copy():sub(self.exSkill[1].broomTipAnchorPosPrev):scale(j):add(anchorPos):add(offsetPos)):setScale(1.5):setColor(math.random() * 0.5 + 0.5, 1, 1)
+                                if models.script_ex_skill_1.exSkill1Outline:getVisible() then
+                                    local animRot = models.models.main.Avatar:getAnimRot()
+                                    models.script_ex_skill_1.exSkill1Outline:setPos(vectors.rotateAroundAxis(player:getBodyYaw(delta) + 180, player:getPos(delta):add(0, 1, 0):sub(client:getCameraPos()):normalize(), 0, 1, 0):scale(10))
+                                    models.script_ex_skill_1.exSkill1Outline:setRot(animRot)
                                 end
-                            end
-                            self.exSkill[1].broomTipAnchorPosPrev = anchorPos:copy()
-                        elseif tick == 92 then
-                            if host:isHost() then
-                                models.ex_skill_2_gui:setVisible(false)
-                            end
-                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom:moveTo(models.models.main.Avatar.UpperBody.Body)
+                            end, "ex_skill_1_render")
                             self.parent.railGun.chargePercent = 0
                             self.parent.railGun.chargeState = "STRONG"
-                            self.parent.railGun.animationLength = 20
+                            self.parent.railGun.animationLength = 35
                             models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(true)
-                        elseif tick == 106 then
-                            self.parent.faceParts:setEmotion("NORMAL", "CENTER", "OPENED", 41, true)
-                        elseif tick == 109 then
-                            self.parent.coinManager:getAll()
-                        elseif tick == 111 then
-                            for _ = 1, 50 do
-                                self.parent.cubeManager:spawn()
-                            end
-                        elseif tick == 118 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bit"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 1.5)
-                        elseif tick == 120 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bit"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 1.75)
-                        elseif tick == 122 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bit"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 2)
-                        end
+                            self.parent.faceParts:setEmotion("NARROW", "NARROW", "CLOSED", 65, true)
+                        end;
 
-                        if tick < 61 then
-                            if (tick - 1) % 2 == 0 then
-                                self.parent.waterManager:spawn(self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom), vectors.rotateAroundAxis(player:getBodyYaw() * -1, -0.1, 0, 0, 0, 1, 0))
+                        onAnimationTick = function (self, tick)
+                            if tick == 0 then
+                                models.models.main.Avatar.UpperBody.Body.Gun:setPos()
+                                models.models.main.Avatar.UpperBody.Body.Gun:setRot()
+                            elseif tick == 13 then
+                                models.models.main.Avatar.UpperBody.Body.Gun.LightEffect:setOffsetPivot(0, 0, -1)
+                            elseif tick == 16 then
+                                local gunPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun)
+                                local axisZ = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Gun.GunZ):sub(gunPos):normalize()
+                                for _ = 1, 50 do
+                                    local anchorPos = gunPos:copy():add(axisZ:copy():scale(math.random() * 0.6 - 0.1))
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setVelocity(vectors.rotateAroundAxis(math.random() * 360, 0, 0.1, 0, axisZ)):setColor(0.996, 0.859, 0.365)
+                                end
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.chest.locked"), player:getPos(), 0.25, 2)
+                            elseif tick == 26 or tick == 30 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.chest.locked"), player:getPos(), 0.25, 2)
+                            elseif tick == 51 then
+                                for _, modelPart in ipairs({models.models.main.Avatar.Head.EyeHUDs, models.models.ex_skill_1.SideHUDs}) do
+                                    modelPart:setVisible(true)
+                                end
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.beacon.activate"), player:getPos(), 0.25, 5)
+                            elseif tick == 57 then
+                                models.models.ex_skill_1.SideHUDs.SideHUDContents:setVisible(true)
+                            elseif tick == 65 then
+                                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED", 7, true)
+                            elseif tick == 68 and host:isHost() then
+                                models.models.ex_skill_1.Gui.ScreenFilter:setScale(client:getScaledWindowSize():augmented(1))
+                                models.models.ex_skill_1.CameraBackground:setVisible(true)
+                            elseif tick == 70 then
+                                models.models.main.Avatar.Head.EyeHUDs.LeftEyeHUDs:setVisible(false)
+                            elseif tick == 72 then
+                                self.parent.faceParts:setEmotion("STARE", "STARE", "CLOSED", 28, true)
+                                models.models.main.Avatar.Head.EyeLights:setColor(vectors.vec3(1, 1, 1):scale(client:hasShaderPack() and 0.75 or 1))
+                                models.models.main.Avatar.Head.EyeLights:setVisible(true)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 1, 1.5)
+                                models.script_ex_skill_1.exSkill1Outline:setVisible(true)
+                            elseif tick == 76 and host:isHost() then
+                                models.models.ex_skill_1.CameraBackground:setVisible(false)
                             end
-                            if tick % 8 == 0 then
-                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.cod.flop"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.25, 0.75)
-                            end
-                            for _ = 1, 3 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:splash"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom))
-                            end
-                        end
-                        if tick < 92 and host:isHost() then
-                            models.ex_skill_2_gui.coins:getTask("ex_skill_2_coin_counter"):setText(self.exSkill[2].coinCount)
-                        end
-                    end;
 
-                    onPostAnimation = function (self, forcedStop)
-                        if models.models.main.Avatar.UpperBody.Body.Broom ~= nil then
-                            models.models.main.Avatar.UpperBody.Body.Broom:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
-                        end
-                        if self.parent.gun.currentGunPosition == "NONE" then
-                            local isLeftHanded = player:isLeftHanded()
-                            models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(self.gun.gunPosition.put.pos[isLeftHanded and "left" or "right"]))
-                            models.models.main.Avatar.UpperBody.Body.Gun:setRot(self.gun.gunPosition.put.rot[isLeftHanded and "left" or "right"])
-                            models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(false)
-                        end
-                        self.parent.cubeManager:removeAll()
-                        if forcedStop then
-                            self.parent.coinManager:removeAll()
-                            self.parent.waterManager:removeAll()
+                            if tick >= 57 and tick < 70 then
+                                local modelComplexity = avatar:getComplexity()
+                                local modelComplexityPercent = modelComplexity / avatar:getMaxComplexity()
+                                models.models.ex_skill_1.SideHUDs.SideHUDContents:getTask("ex_skill_1_text_3"):setText("§e> §"..(modelComplexityPercent > 0.9 and "c" or (modelComplexityPercent > 0.75 and "e" or "a"))..modelComplexity)
+                                local tickCount = avatar:getTickCount()
+                                local tickCountPercent = tickCount / avatar:getMaxTickCount()
+                                models.models.ex_skill_1.SideHUDs.SideHUDContents:getTask("ex_skill_1_text_5"):setText("§e> §"..(tickCountPercent > 0.9 and "c" or (tickCountPercent > 0.75 and "e" or "a"))..tickCount)
+                                local renderCount = avatar:getRenderCount()
+                                local renderCountPercent = renderCount / avatar:getMaxRenderCount()
+                                models.models.ex_skill_1.SideHUDs.SideHUDContents:getTask("ex_skill_1_text_7"):setText("§e> §"..(renderCountPercent > 0.9 and "c" or (renderCountPercent > 0.75 and "e" or "a"))..renderCount)
+                            elseif tick >= 70 then
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.script_ex_skill_1.exSkill1Outline)
+                                local particleVec = player:getPos():add(0, 1, 0):sub(anchorPos):normalize()
+                                local particleRot = math.deg(math.atan2(particleVec.z, particleVec.x))
+                                for _ = 1, 2 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:end_rod"), anchorPos:copy():add(vectors.rotateAroundAxis(particleRot * -1 + 90, math.random() * 2.4 - 1.2, math.random() * 2, 0, 0, 1, 0))):setScale(0.25):setVelocity(0, 0.1, 0):setColor(0.988, 0.522, 1)
+                                end
+                            end
+                        end;
+
+                        onPostAnimation = function (self, forcedStop)
                             if host:isHost() then
-                                models.ex_skill_2_gui:setVisible(false)
+                                events.RENDER:remove("ex_skill_1_render")
+                                if forcedStop then
+                                    models.models.ex_skill_1.CameraBackground:setVisible(false)
+                                end
                             end
-                        else
-                            self.parent.railGun.isSpecialCharge = true
-                        end
-                    end;
+                            if self.parent.gun.currentGunPosition == "NONE" then
+                                local isLeftHanded = player:isLeftHanded()
+                                models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(self.gun.gunPosition.put.pos[isLeftHanded and "left" or "right"]))
+                                models.models.main.Avatar.UpperBody.Body.Gun:setRot(self.gun.gunPosition.put.rot[isLeftHanded and "left" or "right"])
+                                models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(false)
+                            end
+                            for _, modelPart in ipairs({models.models.main.Avatar.Head.EyeHUDs, models.models.ex_skill_1.SideHUDs, models.models.ex_skill_1.SideHUDs.SideHUDContents, models.models.main.Avatar.Head.EyeLights, models.script_ex_skill_1.exSkill1Outline}) do
+                                modelPart:setVisible(false)
+                            end
+                            models.models.main.Avatar.Head.EyeHUDs.LeftEyeHUDs:setVisible(true)
+                            models.models.main.Avatar.UpperBody.Body.Gun.LightEffect:setOffsetPivot()
+                            if not forcedStop then
+                                self.parent.railGun.isSpecialCharge = true
+                            end
+                        end;
+                    };
+
+                    ---このExスキルの初期化処理が行われたかどうか
+                    ---@type boolean
+                    init = false;
                 };
 
-                ---このExスキルの初期化処理が行われたかどうか
-                ---@type boolean
-                init = false;
+                {
+                    name = {
+                        ja_jp = "アリス、お掃除します！";
+                        en_us = "Aris, clean up!";
+                    };
 
-                ---Exスキル中に表示されるコインカウンターの値
-                ---@type integer
-                coinCount = 215;
+                    formationType = "STRIKER";
 
-                ---前ティックの箒の先っちょの座標
-                ---@type Vector3
-                broomTipAnchorPosPrev = vectors.vec3()
+                    models = {models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom};
+
+                    animations = {"main", "gun", "costume_maid", "ex_skill_2"};
+
+                    camera = {
+                        start = {
+                            rot = vectors.vec3(0, 180, 0);
+                            pos = vectors.vec3(-56, 11, -28);
+                        };
+
+                        fin = {
+                            rot = vectors.vec3(-10, 180, -35);
+                            pos = vectors.vec3(-335, 11.3, -30);
+                        };
+                    };
+
+                    callbacks = {
+                        onPreAnimation = function (self)
+                            if not self.exSkill.exSkills[2].init then
+                                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom.BroomBase:setPrimaryTexture("RESOURCE", "minecraft:textures/block/oak_planks.png")
+                                if host:isHost() then
+                                    if client:getVersion() >= "1.20.2" then
+                                        textures:fromVanilla("heart_base", "minecraft:textures/gui/sprites/hud/heart/container.png")
+                                        textures:fromVanilla("heart", "minecraft:textures/gui/sprites/hud/heart/full.png")
+                                    else
+                                        textures:fromVanilla("icons", "minecraft:textures/gui/icons.png")
+                                    end
+
+                                    ---@diagnostic disable-next-line: discard-returns
+                                    models:newPart("ex_skill_2_gui", "Gui")
+                                    ---@diagnostic disable-next-line: discard-returns
+                                    models.ex_skill_2_gui:newPart("hearts")
+                                    models.ex_skill_2_gui.hearts:setPos(-17.5, -17.5, 0)
+                                    for i = 1, 3 do
+                                        local baseSprite = models.ex_skill_2_gui.hearts:newSprite("ex_skill_2_heart_"..i.."_base")
+                                        if textures.heart_base ~= nil then
+                                            baseSprite:setTexture(textures.heart_base)
+                                            baseSprite:setDimensions(9, 9)
+                                            baseSprite:setRegion(9, 9)
+                                            baseSprite:setSize(18, 18)
+                                        else
+                                            baseSprite:setTexture(textures.icons)
+                                            baseSprite:setDimensions(256, 256)
+                                            baseSprite:setRegion(9, 9)
+                                            baseSprite:setUVPixels(16, 0)
+                                            baseSprite:setSize(18, 18)
+                                        end
+                                        baseSprite:setPos((i - 1) * -19, 0, 0)
+                                        local heartSprite = models.ex_skill_2_gui.hearts:newSprite("ex_skill_2_heart_"..i)
+                                        if textures.heart ~= nil then
+                                            heartSprite:setTexture(textures.heart)
+                                            heartSprite:setDimensions(9, 9)
+                                            heartSprite:setRegion(9, 9)
+                                            heartSprite:setSize(18, 18)
+                                        else
+                                            heartSprite:setTexture(textures.icons)
+                                            heartSprite:setDimensions(256, 256)
+                                            heartSprite:setRegion(9, 9)
+                                            heartSprite:setUVPixels(52, 0)
+                                            heartSprite:setSize(18, 18)
+                                        end
+                                        heartSprite:setPos((i - 1) * -19, 0, 0)
+                                    end
+                                    ---@diagnostic disable-next-line: discard-returns
+                                    models.ex_skill_2_gui:newPart("coins")
+                                    models.ex_skill_2_gui.coins:addChild(models.models.ex_skill_2.Coin:copy("Coin"))
+                                    models.ex_skill_2_gui.coins.Coin:setPos(51, -11.5, 0)
+                                    models.ex_skill_2_gui.coins.Coin:setScale(1.6, 1.6, 1)
+                                    models.ex_skill_2_gui.coins.Coin:setPivot(0, 12, 0)
+                                    models.ex_skill_2_gui.coins.Coin:setPrimaryRenderType()
+                                    models.ex_skill_2_gui.coins.Coin:setVisible(true)
+                                    models.ex_skill_2_gui.coins:newText("ex_skill_2_coin_counter"):setText("215"):setPos(38, -1, 0):setScale(2, 2, 2):setOutline(true):setOutlineColor(0.35, 0.35, 0.35)
+                                end
+                                self.exSkill.exSkills[2].init = true
+                            elseif host:isHost() then
+                                models.ex_skill_2_gui:setVisible(true)
+                            end
+                            if host:isHost() then
+                                models.ex_skill_2_gui.coins:setPos(client:getScaledWindowSize().x * -1 + 17.5, -18.5, 0)
+                            end
+                            self.exSkill.exSkills[2].coinCount = 215
+                            for i = -1, 4 do
+                                for j = 0, 18 do
+                                    self.parent.coinManager:spawn(vectors.vec3(j * 32 - 96, 0, i * 32))
+                                end
+                            end
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 66, true)
+                        end;
+
+                        onAnimationTick = function (self, tick)
+                            if tick == 0 then
+                                models.models.main.Avatar.UpperBody.Body.Gun:setPos()
+                                models.models.main.Avatar.UpperBody.Body.Gun:setRot()
+                                models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(false)
+                            elseif tick == 66 then
+                                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 4, true)
+                            elseif tick == 70 then
+                                self.parent.faceParts:setEmotion("NORMAL", "CENTER", "SMALL", 15, true)
+                            elseif tick == 80 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.5, 1.25)
+                            elseif tick == 85 then
+                                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMALL", 2, true)
+                            elseif tick == 87 then
+                                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 19, true)
+                                self.exSkill.exSkills[1].broomTipAnchorPosPrev = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom)
+                            elseif tick >= 88 and tick < 92 then
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom)
+                                if tick == 88 then
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), anchorPos, 1, 0.75)
+                                end
+                                local directionVec = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom.BroomParticleNAnchor):copy():sub(anchorPos)
+                                for i = -2, 2 do
+                                    local offsetPos = directionVec:copy():scale(i)
+                                    for j = 0, 1, 0.25 do
+                                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), anchorPos:copy():sub(self.exSkill.exSkills[1].broomTipAnchorPosPrev):scale(j):add(anchorPos):add(offsetPos)):setScale(1.5):setColor(math.random() * 0.5 + 0.5, 1, 1)
+                                    end
+                                end
+                                self.exSkill.exSkills[1].broomTipAnchorPosPrev = anchorPos:copy()
+                            elseif tick == 92 then
+                                if host:isHost() then
+                                    models.ex_skill_2_gui:setVisible(false)
+                                end
+                                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom:moveTo(models.models.main.Avatar.UpperBody.Body)
+                                self.parent.railGun.chargePercent = 0
+                                self.parent.railGun.chargeState = "STRONG"
+                                self.parent.railGun.animationLength = 20
+                                models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(true)
+                            elseif tick == 106 then
+                                self.parent.faceParts:setEmotion("NORMAL", "CENTER", "OPENED", 41, true)
+                            elseif tick == 109 then
+                                self.parent.coinManager:getAll()
+                            elseif tick == 111 then
+                                for _ = 1, 50 do
+                                    self.parent.cubeManager:spawn()
+                                end
+                            elseif tick == 118 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bit"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 1.5)
+                            elseif tick == 120 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bit"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 1.75)
+                            elseif tick == 122 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bit"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 2)
+                            end
+
+                            if tick < 61 then
+                                if (tick - 1) % 2 == 0 then
+                                    self.parent.waterManager:spawn(self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom), vectors.rotateAroundAxis(player:getBodyYaw() * -1, -0.1, 0, 0, 0, 1, 0))
+                                end
+                                if tick % 8 == 0 then
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.cod.flop"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.25, 0.75)
+                                end
+                                for _ = 1, 3 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:splash"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Broom))
+                                end
+                            end
+                            if tick < 92 and host:isHost() then
+                                models.ex_skill_2_gui.coins:getTask("ex_skill_2_coin_counter"):setText(self.exSkill.exSkills[2].coinCount)
+                            end
+                        end;
+
+                        onPostAnimation = function (self, forcedStop)
+                            if models.models.main.Avatar.UpperBody.Body.Broom ~= nil then
+                                models.models.main.Avatar.UpperBody.Body.Broom:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
+                            end
+                            if self.parent.gun.currentGunPosition == "NONE" then
+                                local isLeftHanded = player:isLeftHanded()
+                                models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(self.gun.gunPosition.put.pos[isLeftHanded and "left" or "right"]))
+                                models.models.main.Avatar.UpperBody.Body.Gun:setRot(self.gun.gunPosition.put.rot[isLeftHanded and "left" or "right"])
+                                models.models.main.Avatar.UpperBody.Body.Gun.DisplayContents:setVisible(false)
+                            end
+                            self.parent.cubeManager:removeAll()
+                            if forcedStop then
+                                self.parent.coinManager:removeAll()
+                                self.parent.waterManager:removeAll()
+                                if host:isHost() then
+                                    models.ex_skill_2_gui:setVisible(false)
+                                end
+                            else
+                                self.parent.railGun.isSpecialCharge = true
+                            end
+                        end;
+                    };
+
+                    ---このExスキルの初期化処理が行われたかどうか
+                    ---@type boolean
+                    init = false;
+
+                    ---Exスキル中に表示されるコインカウンターの値
+                    ---@type integer
+                    coinCount = 215;
+
+                    ---前ティックの箒の先っちょの座標
+                    ---@type Vector3
+                    broomTipAnchorPosPrev = vectors.vec3()
+                };
             };
         }
 
@@ -1430,5 +1440,6 @@ BlueArchiveCharacter = {
 
         --生徒固有初期化処理
         --Player APIにアクセスする場合は、ENTITY_INIT後に実行されるようにする必要がある。
+
     end;
 }
