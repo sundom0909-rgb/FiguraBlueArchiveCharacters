@@ -322,10 +322,15 @@ BlueArchiveCharacter = {
 
         instance.arms = {
             callbacks = {
-                onArmStateChanged = function (_, right, left)
+                onArmStateChanged = function (self, right, left)
                     local armState = {right = right, left = left}
-                    armState.right = armState.right == 2 and 0 or armState.right
-                    armState.left = armState.left == 2 and 0 or armState.left
+                    if self.parent.syupogakiDance ~= nil and self.parent.syupogakiDance.danceState ~= "NOT_STANDBY" then
+                        armState.right = 0
+                        armState.left = 0
+                    else
+                        armState.right = armState.right == 2 and 0 or armState.right
+                        armState.left = armState.left == 2 and 0 or armState.left
+                    end
                     return armState
                 end;
             };

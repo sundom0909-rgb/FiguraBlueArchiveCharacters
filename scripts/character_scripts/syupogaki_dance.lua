@@ -98,6 +98,7 @@ SyupogakiDance = {
         animations["models.main"]["syupogaki_dance_standby"]:play()
         self.parent.physics:disable()
         avatar:store("dance_state", "STANDBY")
+        self.parent.arms:setArmState(0, 0)
         sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), player:getPos(), 1, 0.5)
 
         ---既にスタンバイ状態である相手を検索
@@ -255,6 +256,11 @@ SyupogakiDance = {
         self.animationTick = -1
         avatar:store("dance_tick", -1)
         self.isRotating = false
+        if self.parent.gun.currentGunPosition == "RIGHT" then
+            self.parent.arms:setArmState(1, 0)
+        elseif self.parent.gun.currentGunPosition == "LEFT" then
+            self.parent.arms:setArmState(0, 1)
+        end
 
         if not self.isHost then
             self.cameraAdjustCount = 2
