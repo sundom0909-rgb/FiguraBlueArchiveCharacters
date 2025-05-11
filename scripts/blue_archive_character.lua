@@ -43,7 +43,7 @@
 ---@field public skirt BlueArchiveCharacter.SkirtStruct スカート
 ---@field public gun BlueArchiveCharacter.GunStruct 銃
 ---@field public placementObjects BlueArchiveCharacter.PlacementObjectStruct[] 設置物
----@field public exSkill BlueArchiveCharacter.ExSkillStruct[] Exスキル
+---@field public exSkill BlueArchiveCharacter.ExSkillStruct Exスキル
 ---@field public costume BlueArchiveCharacter.CostumeStruct コスチューム
 ---@field public bubble BlueArchiveCharacter.BubbleStruct 吹き出しエモート
 ---@field public headBlock BlueArchiveCharacter.HeadBlockStruct 頭ブロック
@@ -88,11 +88,7 @@
 ---@field public callbacks? BlueArchiveCharacter.PlacementObjectCallbacksSet 設置物のコールバック関数
 
 ---@class BlueArchiveCharacter.ExSkillStruct Exスキルのデータ構造体
----@field public name BlueArchiveCharacter.LocaleStringSet Exスキルの名前
----@field public formationType BlueArchiveCharacter.FormationType この生徒の戦闘配置タイプ
----@field public models ModelPart[] Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
----@field public animations string[] Exスキルアニメーションが含まれるモデルファイル名。アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
----@field public camera BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワーク
+---@field public exSkills BlueArchiveCharacter.ExSkillDataSet[] Exスキルデータ
 ---@field public callbacks? BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数
 
 ---@class BlueArchiveCharacter.CostumeStruct コスチュームのデータ構造体
@@ -169,6 +165,17 @@
 ---@field public onRender? fun(self: BlueArchiveCharacter, placementObject: PlacementObject) 各レンダーティック毎に呼ばれる関数
 ---@field public onGround? fun(self: BlueArchiveCharacter, placementObject: PlacementObject) 設置物が接地した瞬間に呼ばれる関数
 
+---@class (exact) BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数のセット
+---@field public additionalCheckFunc? fun(self: BlueArchiveCharacter): boolean Exスキルを再生するかどうかの追加チェック関数
+
+---@class (exact) BlueArchiveCharacter.ExSkillDataSet Exスキルのデータセット
+---@field public name BlueArchiveCharacter.LocaleStringSet Exスキルの名前
+---@field public formationType BlueArchiveCharacter.FormationType この生徒の戦闘配置タイプ
+---@field public models ModelPart[] Exスキルアニメーション開始時に表示し、Exスキルアニメーション終了時に非表示にするモデルパーツ
+---@field public animations string[] Exスキルアニメーションが含まれるモデルファイル名。アニメーション名は"ex_skill_<Exスキルのインデックス番号>"にすること。
+---@field public camera BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワーク
+---@field public callbacks? BlueArchiveCharacter.ExSkillAnimationCallbacks Exスキルアニメーションのコールバック関数
+
 ---@class (exact) BlueArchiveCharacter.ExSkillCameraSet Exスキルアニメーション中のカメラワークのセット
 ---@field public start BlueArchiveCharacter.ExSkillCameraPositionSet Exスキルアニメーション開始地点
 ---@field public fin BlueArchiveCharacter.ExSkillCameraPositionSet Exスキルアニメーション終了地点
@@ -178,7 +185,7 @@
 ---@field public pos Vector3 カメラの位置
 ---@field public rot Vector3 カメラの方向
 
----@class (exact) BlueArchiveCharacter.ExSkillCallbacks Exスキルのコールバック関数のセット
+---@class (exact) BlueArchiveCharacter.ExSkillAnimationCallbacks Exスキルアニメーションのコールバック関数のセット
 ---@field public onPreTransition? fun(self: BlueArchiveCharacter) Exスキルアニメーション開始前のトランジション開始前に実行されるコールバック関数
 ---@field public onPreAnimation? fun(self: BlueArchiveCharacter) Exスキルアニメーション開始前のトランジション終了後に実行されるコールバック関数
 ---@field public onAnimationTick? fun(self: BlueArchiveCharacter, tick: integer) Exスキルアニメーション再生中のみ実行されるティック関数
@@ -197,8 +204,9 @@
 ---@field public onArmorChange? fun(self: BlueArchiveCharacter, parts: Armor.ArmorPart, isVisible: boolean) 防具が変更された（防具が見える/見えない）ときに実行されるコールバック関数
 
 ---@class (exact) BlueArchiveCharacter.BubbleCallbacks 吹き出しエモートのコールバック関数のセット
+---@field public addtionalCheckFunc? fun(self: BlueArchiveCharacter): boolean 吹き出しエモートを表示するかどうかの追加チェック関数
 ---@field public onPlay? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, duration: integer, showInGui: boolean) 吹き出しエモートが再生された時に実行されるコールバック関数
----@field public  onStop? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, forcedStop: boolean) 吹き出しアニメーション終了時に実行されるコールバック関数
+---@field public onStop? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, forcedStop: boolean) 吹き出しアニメーション終了時に実行されるコールバック関数
 
 ---@class (exact) BlueArchiveCharacter.HeadBlockCallbacks 頭ブロックのコールバック関数のセット
 ---@field public onBeforeModelCopy? fun(self: BlueArchiveCharacter, isScriptLoaded: boolean) モデルのコピー直前に実行される関数
@@ -375,325 +383,327 @@ BlueArchiveCharacter = {
         }
 
         instance.exSkill = {
-            {
-                name = {
-                    en_us = "Momoya Hall Take-out!";
-                    ja_jp = "百夜堂出張サービス！";
-                };
-
-                formationType = "SPECIAL";
-
-                models = {models.models.ex_skill_1.Stall, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet};
-
-                animations = {"main", "ex_skill_1"};
-
-                camera = {
-                    start = {
-                        rot = vectors.vec3(0, 180, 0);
-                        pos = vectors.vec3(-5, 23, -16);
+            exSkills = {
+                {
+                    name = {
+                        en_us = "Momoya Hall Take-out!";
+                        ja_jp = "百夜堂出張サービス！";
                     };
 
-                    fin = {
-                        rot = vectors.vec3(10, -105, 0);
-                        pos = vectors.vec3(-229.46, 22.31, -1.77);
+                    formationType = "SPECIAL";
+
+                    models = {models.models.ex_skill_1.Stall, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet};
+
+                    animations = {"main", "ex_skill_1"};
+
+                    camera = {
+                        start = {
+                            rot = vectors.vec3(0, 180, 0);
+                            pos = vectors.vec3(-5, 23, -16);
+                        };
+
+                        fin = {
+                            rot = vectors.vec3(10, -105, 0);
+                            pos = vectors.vec3(-229.46, 22.31, -1.77);
+                        };
+
+                        fixMode = true;
                     };
 
-                    fixMode = true;
-                };
+                    callbacks = {
+                        onPreTransition = function (self)
+                            self.parent.placementObjectManager:removeAll()
+                        end;
 
-                callbacks = {
-                    onPreTransition = function (self)
-                        self.parent.placementObjectManager:removeAll()
-                    end;
-
-                    onPreAnimation = function (self)
-                        if not self.exSkill[1].init then
-                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet.WaterSpill:setPrimaryTexture("RESOURCE", "textures/block/water_still.png")
-                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet.WaterSpill:setColor(0.25, 0.39, 0.67)
-                            self.exSkill[1].init = true
-                        end
-                        self.parent.faceParts:setEmotion("NORMAL", "CENTER", "OPENED", 22, true)
-                    end;
-
-                    onAnimationTick = function (self, tick)
-                        if tick == 22 then
-                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", 2, true)
-                        elseif tick == 24 then
-                            self.parent.faceParts:setEmotion("INVERTED", "NORMAL", "WORRY", 1, true)
-                        elseif tick == 25 then
-                            self.exSkill[1].textTask:setVisible(true)
-                            self.parent.faceParts:setEmotion("INVERTED", "NORMAL", "TRIANGLE", 8, true)
-                        elseif tick == 33 then
-                            self.exSkill[1].textTask:setVisible(false)
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "TRIANGLE", 1, true)
-                        elseif tick == 34 then
-                            self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "FRUST", 1, true)
-                        elseif tick == 35 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "FRUST", 1, true)
-                        elseif tick == 36 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "TRIANGLE", 10, true)
-                        elseif tick == 46 then
-                            self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "TRIANGLE", 1, true)
-                        elseif tick == 47 then
-                            self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "FRUST", 6, true)
-                        elseif tick == 53 then
-                            self.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "TRIANGLE", 14, true)
-                            local shouldAdjustBackgroundRot = client:getVersion() >= "1.21"
-                            if host:isHost() then
-                                models.models.ex_skill_1.CameraBackground:setVisible(true)
-                                local windowSize = client:getWindowSize()
-                                models.models.ex_skill_1.CameraBackground.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(45))
-                                events.RENDER:register(function (delta, context)
-                                    models.models.ex_skill_1.CameraBackground:setVisible(context == "RENDER")
-                                    local backgroundPos = vectors.rotateAroundAxis(player:getBodyYaw(delta) + 180, renderer:getCameraOffsetPivot():copy():add(0, 1.62, 0):add(client:getCameraDir():copy():scale(1.75)), 0, 1, 0):scale(16 / 0.9375)
-                                    models.models.ex_skill_1.CameraBackground:setOffsetPivot(backgroundPos)
-                                    models.models.ex_skill_1.CameraBackground.Background:setPos(backgroundPos)
-                                    if shouldAdjustBackgroundRot then
-                                        models.models.ex_skill_1.CameraBackground.Background:setRot(0, 0, renderer:getCameraRot().z)
-                                    end
-                                end, "ex_skill_1_background_render")
+                        onPreAnimation = function (self)
+                            if not self.exSkill.exSkills[1].init then
+                                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet.WaterSpill:setPrimaryTexture("RESOURCE", "textures/block/water_still.png")
+                                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet.WaterSpill:setColor(0.25, 0.39, 0.67)
+                                self.exSkill.exSkills[1].init = true
                             end
-                            local particleAnchor = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar):add(0, 5, 0)
-                            local fireworkColor = vectors.hsvToRGB(math.random(), 0.8, 1)
-                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:flash"), particleAnchor):setColor(fireworkColor)
-                            for _ = 1, 400 do
-                                local particleAngleX = math.random() * math.pi * 2
-                                    local particleAngleY = math.random() * math.pi * 2
-                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), particleAnchor):setVelocity(math.cos(particleAngleX) * math.cos(particleAngleY) * 0.2, math.sin(particleAngleY) * 0.2, math.sin(particleAngleX) * math.cos(particleAngleY) * 0.2):setColor(fireworkColor)
-                            end
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.firework_rocket.large_blast"), player:getPos())
-                        elseif tick == 56 then
-                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet:moveTo(models.models.main)
-                        elseif tick == 67 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "WORRY", 8, true)
-                            if host:isHost() then
-                                models.models.ex_skill_1.CameraBackground:setVisible(false)
-                                events.RENDER:remove("ex_skill_1_background_render")
-                            end
-                        elseif tick == 69 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.glass.break"), self.parent.modelUtils.getModelWorldPos(models.models.main.TeaSet.ExSkill1SoundAnchor2), 1, 0.5)
-                            local particleAnchor1Pos = self.parent.modelUtils.getModelWorldPos(models.models.main.TeaSet.WaterSpill)
-                            for _ = 1, 20 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:splash"), particleAnchor1Pos:copy():add(math.random() - 0.5, 0, math.random() - 0.5)):setLifetime(10)
-                            end
-                        elseif tick == 74 then
-                            self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "FRUST", 21, true)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.small_fall"), player:getPos(), 1)
-                            local particleAnchor1Pos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head.ExSkill1ParticleAnchor1)
-                            for i = 0, 5 do
-                                local particleRot = math.rad(i * 60)
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:wax_off"), particleAnchor1Pos):setColor(1, 1, 0):setLifetime(12):setVelocity(math.cos(particleRot) * 0.05, 0.1, math.sin(particleRot) * 0.05):setGravity(0.5)
-                            end
-                        end
+                            self.parent.faceParts:setEmotion("NORMAL", "CENTER", "OPENED", 22, true)
+                        end;
 
-                        if tick >= 25 and tick < 33 then
-                            self.exSkill[1].textTask:setPos(vectors.vec3(-9, 8, -8):add(math.random() * 0.5 - 0.25, math.random() * 0.5 - 0.25))
-                            if (tick - 25) % 2 == 0 then
-                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.experience_orb.pickup"), player:getPos(), 1, 2)
-                            end
-                        end
-                        if tick < 56 and tick % 4 == 0 then
-                            for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet.Yunomi1.ExSkill1ParticleAnchor2, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet.Yunomi2.ExSkill1ParticleAnchor3}) do
-                                local particleAnchorPos = self.parent.modelUtils.getModelWorldPos(modelPart)
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("poof"), particleAnchorPos):setScale(0.2):setVelocity():setLifetime(15)
-                            end
-                        end
-                        if tick % 2 == 0 and tick >= 70 then
-                            local particleAnchor5Pos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Stall.ExSkill1ParticleAnchor5)
-                            for i = 0, 11 do
-                                local particleRot = i * (math.pi / 6)
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:block").." "..self.parent.compatibilityUtils:checkBlock("minecraft:dirt"), particleAnchor5Pos:copy():add(math.cos(particleRot) * 0.6, 0, math.sin(particleRot) * 0.6))
-                            end
-                        end
-                        if tick % math.ceil((animations["models.main"]["ex_skill_1"]:getLength() * 20 - tick) / 20) == 0 then
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.boat.paddle_land"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Stall.Wheels.ExSkill1SoundAnchor1))
-                        end
-                    end;
-
-                    onPostAnimation = function (self, forcedStop)
-                        if models.models.main.TeaSet ~= nil then
-                            models.models.main.TeaSet:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
-                        end
-                        if forcedStop then
-                            if host:isHost() then
-                                models.models.ex_skill_1.CameraBackground:setVisible(false)
-                                events.RENDER:remove("ex_skill_1_background_render")
-                            end
-                            self.exSkill[1].textTask:setVisible(false)
-                        else
-                            local bodyYaw = player:getBodyYaw() % 360
-                            self.parent.placementObjectManager:spawn(1, vectors.rotateAroundAxis(bodyYaw * -1, -12.75, 1, -0.8875, 0, 1, 0):add(player:getPos()), 180 + bodyYaw * -1)
-                        end
-                    end;
-                };
-
-                ---初期化処理が行われたかどうか
-                ---@type boolean
-                init = false;
-
-                ---アニメーションに表示する「!!!」のテキストレンダータスク
-                ---@type TextTask
-                textTask = models.models.main.CameraAnchor:newText("ex_skill_1_text_1"):setVisible(false):setText("§c! !"):setRot(0, 180, 5):setScale(0.8, 0.8, 0.8):setOutline(true):setOutlineColor(1, 1, 1);
-            };
-
-            {
-                name = {
-                    en_us = "Business trip, Momoya summer stall!";
-                    ja_jp = "出張、夏の百夜堂出店！";
-                };
-
-                formationType = "SPECIAL";
-
-                models = {models.models.ex_skill_2.Plate, models.models.ex_skill_2.Gui, models.models.main.Avatar.Head.WinkEffect};
-
-                animations = {"main", "costume_swimsuit", "ex_skill_2"};
-
-                camera = {
-                    start = {
-                        pos = vectors.vec3(35.5, 25, 10),
-                        rot = vectors.vec3(-10, 210, 0)
-                    };
-
-                    fin = {
-                        pos = vectors.vec3(8.9, 29, -13.25),
-                        rot = vectors.vec3(10, 170, -5)
-                    };
-                };
-
-                callbacks = {
-                    onPreTransition = function ()
-                        for _, modelPart in ipairs({models.models.ex_skill_2.Stall, models.models.ex_skill_2.SoftCream}) do
-                            modelPart:setVisible(true)
-                        end
-                    end;
-
-                    onPreAnimation = function (self)
-                        if not self.exSkill[2].init then
-                            models.models.ex_skill_2.Plate.ShavedIceGroup.Wave:setPrimaryTexture("RESOURCE", "minecraft:textures/block/water_flow.png")
-                            models.models.ex_skill_2.Plate.ShavedIceGroup.Wave:setColor(0.4, 0.961, 1)
-                            self.exSkill[2].init = true
-                        end
-                        for _, modelPart in ipairs({models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce1, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce2, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce3, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce4, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce5, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarLeft, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarRight}) do
-                            modelPart:setUVPixels(1, 0)
-                        end
-                        if host:isHost() then
-                            local windowSize = client:getScaledWindowSize()
-                            models.models.ex_skill_2.Gui.Frame:setScale(windowSize.x, windowSize.y)
-                            events.RENDER:register(function ()
-                                models.models.ex_skill_2.Gui.Frame:setOpacity(models.models.ex_skill_2.Gui.FrameOpacity:getAnimScale().x)
-                            end, "ex_skill_2_render")
-                        end
-                        self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 71, true)
-                    end;
-
-                    onAnimationTick = function (self, tick)
-                        if tick == 9 then
-                            for _, modelPart in ipairs({models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce1, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce2, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce3, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce4, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce5, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarLeft, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarRight}) do
-                                modelPart:setUVPixels(2, 0)
-                            end
-                        elseif tick == 12 then
-                            for _, modelPart in ipairs({models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce1, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce2, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce3, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce4, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce5, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarLeft, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarRight}) do
-                                modelPart:setUVPixels(3, 0)
-                            end
-                        elseif tick == 16 then
-                            for _, modelPart in ipairs({models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce1, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce2, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce3, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce4, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce5, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarLeft, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarRight}) do
-                                modelPart:setUVPixels(4, 0)
-                            end
-                        elseif tick == 19 then
-                            for _, modelPart in ipairs({models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce1, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce2, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce3, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce4, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce5, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarLeft, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarRight}) do
-                                modelPart:setUVPixels(5, 0)
-                            end
-                        elseif tick == 23 then
-                            for _, modelPart in ipairs({models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce1, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce2, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce3, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce4, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce5, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarLeft, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarRight}) do
-                                modelPart:setUVPixels()
-                            end
-                        elseif tick == 27 then
-                            models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceFace:setVisible(true)
-                            models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceFace:setUVPixels(8, 0)
-                        elseif tick == 28 then
-                            models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceFace:setVisible(false)
-                        elseif tick == 29 then
-                            models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceFace:setVisible(true)
-                            models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceFace:setUVPixels(math.random() > 0.95 and 16 or 0, 0)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce), 1, 0.75)
-                        elseif tick == 33 or tick == 50 then
-                            local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Plate.ShavedIceGroup)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), anchorPos, tick == 33 and 1 or 0.25, 0.75)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), anchorPos, tick == 33 and 1 or 0.25, 0.5)
-                        elseif tick == 52 then
-                            models.models.ex_skill_2.Plate:moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
-                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIceGroup.Wave.WaveScaler:setOffsetPivot(48, 0)
-                        elseif tick == 71 then
-                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", 3, true)
-                        elseif tick == 74 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "WORRY", 9, true)
-                        elseif tick == 85 then
-                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "WORRY", 3, true)
-                        elseif tick == 87 then
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 5, true)
-                        elseif tick == 92 then
-                            self.parent.faceParts:setEmotion("NORMAL", "CLOSED", "OPENED", 25, true)
-                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.experience_orb.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head.FaceParts.Eyes.ExSkill2SoundAnchor3), 1, 2)
-                            if host:isHost() then
-                                local windowSize = client:getScaledWindowSize()
-                                local center = vectors.vec2(windowSize.x * -0.5, windowSize.y * -0.5)
-                                for _ = 1, 100 do
-                                    local rot = 2 * math.pi * math.random()
-                                    local pos = vectors.vec2(math.cos(rot) * (windowSize.x / 2 * (math.random() * 0.5 + 0.5)) + center.x, math.sin(rot) * (windowSize.y / 2 * (math.random() * 0.5 + 0.5)) + center.y)
-                                    self.parent.exSkill2FrameParticleManager:spawn(pos, pos:copy():sub(center):scale(0.1))
+                        onAnimationTick = function (self, tick)
+                            if tick == 22 then
+                                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", 2, true)
+                            elseif tick == 24 then
+                                self.parent.faceParts:setEmotion("INVERTED", "NORMAL", "WORRY", 1, true)
+                            elseif tick == 25 then
+                                self.exSkill.exSkills[1].textTask:setVisible(true)
+                                self.parent.faceParts:setEmotion("INVERTED", "NORMAL", "TRIANGLE", 8, true)
+                            elseif tick == 33 then
+                                self.exSkill.exSkills[1].textTask:setVisible(false)
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "TRIANGLE", 1, true)
+                            elseif tick == 34 then
+                                self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "FRUST", 1, true)
+                            elseif tick == 35 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "FRUST", 1, true)
+                            elseif tick == 36 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "TRIANGLE", 10, true)
+                            elseif tick == 46 then
+                                self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "TRIANGLE", 1, true)
+                            elseif tick == 47 then
+                                self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "FRUST", 6, true)
+                            elseif tick == 53 then
+                                self.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "TRIANGLE", 14, true)
+                                local shouldAdjustBackgroundRot = client:getVersion() >= "1.21"
+                                if host:isHost() then
+                                    models.models.ex_skill_1.CameraBackground:setVisible(true)
+                                    local windowSize = client:getWindowSize()
+                                    models.models.ex_skill_1.CameraBackground.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(45))
+                                    events.RENDER:register(function (delta, context)
+                                        models.models.ex_skill_1.CameraBackground:setVisible(context == "RENDER")
+                                        local backgroundPos = vectors.rotateAroundAxis(player:getBodyYaw(delta) + 180, renderer:getCameraOffsetPivot():copy():add(0, 1.62, 0):add(client:getCameraDir():copy():scale(1.75)), 0, 1, 0):scale(16 / 0.9375)
+                                        models.models.ex_skill_1.CameraBackground:setOffsetPivot(backgroundPos)
+                                        models.models.ex_skill_1.CameraBackground.Background:setPos(backgroundPos)
+                                        if shouldAdjustBackgroundRot then
+                                            models.models.ex_skill_1.CameraBackground.Background:setRot(0, 0, renderer:getCameraRot().z)
+                                        end
+                                    end, "ex_skill_1_background_render")
+                                end
+                                local particleAnchor = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar):add(0, 5, 0)
+                                local fireworkColor = vectors.hsvToRGB(math.random(), 0.8, 1)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:flash"), particleAnchor):setColor(fireworkColor)
+                                for _ = 1, 400 do
+                                    local particleAngleX = math.random() * math.pi * 2
+                                        local particleAngleY = math.random() * math.pi * 2
+                                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), particleAnchor):setVelocity(math.cos(particleAngleX) * math.cos(particleAngleY) * 0.2, math.sin(particleAngleY) * 0.2, math.sin(particleAngleX) * math.cos(particleAngleY) * 0.2):setColor(fireworkColor)
+                                end
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.firework_rocket.large_blast"), player:getPos())
+                            elseif tick == 56 then
+                                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet:moveTo(models.models.main)
+                            elseif tick == 67 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "WORRY", 8, true)
+                                if host:isHost() then
+                                    models.models.ex_skill_1.CameraBackground:setVisible(false)
+                                    events.RENDER:remove("ex_skill_1_background_render")
+                                end
+                            elseif tick == 69 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.glass.break"), self.parent.modelUtils.getModelWorldPos(models.models.main.TeaSet.ExSkill1SoundAnchor2), 1, 0.5)
+                                local particleAnchor1Pos = self.parent.modelUtils.getModelWorldPos(models.models.main.TeaSet.WaterSpill)
+                                for _ = 1, 20 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:splash"), particleAnchor1Pos:copy():add(math.random() - 0.5, 0, math.random() - 0.5)):setLifetime(10)
+                                end
+                            elseif tick == 74 then
+                                self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "FRUST", 21, true)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.small_fall"), player:getPos(), 1)
+                                local particleAnchor1Pos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head.ExSkill1ParticleAnchor1)
+                                for i = 0, 5 do
+                                    local particleRot = math.rad(i * 60)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:wax_off"), particleAnchor1Pos):setColor(1, 1, 0):setLifetime(12):setVelocity(math.cos(particleRot) * 0.05, 0.1, math.sin(particleRot) * 0.05):setGravity(0.5)
                                 end
                             end
-                        end
 
-                        if tick <= 5 then
-                            local particleAnchor1Pos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce):add(0, 1.5, 0)
-                            for _ = 1, 2 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:block", self.parent.compatibilityUtils:checkBlock("minecraft:snow")), particleAnchor1Pos):setPower(0.25):setLifetime(10)
+                            if tick >= 25 and tick < 33 then
+                                self.exSkill.exSkills[1].textTask:setPos(vectors.vec3(-9, 8, -8):add(math.random() * 0.5 - 0.25, math.random() * 0.5 - 0.25))
+                                if (tick - 25) % 2 == 0 then
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.experience_orb.pickup"), player:getPos(), 1, 2)
+                                end
                             end
-                        elseif tick <= 26 then
-                            local particleAnchor1Pos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce):add(0, 1.5, 0)
-                            for _ = 1, 4 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:block", self.parent.compatibilityUtils:checkBlock("minecraft:light_blue_concrete")), particleAnchor1Pos):setPower(0):setLifetime(10)
+                            if tick < 56 and tick % 4 == 0 then
+                                for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet.Yunomi1.ExSkill1ParticleAnchor2, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.TeaSet.Yunomi2.ExSkill1ParticleAnchor3}) do
+                                    local particleAnchorPos = self.parent.modelUtils.getModelWorldPos(modelPart)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("poof"), particleAnchorPos):setScale(0.2):setVelocity():setLifetime(15)
+                                end
                             end
-                        end
-                        if (tick >= 33 and tick <= 41) or (tick >= 50 and tick <= 61) then
-                            local root = tick < 52 and models.models.ex_skill_2.Plate.ShavedIceGroup.Wave.WaveScaler or models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIceGroup.Wave.WaveScaler
-                            local anchorPos = self.parent.modelUtils.getModelWorldPos(tick < 50 and root.WaveParticleAnchor1 or root.WaveParticleAnchor3)
-                            local particleRot = self.parent.modelUtils.getModelWorldPos(tick < 50 and root.WaveParticleAnchor2 or root.WaveParticleAnchor4):sub(anchorPos)
-                            for _ = 0, 15 do
-                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), anchorPos):setScale(0.5):setColor(math.random() * 0.5 + 0.5, 1, 1):setVelocity(math.random() * 0.1 - 0.05, math.random() * 0.1 + 0.05, math.random() * 0.1 - 0.05):setGravity(0.5):setLifetime(20)
-                                anchorPos:add(particleRot)
+                            if tick % 2 == 0 and tick >= 70 then
+                                local particleAnchor5Pos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Stall.ExSkill1ParticleAnchor5)
+                                for i = 0, 11 do
+                                    local particleRot = i * (math.pi / 6)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:block").." "..self.parent.compatibilityUtils:checkBlock("minecraft:dirt"), particleAnchor5Pos:copy():add(math.cos(particleRot) * 0.6, 0, math.sin(particleRot) * 0.6))
+                                end
                             end
-                        end
+                            if tick % math.ceil((animations["models.main"]["ex_skill_1"]:getLength() * 20 - tick) / 20) == 0 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.boat.paddle_land"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Stall.Wheels.ExSkill1SoundAnchor1))
+                            end
+                        end;
 
-                        if tick % 4 then
-                            local modelPart = tick < 52 and models.models.ex_skill_2.Plate.ShavedIceGroup.Wave or models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIceGroup.Wave
-                            modelPart:setUVPixels(0, tick * 4 * 16)
-                        end
-                    end;
+                        onPostAnimation = function (self, forcedStop)
+                            if models.models.main.TeaSet ~= nil then
+                                models.models.main.TeaSet:moveTo(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom)
+                            end
+                            if forcedStop then
+                                if host:isHost() then
+                                    models.models.ex_skill_1.CameraBackground:setVisible(false)
+                                    events.RENDER:remove("ex_skill_1_background_render")
+                                end
+                                self.exSkill.exSkills[1].textTask:setVisible(false)
+                            else
+                                local bodyYaw = player:getBodyYaw() % 360
+                                self.parent.placementObjectManager:spawn(1, vectors.rotateAroundAxis(bodyYaw * -1, -12.75, 1, -0.8875, 0, 1, 0):add(player:getPos()), 180 + bodyYaw * -1)
+                            end
+                        end;
+                    };
 
-                    onPostAnimation = function (self, forcedStop)
-                        if models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate ~= nil then
-                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate:moveTo( models.models.ex_skill_2)
-                        end
-                        models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceFace:setVisible(false)
-                        models.models.ex_skill_2.Plate.ShavedIceGroup.Wave.WaveScaler:setOffsetPivot()
-                        if host:isHost() then
-                            events.RENDER:remove("ex_skill_2_render")
-                            self.parent.exSkill2FrameParticleManager:removeAll()
-                        end
-                    end;
+                    ---初期化処理が行われたかどうか
+                    ---@type boolean
+                    init = false;
 
-                    onPostTransition = function ()
-                        for _, modelPart in ipairs({models.models.ex_skill_2.Stall, models.models.ex_skill_2.SoftCream}) do
-                            modelPart:setVisible(false)
-                        end
-                    end;
+                    ---アニメーションに表示する「!!!」のテキストレンダータスク
+                    ---@type TextTask
+                    textTask = models.models.main.CameraAnchor:newText("ex_skill_1_text_1"):setVisible(false):setText("§c! !"):setRot(0, 180, 5):setScale(0.8, 0.8, 0.8):setOutline(true):setOutlineColor(1, 1, 1);
                 };
 
-                ---初期化処理が行われたかどうか
-                ---@type boolean
-                init = false;
+                {
+                    name = {
+                        en_us = "Business trip, Momoya summer stall!";
+                        ja_jp = "出張、夏の百夜堂出店！";
+                    };
+
+                    formationType = "SPECIAL";
+
+                    models = {models.models.ex_skill_2.Plate, models.models.ex_skill_2.Gui, models.models.main.Avatar.Head.WinkEffect};
+
+                    animations = {"main", "costume_swimsuit", "ex_skill_2"};
+
+                    camera = {
+                        start = {
+                            pos = vectors.vec3(35.5, 25, 10),
+                            rot = vectors.vec3(-10, 210, 0)
+                        };
+
+                        fin = {
+                            pos = vectors.vec3(8.9, 29, -13.25),
+                            rot = vectors.vec3(10, 170, -5)
+                        };
+                    };
+
+                    callbacks = {
+                        onPreTransition = function ()
+                            for _, modelPart in ipairs({models.models.ex_skill_2.Stall, models.models.ex_skill_2.SoftCream}) do
+                                modelPart:setVisible(true)
+                            end
+                        end;
+
+                        onPreAnimation = function (self)
+                            if not self.exSkill.exSkills[2].init then
+                                models.models.ex_skill_2.Plate.ShavedIceGroup.Wave:setPrimaryTexture("RESOURCE", "minecraft:textures/block/water_flow.png")
+                                models.models.ex_skill_2.Plate.ShavedIceGroup.Wave:setColor(0.4, 0.961, 1)
+                                self.exSkill.exSkills[2].init = true
+                            end
+                            for _, modelPart in ipairs({models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce1, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce2, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce3, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce4, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce5, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarLeft, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarRight}) do
+                                modelPart:setUVPixels(1, 0)
+                            end
+                            if host:isHost() then
+                                local windowSize = client:getScaledWindowSize()
+                                models.models.ex_skill_2.Gui.Frame:setScale(windowSize.x, windowSize.y)
+                                events.RENDER:register(function ()
+                                    models.models.ex_skill_2.Gui.Frame:setOpacity(models.models.ex_skill_2.Gui.FrameOpacity:getAnimScale().x)
+                                end, "ex_skill_2_render")
+                            end
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 71, true)
+                        end;
+
+                        onAnimationTick = function (self, tick)
+                            if tick == 9 then
+                                for _, modelPart in ipairs({models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce1, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce2, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce3, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce4, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce5, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarLeft, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarRight}) do
+                                    modelPart:setUVPixels(2, 0)
+                                end
+                            elseif tick == 12 then
+                                for _, modelPart in ipairs({models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce1, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce2, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce3, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce4, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce5, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarLeft, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarRight}) do
+                                    modelPart:setUVPixels(3, 0)
+                                end
+                            elseif tick == 16 then
+                                for _, modelPart in ipairs({models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce1, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce2, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce3, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce4, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce5, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarLeft, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarRight}) do
+                                    modelPart:setUVPixels(4, 0)
+                                end
+                            elseif tick == 19 then
+                                for _, modelPart in ipairs({models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce1, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce2, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce3, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce4, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce5, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarLeft, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarRight}) do
+                                    modelPart:setUVPixels(5, 0)
+                                end
+                            elseif tick == 23 then
+                                for _, modelPart in ipairs({models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce1, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce2, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce3, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce4, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIce5, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarLeft, models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceEars.ShavedIceEarRight}) do
+                                    modelPart:setUVPixels()
+                                end
+                            elseif tick == 27 then
+                                models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceFace:setVisible(true)
+                                models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceFace:setUVPixels(8, 0)
+                            elseif tick == 28 then
+                                models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceFace:setVisible(false)
+                            elseif tick == 29 then
+                                models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceFace:setVisible(true)
+                                models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceFace:setUVPixels(math.random() > 0.95 and 16 or 0, 0)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce), 1, 0.75)
+                            elseif tick == 33 or tick == 50 then
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Plate.ShavedIceGroup)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), anchorPos, tick == 33 and 1 or 0.25, 0.75)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.bucket.empty"), anchorPos, tick == 33 and 1 or 0.25, 0.5)
+                            elseif tick == 52 then
+                                models.models.ex_skill_2.Plate:moveTo(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom)
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIceGroup.Wave.WaveScaler:setOffsetPivot(48, 0)
+                            elseif tick == 71 then
+                                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", 3, true)
+                            elseif tick == 74 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "WORRY", 9, true)
+                            elseif tick == 85 then
+                                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "WORRY", 3, true)
+                            elseif tick == 87 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 5, true)
+                            elseif tick == 92 then
+                                self.parent.faceParts:setEmotion("NORMAL", "CLOSED", "OPENED", 25, true)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.experience_orb.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head.FaceParts.Eyes.ExSkill2SoundAnchor3), 1, 2)
+                                if host:isHost() then
+                                    local windowSize = client:getScaledWindowSize()
+                                    local center = vectors.vec2(windowSize.x * -0.5, windowSize.y * -0.5)
+                                    for _ = 1, 100 do
+                                        local rot = 2 * math.pi * math.random()
+                                        local pos = vectors.vec2(math.cos(rot) * (windowSize.x / 2 * (math.random() * 0.5 + 0.5)) + center.x, math.sin(rot) * (windowSize.y / 2 * (math.random() * 0.5 + 0.5)) + center.y)
+                                        self.parent.exSkill2FrameParticleManager:spawn(pos, pos:copy():sub(center):scale(0.1))
+                                    end
+                                end
+                            end
+
+                            if tick <= 5 then
+                                local particleAnchor1Pos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce):add(0, 1.5, 0)
+                                for _ = 1, 2 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:block", self.parent.compatibilityUtils:checkBlock("minecraft:snow")), particleAnchor1Pos):setPower(0.25):setLifetime(10)
+                                end
+                            elseif tick <= 26 then
+                                local particleAnchor1Pos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce):add(0, 1.5, 0)
+                                for _ = 1, 4 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:block", self.parent.compatibilityUtils:checkBlock("minecraft:light_blue_concrete")), particleAnchor1Pos):setPower(0):setLifetime(10)
+                                end
+                            end
+                            if (tick >= 33 and tick <= 41) or (tick >= 50 and tick <= 61) then
+                                local root = tick < 52 and models.models.ex_skill_2.Plate.ShavedIceGroup.Wave.WaveScaler or models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIceGroup.Wave.WaveScaler
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(tick < 50 and root.WaveParticleAnchor1 or root.WaveParticleAnchor3)
+                                local particleRot = self.parent.modelUtils.getModelWorldPos(tick < 50 and root.WaveParticleAnchor2 or root.WaveParticleAnchor4):sub(anchorPos)
+                                for _ = 0, 15 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), anchorPos):setScale(0.5):setColor(math.random() * 0.5 + 0.5, 1, 1):setVelocity(math.random() * 0.1 - 0.05, math.random() * 0.1 + 0.05, math.random() * 0.1 - 0.05):setGravity(0.5):setLifetime(20)
+                                    anchorPos:add(particleRot)
+                                end
+                            end
+
+                            if tick % 4 then
+                                local modelPart = tick < 52 and models.models.ex_skill_2.Plate.ShavedIceGroup.Wave or models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate.ShavedIceGroup.Wave
+                                modelPart:setUVPixels(0, tick * 4 * 16)
+                            end
+                        end;
+
+                        onPostAnimation = function (self, forcedStop)
+                            if models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate ~= nil then
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Plate:moveTo( models.models.ex_skill_2)
+                            end
+                            models.models.ex_skill_2.Plate.ShavedIceGroup.ShavedIce.ShavedIce2.ShavedIceFace:setVisible(false)
+                            models.models.ex_skill_2.Plate.ShavedIceGroup.Wave.WaveScaler:setOffsetPivot()
+                            if host:isHost() then
+                                events.RENDER:remove("ex_skill_2_render")
+                                self.parent.exSkill2FrameParticleManager:removeAll()
+                            end
+                        end;
+
+                        onPostTransition = function ()
+                            for _, modelPart in ipairs({models.models.ex_skill_2.Stall, models.models.ex_skill_2.SoftCream}) do
+                                modelPart:setVisible(false)
+                            end
+                        end;
+                    };
+
+                    ---初期化処理が行われたかどうか
+                    ---@type boolean
+                    init = false;
+                };
             };
         }
 
@@ -1208,5 +1218,6 @@ BlueArchiveCharacter = {
 
         --生徒固有初期化処理
         --Player APIにアクセスする場合は、ENTITY_INIT後に実行されるようにする必要がある。
+
     end;
 }
