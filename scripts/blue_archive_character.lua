@@ -312,7 +312,7 @@ BlueArchiveCharacter = {
         }
 
         instance.skirt = {
-
+            skirtModels = {models.models.main.Avatar.UpperBody.Body.Skirt};
         }
 
         instance.gun = {
@@ -496,6 +496,7 @@ BlueArchiveCharacter = {
                             neutral = -15;
                             max = -15;
                             headRotMultiplayer = -1;
+                            sneakOffset = -30;
 
                             headX = {
                                 multiplayer = -80;
@@ -557,6 +558,7 @@ BlueArchiveCharacter = {
                             neutral = -15;
                             max = -15;
                             headRotMultiplayer = -1;
+                            sneakOffset = -30;
 
                             headX = {
                                 multiplayer = -80;
