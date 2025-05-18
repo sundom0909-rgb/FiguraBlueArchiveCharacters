@@ -332,18 +332,18 @@ BlueArchiveCharacter = {
         }
 
         instance.gun = {
-            scale = 1.2;
+            scale = 1.5;
 
             gunPosition = {
                 hold = {
                     firstPersonPos = {
-                        right = vectors.vec3(0, 2, -6);
-                        left = vectors.vec3(2.25, 2, -6);
+                        right = vectors.vec3(0, 1, -6);
+                        left = vectors.vec3(2.25, 1, -6);
                     };
 
                     thirdPersonPos = {
-                        right = vectors.vec3(-1, 0, -7);
-                        left = vectors.vec3(3, 0, -7);
+                        right = vectors.vec3(-0.5, 0, -7);
+                        left = vectors.vec3(2.5, 0, -7);
                     }
                 };
 
@@ -364,7 +364,7 @@ BlueArchiveCharacter = {
 
             sound = {
                 name = "minecraft:entity.firework_rocket.blast";
-                pitch = 0.75;
+                pitch = 1;
             };
         }
 
