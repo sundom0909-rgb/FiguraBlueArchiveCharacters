@@ -388,7 +388,7 @@ BlueArchiveCharacter = {
 
             sound = {
                 name = "minecraft:entity.firework_rocket.blast";
-                pitch = 0.75;
+                pitch = 0.5;
             };
         }
 
