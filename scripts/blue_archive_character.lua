@@ -368,15 +368,15 @@ BlueArchiveCharacter = {
             exSkills = {
                 {
                     name = {
-                        en_us = "Ex Skill name";
-                        ja_jp = "Exスキル名";
+                        en_us = "Come challenge me!";
+                        ja_jp = "挑戦状を受け取ってください！";
                     };
 
                     formationType = "STRIKER";
 
-                    models = {};
+                    models = {models.models.ex_skill_1.Illagers, models.models.ex_skill_1.Letter};
 
-                    animations = {"main"};
+                    animations = {"main", "gun", "ex_skill_1"};
 
                     camera = {
                         start = {
@@ -391,6 +391,13 @@ BlueArchiveCharacter = {
                     };
 
                     callbacks = {
+                        onAnimationTick = function (self, tick)
+                            if tick == 0 then
+                                models.models.main.Avatar.UpperBody.Body.Gun:setPos()
+                                models.models.main.Avatar.UpperBody.Body.Gun:setRot()
+                            end
+                        end;
+
                         --[[
                         --Exスキルアニメーションを任意の位置で一時停止させるコードスニペット。デバッグ用。
                         --"<>"内を適切な数値に置き換えること。
@@ -402,6 +409,18 @@ BlueArchiveCharacter = {
                             end
                         end;
                         ]]
+
+                        onPostAnimation = function (self, forcedStop)
+                            if self.parent.gun.currentGunPosition == "NONE" then
+                                if player:isLeftHanded() then
+                                    models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(self.gun.gunPosition.put.pos.left))
+                                    models.models.main.Avatar.UpperBody.Body.Gun:setRot(self.gun.gunPosition.put.rot.left)
+                                else
+                                    models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(self.gun.gunPosition.put.pos.right))
+                                    models.models.main.Avatar.UpperBody.Body.Gun:setRot(self.gun.gunPosition.put.rot.right)
+                                end
+                            end
+                        end;
                     };
                 };
             };
