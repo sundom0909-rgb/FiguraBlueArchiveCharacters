@@ -69,9 +69,9 @@ CompatibilityUtils = {
         ---@return integer compareResult 比較結果。0は同じ文字列、1はターゲットの方が大きい、-1はターゲットの方が小さいことを表す。
         local function compareToCenterElement(from, to)
             local centerIndex = math.floor((to - from) / 2) + from
-            if self.registries[registryType:lower()][centerIndex] < target then
+            if self.registries[self.parent.stringUtils.lower(registryType)][centerIndex] < target then
                 return 1
-            elseif self.registries[registryType:lower()][centerIndex] > target then
+            elseif self.registries[self.parent.stringUtils.lower(registryType)][centerIndex] > target then
                 return -1
             else
                 return 0
@@ -79,7 +79,7 @@ CompatibilityUtils = {
         end
 
         local startIndex = 1
-        local endIndex = #self.registries[registryType:lower()]
+        local endIndex = #self.registries[self.parent.stringUtils.lower(registryType)]
         while startIndex < endIndex do
             local compareResult = compareToCenterElement(startIndex, endIndex)
             if compareResult == 1 then
