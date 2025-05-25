@@ -383,7 +383,7 @@ BlueArchiveCharacter = {
 
                     formationType = "STRIKER";
 
-                    models = {models.models.ex_skill_1.Illagers, models.models.ex_skill_1.Letter};
+                    models = {models.models.ex_skill_1.Illagers, models.models.ex_skill_1.Letter, models.models.main.Avatar.UpperBody.Body.Gun.MuzzleEffect};
 
                     animations = {"main", "gun", "ex_skill_1"};
 
@@ -456,6 +456,10 @@ BlueArchiveCharacter = {
                             elseif tick == 93 then
                                 models.models.main.Avatar.Head.EyeShines:setVisible(false)
                                 self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "OPENED", 45, true)
+                            elseif tick == 97 then
+                                models.models.main.Avatar.UpperBody.Body.Gun.MuzzleEffect.MuzzleEffect1:setColor(1, 0.659, 0.698)
+                            elseif tick == 106 then
+                                models.models.main.Avatar.UpperBody.Body.Gun.MuzzleEffect.MuzzleEffect1:setColor(0.557, 0.655, 0.976)
                             end
                         end;
 

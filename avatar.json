@@ -160,6 +160,10 @@
 			"visible": false,
 			"moveTo": "models.models.main.Avatar.Head"
 		},
+		"models.models.ex_skill_1.MuzzleEffect": {
+			"visible": false,
+			"moveTo": "models.models.main.Avatar.UpperBody.Body.Gun"
+		},
 		"models.models.bubble.Camera.AvatarBubble": {
 			"visible": false
 		},
