@@ -471,14 +471,20 @@ BlueArchiveCharacter = {
                             if tick == 0 then
                                 models.models.main.Avatar.UpperBody.Body.Gun:setPos()
                                 models.models.main.Avatar.UpperBody.Body.Gun:setRot()
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.book.page_turn"), player:getPos(), 1, 1.5)
                             elseif tick >= 26 and tick <= 38 and (tick - 26) % 6 == 0 then
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), player:getPos(), 0.25, 1)
                             elseif tick == 27 then
                                 models.models.ex_skill_1.Letter:moveTo(models.models.ex_skill_1.Illagers.Pillager1.Pillager1RightArm)
+                            elseif tick == 43 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.pillager.ambient"), player:getPos(), 0.5, 1)
+                            elseif tick == 54 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.vindicator.ambient"), player:getPos(), 0.5, 1)
                             elseif tick == 68 then
                                 models.models.ex_skill_1.script_walls_breakable:setVisible(false)
                                 local bodyYaw = player:getBodyYaw()
-                                local anchorPos = player:getPos():add(vectors.rotateAroundAxis(bodyYaw * -1, 0, 2, -1, 0, 1, 0))
+                                local playerPos = player:getPos()
+                                local anchorPos = playerPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, 0, 2, -1, 0, 1, 0))
                                 particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:explosion_emitter"), anchorPos)
                                 for _ = 1, 50 do
                                     local offset = vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 5 - 2.5, math.random() * 4 - 2, math.random() - 0.5, 0, 1, 0)
@@ -488,6 +494,11 @@ BlueArchiveCharacter = {
                                     self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.ExSkill1ParticleAnchor1, 1, vectors.vec3(0.294, 1, 1), pos, vectors.vec3(0, 0, 0), math.random() * -30 - 15, 3, models.models.ex_skill_1.StarScale, 33, true, 1)
                                 end
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.explode"), anchorPos, 0.5, 1)
+                                for _, soundName in ipairs({"minecraft:entity.pillager.hurt", "minecraft:entity.vindicator.hurt"}) do
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound(soundName), playerPos, 0.5, 1)
+                                end
+                            elseif tick == 83 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 1, 1.5)
                             elseif tick == 93 then
                                 models.models.main.Avatar.Head.EyeShines:setVisible(false)
                                 self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "OPENED", 45, true)
@@ -496,6 +507,7 @@ BlueArchiveCharacter = {
                                 for _ = 1, 8 do
                                     self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.ExSkill1ParticleAnchor2, math.random(2, 5), vectors.vec3(0.294, 1, 1), vectors.vec3(0, 0, 0), vectors.rotateAroundAxis(math.random() * 360, 50, 0, 0, 0, 0, 1), 0, 2, nil, 8, true, 0.80)
                                 end
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.arrow.shoot"), player:getPos(), 1, 2)
                             elseif tick == 105 then
                                 if host:isHost() then
                                     events.RENDER:register(function (delta)
@@ -529,6 +541,7 @@ BlueArchiveCharacter = {
                                 end
                             elseif tick == 106 then
                                 models.models.main.Avatar.UpperBody.Body.Gun.MuzzleEffect.MuzzleEffect1:setColor(0.557, 0.655, 0.976)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.explode"), player:getPos(), 0.5, 2.5)
                             elseif tick == 108 and host:isHost() then
                                 events.RENDER:remove("ex_skill_1_filter_render")
                                 models.models.ex_skill_1.Gui.ScreenFilter:setVisible(false)
