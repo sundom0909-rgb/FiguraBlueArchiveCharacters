@@ -363,13 +363,47 @@ BlueArchiveCharacter = {
 
         instance.placementObjects = {
             {
-                model = models.models.placement_object.PlacementObject;
+                model = models.models.ex_skill_1.Letter;
 
                 boundingBox = {
-                    size = vectors.vec3(8, 8, 8)
+                    size = vectors.vec3(6, 1, 6)
                 };
 
                 placementMode = "COPY";
+
+                callbacks = {
+                    onInit = function (self, placementObject)
+                        placementObject.textUuid = client.intUUIDToString(client.generateUUID())
+                        ---@diagnostic disable-next-line: discard-returns, invisible
+                        placementObject.object:newPart("TextArea")
+                        ---@diagnostic disable-next-line: invisible
+                        placementObject.object.TextArea:setPos(0, 7, 0)
+                        ---@diagnostic disable-next-line: discard-returns, invisible
+                        placementObject.object.TextArea:newPart("TextAreaInner", "Camera")
+                        ---@diagnostic disable-next-line: invisible
+                        placementObject.textTask = placementObject.object.TextArea.TextAreaInner:newText(placementObject.textUuid)
+
+                        placementObject.textTask:setScale(0.5, 0.5, 0.5)
+                        placementObject.textTask:setAlignment("CENTER")
+                        placementObject.textTask:setBackground(true)
+                        local wordIndex = math.random(1, 6)
+                        local activeLang = client:getActiveLang()
+                        if self.costume.costumes[1].challangeWords[activeLang] ~= nil then
+                            placementObject.textTask:setText(self.costume.costumes[1].challangeWords[activeLang][wordIndex]..self.costume.costumes[1].challangeWords[activeLang][7])
+                        else
+                            placementObject.textTask:setText(self.costume.costumes[1].challangeWords.en_us[wordIndex]..self.costume.costumes[1].challangeWords.en_us[7])
+                        end
+                    end;
+
+                    onDeinit = function (_, placementObject)
+                        ---@diagnostic disable-next-line: invisible
+                        placementObject.object.TextArea:removeTask()
+                    end;
+
+                    onTick = function (self, placementObject)
+                        placementObject.textTask:setVisible(placementObject.currentPos:copy():sub(client:getViewer():getPos()):length() <= 2)
+                    end;
+                };
             };
         }
 
@@ -463,6 +497,7 @@ BlueArchiveCharacter = {
                                     modelPart:setVisible(true)
                                 end
                             end
+                            self.parent.placementObjectManager:removeAll()
                             renderer:shadowRadius(0)
                             models.models.main.Avatar.Head.EyeShines:setVisible(true)
                             self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "OPENED", 93, true)
@@ -578,6 +613,10 @@ BlueArchiveCharacter = {
                                     modelPart:setVisible(false)
                                 end
                                 self.parent.exSkillSpriteManager:removeAll()
+                            else
+                                local lookDir = player:getLookDir()
+                                local lookYaw = math.deg(math.atan2(lookDir.z, lookDir.x))
+                                self.parent.placementObjectManager:spawn(1, player:getPos():add(vectors.rotateAroundAxis(lookYaw * -1 + 90, 0, 1, 3, 0, 1, 0)), lookYaw * -1 + 90)
                             end
                         end;
                     };
@@ -600,6 +639,27 @@ BlueArchiveCharacter = {
                     };
 
                     exSkill = 1;
+
+                    challangeWords = {
+                        ja_jp = {
+                            "とりゃーー！！";
+                            "ここに参上！！";
+                            "勝負です！！";
+                            "逃しませんよー！！";
+                            "挑戦状を！受け取ってー！くださいっ！！";
+                            "覚悟してください！！";
+                            " - レイサ";
+                        };
+                        en_us = {
+                            "Dorya-!!";
+                            "Making my entrance!!";
+                            "It's a match!!";
+                            "You can't escape!!";
+                            "Please receive, this letter of challenge!!";
+                            "Please prepare yourself!!";
+                            " - Reisa";
+                        };
+                    };
                 };
             };
 
