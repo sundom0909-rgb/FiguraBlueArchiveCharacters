@@ -380,13 +380,13 @@ BlueArchiveCharacter = {
 
                     camera = {
                         start = {
-                            rot = vectors.vec3(0, 180, 0);
-                            pos = vectors.vec3(0, 28, -64);
+                            rot = vectors.vec3(50, 150, 0);
+                            pos = vectors.vec3(3, 6, -2.75);
                         };
 
                         fin = {
-                            rot = vectors.vec3(0, 180, 0);
-                            pos = vectors.vec3(0, 28, -64);
+                            rot = vectors.vec3(0, 180, 15);
+                            pos = vectors.vec3(-4, 31.5, -24);
                         };
                     };
 
@@ -400,20 +400,10 @@ BlueArchiveCharacter = {
                             end
                         end;
 
-                        --[[
-                        --Exスキルアニメーションを任意の位置で一時停止させるコードスニペット。デバッグ用。
-                        --"<>"内を適切な数値に置き換えること。
-                        onAnimationTick = function (self, tick)
-                            if tick == <tick_count> then
-                                for _, name in ipairs(self.exSkill.exSkills[<ex_skill_index>]) do
-                                    animations["models."..name]["ex_skill_<ex_skill_index>"]:pause()
-                                end
-                            end
-                        end;
-                        ]]
-
                         onPostAnimation = function (self, forcedStop)
-                            models.models.ex_skill_1.Illagers.Pillager1.Pillager1RightArm.Letter:moveTo(models.models.ex_skill_1)
+                            if models.models.ex_skill_1.Illagers.Pillager1.Pillager1RightArm.Letter ~= nil then
+                                models.models.ex_skill_1.Illagers.Pillager1.Pillager1RightArm.Letter:moveTo(models.models.ex_skill_1)
+                            end
                             if self.parent.gun.currentGunPosition == "NONE" then
                                 if player:isLeftHanded() then
                                     models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(self.gun.gunPosition.put.pos.left))
