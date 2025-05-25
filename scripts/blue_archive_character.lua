@@ -499,15 +499,28 @@ BlueArchiveCharacter = {
                             elseif tick == 105 then
                                 if host:isHost() then
                                     events.RENDER:register(function (delta)
-                                    models.models.ex_skill_1.Gui.ScreenFilter:setOpacity((self.parent.exSkill.animationCount + delta - 1) * -0.333 + 36)
+                                        models.models.ex_skill_1.Gui.ScreenFilter:setOpacity((self.parent.exSkill.animationCount + delta - 1) * -0.333 + 36)
                                     end, "ex_skill_1_filter_render")
                                     models.models.ex_skill_1.Gui.ScreenFilter:setScale(client:getScaledWindowSize():augmented(1))
                                     models.models.ex_skill_1.Gui.ScreenFilter:setVisible(true)
-                                    events.RENDER:register(function (delta)
+                                    models.models.ex_skill_1.script_walls:setVisible(false)
+                                    models.models.ex_skill_1.CameraBackground.Background:setVisible(true)
+                                    local windowSize = client:getWindowSize()
+                                    models.models.ex_skill_1.CameraBackground.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(45))
+                                    local shouldAdjustBackgroundRot = client:getVersion() >= "1.21"
+                                    events.RENDER:register(function (delta, context)
                                         local animPos = models.models.main.Avatar:getAnimPos()
                                         local bodyYaw = player:getBodyYaw(delta)
                                         models.script_ex_skill_1:setPos(animPos:copy():add(vectors.rotateAroundAxis(bodyYaw + 180, player:getPos(delta):add(vectors.rotateAroundAxis(bodyYaw * -1, animPos:copy():scale(0.0625):add(-0.15, 0.8, 0), 0, 1, 0)):sub(client:getCameraPos()):scale(8), 0, 1, 0)))
                                         models.script_ex_skill_1:setRot(models.models.main.Avatar:getAnimRot())
+
+                                        models.models.ex_skill_1.CameraBackground:setVisible(context == "RENDER")
+                                        local backgroundPos = vectors.rotateAroundAxis(player:getBodyYaw(delta) + 180, renderer:getCameraOffsetPivot():copy():add(0, 1.62, 0):add(client:getCameraDir():copy():scale(2)), 0, 1, 0):scale(16 / 0.9375)
+                                        models.models.ex_skill_1.CameraBackground:setOffsetPivot(backgroundPos)
+                                        models.models.ex_skill_1.CameraBackground.Background:setPos(backgroundPos)
+                                        if shouldAdjustBackgroundRot then
+                                            models.models.ex_skill_1.CameraBackground.Background:setRot(0, 0, renderer:getCameraRot().z)
+                                        end
                                     end, "ex_skill_1_outline_render")
                                     models.script_ex_skill_1:setVisible(true)
                                 end
@@ -525,7 +538,9 @@ BlueArchiveCharacter = {
                         onPostAnimation = function (self, forcedStop)
                             if host:isHost() then
                                 events.RENDER:remove("ex_skill_1_outline_render")
-                                models.script_ex_skill_1:setVisible(false)
+                                for _, modelPart in ipairs({models.script_ex_skill_1, models.models.ex_skill_1.CameraBackground.Background}) do
+                                    modelPart:setVisible(false)
+                                end
                             end
                             models.models.ex_skill_1.script_walls:setVisible(false)
                             if models.models.ex_skill_1.Illagers.Pillager1.Pillager1RightArm.Letter ~= nil then
