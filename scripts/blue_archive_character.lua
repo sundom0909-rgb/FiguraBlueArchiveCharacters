@@ -395,6 +395,8 @@ BlueArchiveCharacter = {
                             if tick == 0 then
                                 models.models.main.Avatar.UpperBody.Body.Gun:setPos()
                                 models.models.main.Avatar.UpperBody.Body.Gun:setRot()
+                            elseif tick == 27 then
+                                models.models.ex_skill_1.Letter:moveTo(models.models.ex_skill_1.Illagers.Pillager1.Pillager1RightArm)
                             end
                         end;
 
@@ -411,6 +413,7 @@ BlueArchiveCharacter = {
                         ]]
 
                         onPostAnimation = function (self, forcedStop)
+                            models.models.ex_skill_1.Illagers.Pillager1.Pillager1RightArm.Letter:moveTo(models.models.ex_skill_1)
                             if self.parent.gun.currentGunPosition == "NONE" then
                                 if player:isLeftHanded() then
                                     models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(self.gun.gunPosition.put.pos.left))
