@@ -484,25 +484,36 @@ BlueArchiveCharacter = {
                                     local offset = vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 5 - 2.5, math.random() * 4 - 2, math.random() - 0.5, 0, 1, 0)
                                     particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:block", self.parent.compatibilityUtils:checkBlock("minecraft:oak_planks")), anchorPos:copy():add(offset))
                                 end
+                                for _, pos in ipairs({vectors.vec3(-5, 3, 0), vectors.vec3(4, 0, 0), vectors.vec3(8, 8, 0)}) do
+                                    self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.ExSkill1ParticleAnchor1, 1, vectors.vec3(0.294, 1, 1), pos, vectors.vec3(0, 0, 0), math.random() * -30 - 15, 3, models.models.ex_skill_1.StarScale, 33, true, 1)
+                                end
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.explode"), anchorPos, 0.5, 1)
                             elseif tick == 93 then
                                 models.models.main.Avatar.Head.EyeShines:setVisible(false)
                                 self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "OPENED", 45, true)
                             elseif tick == 97 then
                                 models.models.main.Avatar.UpperBody.Body.Gun.MuzzleEffect.MuzzleEffect1:setColor(1, 0.659, 0.698)
-                            elseif tick == 105 and host:isHost() then
-                                events.RENDER:register(function (delta)
+                                for _ = 1, 8 do
+                                    self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.ExSkill1ParticleAnchor2, math.random(2, 5), vectors.vec3(0.294, 1, 1), vectors.vec3(0, 0, 0), vectors.rotateAroundAxis(math.random() * 360, 50, 0, 0, 0, 0, 1), 0, 2, nil, 8, true, 0.80)
+                                end
+                            elseif tick == 105 then
+                                if host:isHost() then
+                                    events.RENDER:register(function (delta)
                                     models.models.ex_skill_1.Gui.ScreenFilter:setOpacity((self.parent.exSkill.animationCount + delta - 1) * -0.333 + 36)
-                                end, "ex_skill_1_filter_render")
-                                models.models.ex_skill_1.Gui.ScreenFilter:setScale(client:getScaledWindowSize():augmented(1))
-                                models.models.ex_skill_1.Gui.ScreenFilter:setVisible(true)
-                                events.RENDER:register(function (delta)
-                                    local animPos = models.models.main.Avatar:getAnimPos()
-                                    local bodyYaw = player:getBodyYaw(delta)
-                                    models.script_ex_skill_1:setPos(animPos:copy():add(vectors.rotateAroundAxis(bodyYaw + 180, player:getPos(delta):add(vectors.rotateAroundAxis(bodyYaw * -1, animPos:copy():scale(0.0625):add(-0.15, 0.8, 0), 0, 1, 0)):sub(client:getCameraPos()):scale(8), 0, 1, 0)))
-                                    models.script_ex_skill_1:setRot(models.models.main.Avatar:getAnimRot())
-                                end, "ex_skill_1_outline_render")
-                                models.script_ex_skill_1:setVisible(true)
+                                    end, "ex_skill_1_filter_render")
+                                    models.models.ex_skill_1.Gui.ScreenFilter:setScale(client:getScaledWindowSize():augmented(1))
+                                    models.models.ex_skill_1.Gui.ScreenFilter:setVisible(true)
+                                    events.RENDER:register(function (delta)
+                                        local animPos = models.models.main.Avatar:getAnimPos()
+                                        local bodyYaw = player:getBodyYaw(delta)
+                                        models.script_ex_skill_1:setPos(animPos:copy():add(vectors.rotateAroundAxis(bodyYaw + 180, player:getPos(delta):add(vectors.rotateAroundAxis(bodyYaw * -1, animPos:copy():scale(0.0625):add(-0.15, 0.8, 0), 0, 1, 0)):sub(client:getCameraPos()):scale(8), 0, 1, 0)))
+                                        models.script_ex_skill_1:setRot(models.models.main.Avatar:getAnimRot())
+                                    end, "ex_skill_1_outline_render")
+                                    models.script_ex_skill_1:setVisible(true)
+                                end
+                                for _ = 1, 8 do
+                                    self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.ExSkill1ParticleAnchor2, math.random(2, 5), vectors.vec3(1, 1, 0.443), vectors.vec3(0, 0, 0), vectors.rotateAroundAxis(math.random() * 360, 40, 0, 0, 0, 0, 1), 0, 2, nil, 33, true, 0.80)
+                                end
                             elseif tick == 106 then
                                 models.models.main.Avatar.UpperBody.Body.Gun.MuzzleEffect.MuzzleEffect1:setColor(0.557, 0.655, 0.976)
                             elseif tick == 108 and host:isHost() then
@@ -536,6 +547,7 @@ BlueArchiveCharacter = {
                                 for _, modelPart in ipairs({models.models.main.Avatar.Head.EyeShines, models.models.ex_skill_1.script_walls_breakable}) do
                                     modelPart:setVisible(false)
                                 end
+                                self.parent.exSkillSpriteManager:removeAll()
                             end
                         end;
                     };
