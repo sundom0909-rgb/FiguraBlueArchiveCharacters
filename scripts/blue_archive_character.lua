@@ -423,6 +423,7 @@ BlueArchiveCharacter = {
                                     end
                                 end
                                 models.models.ex_skill_1.Illagers.Pillager1:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/illager/pillager.png")
+                                models.models.ex_skill_1.Letter:setPrimaryTexture("PRIMARY")
                                 for i = 1, 2 do
                                         models.models.ex_skill_1.Illagers["Vindicator"..i]:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/illager/vindicator.png")
                                     end
