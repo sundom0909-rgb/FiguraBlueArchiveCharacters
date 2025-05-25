@@ -402,6 +402,21 @@ BlueArchiveCharacter = {
                     callbacks = {
                         onPreAnimation = function (self)
                             if not self.exSkill.exSkills[1].initialized then
+                                if host:isHost() then
+                                    ---@diagnostic disable-next-line: discard-returns
+                                    models:newPart("script_ex_skill_1")
+                                    models.script_ex_skill_1:setVisible(false)
+                                    models.script_ex_skill_1:addChild(models.models.main.Avatar:copy("exSkill1Outline1"))
+                                    models.script_ex_skill_1.exSkill1Outline1:removeChild(models.script_ex_skill_1.exSkill1Outline1.Background)
+                                    models.script_ex_skill_1.exSkill1Outline1:setOffsetPivot(0, 16, 0)
+                                    models.script_ex_skill_1.exSkill1Outline1:setScale(1.7, 1.5, 1.6)
+                                    models.script_ex_skill_1.exSkill1Outline1:setPrimaryTexture("CUSTOM", textures["textures.ex_skill_1_white"])
+                                    models.script_ex_skill_1.exSkill1Outline1:setPrimaryRenderType("EMISSIVE_SOLID")
+                                    models.script_ex_skill_1:addChild(models.script_ex_skill_1.exSkill1Outline1:copy("exSkill1Outline2"))
+                                    models.script_ex_skill_1.exSkill1Outline2:setPos(-2, -2, 2)
+                                    models.script_ex_skill_1.exSkill1Outline2:setColor(0.608, 0.741, 1)
+                                end
+
                                 for _, part in ipairs({"Head", "Body", "RightArm", "LeftArm", "RightLeg", "LeftLeg"}) do
                                     for i = 1, 2 do
                                         models.models.ex_skill_1.Illagers["Vindicator"..i]["Vindicator"..i..part]:addChild(self.parent.modelUtils:copyModel(models.models.ex_skill_1.Illagers.Pillager1["Pillager1"..part]))
@@ -440,6 +455,7 @@ BlueArchiveCharacter = {
                                 end
                                 models.models.ex_skill_1.script_walls_breakable:newBlock("ex_skill_1_block_27"):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:oak_door", "[facing=south,half=lower]")):setPos(-8, 0, 8)
                                 models.models.ex_skill_1.script_walls_breakable:newBlock("ex_skill_1_block_28"):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:oak_door", "[facing=south,half=upper]")):setPos(-8, 16, 8)
+
                                 self.exSkill.exSkills[1].initialized = true
                             else
                                 for _, modelPart in ipairs({models.models.ex_skill_1.script_walls, models.models.ex_skill_1.script_walls_breakable}) do
@@ -479,6 +495,13 @@ BlueArchiveCharacter = {
                                 end, "ex_skill_1_filter_render")
                                 models.models.ex_skill_1.Gui.ScreenFilter:setScale(client:getScaledWindowSize():augmented(1))
                                 models.models.ex_skill_1.Gui.ScreenFilter:setVisible(true)
+                                events.RENDER:register(function (delta)
+                                    local animPos = models.models.main.Avatar:getAnimPos()
+                                    local bodyYaw = player:getBodyYaw(delta)
+                                    models.script_ex_skill_1:setPos(animPos:copy():add(vectors.rotateAroundAxis(bodyYaw + 180, player:getPos(delta):add(vectors.rotateAroundAxis(bodyYaw * -1, animPos:copy():scale(0.0625):add(-0.15, 0.8, 0), 0, 1, 0)):sub(client:getCameraPos()):scale(8), 0, 1, 0)))
+                                    models.script_ex_skill_1:setRot(models.models.main.Avatar:getAnimRot())
+                                end, "ex_skill_1_outline_render")
+                                models.script_ex_skill_1:setVisible(true)
                             elseif tick == 106 then
                                 models.models.main.Avatar.UpperBody.Body.Gun.MuzzleEffect.MuzzleEffect1:setColor(0.557, 0.655, 0.976)
                             elseif tick == 108 and host:isHost() then
@@ -488,6 +511,10 @@ BlueArchiveCharacter = {
                         end;
 
                         onPostAnimation = function (self, forcedStop)
+                            if host:isHost() then
+                                events.RENDER:remove("ex_skill_1_outline_render")
+                                models.script_ex_skill_1:setVisible(false)
+                            end
                             models.models.ex_skill_1.script_walls:setVisible(false)
                             if models.models.ex_skill_1.Illagers.Pillager1.Pillager1RightArm.Letter ~= nil then
                                 models.models.ex_skill_1.Illagers.Pillager1.Pillager1RightArm.Letter:moveTo(models.models.ex_skill_1)
@@ -508,7 +535,6 @@ BlueArchiveCharacter = {
                                 for _, modelPart in ipairs({models.models.main.Avatar.Head.EyeShines, models.models.ex_skill_1.script_walls_breakable}) do
                                     modelPart:setVisible(false)
                                 end
-                                models.models.main.Avatar.Head.EyeShines:setVisible(false)
                             end
                         end;
                     };
