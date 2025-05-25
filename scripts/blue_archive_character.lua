@@ -463,6 +463,7 @@ BlueArchiveCharacter = {
                                     modelPart:setVisible(true)
                                 end
                             end
+                            renderer:shadowRadius(0)
                             models.models.main.Avatar.Head.EyeShines:setVisible(true)
                             self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "OPENED", 93, true)
                         end;
@@ -559,6 +560,7 @@ BlueArchiveCharacter = {
                             if models.models.ex_skill_1.Illagers.Pillager1.Pillager1RightArm.Letter ~= nil then
                                 models.models.ex_skill_1.Illagers.Pillager1.Pillager1RightArm.Letter:moveTo(models.models.ex_skill_1)
                             end
+                            renderer:shadowRadius()
                             if self.parent.gun.currentGunPosition == "NONE" then
                                 if player:isLeftHanded() then
                                     models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(self.gun.gunPosition.put.pos.left))
