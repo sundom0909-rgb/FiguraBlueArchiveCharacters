@@ -402,6 +402,15 @@ BlueArchiveCharacter = {
                     callbacks = {
                         onPreAnimation = function (self)
                             if not self.exSkill.exSkills[1].initialized then
+                                for _, part in ipairs({"Head", "Body", "RightArm", "LeftArm", "RightLeg", "LeftLeg"}) do
+                                    for i = 1, 2 do
+                                        models.models.ex_skill_1.Illagers["Vindicator"..i]["Vindicator"..i..part]:addChild(self.parent.modelUtils:copyModel(models.models.ex_skill_1.Illagers.Pillager1["Pillager1"..part]))
+                                    end
+                                end
+                                models.models.ex_skill_1.Illagers.Pillager1:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/illager/pillager.png")
+                                for i = 1, 2 do
+                                        models.models.ex_skill_1.Illagers["Vindicator"..i]:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/illager/vindicator.png")
+                                    end
                                 for i, modelPart in ipairs({models.models.ex_skill_1.Illagers.Pillager1.Pillager1Question.Pillager1Question2, models.models.ex_skill_1.Illagers.Vindicator1.Vindicator1Question.Vindicator1Question2, models.models.ex_skill_1.Illagers.Vindicator2.Vindicator2Question.Vindicator2Question2}) do
                                     modelPart:newText("ex_skill_1_question_"..i):setText("§e?"):setPos(0, 7, 0):setScale(0.8, 0.8, 1):setAlignment("CENTER")
                                 end
