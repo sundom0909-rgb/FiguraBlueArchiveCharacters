@@ -383,7 +383,7 @@ BlueArchiveCharacter = {
 
                     formationType = "STRIKER";
 
-                    models = {models.models.ex_skill_1.Illagers, models.models.ex_skill_1.Letter, models.models.main.Avatar.UpperBody.Body.Gun.MuzzleEffect};
+                    models = {models.models.main.Avatar.Background, models.models.main.Avatar.UpperBody.Body.Gun.MuzzleEffect, models.models.ex_skill_1.Illagers, models.models.ex_skill_1.Letter};
 
                     animations = {"main", "gun", "ex_skill_1"};
 
@@ -473,8 +473,17 @@ BlueArchiveCharacter = {
                                 self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "OPENED", 45, true)
                             elseif tick == 97 then
                                 models.models.main.Avatar.UpperBody.Body.Gun.MuzzleEffect.MuzzleEffect1:setColor(1, 0.659, 0.698)
+                            elseif tick == 105 and host:isHost() then
+                                events.RENDER:register(function (delta)
+                                    models.models.ex_skill_1.Gui.ScreenFilter:setOpacity((self.parent.exSkill.animationCount + delta - 1) * -0.333 + 36)
+                                end, "ex_skill_1_filter_render")
+                                models.models.ex_skill_1.Gui.ScreenFilter:setScale(client:getScaledWindowSize():augmented(1))
+                                models.models.ex_skill_1.Gui.ScreenFilter:setVisible(true)
                             elseif tick == 106 then
                                 models.models.main.Avatar.UpperBody.Body.Gun.MuzzleEffect.MuzzleEffect1:setColor(0.557, 0.655, 0.976)
+                            elseif tick == 108 and host:isHost() then
+                                events.RENDER:remove("ex_skill_1_filter_render")
+                                models.models.ex_skill_1.Gui.ScreenFilter:setVisible(false)
                             end
                         end;
 
@@ -493,6 +502,9 @@ BlueArchiveCharacter = {
                                 end
                             end
                             if forcedStop then
+                                if host:isHost() then
+                                    events.RENDER:remove("ex_skill_1_render")
+                                end
                                 for _, modelPart in ipairs({models.models.main.Avatar.Head.EyeShines, models.models.ex_skill_1.script_walls_breakable}) do
                                     modelPart:setVisible(false)
                                 end
