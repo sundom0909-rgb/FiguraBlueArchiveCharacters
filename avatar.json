@@ -156,6 +156,10 @@
 		"models.models.ex_skill_1.Letter": {
 			"visible": false
 		},
+		"models.models.ex_skill_1.EyeShines": {
+			"visible": false,
+			"moveTo": "models.models.main.Avatar.Head"
+		},
 		"models.models.bubble.Camera.AvatarBubble": {
 			"visible": false
 		},

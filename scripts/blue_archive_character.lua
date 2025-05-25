@@ -3,15 +3,20 @@
 ---| "SURPRISED" # 驚いた目（ダメージを受けたときなど）
 ---| "TIRED" # 疲れた目（死亡アニメーションなど）
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
+---| "ANGRY" # 怒った目
+---| "UNEQUAL" # 不等号目
 
 ---@alias BlueArchiveCharacter.LeftEyeTextures
 ---| "NORMAL" # 通常
 ---| "SURPRISED" # 驚いた目（ダメージを受けたときなど）
 ---| "TIRED" # 疲れた目（死亡アニメーションなど）
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
+---| "ANGRY" # 怒った目
+---| "UNEQUAL" # 不等号目
 
 ---@alias BlueArchiveCharacter.MouthTextures
 ---| "NORMAL" # 通常
+---| "OPENED" # 開いた口
 
 ---@alias BlueArchiveCharacter.GunPutType
 ---| "BODY" # アバターのBodyに銃を移動させる
@@ -293,6 +298,8 @@ BlueArchiveCharacter = {
                 SURPRISED = vectors.vec2(2, 0); --必須
                 TIRED = vectors.vec2(3, 0); --必須
                 CLOSED = vectors.vec2(4, 0); --必須
+                ANGRY = vectors.vec2(5, 0);
+                UNEQUAL = vectors.vec2(7, 0);
             };
 
             leftEye = {
@@ -300,10 +307,12 @@ BlueArchiveCharacter = {
                 SURPRISED = vectors.vec2(1, 0); --必須
                 TIRED = vectors.vec2(2, 0); --必須
                 CLOSED = vectors.vec2(3, 0); --必須
+                ANGRY = vectors.vec2(5, 0);
+                UNEQUAL = vectors.vec2(6, 0);
             };
 
             mouth = {
-
+                OPENED =  vectors.vec2(0, 0);
             };
         }
 
@@ -391,12 +400,20 @@ BlueArchiveCharacter = {
                     };
 
                     callbacks = {
+                        onPreAnimation = function (self)
+                            models.models.main.Avatar.Head.EyeShines:setVisible(true)
+                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "OPENED", 93, true)
+                        end;
+
                         onAnimationTick = function (self, tick)
                             if tick == 0 then
                                 models.models.main.Avatar.UpperBody.Body.Gun:setPos()
                                 models.models.main.Avatar.UpperBody.Body.Gun:setRot()
                             elseif tick == 27 then
                                 models.models.ex_skill_1.Letter:moveTo(models.models.ex_skill_1.Illagers.Pillager1.Pillager1RightArm)
+                            elseif tick == 93 then
+                                models.models.main.Avatar.Head.EyeShines:setVisible(false)
+                                self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "OPENED", 45, true)
                             end
                         end;
 
@@ -412,6 +429,9 @@ BlueArchiveCharacter = {
                                     models.models.main.Avatar.UpperBody.Body.Gun:setPos(vectors.vec3(0, 12, 0):add(self.gun.gunPosition.put.pos.right))
                                     models.models.main.Avatar.UpperBody.Body.Gun:setRot(self.gun.gunPosition.put.rot.right)
                                 end
+                            end
+                            if forcedStop then
+                                models.models.main.Avatar.Head.EyeShines:setVisible(false)
                             end
                         end;
                     };
