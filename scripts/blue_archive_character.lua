@@ -401,6 +401,38 @@ BlueArchiveCharacter = {
 
                     callbacks = {
                         onPreAnimation = function (self)
+                            if not self.exSkill.exSkills[1].initialized then
+                                ---@diagnostic disable-next-line: discard-returns
+                                models.models.ex_skill_1:newPart("script_walls")
+                                for i = 0, 1 do
+                                    for j = 0, 3 do
+                                        models.models.ex_skill_1.script_walls:newBlock("ex_skill_1_block_"..(i * 4 + (j + 1))):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:oak_planks")):setPos(i * 96 - 56, j * 16, 8)
+                                    end
+                                    for j = 0, 1 do
+                                        models.models.ex_skill_1.script_walls:newBlock("ex_skill_1_block_"..(i * 2 + (j + 1) + 8)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:oak_planks")):setPos(i * 64 - 40, j * 48, 8)
+                                    end
+                                end
+                                ---@diagnostic disable-next-line: discard-returns
+                                models.models.ex_skill_1:newPart("script_walls_breakable")
+                                for i = 0, 1 do
+                                    for j = 0, 1 do
+                                        models.models.ex_skill_1.script_walls_breakable:newBlock("ex_skill_1_block_"..(i * 2 + (j + 1) + 12)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:oak_planks")):setPos(i * 64 - 40, j * 16 + 16, 8)
+                                    end
+                                    for j = 0, 3 do
+                                        models.models.ex_skill_1.script_walls_breakable:newBlock("ex_skill_1_block_"..(i * 4 + (j + 1) + 16)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:oak_planks")):setPos(i * 32 - 24, j * 16, 8)
+                                    end
+                                end
+                                for i = 0, 1 do
+                                    models.models.ex_skill_1.script_walls_breakable:newBlock("ex_skill_1_block_"..((i + 1) + 24)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:oak_planks")):setPos(-8, i * 16 + 32, 8)
+                                end
+                                models.models.ex_skill_1.script_walls_breakable:newBlock("ex_skill_1_block_27"):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:oak_door", "[facing=south,half=lower]")):setPos(-8, 0, 8)
+                                models.models.ex_skill_1.script_walls_breakable:newBlock("ex_skill_1_block_28"):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:oak_door", "[facing=south,half=upper]")):setPos(-8, 16, 8)
+                                self.exSkill.exSkills[1].initialized = true
+                            else
+                                for _, modelPart in ipairs({models.models.ex_skill_1.script_walls, models.models.ex_skill_1.script_walls_breakable}) do
+                                    modelPart:setVisible(true)
+                                end
+                            end
                             models.models.main.Avatar.Head.EyeShines:setVisible(true)
                             self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "OPENED", 93, true)
                         end;
@@ -411,6 +443,16 @@ BlueArchiveCharacter = {
                                 models.models.main.Avatar.UpperBody.Body.Gun:setRot()
                             elseif tick == 27 then
                                 models.models.ex_skill_1.Letter:moveTo(models.models.ex_skill_1.Illagers.Pillager1.Pillager1RightArm)
+                            elseif tick == 68 then
+                                models.models.ex_skill_1.script_walls_breakable:setVisible(false)
+                                local bodyYaw = player:getBodyYaw()
+                                local anchorPos = player:getPos():add(vectors.rotateAroundAxis(bodyYaw * -1, 0, 2, -1, 0, 1, 0))
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:explosion_emitter"), anchorPos)
+                                for _ = 1, 50 do
+                                    local offset = vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 5 - 2.5, math.random() * 4 - 2, math.random() - 0.5, 0, 1, 0)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:block", self.parent.compatibilityUtils:checkBlock("minecraft:oak_planks")), anchorPos:copy():add(offset))
+                                end
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.explode"), anchorPos, 0.5, 1)
                             elseif tick == 93 then
                                 models.models.main.Avatar.Head.EyeShines:setVisible(false)
                                 self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "OPENED", 45, true)
@@ -418,6 +460,7 @@ BlueArchiveCharacter = {
                         end;
 
                         onPostAnimation = function (self, forcedStop)
+                            models.models.ex_skill_1.script_walls:setVisible(false)
                             if models.models.ex_skill_1.Illagers.Pillager1.Pillager1RightArm.Letter ~= nil then
                                 models.models.ex_skill_1.Illagers.Pillager1.Pillager1RightArm.Letter:moveTo(models.models.ex_skill_1)
                             end
@@ -431,10 +474,17 @@ BlueArchiveCharacter = {
                                 end
                             end
                             if forcedStop then
+                                for _, modelPart in ipairs({models.models.main.Avatar.Head.EyeShines, models.models.ex_skill_1.script_walls_breakable}) do
+                                    modelPart:setVisible(false)
+                                end
                                 models.models.main.Avatar.Head.EyeShines:setVisible(false)
                             end
                         end;
                     };
+
+                    ---このExスキルが初期化されたかどうか。
+                    ---@type boolean
+                    initialized = false;
                 };
             };
         }
