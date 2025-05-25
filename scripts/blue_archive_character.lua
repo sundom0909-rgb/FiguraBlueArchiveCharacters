@@ -435,27 +435,27 @@ BlueArchiveCharacter = {
                                 models.models.ex_skill_1:newPart("script_walls")
                                 for i = 0, 1 do
                                     for j = 0, 3 do
-                                        models.models.ex_skill_1.script_walls:newBlock("ex_skill_1_block_"..(i * 4 + (j + 1))):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:oak_planks")):setPos(i * 96 - 56, j * 16, 8)
+                                        models.models.ex_skill_1.script_walls:newBlock("ex_skill_1_block_"..(i * 4 + (j + 1))):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:dark_oak_planks")):setPos(i * 96 - 56, j * 16, 8)
                                     end
                                     for j = 0, 1 do
-                                        models.models.ex_skill_1.script_walls:newBlock("ex_skill_1_block_"..(i * 2 + (j + 1) + 8)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:oak_planks")):setPos(i * 64 - 40, j * 48, 8)
+                                        models.models.ex_skill_1.script_walls:newBlock("ex_skill_1_block_"..(i * 2 + (j + 1) + 8)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:dark_oak_planks")):setPos(i * 64 - 40, j * 48, 8)
                                     end
                                 end
                                 ---@diagnostic disable-next-line: discard-returns
                                 models.models.ex_skill_1:newPart("script_walls_breakable")
                                 for i = 0, 1 do
                                     for j = 0, 1 do
-                                        models.models.ex_skill_1.script_walls_breakable:newBlock("ex_skill_1_block_"..(i * 2 + (j + 1) + 12)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:oak_planks")):setPos(i * 64 - 40, j * 16 + 16, 8)
+                                        models.models.ex_skill_1.script_walls_breakable:newBlock("ex_skill_1_block_"..(i * 2 + (j + 1) + 12)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:dark_oak_planks")):setPos(i * 64 - 40, j * 16 + 16, 8)
                                     end
                                     for j = 0, 3 do
-                                        models.models.ex_skill_1.script_walls_breakable:newBlock("ex_skill_1_block_"..(i * 4 + (j + 1) + 16)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:oak_planks")):setPos(i * 32 - 24, j * 16, 8)
+                                        models.models.ex_skill_1.script_walls_breakable:newBlock("ex_skill_1_block_"..(i * 4 + (j + 1) + 16)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:dark_oak_planks")):setPos(i * 32 - 24, j * 16, 8)
                                     end
                                 end
                                 for i = 0, 1 do
-                                    models.models.ex_skill_1.script_walls_breakable:newBlock("ex_skill_1_block_"..((i + 1) + 24)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:oak_planks")):setPos(-8, i * 16 + 32, 8)
+                                    models.models.ex_skill_1.script_walls_breakable:newBlock("ex_skill_1_block_"..((i + 1) + 24)):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:dark_oak_planks")):setPos(-8, i * 16 + 32, 8)
                                 end
-                                models.models.ex_skill_1.script_walls_breakable:newBlock("ex_skill_1_block_27"):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:oak_door", "[facing=south,half=lower]")):setPos(-8, 0, 8)
-                                models.models.ex_skill_1.script_walls_breakable:newBlock("ex_skill_1_block_28"):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:oak_door", "[facing=south,half=upper]")):setPos(-8, 16, 8)
+                                models.models.ex_skill_1.script_walls_breakable:newBlock("ex_skill_1_block_27"):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:oak_door", "[facing=south,half=lower]")):setPos(-8, 0.5, 8.01)
+                                models.models.ex_skill_1.script_walls_breakable:newBlock("ex_skill_1_block_28"):setBlock(self.parent.compatibilityUtils:checkBlock("minecraft:oak_door", "[facing=south,half=upper]")):setPos(-8, 16.5, 8.01)
 
                                 self.exSkill.exSkills[1].initialized = true
                             else
@@ -489,7 +489,7 @@ BlueArchiveCharacter = {
                                 particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:explosion_emitter"), anchorPos)
                                 for _ = 1, 50 do
                                     local offset = vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 5 - 2.5, math.random() * 4 - 2, math.random() - 0.5, 0, 1, 0)
-                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:block", self.parent.compatibilityUtils:checkBlock("minecraft:oak_planks")), anchorPos:copy():add(offset))
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:block", self.parent.compatibilityUtils:checkBlock("minecraft:dark_oak_planks")), anchorPos:copy():add(offset))
                                 end
                                 for _, pos in ipairs({vectors.vec3(-5, 3, 0), vectors.vec3(4, 0, 0), vectors.vec3(8, 8, 0)}) do
                                     self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.ExSkill1ParticleAnchor1, 1, vectors.vec3(0.294, 1, 1), pos, vectors.vec3(0, 0, 0), math.random() * -30 - 15, 3, models.models.ex_skill_1.StarScale, 33, true, 1)
