@@ -402,6 +402,10 @@ BlueArchiveCharacter = {
                     callbacks = {
                         onPreAnimation = function (self)
                             if not self.exSkill.exSkills[1].initialized then
+                                for i, modelPart in ipairs({models.models.ex_skill_1.Illagers.Pillager1.Pillager1Question.Pillager1Question2, models.models.ex_skill_1.Illagers.Vindicator1.Vindicator1Question.Vindicator1Question2, models.models.ex_skill_1.Illagers.Vindicator2.Vindicator2Question.Vindicator2Question2}) do
+                                    modelPart:newText("ex_skill_1_question_"..i):setText("§e?"):setPos(0, 7, 0):setScale(0.8, 0.8, 1):setAlignment("CENTER")
+                                end
+
                                 ---@diagnostic disable-next-line: discard-returns
                                 models.models.ex_skill_1:newPart("script_walls")
                                 for i = 0, 1 do
@@ -441,6 +445,8 @@ BlueArchiveCharacter = {
                             if tick == 0 then
                                 models.models.main.Avatar.UpperBody.Body.Gun:setPos()
                                 models.models.main.Avatar.UpperBody.Body.Gun:setRot()
+                            elseif tick >= 26 and tick <= 38 and (tick - 26) % 6 == 0 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), player:getPos(), 0.25, 1)
                             elseif tick == 27 then
                                 models.models.ex_skill_1.Letter:moveTo(models.models.ex_skill_1.Illagers.Pillager1.Pillager1RightArm)
                             elseif tick == 68 then
