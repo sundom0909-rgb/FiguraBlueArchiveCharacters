@@ -664,7 +664,7 @@ BlueArchiveCharacter = {
             };
 
             callbacks = {
-                onArmorChange = function (self, parts, isVisible)
+                onArmorChange = function (_, parts, isVisible)
                     if parts == "LEGGINGS" then
                         models.models.main.Avatar.UpperBody.Body.Skirt:setVisible(not isVisible)
                     end
@@ -685,7 +685,22 @@ BlueArchiveCharacter = {
         }
 
         instance.deathAnimation = {
+            callbacks = {
+                onPhase1 = function (_, dummyAvatar)
+                    dummyAvatar.Head.HairTails.HairRight:setRot(15, 0, 0)
+                    dummyAvatar.Head.HairTails.HairLeft:setRot(15, 0, 0)
+                    dummyAvatar.UpperBody.Body.Skirt:setRot(32.5, 0, 0)
+                end;
 
+                onPhase2 = function (_, dummyAvatar)
+                    dummyAvatar.Head.HairTails.HairRight:setRot(-22.5, 0, 0)
+                    dummyAvatar.Head.HairTails.HairLeft:setRot(-60, 0, 0)
+                    dummyAvatar.UpperBody.Body.Backpack.BackPackMascot1:setRot(-17.5, 0, 0)
+                    dummyAvatar.UpperBody.Body.Backpack.BackPackMascot2:setRot(-17.5, 0, 0)
+                    dummyAvatar.UpperBody.Body.Backpack.BackPackMascot3:setRot(-17.5, 0, 20)
+                    dummyAvatar.UpperBody.Body.Skirt:setRot(15, 0, 0)
+                end;
+            };
         }
 
         instance.actionWheel = {
