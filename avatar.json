@@ -143,6 +143,11 @@
 		"models.models.armor.ArmorLLB.LeftBootsBottom.LeftBootsBottomTrim": {
 			"visible": false
 		},
+		"models.models.ex_skill_1.MuzzleEffect": {
+			"visible": false,
+			"moveTo": "models.models.gun.Gun",
+			"primaryRenderType": "CUTOUT_EMISSIVE_SOLID"
+		},
 		"models.models.gun.Gun": {
 			"moveTo": "models.models.main.Avatar.UpperBody.Body"
 		},
@@ -170,11 +175,6 @@
 		"models.models.ex_skill_1.EyeShines": {
 			"visible": false,
 			"moveTo": "models.models.main.Avatar.Head"
-		},
-		"models.models.ex_skill_1.MuzzleEffect": {
-			"visible": false,
-			"moveTo": "models.models.main.Avatar.UpperBody.Body.Gun",
-			"primaryRenderType": "CUTOUT_EMISSIVE_SOLID"
 		},
 		"models.models.ex_skill_1.Gui.ScreenFilter": {
 			"visible": false
