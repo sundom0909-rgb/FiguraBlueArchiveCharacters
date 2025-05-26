@@ -5,6 +5,8 @@
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
 ---| "ANGRY" # 怒った目
 ---| "UNEQUAL" # 不等号目
+---| "SHOCKED" # 丸い目
+---| "CLOSED2" # 閉じた目2
 
 ---@alias BlueArchiveCharacter.LeftEyeTextures
 ---| "NORMAL" # 通常
@@ -13,10 +15,14 @@
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
 ---| "ANGRY" # 怒った目
 ---| "UNEQUAL" # 不等号目
+---| "SHOCKED" # 丸い目
+---| "CLOSED2" # 閉じた目2
 
 ---@alias BlueArchiveCharacter.MouthTextures
 ---| "NORMAL" # 通常
 ---| "OPENED" # 開いた口
+---| "NARROW" # 細長い口
+---| "FRUST" # ぐじゅぐじゅ口
 
 ---@alias BlueArchiveCharacter.GunPutType
 ---| "BODY" # アバターのBodyに銃を移動させる
@@ -300,6 +306,8 @@ BlueArchiveCharacter = {
                 CLOSED = vectors.vec2(4, 0); --必須
                 ANGRY = vectors.vec2(5, 0);
                 UNEQUAL = vectors.vec2(7, 0);
+                SHOCKED = vectors.vec2(8, 0);
+                CLOSED2 = vectors.vec2(9, 0);
             };
 
             leftEye = {
@@ -309,10 +317,25 @@ BlueArchiveCharacter = {
                 CLOSED = vectors.vec2(3, 0); --必須
                 ANGRY = vectors.vec2(5, 0);
                 UNEQUAL = vectors.vec2(6, 0);
+                SHOCKED = vectors.vec2(7, 0);
+                CLOSED2 = vectors.vec2(8, 0);
             };
 
             mouth = {
-                OPENED =  vectors.vec2(0, 0);
+                OPENED = vectors.vec2(0, 0);
+                NARROW = vectors.vec2(1, 0);
+                FRUST = vectors.vec2(2, 0);
+            };
+
+            callbacks = {
+                onPlay = function (_, right, left)
+                    if right ~= "CLOSED2" then
+                        models.models.main.Avatar.Head.FaceParts.Eyes.EyeLeft:setRot()
+                    end
+                    if left ~= "CLOSED2" then
+                        models.models.main.Avatar.Head.FaceParts.Eyes.EyeRight:setRot()
+                    end
+                end;
             };
         }
 
@@ -673,7 +696,35 @@ BlueArchiveCharacter = {
         }
 
         instance.bubble = {
+            callbacks = {
+                onPlay = function(self, type, duration)
+                    if duration > 0 then
+                        if type == "GOOD" then
+                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "OPENED", duration, true)
+                        elseif type == "HEART" then
+                            self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "OPENED", duration, true)
+                        elseif type == "NOTE" then
+                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "NARROW", duration, true)
+                            models.models.main.Avatar.Head.EyeShines:setVisible(true)
+                        elseif type == "QUESTION" then
+                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "NARROW", duration, true)
+                            models.models.main.Avatar.Head.FaceParts.Eyes.EyeLeft:setRot(0, 0, -5)
+                            models.models.main.Avatar.Head.FaceParts.Eyes.EyeRight:setRot(0, 0, 5)
+                        elseif type == "SWEAT" then
+                            self.parent.faceParts:setEmotion("SHOCKED", "SHOCKED", "FRUST", duration, true)
+                            models.models.main.Avatar.Head.FaceParts.Eyes.EyeLeft:setRot(0, 0, -5)
+                            models.models.main.Avatar.Head.FaceParts.Eyes.EyeRight:setRot(0, 0, 5)
+                        end
+                    end
+                end;
 
+                onStop = function(self, _, forcedStop)
+                    models.models.main.Avatar.Head.EyeShines:setVisible(false)
+                    if forcedStop then
+                        self.parent.faceParts:resetEmotion()
+                    end
+                end;
+            };
         }
 
         instance.headBlock = {
