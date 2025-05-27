@@ -9,6 +9,7 @@
 ---@field public shouldShowArmor boolean 防具を表示するかどうか
 ---@field public armorSlotItems ItemStack[] 現ティックの防具スロットのアイテム
 ---@field package armorSlotItemsPrev ItemStack[] 前ティックの防具スロットのアイテム
+---@field package hasGlintPrev boolean[] 前ティックに防具がエンチャントのキラキラを持っていたかどうか
 ---@field public isArmorVisible Armor.VisiblePartsSet 各防具の部位（ヘルメット、チェストプレート、レギンス、ブーツ）が可視状態かどうか
 ---@field package textureQueue Armor.TextureQueueData[] テクスチャ処理のキュー
 ---@field package getArmorColor fun(armorItem: ItemStack): number 防具の色を取得する
@@ -45,6 +46,7 @@ Armor = {
 		instance.shouldShowArmor = instance.parent.config:loadConfig("PRIVATE", "showArmor", false)
 		instance.armorSlotItems = {world.newItem(instance.parent.compatibilityUtils:checkItem("minecraft:air")), world.newItem(instance.parent.compatibilityUtils:checkItem("minecraft:air")), world.newItem(instance.parent.compatibilityUtils:checkItem("minecraft:air")), world.newItem(instance.parent.compatibilityUtils:checkItem("minecraft:air"))}
 		instance.armorSlotItemsPrev = {world.newItem(instance.parent.compatibilityUtils:checkItem("minecraft:air")), world.newItem(instance.parent.compatibilityUtils:checkItem("minecraft:air")), world.newItem(instance.parent.compatibilityUtils:checkItem("minecraft:air")), world.newItem(instance.parent.compatibilityUtils:checkItem("minecraft:air"))}
+		instance.hasGlintPrev = {false, false, false, false}
 		instance.isArmorVisible = {
 			helmet = false;
 			chestplate = false;
@@ -78,7 +80,7 @@ Armor = {
 
 			for index, armorSlotItem in ipairs(self.armorSlotItems) do
 				local glint = armorSlotItem:hasGlint()
-				if glint ~= self.armorSlotItemsPrev[index]:hasGlint() then
+				if glint ~= self.hasGlintPrev[index] then
 					--エンチャント変更
 					local renderType = glint and "GLINT"..(client:getVersion() == "1.21.4" and "2" or "") or "NONE"
 					if index == 2 then
@@ -94,6 +96,7 @@ Armor = {
 							armorPart:setSecondaryRenderType(renderType)
 						end
 					end
+					self.hasGlintPrev[index] = glint
 				end
 				local armorColor = self.getArmorColor(armorSlotItem)
 				if armorColor ~= self.getArmorColor(self.armorSlotItemsPrev[index]) then
@@ -297,6 +300,18 @@ Armor = {
 		vanilla_model.CHESTPLATE:setVisible(chestplateFound)
 		for _, armorPart in ipairs({models.models.main.Avatar.UpperBody.Arms.RightArm.ArmorRA, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.ArmorRAB, models.models.main.Avatar.UpperBody.Arms.LeftArm.ArmorLA, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.ArmorLAB}) do
 			armorPart:setVisible(chestplateFound)
+		end
+		if chestplateFound then
+			events.RENDER:register(function (_, context)
+				for _, armorPart in ipairs({models.models.main.Avatar.UpperBody.Arms.RightArm.ArmorRA, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.ArmorRAB, models.models.main.Avatar.UpperBody.Arms.LeftArm.ArmorLA, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.ArmorLAB}) do
+					armorPart:setVisible(context ~= "FIRST_PERSON")
+				end
+			end, "armor_chestplate_render")
+		else
+			events.RENDER:remove("armor_chestplate_render")
+			for _, armorPart in ipairs({models.models.main.Avatar.UpperBody.Arms.RightArm.ArmorRA, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.ArmorRAB, models.models.main.Avatar.UpperBody.Arms.LeftArm.ArmorLA, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.ArmorLAB}) do
+				armorPart:setVisible(false)
+			end
 		end
 		self.isArmorVisible.chestplate = chestplateFound
 		if self.isArmorVisible.chestplate then
