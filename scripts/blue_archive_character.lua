@@ -584,11 +584,6 @@ BlueArchiveCharacter = {
                                     models.models.ex_skill_1.CameraBackground.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(45))
                                     local shouldAdjustBackgroundRot = client:getVersion() >= "1.21"
                                     events.RENDER:register(function (delta, context)
-                                        local animPos = models.models.main.Avatar:getAnimPos()
-                                        local bodyYaw = player:getBodyYaw(delta)
-                                        models.script_ex_skill_1:setPos(animPos:copy():add(vectors.rotateAroundAxis(bodyYaw + 180, player:getPos(delta):add(vectors.rotateAroundAxis(bodyYaw * -1, animPos:copy():scale(0.0625):add(-0.15, 0.8, 0), 0, 1, 0)):sub(client:getCameraPos()):scale(8), 0, 1, 0)))
-                                        models.script_ex_skill_1:setRot(models.models.main.Avatar:getAnimRot())
-
                                         models.models.ex_skill_1.CameraBackground:setVisible(context == "RENDER")
                                         local backgroundPos = vectors.rotateAroundAxis(player:getBodyYaw(delta) + 180, renderer:getCameraOffsetPivot():copy():add(0, 1.62, 0):add(client:getCameraDir():copy():scale(2)), 0, 1, 0):scale(16 / 0.9375)
                                         models.models.ex_skill_1.CameraBackground:setOffsetPivot(backgroundPos)
@@ -596,8 +591,16 @@ BlueArchiveCharacter = {
                                         if shouldAdjustBackgroundRot then
                                             models.models.ex_skill_1.CameraBackground.Background:setRot(0, 0, renderer:getCameraRot().z)
                                         end
-                                    end, "ex_skill_1_outline_render")
-                                    models.script_ex_skill_1:setVisible(true)
+                                    end, "ex_skill_1_background_render")
+                                    if not self.parent.armor.isArmorVisible.helmet and not self.parent.armor.isArmorVisible.chestplate and not self.parent.armor.isArmorVisible.leggings and not self.parent.armor.isArmorVisible.boots then
+                                        models.script_ex_skill_1:setVisible(true)
+                                        events.RENDER:register(function (delta)
+                                            local animPos = models.models.main.Avatar:getAnimPos()
+                                            local bodyYaw = player:getBodyYaw(delta)
+                                            models.script_ex_skill_1:setPos(animPos:copy():add(vectors.rotateAroundAxis(bodyYaw + 180, player:getPos(delta):add(vectors.rotateAroundAxis(bodyYaw * -1, animPos:copy():scale(0.0625):add(-0.15, 0.8, 0), 0, 1, 0)):sub(client:getCameraPos()):scale(8), 0, 1, 0)))
+                                            models.script_ex_skill_1:setRot(models.models.main.Avatar:getAnimRot())
+                                        end, "ex_skill_1_outline_render")
+                                    end
                                 end
                                 for _ = 1, 8 do
                                     self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.ExSkill1ParticleAnchor2, math.random(2, 5), vectors.vec3(1, 1, 0.443), vectors.vec3(0, 0, 0), vectors.rotateAroundAxis(math.random() * 360, 40, 0, 0, 0, 0, 1), 0, 2, nil, 33, true, 0.80)
@@ -613,7 +616,9 @@ BlueArchiveCharacter = {
 
                         onPostAnimation = function (self, forcedStop)
                             if host:isHost() then
-                                events.RENDER:remove("ex_skill_1_outline_render")
+                                for _, eventName in ipairs({"ex_skill_1_outline_render", "ex_skill_1_background_render"}) do
+                                    events.RENDER:remove(eventName)
+                                end
                                 for _, modelPart in ipairs({models.script_ex_skill_1, models.models.ex_skill_1.CameraBackground.Background}) do
                                     modelPart:setVisible(false)
                                 end
@@ -634,7 +639,7 @@ BlueArchiveCharacter = {
                             end
                             if forcedStop then
                                 if host:isHost() then
-                                    events.RENDER:remove("ex_skill_1_render")
+                                    events.RENDER:remove("ex_skill_1_filter_render")
                                 end
                                 for _, modelPart in ipairs({models.models.main.Avatar.Head.EyeShines, models.models.ex_skill_1.script_walls_breakable}) do
                                     modelPart:setVisible(false)
