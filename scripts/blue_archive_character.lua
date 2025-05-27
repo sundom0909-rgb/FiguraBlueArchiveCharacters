@@ -444,7 +444,7 @@ BlueArchiveCharacter = {
 
                     formationType = "STRIKER";
 
-                    models = {models.models.main.Avatar.Background, models.models.main.Avatar.UpperBody.Body.Gun.MuzzleEffect, models.models.ex_skill_1.Illagers, models.models.ex_skill_1.Letter};
+                    models = {models.models.main.Avatar.Background, models.models.ex_skill_1.MuzzleEffect, models.models.ex_skill_1.Illagers, models.models.ex_skill_1.Letter};
 
                     animations = {"main", "gun", "ex_skill_1"};
 
@@ -1217,5 +1217,6 @@ BlueArchiveCharacter = {
         --生徒固有初期化処理
         --Player APIにアクセスする場合は、ENTITY_INIT後に実行されるようにする必要がある。
 
+        models.models.ex_skill_1.MuzzleEffect:moveTo(models.models.main.Avatar.UpperBody.Body.Gun)
     end;
 }
