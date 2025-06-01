@@ -414,9 +414,12 @@ BlueArchiveCharacter = {
                     };
 
                     exSkill = 1;
+
+                    ---前ティックで剣を持っていたかどうか。
+                    ---@type boolean
+                    hadSwordPrev = false;
                 };
             };
-
         }
 
         instance.bubble = {
@@ -1075,5 +1078,38 @@ BlueArchiveCharacter = {
         --生徒固有初期化処理
         --Player APIにアクセスする場合は、ENTITY_INIT後に実行されるようにする必要がある。
 
+        events.TICK:register(function ()
+            local hasSword = (player:getHeldItem().id:match("^minecraft:(%a+)_sword$") ~= nil or player:getHeldItem(true).id:match("^minecraft:(%a+)_sword$") ~= nil) and self.parent.exSkill.animationCount == -1
+            if hasSword ~= self.costume.costumes[1].hadSwordPrev then
+                if hasSword then
+                    models.models.main.Avatar.UpperBody.Body.SwordGroup.Sword:setParentType("Item")
+                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.anvil.place"), player:getPos(), 0.5, 5)
+                    local version = client:getVersion() == "1.21.4"
+                    events.ITEM_RENDER:register(function (item, mode)
+                        if item.id:match("^minecraft:(%a+)_sword$") ~= nil then
+                            if mode == "FIRST_PERSON_LEFT_HAND" or mode == "FIRST_PERSON_RIGHT_HAND" then
+                                models.models.main.Avatar.UpperBody.Body.SwordGroup.Sword:setPos(0, -7.5, -1)
+                                models.models.main.Avatar.UpperBody.Body.SwordGroup.Sword:setRot(10, 0, 0)
+                            elseif mode == "THIRD_PERSON_LEFT_HAND" or mode == "THIRD_PERSON_RIGHT_HAND" then
+                                models.models.main.Avatar.UpperBody.Body.SwordGroup.Sword:setPos(0.5, -9.75, -1)
+                                models.models.main.Avatar.UpperBody.Body.SwordGroup.Sword:setRot()
+                            end
+                            local material = item.id:match("^minecraft:(%a+)_sword$")
+                            models.models.main.Avatar.UpperBody.Body.SwordGroup.Sword.SwordBlade:setUVPixels(material == "wooden" and -4 or (material == "stone" and -2 or (material == "golden" and 2 or (material == "diamond" and 4 or (material == "netherite" and 6 or 0)))), 0)
+                            models.models.main.Avatar.UpperBody.Body.SwordGroup.Sword:setSecondaryRenderType(item:hasGlint() and "GLINT"..(version and "2" or "") or "NONE")
+                            return models.models.main.Avatar.UpperBody.Body.SwordGroup.Sword
+                        end
+                    end, "sword_item_render")
+                else
+                    events.ITEM_RENDER:remove("sword_item_render")
+                    models.models.main.Avatar.UpperBody.Body.SwordGroup.Sword:setParentType("None")
+                    models.models.main.Avatar.UpperBody.Body.SwordGroup.Sword:setPos()
+                    models.models.main.Avatar.UpperBody.Body.SwordGroup.Sword:setRot()
+                    models.models.main.Avatar.UpperBody.Body.SwordGroup.Sword:setSecondaryRenderType("NONE")
+                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.iron_trapdoor.close"), player:getPos(), 0.5, 2)
+                end
+                self.costume.costumes[1].hadSwordPrev = hasSword
+            end
+        end)
     end;
 }

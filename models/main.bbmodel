@@ -3752,7 +3752,7 @@
 			"uuid": "e29c5ac6-f69e-9bad-bec1-1dd4ccb16af8"
 		},
 		{
-			"name": "SwordBrade1",
+			"name": "SwordBlade1",
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
@@ -3766,27 +3766,27 @@
 			"origin": [-0.75, 10.75, 1.75],
 			"faces": {
 				"north": {
-					"uv": [0, 0, 1, 4],
+					"uv": [4, 0, 5, 4],
 					"texture": 1
 				},
 				"east": {
-					"uv": [2, 0, 0, 4],
+					"uv": [6, 0, 4, 4],
 					"texture": 1
 				},
 				"south": {
-					"uv": [1, 0, 2, 4],
+					"uv": [5, 0, 6, 4],
 					"texture": 1
 				},
 				"west": {
-					"uv": [0, 0, 2, 4],
+					"uv": [4, 0, 6, 4],
 					"texture": 1
 				},
 				"up": {
-					"uv": [0, 0, 0, 0],
+					"uv": [4, 0, 4, 0],
 					"texture": null
 				},
 				"down": {
-					"uv": [0, 0, 0, 0],
+					"uv": [4, 0, 4, 0],
 					"texture": null
 				}
 			},
@@ -3794,7 +3794,7 @@
 			"uuid": "386c0d8e-10b0-4fff-22a2-d7ea16cd80c2"
 		},
 		{
-			"name": "SwordBrade2",
+			"name": "SwordBlade2",
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
@@ -3808,27 +3808,27 @@
 			"origin": [-0.75, 16.75, 1.75],
 			"faces": {
 				"north": {
-					"uv": [0, 0, 1, 1],
+					"uv": [4, 0, 5, 1],
 					"texture": 1
 				},
 				"east": {
-					"uv": [2, 0, 0, 1],
+					"uv": [6, 0, 4, 1],
 					"texture": 1
 				},
 				"south": {
-					"uv": [1, 0, 2, 4],
+					"uv": [5, 0, 6, 4],
 					"texture": 1
 				},
 				"west": {
-					"uv": [0, 0, 2, 1],
+					"uv": [4, 0, 6, 1],
 					"texture": 1
 				},
 				"up": {
-					"uv": [0, 0, 0, 0],
+					"uv": [4, 0, 4, 0],
 					"texture": null
 				},
 				"down": {
-					"uv": [0, 0, 0, 0],
+					"uv": [4, 0, 4, 0],
 					"texture": null
 				}
 			},
@@ -3836,7 +3836,7 @@
 			"uuid": "dc60c87f-4b6b-8ccf-5e46-a3fc8567e318"
 		},
 		{
-			"name": "SwordBrade3",
+			"name": "SwordBlade3",
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
@@ -3850,30 +3850,30 @@
 			"origin": [-0.75, 23.75, 3.25],
 			"faces": {
 				"north": {
-					"uv": [0, 0, 0, 0],
+					"uv": [4, 0, 4, 0],
 					"texture": null
 				},
 				"east": {
-					"uv": [1, 3, 2, 4.784],
+					"uv": [5, 3, 6, 4.784],
 					"rotation": 180,
 					"texture": 1
 				},
 				"south": {
-					"uv": [1, 2.725, 2, 5],
+					"uv": [5, 2.725, 6, 5],
 					"rotation": 180,
 					"texture": 1
 				},
 				"west": {
-					"uv": [1, 3, 2, 4.784],
+					"uv": [5, 3, 6, 4.784],
 					"rotation": 180,
 					"texture": 1
 				},
 				"up": {
-					"uv": [0, 0, 0, 0],
+					"uv": [4, 0, 4, 0],
 					"texture": null
 				},
 				"down": {
-					"uv": [0, 0, 0, 0],
+					"uv": [4, 0, 4, 0],
 					"texture": null
 				}
 			},
@@ -3881,7 +3881,7 @@
 			"uuid": "2effb9e6-e1b2-609a-4075-d6e331b9863c"
 		},
 		{
-			"name": "SwordBrade4",
+			"name": "SwordBlade4",
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
@@ -3896,27 +3896,27 @@
 			"origin": [-0.75, 23.75, 1.75],
 			"faces": {
 				"north": {
-					"uv": [0, 0, 1, 1],
+					"uv": [4, 0, 5, 1],
 					"texture": 1
 				},
 				"east": {
-					"uv": [0, 0, 1, 1],
+					"uv": [4, 0, 5, 1],
 					"texture": 1
 				},
 				"south": {
-					"uv": [0, 0, 0, 0],
+					"uv": [4, 0, 4, 0],
 					"texture": null
 				},
 				"west": {
-					"uv": [0, 0, 1, 1],
+					"uv": [4, 0, 5, 1],
 					"texture": 1
 				},
 				"up": {
-					"uv": [0, 0, 1, 1],
+					"uv": [4, 0, 5, 1],
 					"texture": 1
 				},
 				"down": {
-					"uv": [0, 0, 0, 0],
+					"uv": [4, 0, 4, 0],
 					"texture": null
 				}
 			},
@@ -3924,7 +3924,7 @@
 			"uuid": "b25d6461-2e98-ac1e-a02d-c3d29c4f2eb6"
 		},
 		{
-			"name": "SwordBrade4",
+			"name": "SwordBlade4",
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
@@ -3938,27 +3938,27 @@
 			"origin": [-0.75, 23.75, 2.75],
 			"faces": {
 				"north": {
-					"uv": [0, 0, 0, 0],
+					"uv": [4, 0, 4, 0],
 					"texture": null
 				},
 				"east": {
-					"uv": [1, 0, 2, 1],
+					"uv": [5, 0, 6, 1],
 					"texture": 1
 				},
 				"south": {
-					"uv": [0, 0, 0, 0],
+					"uv": [4, 0, 4, 0],
 					"texture": null
 				},
 				"west": {
-					"uv": [1, 0, 2, 1],
+					"uv": [5, 0, 6, 1],
 					"texture": 1
 				},
 				"up": {
-					"uv": [0, 0, 0, 0],
+					"uv": [4, 0, 4, 0],
 					"texture": null
 				},
 				"down": {
-					"uv": [0, 0, 0, 0],
+					"uv": [4, 0, 4, 0],
 					"texture": null
 				}
 			},
@@ -3966,7 +3966,7 @@
 			"uuid": "6d7d8dc9-b184-9d64-daa2-42f532621f46"
 		},
 		{
-			"name": "SwordBrade5",
+			"name": "SwordBlade5",
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
@@ -3981,27 +3981,27 @@
 			"origin": [-0.75, 23.75, 2.25],
 			"faces": {
 				"north": {
-					"uv": [0, 0, 1, 1],
+					"uv": [4, 0, 5, 1],
 					"texture": 1
 				},
 				"east": {
-					"uv": [0, 0, 1, 1],
+					"uv": [4, 0, 5, 1],
 					"texture": 1
 				},
 				"south": {
-					"uv": [0, 0, 0, 0],
+					"uv": [4, 0, 4, 0],
 					"texture": null
 				},
 				"west": {
-					"uv": [0, 0, 1, 1],
+					"uv": [4, 0, 5, 1],
 					"texture": 1
 				},
 				"up": {
-					"uv": [0, 0, 1, 1],
+					"uv": [4, 0, 5, 1],
 					"texture": 1
 				},
 				"down": {
-					"uv": [0, 0, 0, 0],
+					"uv": [4, 0, 4, 0],
 					"texture": null
 				}
 			},
@@ -4965,7 +4965,7 @@
 											"uuid": "6cef937c-c89c-4372-96a6-27a2a8540ec1",
 											"export": true,
 											"mirror_uv": false,
-											"isOpen": false,
+											"isOpen": true,
 											"locked": false,
 											"visibility": true,
 											"autouv": 0,
@@ -4974,14 +4974,12 @@
 												"3b08422d-13f2-6381-5d3e-7362f76a4abb",
 												"426170c3-6217-5804-7d66-836c379f7dab",
 												"e29c5ac6-f69e-9bad-bec1-1dd4ccb16af8",
-												"386c0d8e-10b0-4fff-22a2-d7ea16cd80c2",
 												"0ecbccce-bd4c-9fed-cf02-db358918ee23",
 												{
-													"name": "SwordBrade2",
-													"origin": [-0.75, 16.75, 1.75],
-													"rotation": [2.5, 0, 0],
+													"name": "SwordBlade",
+													"origin": [-0.5, 7.75, 2.75],
 													"color": 0,
-													"uuid": "8759acc5-7a32-e56e-f117-be230f21d729",
+													"uuid": "24e2a5f2-a4bb-7920-51ca-67dca5c1625e",
 													"export": true,
 													"mirror_uv": false,
 													"isOpen": true,
@@ -4990,15 +4988,13 @@
 													"autouv": 0,
 													"selected": false,
 													"children": [
-														"dc60c87f-4b6b-8ccf-5e46-a3fc8567e318",
-														"2effb9e6-e1b2-609a-4075-d6e331b9863c",
-														"6d7d8dc9-b184-9d64-daa2-42f532621f46",
+														"386c0d8e-10b0-4fff-22a2-d7ea16cd80c2",
 														{
-															"name": "SwordBrade4",
-															"origin": [-0.75, 23.75, 1.75],
-															"rotation": [34.82, 0, 0],
+															"name": "SwordBlade2",
+															"origin": [-0.75, 16.75, 1.75],
+															"rotation": [2.5, 0, 0],
 															"color": 0,
-															"uuid": "2b9be76f-9315-2a63-9879-a7aca4a02dae",
+															"uuid": "8759acc5-7a32-e56e-f117-be230f21d729",
 															"export": true,
 															"mirror_uv": false,
 															"isOpen": true,
@@ -5006,7 +5002,26 @@
 															"visibility": true,
 															"autouv": 0,
 															"selected": false,
-															"children": ["b25d6461-2e98-ac1e-a02d-c3d29c4f2eb6", "422c7f5b-9d9c-83d8-7d96-bdb976c3b9f5"]
+															"children": [
+																"dc60c87f-4b6b-8ccf-5e46-a3fc8567e318",
+																"2effb9e6-e1b2-609a-4075-d6e331b9863c",
+																"6d7d8dc9-b184-9d64-daa2-42f532621f46",
+																{
+																	"name": "SwordBlade4",
+																	"origin": [-0.75, 23.75, 1.75],
+																	"rotation": [34.82, 0, 0],
+																	"color": 0,
+																	"uuid": "2b9be76f-9315-2a63-9879-a7aca4a02dae",
+																	"export": true,
+																	"mirror_uv": false,
+																	"isOpen": true,
+																	"locked": false,
+																	"visibility": true,
+																	"autouv": 0,
+																	"selected": false,
+																	"children": ["b25d6461-2e98-ac1e-a02d-c3d29c4f2eb6", "422c7f5b-9d9c-83d8-7d96-bdb976c3b9f5"]
+																}
+															]
 														}
 													]
 												}
@@ -5394,10 +5409,10 @@
 			"namespace": "",
 			"id": "1",
 			"group": "",
-			"width": 64,
-			"height": 256,
-			"uv_width": 64,
-			"uv_height": 256,
+			"width": 12,
+			"height": 6,
+			"uv_width": 12,
+			"uv_height": 6,
 			"particle": false,
 			"use_as_default": false,
 			"layers_enabled": false,
@@ -5414,7 +5429,7 @@
 			"saved": true,
 			"uuid": "e52f42dd-6fa7-389f-f3c9-9dfa1c62269d",
 			"relative_path": "../textures/sword_blade.png",
-			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAEACAYAAAADRnAGAAAAAXNSR0IArs4c6QAAAeVJREFUeF7t1UERhDAUBUFiDeGJDRRgI1RuuxqmccDU6/yx995rreu+73EFv5EP8DzPft+3u4B8gMP+MBhjNN+AE2DOubOPYPDh//vl5Ox/CwiAQLwAAvEBXBZgAfECCMQH4BFEAIF4AQTiA3AFEEAgXgCB+ABcAQQQiBdAID4AVwABBOIFEIgPwBVAAIF4AQTiA3AFEEAgXgCB+ABcAQQQiBdAID4AVwABBOIFEIgPwBVAAIF4AQTiA3AFEEAgXgCB+ABcAQQQiBdAID4AVwABBOIFEIgPwBVAAIF4AQTiA3AFEEAgXgCB+ABcAQQQiBdAID4AVwABBOIFEIgPwBVAAIF4AQTiA3AFEEAgXgCB+ABcAQQQiBdAID4AVwABBOIFEIgPwBVAAIF4AQTiA3AFEEAgXgCB+ABcAQQQiBdAID4AVwABBOIFEIgPwBVAAIF4AQTiA3AFEEAgXgCB+ABcAQQQiBdAID4AVwABBOIFEIgPwBVAAIF4AQTiA3AFEEAgXgCB+ABcAQQQiBdAID4AVwABBOIFEIgPwBVAAIF4AQTiA3AFEEAgXgCB+ABcAQQQiBdAID4AVwABBOIFEIgPwBVAAIF4AQTiA3AFEEAgXgCB+ABcAQQQiBdAID4AVwABBOIFPh0zJQFeK0+vAAAAAElFTkSuQmCC"
+			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGCAYAAAD37n+BAAAAAXNSR0IArs4c6QAAAM1JREFUKFNjLI1Q/C/Iy8rAr5POIKegxODjF8Cwf/9+BkdHR4bX7yMYdvHPZGg/tYchessthtMnTzAwkqwh0lnyv64SL8MnoUAGaysLBlV1TYZnz54x2DvuYHj7/iGD598Shh93HjKwJ1QzyMuqMzCSrIGBgYEB5KzuFfcZp07s/Z+dX8z4/////4yMjHB6yd8P/2OYBRjbqtv+M4I0tKWq/a+afYtx88b1/339Axn37dv338nJifHVu/D/YkIrGbWPr/l/1TKEMdDF7z8Aaolv981uQAoAAAAASUVORK5CYII="
 		}
 	],
 	"animations": [
