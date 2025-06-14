@@ -838,6 +838,50 @@ BlueArchiveCharacter = {
                 };
 
                 {
+                    models = {models.models.main.Avatar.Head.Cowlick};
+
+                    x = {
+                        vertical = {
+                            min = -85;
+                            neutral = -67.5;
+                            max = -47.5;
+
+                            bodyY = {
+                                multiplayer = -40;
+                                min = -85;
+                                max = -47.5;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -85;
+                            neutral = -67.5;
+                            max = -47.5;
+
+                            bodyX = {
+                                multiplayer = -80;
+                                min = -85;
+                                max = -47.5;
+                            };
+                        };
+                    };
+
+                    y = {
+                        vertical = {
+                            min = 50;
+                            neutral = 50;
+                            max = 50;
+                        };
+
+                        horizontal = {
+                            min = 50;
+                            neutral = 50;
+                            max = 50;
+                        };
+                    };
+                };
+
+                {
                     models = {models.models.main.Avatar.UpperBody.Body.Tail};
 
                     x = {
