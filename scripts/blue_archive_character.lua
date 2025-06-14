@@ -290,7 +290,7 @@ BlueArchiveCharacter = {
             };
 
             clubName = {
-                en_us = "Ninjutsu Research Club";
+                en_us = "Ninjutsu Research Department";
                 ja_jp = "忍術研究部";
             };
 
