@@ -372,8 +372,8 @@ BlueArchiveCharacter = {
             exSkills = {
                 {
                     name = {
-                        en_us = "Ex Skill name";
-                        ja_jp = "Exスキル名";
+                        en_us = "Michiru-style technique!!";
+                        ja_jp = "ミチル流忍法っ！！";
                     };
 
                     formationType = "STRIKER";
