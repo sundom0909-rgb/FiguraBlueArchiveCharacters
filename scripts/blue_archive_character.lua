@@ -384,13 +384,13 @@ BlueArchiveCharacter = {
 
                     camera = {
                         start = {
-                            rot = vectors.vec3(0, 180, 0);
-                            pos = vectors.vec3(0, 28, -64);
+                            rot = vectors.vec3(10, 180, -10);
+                            pos = vectors.vec3(0, 26.2, -25);
                         };
 
                         fin = {
-                            rot = vectors.vec3(0, 180, 0);
-                            pos = vectors.vec3(0, 28, -64);
+                            rot = vectors.vec3(-10, 120, 10);
+                            pos = vectors.vec3(22.05, 19.35, -9.65);
                         };
                     };
 
@@ -411,18 +411,6 @@ BlueArchiveCharacter = {
                         onPostAnimation = function (self, forcedStop)
                             models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setVisible(false)
                         end;
-
-                        --[[
-                        --Exスキルアニメーションを任意の位置で一時停止させるコードスニペット。デバッグ用。
-                        --"<>"内を適切な数値に置き換えること。
-                        onAnimationTick = function (self, tick)
-                            if tick == <tick_count> then
-                                for _, name in ipairs(self.exSkill.exSkills[<ex_skill_index>]) do
-                                    animations["models."..name]["ex_skill_<ex_skill_index>"]:pause()
-                                end
-                            end
-                        end;
-                        ]]
                     };
 
                     ---このExスキルの初期化処理が行われたかどうか。
