@@ -395,6 +395,23 @@ BlueArchiveCharacter = {
                     };
 
                     callbacks = {
+                        onPreAnimation = function (self)
+                            if not self.exSkill.exSkills[1].isInitialized then
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setPrimaryTexture("RESOURCE", "minecraft:textures/item/firework_rocket.png")
+                                self.exSkill.exSkills[1].isInitialized = true
+                            end
+                        end;
+
+                        onAnimationTick = function (self, tick)
+                            if tick == 62 then
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setVisible(true)
+                            end
+                        end;
+
+                        onPostAnimation = function (self, forcedStop)
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setVisible(false)
+                        end;
+
                         --[[
                         --Exスキルアニメーションを任意の位置で一時停止させるコードスニペット。デバッグ用。
                         --"<>"内を適切な数値に置き換えること。
@@ -407,6 +424,10 @@ BlueArchiveCharacter = {
                         end;
                         ]]
                     };
+
+                    ---このExスキルの初期化処理が行われたかどうか。
+                    ---@type boolean
+                    isInitialized = false;
                 };
             };
         }
