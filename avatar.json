@@ -150,6 +150,10 @@
 		"models.models.ex_skill_frame.Particles": {
 			"visible": false
 		},
+		"models.models.ex_skill_1.Firework": {
+			"visible": false,
+			"moveTo": "models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom"
+		},
 		"models.models.bubble.Camera.AvatarBubble": {
 			"visible": false
 		},

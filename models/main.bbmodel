@@ -5411,7 +5411,7 @@
 											"locked": false,
 											"visibility": true,
 											"autouv": 0,
-											"selected": false,
+											"selected": true,
 											"children": [
 												"a82219a3-e344-a4d8-c85c-51462943a7dc",
 												"d7794b2f-dbb3-2cd5-c956-cd163b703976",
@@ -8562,7 +8562,7 @@
 							"uuid": "1b5ddd0f-ded9-9e49-e7ad-a7b345fe294a",
 							"time": 1.5,
 							"color": -1,
-							"interpolation": "catmullrom"
+							"interpolation": "linear"
 						},
 						{
 							"channel": "rotation",
@@ -8576,7 +8576,7 @@
 							"uuid": "e16d252e-d989-c745-0605-0878d773c50c",
 							"time": 2.7,
 							"color": -1,
-							"interpolation": "catmullrom"
+							"interpolation": "linear"
 						},
 						{
 							"channel": "rotation",
