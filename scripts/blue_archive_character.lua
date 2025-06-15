@@ -7,6 +7,7 @@
 ---| "CLOSED2" # 閉じた目2
 ---| "SCHEME" # 何かを企んでいる目
 ---| "TEAR" # 涙ぐんでいる目
+---| "ANGRY" # 起った目
 
 ---@alias BlueArchiveCharacter.LeftEyeTextures
 ---| "NORMAL" # 通常
@@ -17,6 +18,7 @@
 ---| "CLOSED2" # 閉じた目2
 ---| "SCHEME" # 何かを企んでいる目
 ---| "INVERTED" # 反対側を見る目
+---| "ANGRY" # 起った目
 
 ---@alias BlueArchiveCharacter.MouthTextures
 ---| "NORMAL" # 通常
@@ -27,6 +29,7 @@
 ---| "OVER_SMILE" # 悪意を感じるにっこり
 ---| "UNCOMFORT" # への口
 ---| "SHOCK" # あんぐり口
+---| "OPENED2" # 開いた口2
 
 ---@alias BlueArchiveCharacter.GunPutType
 ---| "BODY" # アバターのBodyに銃を移動させる
@@ -316,6 +319,7 @@ BlueArchiveCharacter = {
                 CLOSED2 = vectors.vec2(7, 0);
                 SCHEME = vectors.vec2(8, 0);
                 TEAR = vectors.vec2(0, 1);
+                ANGRY = vectors.vec2(2, 1);
             };
 
             leftEye = {
@@ -327,6 +331,7 @@ BlueArchiveCharacter = {
                 CLOSED2 = vectors.vec2(6, 0);
                 SCHEME = vectors.vec2(8, 0);
                 INVERTED = vectors.vec2(0, 1);
+                ANGRY = vectors.vec2(2, 1);
             };
 
             mouth = {
@@ -337,6 +342,7 @@ BlueArchiveCharacter = {
                 OVER_SMILE = vectors.vec2(0, 1);
                 UNCOMFORT = vectors.vec2(1, 1);
                 SHOCK = vectors.vec2(2, 1);
+                OPENED2 = vectors.vec2(3, 1);
             };
         }
 
@@ -579,7 +585,29 @@ BlueArchiveCharacter = {
         }
 
         instance.bubble = {
+            callbacks = {
+                onPlay = function(self, type, duration)
+                    if duration > 0 then
+                        if type == "GOOD" then
+                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "OPENED2", duration, true)
+                        elseif type == "HEART" then
+                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", duration, true)
+                        elseif type == "NOTE" then
+                            self.parent.faceParts:setEmotion("NORMAL", "CLOSED", "OPENED", duration, true)
+                        elseif type == "QUESTION" then
+                            self.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "SMALL", duration, true)
+                        elseif type == "SWEAT" then
+                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "FRUST", duration, true)
+                        end
+                    end
+                end;
 
+                onStop = function(self, _, forcedStop)
+                    if not forcedStop then
+                        self.parent.faceParts:resetEmotion()
+                    end
+                end;
+            };
         }
 
         instance.headBlock = {
