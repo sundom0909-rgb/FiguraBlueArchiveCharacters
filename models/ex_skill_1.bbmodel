@@ -333,7 +333,7 @@
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
-			"selected": true,
+			"selected": false,
 			"children": [
 				"eff74f9b-77a2-c9dc-3a6b-1c4254b311aa",
 				"dc6bbba5-06fd-221a-f1d2-724f1f2360b7",
@@ -341,7 +341,21 @@
 				"4d1bfc57-cf77-5846-db78-22e7245c7df8",
 				"85005be3-e08d-7080-e2e2-7a1cae98c432",
 				"cb51d249-601b-d2ff-3a27-a4e384fb3453",
-				"7b0512ae-8b97-c350-de17-f1117e549465"
+				"7b0512ae-8b97-c350-de17-f1117e549465",
+				{
+					"name": "ExSkill1ParticleAnchor",
+					"origin": [-3.5, 13.5, 6.25],
+					"color": 0,
+					"uuid": "343811f9-d6b8-4def-e1b8-9909f43e60ed",
+					"export": true,
+					"mirror_uv": false,
+					"isOpen": true,
+					"locked": false,
+					"visibility": true,
+					"autouv": 0,
+					"selected": true,
+					"children": []
+				}
 			]
 		}
 	],

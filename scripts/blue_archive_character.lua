@@ -448,11 +448,19 @@ BlueArchiveCharacter = {
                                 models.models.main.Avatar.Head.Head:setUVPixels(0, 16)
                             elseif tick == 62 then
                                 models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setVisible(true)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.flintandsteel.use"), player:getPos(), 1, 1)
                             elseif tick == 67 then
                                 self.parent.faceParts:setEmotion("TEAR", "INVERTED", "UNCOMFORT", 5, true)
                                 models.models.main.Avatar.Head.Head:setUVPixels()
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.firework_rocket.launch"), player:getPos(), 1, 0.75)
                             elseif tick == 72 then
                                 self.parent.faceParts:setEmotion("TEAR", "INVERTED", "SHOCK", 40, true)
+                            end
+
+                            if tick >= 62 then
+                                for _ = 1, 2 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework.ExSkill1ParticleAnchor)):setScale(1):setVelocity(math.random() * 0.4 - 0.2, math.random() * 0.4 - 0.2, math.random() * 0.4 - 0.2):setGravity(0.25):setColor(1, 0.885, 0.58):setLifetime(4)
+                                end
                             end
                         end;
 
