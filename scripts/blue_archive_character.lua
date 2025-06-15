@@ -407,7 +407,7 @@ BlueArchiveCharacter = {
 
                     formationType = "STRIKER";
 
-                    models = {};
+                    models = {models.models.ex_skill_1.CameraBackground};
 
                     animations = {"main", "ex_skill_1"};
 
@@ -429,6 +429,25 @@ BlueArchiveCharacter = {
                                 models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setPrimaryTexture("RESOURCE", "minecraft:textures/item/firework_rocket.png")
                                 self.exSkill.exSkills[1].isInitialized = true
                             end
+                            if host:isHost() then
+                                models.models.ex_skill_1.CameraBackground:setOpacity(0)
+                                local shouldAdjustBackgroundRot = client:getVersion() >= "1.21"
+                                events.RENDER:register(function (delta, ctx, matrix)
+                                    local opacity = models.models.ex_skill_1.CameraBackground.BackgroundOpacity:getAnimScale().x
+                                    models.models.ex_skill_1.CameraBackground:setOpacity(opacity)
+                                    if opacity > 0 then
+                                        local backgroundPos = vectors.rotateAroundAxis(player:getBodyYaw(delta) + 180, renderer:getCameraOffsetPivot():copy():add(0, 1.62, 0):add(client:getCameraDir():copy():scale(1.8)), 0, 1, 0):scale(16 / 0.9375)
+                                        models.models.ex_skill_1.CameraBackground:setOffsetPivot(backgroundPos)
+                                        models.models.ex_skill_1.CameraBackground.BackgroundCore:setPos(backgroundPos)
+                                        local windowSize = client:getWindowSize()
+                                        models.models.ex_skill_1.CameraBackground.BackgroundCore:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(40))
+                                        if shouldAdjustBackgroundRot then
+                                            models.models.ex_skill_1.CameraBackground.BackgroundCore:setRot(0, 0, renderer:getCameraRot().z)
+                                        end
+                                        models.models.ex_skill_1.CameraBackground.BackgroundCore.Flash.Flash:setOpacity(models.models.ex_skill_1.CameraBackground.BackgroundCore.FlashOpacity:getAnimScale().x)
+                                    end
+                                end, "ex_skill_1_render")
+                            end
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 9, true)
                         end;
 
@@ -449,6 +468,8 @@ BlueArchiveCharacter = {
                                     particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:smoke"), anchorPos):setScale(0.8):setVelocity(velocityVec:copy():add(math.random() - 0.5, math.random() * 0.5, math.random() - 0.5):scale(0.05)):setLifetime(12)
                                 end
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), player:getPos(), 1, 0.5)
+                            elseif tick == 50 and host:isHost() then
+                                models.models.ex_skill_1.CameraBackground.BackgroundCore.Background:setColor(0, 0, 0)
                             elseif tick == 51 then
                                 self.parent.faceParts:setEmotion("SCHEME", "SCHEME", "OVER_SMILE", 16, true)
                                 models.models.main.Avatar.Head.Head:setUVPixels(0, 16)
@@ -486,6 +507,10 @@ BlueArchiveCharacter = {
                         end;
 
                         onPostAnimation = function (self, forcedStop)
+                            if host:isHost() then
+                                events.RENDER:remove("ex_skill_1_render")
+                                models.models.ex_skill_1.CameraBackground.BackgroundCore.Background:setColor()
+                            end
                             models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setVisible(false)
                             self.exSkill.exSkills[1].fireAnchorPosPrev = {vectors.vec3(-19, 25.5, 15), vectors.vec3(-21, 43, -11)};
                             if forcedStop then

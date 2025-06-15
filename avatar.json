@@ -154,6 +154,10 @@
 			"visible": false,
 			"moveTo": "models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom"
 		},
+		"models.models.ex_skill_1.CameraBackground": {
+			"visible": false,
+			"primaryRenderType": "CUTOUT_EMISSIVE_SOLID"
+		},
 		"models.models.ex_skill_1.ExSkill1ParticleAnchor3": {
 			"moveTo": "models.models.main.Avatar.Head"
 		},
