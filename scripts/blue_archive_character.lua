@@ -429,6 +429,7 @@ BlueArchiveCharacter = {
                                     local opacity = models.models.ex_skill_1.CameraBackground.BackgroundOpacity:getAnimScale().x
                                     models.models.ex_skill_1.CameraBackground:setOpacity(opacity)
                                     if opacity > 0 then
+                                        models.models.ex_skill_1.CameraBackground:setVisible(true)
                                         local backgroundPos = vectors.rotateAroundAxis(player:getBodyYaw(delta) + 180, renderer:getCameraOffsetPivot():copy():add(0, 1.62, 0):add(client:getCameraDir():copy():scale(1.8)), 0, 1, 0):scale(16 / 0.9375)
                                         models.models.ex_skill_1.CameraBackground:setOffsetPivot(backgroundPos)
                                         models.models.ex_skill_1.CameraBackground.BackgroundCore:setPos(backgroundPos)
@@ -438,6 +439,8 @@ BlueArchiveCharacter = {
                                             models.models.ex_skill_1.CameraBackground.BackgroundCore:setRot(0, 0, renderer:getCameraRot().z)
                                         end
                                         models.models.ex_skill_1.CameraBackground.BackgroundCore.Flash.Flash:setOpacity(models.models.ex_skill_1.CameraBackground.BackgroundCore.FlashOpacity:getAnimScale().x)
+                                    else
+                                        models.models.ex_skill_1.CameraBackground:setVisible(false)
                                     end
                                 end, "ex_skill_1_render")
                             end
