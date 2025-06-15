@@ -462,6 +462,8 @@ BlueArchiveCharacter = {
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), player:getPos(), 0.25, 1.5)
                             elseif tick == 22 then
                                 self.parent.faceParts:setEmotion("LOWER", "LOWER", "FRUST", 10, true)
+                            elseif tick == 25 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 0.5, 1.75)
                             elseif tick == 32 then
                                 self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "FRUST", 3, true)
                             elseif tick == 35 then
@@ -477,6 +479,8 @@ BlueArchiveCharacter = {
                             elseif tick == 51 then
                                 self.parent.faceParts:setEmotion("SCHEME", "SCHEME", "OVER_SMILE", 16, true)
                                 models.models.main.Avatar.Head.Head:setUVPixels(0, 16)
+                            elseif tick == 58 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 0.5, 1.5)
                             elseif tick == 62 then
                                 models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setVisible(true)
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.flintandsteel.use"), player:getPos(), 1, 1)
