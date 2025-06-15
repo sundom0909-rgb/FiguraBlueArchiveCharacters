@@ -155,7 +155,7 @@
 			"moveTo": "models.models.main.Avatar.Head"
 		},
 		"models.models.ex_skill_1.Firework": {
-			"visible": false,
+			"parentType": "Item",
 			"moveTo": "models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom"
 		},
 		"models.models.ex_skill_1.CameraBackground": {

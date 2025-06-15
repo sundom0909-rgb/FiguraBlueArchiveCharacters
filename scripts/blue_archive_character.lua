@@ -448,6 +448,13 @@ BlueArchiveCharacter = {
                                     end
                                 end, "ex_skill_1_render")
                             end
+                            events.ITEM_RENDER:remove("firework_item_render")
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setPos()
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setRot()
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setScale(1, 1, 1)
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setParentType("None")
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setSecondaryRenderType("NONE")
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setVisible(false)
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 9, true)
                         end;
 
@@ -494,7 +501,7 @@ BlueArchiveCharacter = {
                                 models.models.main.Avatar.Head.Head:setUVPixels()
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.firework_rocket.launch"), player:getPos(), 1, 0.75)
                             elseif tick == 72 then
-                                self.parent.faceParts:setEmotion("TEAR", "INVERTED", "SHOCK", 40, true)
+                                self.parent.faceParts:setEmotion("TEAR", "INVERTED", "SHOCK", 30, true)
                             end
 
                             if tick >= 11 and tick <= 23 and (tick - 11) % 6 == 0 then
@@ -535,9 +542,11 @@ BlueArchiveCharacter = {
                                 events.RENDER:remove("ex_skill_1_render")
                                 models.models.ex_skill_1.CameraBackground.BackgroundCore.Background:setColor()
                             end
-                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setVisible(false)
                             self.exSkill.exSkills[1].fireAnchorPosPrev = {vectors.vec3(-19, 25.5, 15), vectors.vec3(-21, 43, -11)};
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setParentType("Item")
+                            self.registerFireworkItemRenderEvent()
                             if forcedStop then
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setVisible(true)
                                 models.models.main.Avatar.Head.Sweat:setVisible(false)
                                 models.models.main.Avatar.Head.Head:setUVPixels()
                             end
@@ -1274,6 +1283,8 @@ BlueArchiveCharacter = {
         --生徒固有初期化処理
         --Player APIにアクセスする場合は、ENTITY_INIT後に実行されるようにする必要がある。
 
+        self.registerFireworkItemRenderEvent()
+
         events.TICK:register(function ()
             local hasSword = (player:getHeldItem().id:match("^minecraft:(%a+)_sword$") ~= nil or player:getHeldItem(true).id:match("^minecraft:(%a+)_sword$") ~= nil) and self.parent.exSkill.animationCount == -1
             if hasSword ~= self.costume.costumes[1].hadSwordPrev then
@@ -1282,7 +1293,7 @@ BlueArchiveCharacter = {
                     sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.anvil.place"), player:getPos(), 0.5, 5)
                     local version = client:getVersion() == "1.21.4"
                     events.ITEM_RENDER:register(function (item, mode)
-                        if item.id:match("^minecraft:(%a+)_sword$") ~= nil then
+                        if item.id:match("^minecraft:(%a+)_sword$") ~= nil and mode ~= "HEAD" then
                             if mode == "FIRST_PERSON_LEFT_HAND" or mode == "FIRST_PERSON_RIGHT_HAND" then
                                 models.models.main.Avatar.UpperBody.Body.SwordGroup.Sword:setPos(0, -7.5, -1)
                                 models.models.main.Avatar.UpperBody.Body.SwordGroup.Sword:setRot(10, 0, 0)
@@ -1307,5 +1318,32 @@ BlueArchiveCharacter = {
                 self.costume.costumes[1].hadSwordPrev = hasSword
             end
         end)
+    end;
+
+    registerFireworkItemRenderEvent = function ()
+        local version = client:getVersion() == "1.21.4"
+        events.ITEM_RENDER:register(function (item, mode, pos, rot, scale, lefthanded)
+            if item.id == "minecraft:firework_rocket" then
+                if mode == "FIRST_PERSON_LEFT_HAND" then
+                    models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setPos(-2.5, 2, 0)
+                    models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setRot(60, 10, 0)
+                    models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setScale()
+                elseif mode == "FIRST_PERSON_RIGHT_HAND" then
+                    models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setPos(2.5, 2, 0)
+                    models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setRot(60, 10, 0)
+                    models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setScale()
+                elseif mode == "THIRD_PERSON_LEFT_HAND" or mode == "THIRD_PERSON_RIGHT_HAND" then
+                    models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setPos(0, -2, 0)
+                    models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setRot(90, 90, 0)
+                    models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setScale()
+                else
+                    models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setPos(0, 12.5, 0)
+                    models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setRot(90, 0, 0)
+                    models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setScale(2, 2, 2)
+                end
+                models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setSecondaryRenderType(item:hasGlint() and "GLINT"..(version and "2" or "") or "NONE")
+                return models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework
+            end
+        end, "firework_item_render")
     end;
 }

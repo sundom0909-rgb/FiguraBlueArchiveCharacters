@@ -24,11 +24,11 @@
 			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
-			"from": [-6.625, 11.375, -3],
-			"to": [-4.375, 13.625, 3],
+			"from": [-1.125, -1.125, -3],
+			"to": [1.125, 1.125, 3],
 			"autouv": 0,
 			"color": 0,
-			"origin": [-6.625, 11.375, -3],
+			"origin": [-1.125, -1.125, -3],
 			"faces": {
 				"north": {
 					"uv": [0, 0, 0, 0],
@@ -69,11 +69,11 @@
 			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
-			"from": [-7.375, 10.625, -4.5],
-			"to": [-3.625, 14.375, -3],
+			"from": [-1.875, -1.875, -4.5],
+			"to": [1.875, 1.875, -3],
 			"autouv": 0,
 			"color": 0,
-			"origin": [-7.375, 10.625, -4.5],
+			"origin": [-1.875, -1.875, -4.5],
 			"faces": {
 				"north": {
 					"uv": [7, 4, 9, 6],
@@ -114,11 +114,11 @@
 			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
-			"from": [-6.625, 11.375, -5.25],
-			"to": [-4.375, 13.625, -4.5],
+			"from": [-1.125, -1.125, -5.25],
+			"to": [1.125, 1.125, -4.5],
 			"autouv": 0,
 			"color": 0,
-			"origin": [-6.625, 11.375, -5.25],
+			"origin": [-1.125, -1.125, -5.25],
 			"faces": {
 				"north": {
 					"uv": [7, 3, 9, 4],
@@ -159,11 +159,11 @@
 			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
-			"from": [-5.875, 12.125, -6],
-			"to": [-5.125, 12.875, -5.25],
+			"from": [-0.375, -0.375, -6],
+			"to": [0.375, 0.375, -5.25],
 			"autouv": 0,
 			"color": 0,
-			"origin": [-5.875, 12.125, -6],
+			"origin": [-0.375, -0.375, -6],
 			"faces": {
 				"north": {
 					"uv": [8, 2, 9, 3],
@@ -201,11 +201,11 @@
 			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
-			"from": [-5.875, 12.125, 3],
-			"to": [-5.125, 12.875, 4.5],
+			"from": [-0.375, -0.375, 3],
+			"to": [0.375, 0.375, 4.5],
 			"autouv": 0,
 			"color": 4,
-			"origin": [-5.875, 12.125, 3],
+			"origin": [-0.375, -0.375, 3],
 			"faces": {
 				"north": {
 					"uv": [0, 0, 0, 0],
@@ -243,11 +243,11 @@
 			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
-			"from": [-5.125, 12.125, 4.5],
-			"to": [-4.375, 12.875, 5.25],
+			"from": [0.375, -0.375, 4.5],
+			"to": [1.125, 0.375, 5.25],
 			"autouv": 0,
 			"color": 4,
-			"origin": [-5.125, 12.125, 4.5],
+			"origin": [0.375, -0.375, 4.5],
 			"faces": {
 				"north": {
 					"uv": [11, 13, 12, 14],
@@ -285,11 +285,11 @@
 			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
-			"from": [-4.375, 12.125, 5.25],
-			"to": [-3.625, 12.875, 6.75],
+			"from": [1.125, -0.375, 5.25],
+			"to": [1.875, 0.375, 6.75],
 			"autouv": 0,
 			"color": 4,
-			"origin": [-4.375, 12.125, 5.25],
+			"origin": [1.125, -0.375, 5.25],
 			"faces": {
 				"north": {
 					"uv": [12, 12, 13, 13],
@@ -458,21 +458,21 @@
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
-			"selected": true,
+			"selected": false,
 			"children": ["b783e872-3549-d314-57b8-bd3efed5d14b"]
 		},
 		{
 			"name": "Firework",
-			"origin": [-5.5, 12.5, 0],
+			"origin": [0, 0, 0],
 			"color": 0,
 			"uuid": "1ea3bc59-be65-110f-61c6-eb50234bc5d0",
 			"export": true,
 			"mirror_uv": false,
-			"isOpen": false,
+			"isOpen": true,
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
-			"selected": false,
+			"selected": true,
 			"children": [
 				"eff74f9b-77a2-c9dc-3a6b-1c4254b311aa",
 				"dc6bbba5-06fd-221a-f1d2-724f1f2360b7",
@@ -483,7 +483,7 @@
 				"7b0512ae-8b97-c350-de17-f1117e549465",
 				{
 					"name": "ExSkill1ParticleAnchor",
-					"origin": [-4, 12.5, 6.25],
+					"origin": [1.5, 0, 6.25],
 					"color": 0,
 					"uuid": "343811f9-d6b8-4def-e1b8-9909f43e60ed",
 					"export": true,
@@ -709,8 +709,8 @@
 							"channel": "position",
 							"data_points": [
 								{
-									"x": "-0.5",
-									"y": "2",
+									"x": "4.5",
+									"y": "14",
 									"z": "0"
 								}
 							],
