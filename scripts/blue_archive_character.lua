@@ -17,7 +17,7 @@
 ---| "LOWER" # 下を見る目
 ---| "CLOSED2" # 閉じた目2
 ---| "SCHEME" # 何かを企んでいる目
----| "INVERTED" # 反対側を見る目
+---| "ANGRY_INVERTED" # 怒りつつ反対側を見る目
 ---| "ANGRY" # 起った目
 
 ---@alias BlueArchiveCharacter.MouthTextures
@@ -330,7 +330,7 @@ BlueArchiveCharacter = {
                 LOWER = vectors.vec2(5, 0);
                 CLOSED2 = vectors.vec2(6, 0);
                 SCHEME = vectors.vec2(8, 0);
-                INVERTED = vectors.vec2(0, 1);
+                ANGRY_INVERTED = vectors.vec2(0, 1);
                 ANGRY = vectors.vec2(2, 1);
             };
 
@@ -441,7 +441,7 @@ BlueArchiveCharacter = {
                                     end
                                 end, "ex_skill_1_render")
                             end
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 9, true)
+                            self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "OPENED", 9, true)
                         end;
 
                         onAnimationTick = function (self, tick)
@@ -483,11 +483,11 @@ BlueArchiveCharacter = {
                                 models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setVisible(true)
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.flintandsteel.use"), player:getPos(), 1, 1)
                             elseif tick == 67 then
-                                self.parent.faceParts:setEmotion("TEAR", "INVERTED", "UNCOMFORT", 5, true)
+                                self.parent.faceParts:setEmotion("TEAR", "ANGRY_INVERTED", "UNCOMFORT", 5, true)
                                 models.models.main.Avatar.Head.Head:setUVPixels()
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.firework_rocket.launch"), player:getPos(), 1, 0.75)
                             elseif tick == 72 then
-                                self.parent.faceParts:setEmotion("TEAR", "INVERTED", "SHOCK", 30, true)
+                                self.parent.faceParts:setEmotion("TEAR", "ANGRY_INVERTED", "SHOCK", 30, true)
                             end
 
                             if tick >= 11 and tick <= 23 and (tick - 11) % 6 == 0 then
