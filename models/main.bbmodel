@@ -633,6 +633,7 @@
 			"to": [1, 25, -4.01],
 			"autouv": 0,
 			"color": 0,
+			"visibility": false,
 			"origin": [0, 24.5, -4],
 			"faces": {
 				"north": {
@@ -5675,7 +5676,7 @@
 			"override": true,
 			"length": 5.1,
 			"snapping": 20,
-			"selected": true,
+			"selected": false,
 			"anim_time_update": "",
 			"blend_weight": "",
 			"start_delay": "",
