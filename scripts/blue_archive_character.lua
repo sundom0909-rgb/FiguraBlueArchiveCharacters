@@ -466,6 +466,8 @@ BlueArchiveCharacter = {
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 0.5, 1.75)
                             elseif tick == 32 then
                                 self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "FRUST", 3, true)
+                            elseif tick == 33 then
+                                models.models.main.Avatar.Head.Sweat:setVisible(true)
                             elseif tick == 35 then
                                 self.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "SMALL", 16, true)
                                 local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head.FaceParts.Mouth)
@@ -474,8 +476,11 @@ BlueArchiveCharacter = {
                                     particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:smoke"), anchorPos):setScale(0.8):setVelocity(velocityVec:copy():add(math.random() - 0.5, math.random() * 0.5, math.random() - 0.5):scale(0.05)):setLifetime(12)
                                 end
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), player:getPos(), 1, 0.5)
-                            elseif tick == 50 and host:isHost() then
-                                models.models.ex_skill_1.CameraBackground.BackgroundCore.Background:setColor(0, 0, 0)
+                            elseif tick == 50  then
+                                if host:isHost() then
+                                    models.models.ex_skill_1.CameraBackground.BackgroundCore.Background:setColor(0, 0, 0)
+                                end
+                                models.models.main.Avatar.Head.Sweat:setVisible(false)
                             elseif tick == 51 then
                                 self.parent.faceParts:setEmotion("SCHEME", "SCHEME", "OVER_SMILE", 16, true)
                                 models.models.main.Avatar.Head.Head:setUVPixels(0, 16)
@@ -533,6 +538,7 @@ BlueArchiveCharacter = {
                             models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setVisible(false)
                             self.exSkill.exSkills[1].fireAnchorPosPrev = {vectors.vec3(-19, 25.5, 15), vectors.vec3(-21, 43, -11)};
                             if forcedStop then
+                                models.models.main.Avatar.Head.Sweat:setVisible(false)
                                 models.models.main.Avatar.Head.Head:setUVPixels()
                             end
                         end;

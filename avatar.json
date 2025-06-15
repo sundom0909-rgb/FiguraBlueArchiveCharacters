@@ -150,6 +150,10 @@
 		"models.models.ex_skill_frame.Particles": {
 			"visible": false
 		},
+		"models.models.ex_skill_1.Sweat": {
+			"visible": false,
+			"moveTo": "models.models.main.Avatar.Head"
+		},
 		"models.models.ex_skill_1.Firework": {
 			"visible": false,
 			"moveTo": "models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom"
@@ -160,9 +164,6 @@
 		},
 		"models.models.ex_skill_1.ExSkill1ParticleAnchor3": {
 			"moveTo": "models.models.main.Avatar.Head"
-		},
-		"models.models.ex_skill_1.ExSkill1ParticleAnchor4": {
-			"moveTo": "models.models.main.Avatar.UpperBody.Body"
 		},
 		"models.models.bubble.Camera.AvatarBubble": {
 			"visible": false
