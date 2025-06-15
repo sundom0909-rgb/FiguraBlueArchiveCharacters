@@ -569,7 +569,7 @@ BlueArchiveCharacter = {
             };
 
             callbacks = {
-                onArmorChange = function (self, parts, isVisible)
+                onArmorChange = function (_, parts, isVisible)
                     if parts == "HELMET" then
                         models.models.main.Avatar.Head.Cowlick:setVisible(not isVisible)
                     elseif parts == "CHEST_PLATE" then
@@ -600,7 +600,26 @@ BlueArchiveCharacter = {
         }
 
         instance.deathAnimation = {
+            callbacks = {
+                onPhase1 = function (_, dummyAvatar)
+                    dummyAvatar.Head.HairTails.RightHairTail:setRot(30, 0, 20)
+                    dummyAvatar.Head.HairTails.LeftHairTail:setRot(30, 0, -20)
+                    dummyAvatar.UpperBody.Body.Scarfs.Scarf1:setRot(45, 0, 0)
+                    dummyAvatar.UpperBody.Body.Tail:setRot(15, 0, 0)
+                    dummyAvatar.UpperBody.Body.Skirt:setRot(50, 0, 0)
+                    dummyAvatar.UpperBody.Body.SwordGroup.Sword:setPos()
+                    dummyAvatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setVisible(false)
+                end;
 
+                onPhase2 = function (_, dummyAvatar)
+                    dummyAvatar.Head.HairTails.RightHairTail:setRot(-20, 0, 20)
+                    dummyAvatar.Head.HairTails.LeftHairTail:setRot(-20, 0, -20)
+                    dummyAvatar.UpperBody.Body.Scarfs.Scarf1:setRot(75, 0, -30)
+                    dummyAvatar.UpperBody.Body.Scarfs.Scarf2:setRot(75, 0, 0)
+                    dummyAvatar.UpperBody.Body.Tail:setRot(75, 0, -15)
+                    dummyAvatar.UpperBody.Body.Skirt:setRot(35, 0, 0)
+                end;
+            };
         }
 
         instance.actionWheel = {
