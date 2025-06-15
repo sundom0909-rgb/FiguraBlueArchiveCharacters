@@ -5395,7 +5395,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
-									"selected": false,
+									"selected": true,
 									"children": [
 										"af1aa9d5-0ccf-d579-b381-54ac7b12fb55",
 										"b74fb9e9-db24-b669-6f87-8469be63eda5",
@@ -6352,7 +6352,21 @@
 							"uuid": "0e4e78cf-12c2-5e31-c03c-f2eb90cc25de",
 							"time": 5.1,
 							"color": -1,
-							"interpolation": "catmullrom"
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "-39.36",
+									"y": "58.88",
+									"z": "27.76"
+								}
+							],
+							"uuid": "3f204849-072a-eae7-c5b0-6a28a2e47d46",
+							"time": 4.35,
+							"color": -1,
+							"interpolation": "linear"
 						},
 						{
 							"channel": "position",
@@ -6694,7 +6708,21 @@
 							"uuid": "83f8c4d1-9ef9-7b20-1335-a2c618c59405",
 							"time": 5.1,
 							"color": -1,
-							"interpolation": "catmullrom"
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "8.2642629891",
+									"y": "11.4308682711",
+									"z": "-93.915226721"
+								}
+							],
+							"uuid": "c01faf1a-2024-3f4c-1ede-2a1152d4e037",
+							"time": 4.35,
+							"color": -1,
+							"interpolation": "linear"
 						},
 						{
 							"channel": "position",
