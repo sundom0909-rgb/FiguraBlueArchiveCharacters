@@ -3,15 +3,30 @@
 ---| "SURPRISED" # 驚いた目（ダメージを受けたときなど）
 ---| "TIRED" # 疲れた目（死亡アニメーションなど）
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
+---| "LOWER" # 下を見る目
+---| "CLOSED2" # 閉じた目2
+---| "SCHEME" # 何かを企んでいる目
+---| "TEAR" # 涙ぐんでいる目
 
 ---@alias BlueArchiveCharacter.LeftEyeTextures
 ---| "NORMAL" # 通常
 ---| "SURPRISED" # 驚いた目（ダメージを受けたときなど）
 ---| "TIRED" # 疲れた目（死亡アニメーションなど）
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
+---| "LOWER" # 下を見る目
+---| "CLOSED2" # 閉じた目2
+---| "SCHEME" # 何かを企んでいる目
+---| "INVERTED" # 反対側を見る目
 
 ---@alias BlueArchiveCharacter.MouthTextures
 ---| "NORMAL" # 通常
+---| "OPENED" # 開いた口
+---| "FRUST_OPENED" # ぐじゅぐじゅの開き口
+---| "FRUST" # ぐじゅぐじゅ口
+---| "SMALL" # 小さく開いた口
+---| "OVER_SMILE" # 悪意を感じるにっこり
+---| "UNCOMFORT" # への口
+---| "SHOCK" # あんぐり口
 
 ---@alias BlueArchiveCharacter.GunPutType
 ---| "BODY" # アバターのBodyに銃を移動させる
@@ -297,6 +312,10 @@ BlueArchiveCharacter = {
                 SURPRISED = vectors.vec2(2, 0); --必須
                 TIRED = vectors.vec2(3, 0); --必須
                 CLOSED = vectors.vec2(4, 0); --必須
+                LOWER = vectors.vec2(5, 0);
+                CLOSED2 = vectors.vec2(7, 0);
+                SCHEME = vectors.vec2(8, 0);
+                TEAR = vectors.vec2(0, 1);
             };
 
             leftEye = {
@@ -304,10 +323,20 @@ BlueArchiveCharacter = {
                 SURPRISED = vectors.vec2(1, 0); --必須
                 TIRED = vectors.vec2(2, 0); --必須
                 CLOSED = vectors.vec2(3, 0); --必須
+                LOWER = vectors.vec2(5, 0);
+                CLOSED2 = vectors.vec2(6, 0);
+                SCHEME = vectors.vec2(8, 0);
+                INVERTED = vectors.vec2(0, 1);
             };
 
             mouth = {
-
+                OPENED = vectors.vec2(0, 0);
+                FRUST_OPENED = vectors.vec2(1, 0);
+                FRUST = vectors.vec2(2, 0);
+                SMALL = vectors.vec2(3, 0);
+                OVER_SMILE = vectors.vec2(0, 1);
+                UNCOMFORT = vectors.vec2(1, 1);
+                SHOCK = vectors.vec2(2, 1);
             };
         }
 
@@ -400,16 +429,38 @@ BlueArchiveCharacter = {
                                 models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setPrimaryTexture("RESOURCE", "minecraft:textures/item/firework_rocket.png")
                                 self.exSkill.exSkills[1].isInitialized = true
                             end
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 9, true)
                         end;
 
                         onAnimationTick = function (self, tick)
-                            if tick == 62 then
+                            if tick == 9 then
+                                self.parent.faceParts:setEmotion("LOWER", "LOWER", "OPENED", 5, true)
+                            elseif tick == 14 then
+                                self.parent.faceParts:setEmotion("LOWER", "LOWER", "FRUST_OPENED", 8, true)
+                            elseif tick == 22 then
+                                self.parent.faceParts:setEmotion("LOWER", "LOWER", "FRUST", 10, true)
+                            elseif tick == 32 then
+                                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "FRUST", 3, true)
+                            elseif tick == 35 then
+                                self.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "SMALL", 16, true)
+                            elseif tick == 51 then
+                                self.parent.faceParts:setEmotion("SCHEME", "SCHEME", "OVER_SMILE", 16, true)
+                                models.models.main.Avatar.Head.Head:setUVPixels(0, 16)
+                            elseif tick == 62 then
                                 models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setVisible(true)
+                            elseif tick == 67 then
+                                self.parent.faceParts:setEmotion("TEAR", "INVERTED", "UNCOMFORT", 5, true)
+                                models.models.main.Avatar.Head.Head:setUVPixels()
+                            elseif tick == 72 then
+                                self.parent.faceParts:setEmotion("TEAR", "INVERTED", "SHOCK", 40, true)
                             end
                         end;
 
                         onPostAnimation = function (self, forcedStop)
                             models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setVisible(false)
+                            if forcedStop then
+                                models.models.main.Avatar.Head.Head:setUVPixels()
+                            end
                         end;
                     };
 
