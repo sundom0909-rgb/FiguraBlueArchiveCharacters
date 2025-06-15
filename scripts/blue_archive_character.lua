@@ -443,6 +443,12 @@ BlueArchiveCharacter = {
                                 self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "FRUST", 3, true)
                             elseif tick == 35 then
                                 self.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "SMALL", 16, true)
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head.FaceParts.Mouth)
+                                local velocityVec = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head.ExSkill1ParticleAnchor3):sub(anchorPos):normalize()
+                                for _ = 1, 3 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:smoke"), anchorPos):setScale(0.8):setVelocity(velocityVec:copy():add(math.random() - 0.5, math.random() * 0.5, math.random() - 0.5):scale(0.05)):setLifetime(12)
+                                end
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), player:getPos(), 1, 0.5)
                             elseif tick == 51 then
                                 self.parent.faceParts:setEmotion("SCHEME", "SCHEME", "OVER_SMILE", 16, true)
                                 models.models.main.Avatar.Head.Head:setUVPixels(0, 16)
