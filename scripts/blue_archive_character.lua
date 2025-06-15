@@ -368,8 +368,8 @@ BlueArchiveCharacter = {
                     type = "BODY";
 
                     pos = {
-                        right = vectors.vec3(1.5, 3.5, 3);
-                        left = vectors.vec3(1.5, 3.5, 3);
+                        right = vectors.vec3(1.5, 3.5, 3.5);
+                        left = vectors.vec3(1.5, 3.5, 3.5);
                     };
 
                     rot = {
@@ -566,6 +566,24 @@ BlueArchiveCharacter = {
                     ---@type boolean
                     shouldReplaceFireworkModelPrev = false;
                 };
+            };
+
+            callbacks = {
+                onArmorChange = function (self, parts, isVisible)
+                    if parts == "HELMET" then
+                        models.models.main.Avatar.Head.Cowlick:setVisible(not isVisible)
+                    elseif parts == "CHEST_PLATE" then
+                        if isVisible then
+                            models.models.main.Avatar.UpperBody.Body.AmmoBelt:setVisible(false)
+                            models.models.main.Avatar.UpperBody.Body.Scarfs:setPos(0, 0, 1)
+                        else
+                            models.models.main.Avatar.UpperBody.Body.AmmoBelt:setVisible(true)
+                            models.models.main.Avatar.UpperBody.Body.Scarfs:setPos()
+                        end
+                    elseif parts == "LEGGINGS" then
+                        models.models.main.Avatar.UpperBody.Body.Skirt:setVisible(not isVisible)
+                    end
+                end;
             };
         }
 
