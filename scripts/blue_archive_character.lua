@@ -409,7 +409,7 @@ BlueArchiveCharacter = {
 
                     models = {};
 
-                    animations = {"main"};
+                    animations = {"main", "ex_skill_1"};
 
                     camera = {
                         start = {
@@ -457,15 +457,31 @@ BlueArchiveCharacter = {
                                 self.parent.faceParts:setEmotion("TEAR", "INVERTED", "SHOCK", 40, true)
                             end
 
-                            if tick >= 62 then
+                            if tick >= 1 and tick <= 23 then
+                                local animationProgress = tick / 23
+                                local playerPos = player:getPos()
+                                local bodyYaw = player:getBodyYaw()
+                                for i = 1, 2 do
+                                    if i == 1 or tick >= 16 then
+                                        local animPos = models.models.ex_skill_1["ExSkill1ParticleAnchor"..i]:getAnimPos():mul(-1, 1, -1)
+                                        local dirVec = animPos:copy():sub(self.exSkill.exSkills[1].fireAnchorPosPrev[i])
+                                        for j = 0, 7 do
+                                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:flame"), playerPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, self.exSkill.exSkills[1].fireAnchorPosPrev[i]:copy():add(dirVec:copy():scale(j / 8)):scale(0.0625), 0, 1, 0))):setLifetime(animationProgress * 10 + math.random(6, 14))
+                                        end
+                                        self.exSkill.exSkills[1].fireAnchorPosPrev[i] = animPos:copy()
+                                    end
+                                end
+                            elseif tick >= 62 then
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework.ExSkill1ParticleAnchor)
                                 for _ = 1, 2 do
-                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework.ExSkill1ParticleAnchor)):setScale(1):setVelocity(math.random() * 0.4 - 0.2, math.random() * 0.4 - 0.2, math.random() * 0.4 - 0.2):setGravity(0.25):setColor(1, 0.885, 0.58):setLifetime(4)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), anchorPos):setScale(1):setVelocity(math.random() * 0.4 - 0.2, math.random() * 0.4 - 0.2, math.random() * 0.4 - 0.2):setGravity(0.25):setColor(1, 0.885, 0.58):setLifetime(4)
                                 end
                             end
                         end;
 
                         onPostAnimation = function (self, forcedStop)
                             models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.Firework:setVisible(false)
+                            self.exSkill.exSkills[1].fireAnchorPosPrev = {vectors.vec3(-19, 25.5, 15), vectors.vec3(-21, 43, -11)};
                             if forcedStop then
                                 models.models.main.Avatar.Head.Head:setUVPixels()
                             end
@@ -475,6 +491,10 @@ BlueArchiveCharacter = {
                     ---このExスキルの初期化処理が行われたかどうか。
                     ---@type boolean
                     isInitialized = false;
+
+                    ---前ティックの炎のトレイルの位置：[1]: アンカー1, [2]: アンカー2
+                    ---@type Vector3[]
+                    fireAnchorPosPrev = {vectors.vec3(-19, 25.5, 15), vectors.vec3(-21, 43, -11)};
                 };
             };
         }
