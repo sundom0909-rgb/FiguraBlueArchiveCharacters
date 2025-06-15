@@ -31,6 +31,7 @@
 ---@field public deathAnimation DeathAnimation
 ---@field public hypixelZombies HypixelZombies
 ---@field public updateChecker UpdateChecker
+---@field public teleport Teleport
 ---@field public instantiate fun(class: table, super: table, ...: any) クラスをインスタンス化する
 
 Avatar = {
@@ -187,6 +188,9 @@ Avatar = {
 			instance.updateChecker:init()
 
 			--生徒固有クラスの読み込み
+			require("scripts.character_scripts.teleport")
+			instance.teleport = Teleport.new(instance)
+			instance.teleport:init()
 
 			--SCRIPT_INITイベントを実行
 			instance.avatarEvents.SCRIPT_INIT:fire()
