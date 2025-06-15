@@ -454,8 +454,12 @@ BlueArchiveCharacter = {
                         onAnimationTick = function (self, tick)
                             if tick == 9 then
                                 self.parent.faceParts:setEmotion("LOWER", "LOWER", "OPENED", 5, true)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.weak"), player:getPos(), 0.5, 1.5)
                             elseif tick == 14 then
                                 self.parent.faceParts:setEmotion("LOWER", "LOWER", "FRUST_OPENED", 8, true)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.weak"), player:getPos(), 0.5, 1.5)
+                            elseif tick == 19 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), player:getPos(), 0.25, 1.5)
                             elseif tick == 22 then
                                 self.parent.faceParts:setEmotion("LOWER", "LOWER", "FRUST", 10, true)
                             elseif tick == 32 then
@@ -482,6 +486,17 @@ BlueArchiveCharacter = {
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.firework_rocket.launch"), player:getPos(), 1, 0.75)
                             elseif tick == 72 then
                                 self.parent.faceParts:setEmotion("TEAR", "INVERTED", "SHOCK", 40, true)
+                            end
+
+                            if tick >= 11 and tick <= 23 and (tick - 11) % 6 == 0 then
+                                local bodyYaw = player:getBodyYaw()
+                                local anchorPos = player:getPos():add(vectors.rotateAroundAxis(bodyYaw * -1, 0, 1.25, 0.4, 0, 1, 0))
+                                for i = 0, 11 do
+                                    local offsetVec = vectors.rotateAroundAxis(bodyYaw * -1, vectors.rotateAroundAxis(i * 30, 1, 0, 0, 0, 0, 1), 0, 1, 0):normalize()
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:end_rod"), anchorPos:copy():add(offsetVec:copy():scale(0.2))):setScale(0.25):setVelocity(offsetVec:copy():scale(0.05)):setColor(1, 1, 0.75):setLifetime(4)
+                                end
+                            elseif tick >= 9 and tick <= 19 and (tick - 9) % 5 == 0 then
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:sweep_attack"), player:getPos():add(vectors.rotateAroundAxis(player:getBodyYaw() * -1, 0, 1.35, 0.4, 0, 1, 0))):setScale(2):setLifetime(4)
                             end
 
                             if tick >= 1 and tick <= 23 then
