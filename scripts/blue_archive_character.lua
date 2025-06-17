@@ -222,7 +222,7 @@
 ---@field public onArmorChange? fun(self: BlueArchiveCharacter, parts: Armor.ArmorPart, isVisible: boolean) 防具が変更された（防具が見える/見えない）ときに実行されるコールバック関数
 
 ---@class (exact) BlueArchiveCharacter.BubbleCallbacks 吹き出しエモートのコールバック関数のセット
----@field public addtionalCheckFunc? fun(self: BlueArchiveCharacter): boolean 吹き出しエモートを表示するかどうかの追加チェック関数
+---@field public additionalCheckFunc? fun(self: BlueArchiveCharacter): boolean 吹き出しエモートを表示するかどうかの追加チェック関数
 ---@field public onPlay? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, duration: integer, showInGui: boolean) 吹き出しエモートが再生された時に実行されるコールバック関数
 ---@field public onStop? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, forcedStop: boolean) 吹き出しアニメーション終了時に実行されるコールバック関数
 
@@ -993,7 +993,7 @@ BlueArchiveCharacter = {
                     for _, modelPart in ipairs({models.models.main.Avatar.Head.CMaidH, models.models.main.Avatar.UpperBody.Arms.RightArm.CMaidRA, models.models.main.Avatar.UpperBody.Arms.LeftArm.CMaidLA}) do
                         modelPart:setVisible(true)
                     end
-                    for _, modelPart in ipairs({models.models.main.Avatar.Head.HairTip1, models.models.main.Avatar.UpperBody.Body.Hairs, models.models.main.Avatar.UpperBody.Body.MilleniumLogo, models.models.main.Avatar.UpperBody.Body.IDCard, models.models.main.Avatar.UpperBody.Body.GameConsole, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.MilleniumPatch}) do
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.HairTip1, models.models.main.Avatar.UpperBody.Body.Hairs, models.models.main.Avatar.UpperBody.Body.MillenniumLogo, models.models.main.Avatar.UpperBody.Body.IDCard, models.models.main.Avatar.UpperBody.Body.GameConsole, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.MillenniumPatch}) do
                         modelPart:setVisible(false)
                     end
                     models.models.main.Avatar.UpperBody.Body.CMaidB:setVisible(not self.parent.armor.isArmorVisible.leggings)
@@ -1144,7 +1144,7 @@ BlueArchiveCharacter = {
                     for _, modelPart in ipairs({models.models.main.Avatar.LowerBody.Legs.RightLeg, models.models.main.Avatar.LowerBody.Legs.LeftLeg}) do
                         modelPart:setRot()
                     end
-                    for _, modelPart in ipairs({models.models.main.Avatar.Head.HairTip1, models.models.main.Avatar.UpperBody.Body.Hairs, models.models.main.Avatar.UpperBody.Body.MilleniumLogo, models.models.main.Avatar.UpperBody.Body.IDCard, models.models.main.Avatar.UpperBody.Body.GameConsole, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.MilleniumPatch}) do
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.HairTip1, models.models.main.Avatar.UpperBody.Body.Hairs, models.models.main.Avatar.UpperBody.Body.MillenniumLogo, models.models.main.Avatar.UpperBody.Body.IDCard, models.models.main.Avatar.UpperBody.Body.GameConsole, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.MillenniumPatch}) do
                         modelPart:setVisible(true)
                     end
                     for _, modelPart in ipairs({models.models.main.Avatar.Head.CMaidH, models.models.main.Avatar.UpperBody.Body.CMaidB, models.models.main.Avatar.UpperBody.Arms.RightArm.CMaidRA, models.models.main.Avatar.UpperBody.Arms.LeftArm.CMaidLA}) do
