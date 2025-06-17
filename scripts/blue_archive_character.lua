@@ -209,7 +209,7 @@
 ---@field public onArmorChange? fun(self: BlueArchiveCharacter, parts: Armor.ArmorPart, isVisible: boolean) 防具が変更された（防具が見える/見えない）ときに実行されるコールバック関数
 
 ---@class (exact) BlueArchiveCharacter.BubbleCallbacks 吹き出しエモートのコールバック関数のセット
----@field public addtionalCheckFunc? fun(self: BlueArchiveCharacter): boolean 吹き出しエモートを表示するかどうかの追加チェック関数
+---@field public additionalCheckFunc? fun(self: BlueArchiveCharacter): boolean 吹き出しエモートを表示するかどうかの追加チェック関数
 ---@field public onPlay? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, duration: integer, showInGui: boolean) 吹き出しエモートが再生された時に実行されるコールバック関数
 ---@field public onStop? fun(self: BlueArchiveCharacter, type: Bubble.BubbleType, forcedStop: boolean) 吹き出しアニメーション終了時に実行されるコールバック関数
 
@@ -415,10 +415,10 @@ BlueArchiveCharacter = {
                         placementObject.textTask:setBackground(true)
                         local wordIndex = math.random(1, 6)
                         local activeLang = client:getActiveLang()
-                        if self.costume.costumes[1].challangeWords[activeLang] ~= nil then
-                            placementObject.textTask:setText(self.costume.costumes[1].challangeWords[activeLang][wordIndex]..self.costume.costumes[1].challangeWords[activeLang][7])
+                        if self.costume.costumes[1].challengeWords[activeLang] ~= nil then
+                            placementObject.textTask:setText(self.costume.costumes[1].challengeWords[activeLang][wordIndex]..self.costume.costumes[1].challengeWords[activeLang][7])
                         else
-                            placementObject.textTask:setText(self.costume.costumes[1].challangeWords.en_us[wordIndex]..self.costume.costumes[1].challangeWords.en_us[7])
+                            placementObject.textTask:setText(self.costume.costumes[1].challengeWords.en_us[wordIndex]..self.costume.costumes[1].challengeWords.en_us[7])
                         end
                     end;
 
@@ -672,7 +672,7 @@ BlueArchiveCharacter = {
 
                     exSkill = 1;
 
-                    challangeWords = {
+                    challengeWords = {
                         ja_jp = {
                             "とりゃーー！！";
                             "ここに参上！！";
