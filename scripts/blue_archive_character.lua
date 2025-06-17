@@ -613,7 +613,7 @@ BlueArchiveCharacter = {
 
         instance.bubble = {
             callbacks = {
-                addtionalCheckFunc = function (self)
+                additionalCheckFunc = function (self)
                     return self.parent.syupogakiDance.danceState == "NOT_STANDBY"
                 end;
 
