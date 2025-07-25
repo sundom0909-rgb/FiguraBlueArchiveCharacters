@@ -939,6 +939,66 @@ BlueArchiveCharacter = {
                         };
                     };
                 };
+                {
+                    models = {models.models.main.Avatar.Head.CSwimsuitH.HairTail};
+
+                    x = {
+                        vertical = {
+                            min = -90;
+                            neutral = 0;
+                            max = 90;
+
+                            headRotMultiplayer = -1;
+
+                            headX = {
+                                multiplayer = -40;
+                                min = -90;
+                                max = 90;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -45;
+                            neutral = 45;
+                            max = 45;
+
+                            headX = {
+                                multiplayer = -40;
+                                min = -45;
+                                max = 45;
+                            };
+                        };
+                    };
+                };
+                {
+                    models = {models.models.main.Avatar.Head.CSwimsuitH.HairTail.HairTailZPivot};
+
+                    z = {
+                        vertical = {
+                            min = -60;
+                            neutral = 0;
+                            max = 0;
+
+                            headZ = {
+                                multiplayer = -40;
+                                min = -60;
+                                max = 0;
+                            };
+
+                            headRot = {
+                                multiplayer = 0.05;
+                                min = -60;
+                                max = 0;
+                            };
+
+                            bodyY = {
+                                multiplayer = 40;
+                                min = -60;
+                                max = 0;
+                            };
+                        };
+                    };
+                };
             };
         }
 
