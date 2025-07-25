@@ -594,9 +594,54 @@ BlueArchiveCharacter = {
 
                     exSkill = 1;
                 };
+
+                {
+                    name = "swimsuit";
+
+                    displayName = {
+                        en_us = "Swimsuit";
+                        ja_jp = "水着";
+                    };
+
+                    exSkill = 1;
+
+                    ---この衣装が初期化されたかどうか
+                    ---@type boolean
+                    isInitialized = false;
+                };
             };
 
             callbacks = {
+                onChange = function (self)
+                    self.parent.costume.setCostumeTextureOffset(1)
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer}) do
+                        modelPart:setUVPixels(0, 16)
+                    end
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.Ears.LeftEar.FlowerRing, models.models.main.Avatar.UpperBody.Body.Hairs.BackHair, models.models.main.Avatar.UpperBody.Body.Skirt, models.models.main.Avatar.UpperBody.Body.Tail.Tail4.TailRibbon, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeveTop, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeveTop, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve}) do
+                        modelPart:setVisible(false)
+                    end
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.CSwimsuitH, models.models.main.Avatar.UpperBody.Body.Tail.Tail4.CSwimsuitT2}) do
+                        modelPart:setVisible(true)
+                    end
+                    if not self.costume.costumes[2].isInitialized then
+                        models.models.main.Avatar.Head.CSwimsuitH.SunVisor.AllayPin:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/allay/allay.png")
+                        self.costume.costumes[2].isInitialized = true
+                    end
+                end;
+
+                onReset = function (self)
+                    self.parent.costume.setCostumeTextureOffset(0)
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer}) do
+                        modelPart:setUVPixels()
+                    end
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.Ears.LeftEar.FlowerRing, models.models.main.Avatar.UpperBody.Body.Hairs.BackHair, models.models.main.Avatar.UpperBody.Body.Skirt, models.models.main.Avatar.UpperBody.Body.Tail.Tail4.TailRibbon, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeveTop, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeveTop, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve}) do
+                        modelPart:setVisible(true)
+                    end
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.CSwimsuitH, models.models.main.Avatar.UpperBody.Body.Tail.Tail4.CSwimsuitT2}) do
+                        modelPart:setVisible(false)
+                    end
+                end;
+
                 onArmorChange = function (self, parts, isVisible)
                     if parts == "HELMET" and self.parent.allay.perchCount <= 0 and models.models.main.Avatar.Head.Allay ~= nil then
                         models.models.main.Avatar.Head.Allay:setPos(0, isVisible and 33 or 32, 3)
