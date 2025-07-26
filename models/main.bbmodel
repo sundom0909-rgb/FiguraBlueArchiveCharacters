@@ -5970,9 +5970,20 @@
 											"children": [
 												"8b1cc891-ffa8-9f46-ebc0-f0b84e6ffb15",
 												"72c6eff7-d0eb-2ffa-193f-2ca402bdc722",
-												"913c4dd9-6018-fa17-bf0f-11ff77793e96",
-												"faf5d0eb-6234-6b43-4679-f57973735bd1",
-												"2380c886-c8e9-84f5-4849-e3d95a8a575e"
+												{
+													"name": "RightShoeRibbon",
+													"origin": [2, 6, -2],
+													"color": 0,
+													"uuid": "a9a51849-beb6-bd5c-10d1-a4dafd4b5fd1",
+													"export": true,
+													"mirror_uv": false,
+													"isOpen": true,
+													"locked": false,
+													"visibility": true,
+													"autouv": 0,
+													"selected": true,
+													"children": ["913c4dd9-6018-fa17-bf0f-11ff77793e96", "faf5d0eb-6234-6b43-4679-f57973735bd1", "2380c886-c8e9-84f5-4849-e3d95a8a575e"]
+												}
 											]
 										}
 									]
@@ -6007,9 +6018,20 @@
 											"children": [
 												"a1169ee6-6a78-c7c4-9214-670991206468",
 												"a5173990-504e-f5c4-45c7-9347880c1306",
-												"fd514703-e710-569b-3c81-904d1013e226",
-												"ec67bc5a-e520-c07b-3245-21ed7c82c0dd",
-												"20cda6ac-4c28-cc02-6248-545cdbc938e3"
+												{
+													"name": "LeftShoeRibbon",
+													"origin": [-2, 6, -2],
+													"color": 0,
+													"uuid": "5bcef88d-8956-7b79-c6fe-cfd710770fc6",
+													"export": true,
+													"mirror_uv": false,
+													"isOpen": true,
+													"locked": false,
+													"visibility": true,
+													"autouv": 0,
+													"selected": false,
+													"children": ["fd514703-e710-569b-3c81-904d1013e226", "ec67bc5a-e520-c07b-3245-21ed7c82c0dd", "20cda6ac-4c28-cc02-6248-545cdbc938e3"]
+												}
 											]
 										}
 									]

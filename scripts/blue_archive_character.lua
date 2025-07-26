@@ -617,7 +617,10 @@ BlueArchiveCharacter = {
                     for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer}) do
                         modelPart:setUVPixels(0, 16)
                     end
-                    for _, modelPart in ipairs({models.models.main.Avatar.Head.Ears.LeftEar.FlowerRing, models.models.main.Avatar.UpperBody.Body.Hairs.BackHair, models.models.main.Avatar.UpperBody.Body.Skirt, models.models.main.Avatar.UpperBody.Body.Tail.Tail4.TailRibbon, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeveTop, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeveTop, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve}) do
+                    for _, modelPart in ipairs({models.models.main.Avatar.LowerBody.Legs.RightLeg.RightLegBottom.RightLegBottomLayer, models.models.main.Avatar.LowerBody.Legs.LeftLeg.LeftLegBottom.LeftLegBottomLayer}) do
+                        modelPart:setPrimaryRenderType("TRANSLUCENT")
+                    end
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.Ears.LeftEar.FlowerRing, models.models.main.Avatar.UpperBody.Body.Hairs.BackHair, models.models.main.Avatar.UpperBody.Body.Skirt, models.models.main.Avatar.UpperBody.Body.Tail.Tail4.TailRibbon, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeveTop, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeveTop, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve, models.models.main.Avatar.LowerBody.Legs.RightLeg.RightLegBottom.RightShoeRibbon, models.models.main.Avatar.LowerBody.Legs.LeftLeg.LeftLegBottom.LeftShoeRibbon}) do
                         modelPart:setVisible(false)
                     end
                     for _, modelPart in ipairs({models.models.main.Avatar.Head.CSwimsuitH, models.models.main.Avatar.UpperBody.Body.Tail.Tail4.CSwimsuitT2}) do
@@ -634,7 +637,10 @@ BlueArchiveCharacter = {
                     for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer}) do
                         modelPart:setUVPixels()
                     end
-                    for _, modelPart in ipairs({models.models.main.Avatar.Head.Ears.LeftEar.FlowerRing, models.models.main.Avatar.UpperBody.Body.Hairs.BackHair, models.models.main.Avatar.UpperBody.Body.Skirt, models.models.main.Avatar.UpperBody.Body.Tail.Tail4.TailRibbon, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeveTop, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeveTop, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve}) do
+                    for _, modelPart in ipairs({models.models.main.Avatar.LowerBody.Legs.RightLeg.RightLegBottom.RightLegBottomLayer, models.models.main.Avatar.LowerBody.Legs.LeftLeg.LeftLegBottom.LeftLegBottomLayer}) do
+                        modelPart:setPrimaryRenderType()
+                    end
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.Ears.LeftEar.FlowerRing, models.models.main.Avatar.UpperBody.Body.Hairs.BackHair, models.models.main.Avatar.UpperBody.Body.Skirt, models.models.main.Avatar.UpperBody.Body.Tail.Tail4.TailRibbon, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeveTop, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeveTop, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve, models.models.main.Avatar.LowerBody.Legs.RightLeg.RightLegBottom.RightShoeRibbon, models.models.main.Avatar.LowerBody.Legs.LeftLeg.LeftLegBottom.LeftShoeRibbon}) do
                         modelPart:setVisible(true)
                     end
                     for _, modelPart in ipairs({models.models.main.Avatar.Head.CSwimsuitH, models.models.main.Avatar.UpperBody.Body.Tail.Tail4.CSwimsuitT2}) do
