@@ -579,6 +579,31 @@ BlueArchiveCharacter = {
                     ---@type boolean
                     init = false;
                 };
+
+                {
+                    name = {
+                        en_us = "Beach of Romance";
+                        ja_jp = "浪漫きらめく浜辺";
+                    };
+
+                    formationType = "STRIKER";
+
+                    models = {models.models.ex_skill_2.Car, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Mic};
+
+                    animations = {"main", "costume_swimsuit", "ex_skill_2"};
+
+                    camera = {
+                        start = {
+                            rot = vectors.vec3(25, -25, 0);
+                            pos = vectors.vec3(-39.3, 53.3, 79);
+                        };
+
+                        fin = {
+                            rot = vectors.vec3(-2.5, 65, 0);
+                            pos = vectors.vec3(-29.7, 23.3, -59);
+                        };
+                    };
+                };
             };
         }
 
@@ -603,7 +628,7 @@ BlueArchiveCharacter = {
                         ja_jp = "水着";
                     };
 
-                    exSkill = 1;
+                    exSkill = 2;
 
                     ---この衣装が初期化されたかどうか
                     ---@type boolean

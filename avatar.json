@@ -177,6 +177,10 @@
 		"models.models.ex_skill_2.Car": {
 			"visible": false
 		},
+		"models.models.ex_skill_2.Mic": {
+			"moveTo": "models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom",
+			"visible": false
+		},
 		"models.models.costume_swimsuit.CSwimsuitH": {
 			"moveTo": "models.models.main.Avatar.Head",
 			"visible": false
