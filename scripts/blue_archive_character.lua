@@ -594,14 +594,24 @@ BlueArchiveCharacter = {
 
                     camera = {
                         start = {
-                            rot = vectors.vec3(25, -25, 0);
-                            pos = vectors.vec3(-39.3, 53.3, 79);
+                            rot = vectors.vec3(0, 0, 0);
+                            pos = vectors.vec3(0, 10, 50);
                         };
 
                         fin = {
-                            rot = vectors.vec3(-2.5, 65, 0);
-                            pos = vectors.vec3(-29.7, 23.3, -59);
+                            rot = vectors.vec3(-10, 245, 0);
+                            pos = vectors.vec3(-368.3, 24.2, -1240.5);
                         };
+                    };
+
+                    callbacks = {
+                        onAnimationTick = function (self, tick)
+                            if tick == 2150 then
+                                for _, modelName in ipairs(self.exSkill.exSkills[2].animations) do
+                                    animations["models."..modelName]["ex_skill_2"]:pause()
+                                end
+                            end
+                        end;
                     };
                 };
             };
