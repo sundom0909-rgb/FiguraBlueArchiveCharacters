@@ -670,12 +670,12 @@ BlueArchiveCharacter = {
                                 particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:end_rod"), vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 1 - 0.5, math.random() * 1 + 1, math.random() * 1 + 1, 0, 1, 0):add(avatarPos)):setScale(0.25):setVelocity(velocity:copy():scale(-1.5)):setColor(0.988, 1, 0.824)
                             end
                             if tick <= 95 then
+                                local bodyYaw = player:getBodyYaw()
                                 local carPos = models.models.ex_skill_2.Car:getAnimPos()
                                 local particleScale = tick >= 68 and 5 or 2
                                 for _, modelPart in ipairs({models.models.ex_skill_2.Car.WheelFRAnchor, models.models.ex_skill_2.Car.WheelFLAnchor, models.models.ex_skill_2.Car.WheelRRAnchor, models.models.ex_skill_2.Car.WheelRLAnchor}) do
-                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), self.parent.modelUtils.getModelWorldPos(modelPart)):setScale(particleScale):setVelocity(self.exSkill.exSkills[2].carPosPrev:copy():sub(carPos):normalized():scale(0.5)):setGravity(math.random() * -0.03):setLifetime(math.random(8, 16))
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), self.parent.modelUtils.getModelWorldPos(modelPart)):setScale(particleScale):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1 + 180, self.exSkill.exSkills[2].carPosPrev:copy():sub(carPos):normalized():scale(0.5), 0, 1, 0)):setGravity(math.random() * -0.03):setLifetime(math.random(8, 16))
                                 end
-
                                 self.exSkill.exSkills[2].carPosPrev = carPos
                             end
                             if tick >= 72 and tick <= 95 then
