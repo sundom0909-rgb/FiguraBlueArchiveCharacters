@@ -716,8 +716,12 @@ BlueArchiveCharacter = {
                             for _, modelPart in ipairs(models.models.main.Avatar.Head.Ears:getChildren()) do
                                 modelPart:setOffsetPivot(0, 0, -2)
                             end
-                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 107, true)
+                            local shouldLitLight = world.getLightLevel(player:getPos()) <= 7
+                            for _, modelPart in ipairs({models.models.ex_skill_2.Car.CarBody.RightCarLight.RightCarLightBase2.RightCarLight, models.models.ex_skill_2.Car.CarBody.LeftCarLight.LeftCarLightBase2.LeftCarLight, models.models.ex_skill_2.Car.CarBody.CarRearLight}) do
+                                modelPart:setPrimaryRenderType(shouldLitLight and "EMISSIVE_SOLID" or "CUTOUT")
+                            end
                             self.exSkill.exSkills[2].engineSound = sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.bee.loop_aggressive"), player:getPos(), 0.5, 1, true)
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 107, true)
                         end;
 
                         onAnimationTick = function (self, tick)

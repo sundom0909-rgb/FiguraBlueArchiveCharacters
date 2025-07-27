@@ -93,6 +93,10 @@ Car = {
 								for i = 1, 4 do
 									particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:poof"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Car.CarBody["ExhaustAnchor"..i])):setScale(math.min(0.5 + horizontalSpeed * 2, 5)):setLifetime(10)
 								end
+								local shouldLitLight = world.getLightLevel(player:getPos()) <= 7
+								for _, modelPart in ipairs({models.models.ex_skill_2.Car.CarBody.RightCarLight.RightCarLightBase2.RightCarLight, models.models.ex_skill_2.Car.CarBody.LeftCarLight.LeftCarLightBase2.LeftCarLight, models.models.ex_skill_2.Car.CarBody.CarRearLight}) do
+									modelPart:setPrimaryRenderType(shouldLitLight and "EMISSIVE_SOLID" or "CUTOUT")
+								end
 							end
 						end, "car_ride_tick")
 						events.RENDER:register(function (delta)
@@ -133,6 +137,9 @@ Car = {
 									if self.engineSound ~= nil then
 										self.engineSound:stop()
 										self.engineSound = nil
+									end
+									for _, modelPart in ipairs({models.models.ex_skill_2.Car.CarBody.RightCarLight.RightCarLightBase2.RightCarLight, models.models.ex_skill_2.Car.CarBody.LeftCarLight.LeftCarLightBase2.LeftCarLight, models.models.ex_skill_2.Car.CarBody.CarRearLight}) do
+										modelPart:setPrimaryRenderType("CUTOUT")
 									end
 									self.parent.bubble:play("SWEAT", 40, vectors.vec2(), 0, false)
 								end

@@ -5151,7 +5151,6 @@
 			"to": [17, 15.5, -27.5],
 			"autouv": 0,
 			"color": 9,
-			"rotation": [-22.08, 0, 0],
 			"origin": [14.5, 15.5, -27.5],
 			"faces": {
 				"north": {
@@ -5236,7 +5235,6 @@
 			"to": [-12, 15.5, -27.5],
 			"autouv": 0,
 			"color": 9,
-			"rotation": [-22.08, 0, 0],
 			"origin": [-14.5, 15.5, -27.5],
 			"faces": {
 				"north": {
@@ -14231,6 +14229,134 @@
 			},
 			"type": "cube",
 			"uuid": "da4ff133-d461-6a10-b2be-fd92b8fd38c6"
+		},
+		{
+			"name": "RightCarLight",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"light_emission": 0,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [13, 15.5, -37.5],
+			"to": [16, 15.5, -32.5],
+			"autouv": 0,
+			"color": 9,
+			"origin": [13, 15.5, -37.5],
+			"faces": {
+				"north": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [5, 49, 8, 54],
+					"texture": 0
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "a32bf5cf-0848-513c-353a-1051066b5913"
+		},
+		{
+			"name": "LeftCarLight",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"light_emission": 0,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [-16, 15.5, -37.5],
+			"to": [-13, 15.5, -32.5],
+			"autouv": 0,
+			"color": 9,
+			"origin": [-13.5, 16, -24.5],
+			"faces": {
+				"north": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [5, 49, 8, 54],
+					"texture": 0
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "8c1ac89a-5456-af78-ca79-880b6989faba"
+		},
+		{
+			"name": "CarRearLight",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"light_emission": 0,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [-16, 9.04, 43.125],
+			"to": [16, 10.04, 44.125],
+			"autouv": 0,
+			"color": 3,
+			"inflate": 0.1,
+			"origin": [-16, 10.975, 43.125],
+			"faces": {
+				"north": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [46, 30, 47, 62],
+					"rotation": 90,
+					"texture": 0
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "c3a97bd4-9480-205a-d9f9-596a58f77383"
 		}
 	],
 	"outliner": [
@@ -14560,12 +14686,29 @@
 							"uuid": "ac2fa3be-f39d-5124-fa21-cf81e09584d4",
 							"export": true,
 							"mirror_uv": false,
-							"isOpen": false,
+							"isOpen": true,
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
 							"selected": false,
-							"children": ["fb47020b-891a-f007-1e97-ce0177913196", "0b3550e1-944e-d2e8-9e5c-189186cfdacc"]
+							"children": [
+								"fb47020b-891a-f007-1e97-ce0177913196",
+								{
+									"name": "RightCarLightBase2",
+									"origin": [14.5, 15.5, -27.5],
+									"rotation": [-22.08, 0, 0],
+									"color": 0,
+									"uuid": "aaa42e3c-f232-8c29-e9c2-96fbd96fce67",
+									"export": true,
+									"mirror_uv": false,
+									"isOpen": true,
+									"locked": false,
+									"visibility": true,
+									"autouv": 0,
+									"selected": false,
+									"children": ["0b3550e1-944e-d2e8-9e5c-189186cfdacc", "a32bf5cf-0848-513c-353a-1051066b5913"]
+								}
+							]
 						},
 						{
 							"name": "LeftCarLight",
@@ -14574,12 +14717,29 @@
 							"uuid": "b77da832-389d-7438-0e30-f7ed341c17ac",
 							"export": true,
 							"mirror_uv": false,
-							"isOpen": false,
+							"isOpen": true,
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
 							"selected": false,
-							"children": ["375ad285-d870-23b6-8a44-72d46ef364f7", "d292134a-2e97-69cc-4599-608b1ca913dc"]
+							"children": [
+								"375ad285-d870-23b6-8a44-72d46ef364f7",
+								{
+									"name": "LeftCarLightBase2",
+									"origin": [-14.5, 15.5, -27.5],
+									"rotation": [-22.08, 0, 0],
+									"color": 0,
+									"uuid": "3aee0100-8e5e-4669-36b7-e4f5a49a2f01",
+									"export": true,
+									"mirror_uv": false,
+									"isOpen": true,
+									"locked": false,
+									"visibility": true,
+									"autouv": 0,
+									"selected": false,
+									"children": ["d292134a-2e97-69cc-4599-608b1ca913dc", "8c1ac89a-5456-af78-ca79-880b6989faba"]
+								}
+							]
 						},
 						{
 							"name": "CarSeat",
@@ -14691,6 +14851,7 @@
 						"fda2e24c-4f58-f8fb-66eb-c3d91a0a550c",
 						"90af9925-31a7-877a-3c12-1c1dcb0742a5",
 						"6f2bbc3d-9a27-b594-11e3-b2b61a8f88af",
+						"c3a97bd4-9480-205a-d9f9-596a58f77383",
 						"266aa50c-9b6d-b1a3-fdb3-210c85a37dde",
 						"b57d77ac-0bb7-2bd8-a7e3-179a1274dda6",
 						"a9751580-bbc8-c3ab-5e4f-acbdf2e2808a",
@@ -14749,7 +14910,7 @@
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
-							"selected": true,
+							"selected": false,
 							"children": []
 						}
 					]
@@ -15082,7 +15243,7 @@
 			"saved": true,
 			"uuid": "0aacc6a3-a3fe-e7af-5cd7-26329b44c795",
 			"relative_path": "../textures/ex_skill_2.png",
-			"source": "data:image/png;base64,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"
+			"source": "data:image/png;base64,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"
 		},
 		{
 			"path": "C:\\Users\\gakut\\AppData\\Roaming\\ModrinthApp\\profiles\\Fabricバニラ\\figura\\avatars\\ブルーアーカイブ\\ベースアバター\\textures\\ex_skill_2_wool.png",
