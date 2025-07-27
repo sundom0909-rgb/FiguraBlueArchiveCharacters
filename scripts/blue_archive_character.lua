@@ -929,10 +929,11 @@ BlueArchiveCharacter = {
                     end
                 end;
 
-                onAfterModelCopy = function ()
+                onAfterModelCopy = function (self)
                     if models.models.main.Avatar.Head.Allay ~= nil then
                         models.models.main.Avatar.Head.Allay:setVisible(true)
                     end
+                    models.script_head_block.Head:setPrimaryRenderType("CUTOUT")
                 end;
             };
         }
