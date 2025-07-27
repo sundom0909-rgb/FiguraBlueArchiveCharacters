@@ -622,6 +622,7 @@ BlueArchiveCharacter = {
                                 modelPart:setOffsetPivot(0, 0, -2)
                             end
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 107, true)
+                            self.costume.costumes[2].engineSound = sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.bee.loop_aggressive"), player:getPos(), 0.5, 1, true)
                         end;
 
                         onAnimationTick = function (self, tick)
@@ -648,16 +649,27 @@ BlueArchiveCharacter = {
                                 for _, modelPart in ipairs({models.models.ex_skill_2.Car.CarWheelFR.WheelFREffect, models.models.ex_skill_2.Car.CarWheelFL.WheelFLEffect, models.models.ex_skill_2.Car.CarWheelRR.WheelRREffect, models.models.ex_skill_2.Car.CarWheelRL.WheelRLEffect}) do
                                     modelPart:setVisible(false)
                                 end
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.gravel.hit"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Car), 0.3, 0.5)
                             elseif tick == 119 then
                                 self.parent.faceParts:setEmotion("NARROW", "NARROW", "CLOSED", 25, true)
+                            elseif tick == 125 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.spyglass.use"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head), 0.5, 1.5)
+                            elseif tick == 142 then
+                                self.costume.costumes[2].engineSound:stop()
+                                self.costume.costumes[2].engineSound = nil
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.iron_door.open"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Car), 0.5, 0.75)
                             elseif tick == 144 then
                                 self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED", 12, true)
                             elseif tick == 156 then
                                 self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 19, true)
+                            elseif tick == 170 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.iron_door.close"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Car), 1, 1)
                             elseif tick == 175 then
                                 self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", 10, true)
                             elseif tick == 179 then
                                 models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Mic:setVisible(true)
+                            elseif tick == 184 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 1.5)
                             elseif tick == 185 then
                                 self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "ANXIOUS", 40, true)
                             end
@@ -669,13 +681,17 @@ BlueArchiveCharacter = {
                                 particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:cloud"), vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 8 - 4, math.random() * 4, 10, 0, 1, 0):add(avatarPos)):setColor(1, 1, 1, 0.25):setVelocity(velocity)
                                 particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:end_rod"), vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 1 - 0.5, math.random() * 1 + 1, math.random() * 1 + 1, 0, 1, 0):add(avatarPos)):setScale(0.25):setVelocity(velocity:copy():scale(-1.5)):setColor(0.988, 1, 0.824)
                             end
-                            if tick <= 95 then
+                            if tick <= 116 then
                                 local bodyYaw = player:getBodyYaw()
                                 local carPos = models.models.ex_skill_2.Car:getAnimPos()
-                                local particleScale = tick >= 68 and 5 or 2
-                                for _, modelPart in ipairs({models.models.ex_skill_2.Car.WheelFRAnchor, models.models.ex_skill_2.Car.WheelFLAnchor, models.models.ex_skill_2.Car.WheelRRAnchor, models.models.ex_skill_2.Car.WheelRLAnchor}) do
-                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), self.parent.modelUtils.getModelWorldPos(modelPart)):setScale(particleScale):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1 + 180, self.exSkill.exSkills[2].carPosPrev:copy():sub(carPos):normalized():scale(0.5), 0, 1, 0)):setGravity(math.random() * -0.03):setLifetime(math.random(8, 16))
+                                if tick <= 95 then
+                                    local particleScale = tick >= 68 and 5 or 2
+                                    for _, modelPart in ipairs({models.models.ex_skill_2.Car.WheelFRAnchor, models.models.ex_skill_2.Car.WheelFLAnchor, models.models.ex_skill_2.Car.WheelRRAnchor, models.models.ex_skill_2.Car.WheelRLAnchor}) do
+                                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), self.parent.modelUtils.getModelWorldPos(modelPart)):setScale(particleScale):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1 + 180, self.exSkill.exSkills[2].carPosPrev:copy():sub(carPos):normalized():scale(0.5), 0, 1, 0)):setGravity(math.random() * -0.03):setLifetime(math.random(8, 16))
+                                    end
                                 end
+                                self.costume.costumes[2].engineSound:setPos(self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Car))
+                                self.costume.costumes[2].engineSound:setPitch(0.2 + carPos:copy():sub(self.exSkill.exSkills[2].carPosPrev):length() * 0.01)
                                 self.exSkill.exSkills[2].carPosPrev = carPos
                             end
                             if tick >= 72 and tick <= 95 then
@@ -689,6 +705,9 @@ BlueArchiveCharacter = {
                                         particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), pos):setScale(isRightWheel and 4 or 2):setVelocity(vectors.rotateAroundAxis(particleDir, 0, 0, 1, 0, 1, 0)):setGravity(math.random() * -0.15):setLifetime(math.random(2, 4))
                                     end
                                 end
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.gravel.hit"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Car), 0.3, 0.5)
+                            elseif tick >= 122 and tick < 142 then
+                                self.costume.costumes[2].engineSound:setVolume(tick * -0.025 + 3.55)
                             end
                         end;
 
@@ -706,6 +725,10 @@ BlueArchiveCharacter = {
                                 end
                                 for _, modelPart in ipairs(models.models.main.Avatar.Head.Ears:getChildren()) do
                                     modelPart:setOffsetPivot()
+                                end
+                                if self.costume.costumes[2].engineSound ~= nil then
+                                    self.costume.costumes[2].engineSound:stop()
+                                    self.costume.costumes[2].engineSound = nil
                                 end
                             end
                         end;
@@ -743,6 +766,10 @@ BlueArchiveCharacter = {
                     ---この衣装が初期化されたかどうか
                     ---@type boolean
                     isInitialized = false;
+
+                    ---車のエンジン音のインスタンス
+                    ---@type Sound|nil
+                    engineSound = nil;
                 };
             };
 
