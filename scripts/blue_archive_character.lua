@@ -898,7 +898,11 @@ BlueArchiveCharacter = {
                         elseif type == "HEART" then
                             self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", duration, true)
                         elseif type == "NOTE" then
-                            self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", duration, true)
+                            if self.parent.costume.currentCostume == 1 then
+                                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", duration, true)
+                            elseif self.parent.costume.currentCostume == 2 then
+                                self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "ANXIOUS", duration, true)
+                            end
                         elseif type == "QUESTION" then
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "ANXIOUS", duration, true)
                         elseif type == "SWEAT" then
