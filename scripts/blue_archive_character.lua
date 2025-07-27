@@ -594,7 +594,7 @@ BlueArchiveCharacter = {
 
                     formationType = "STRIKER";
 
-                    models = {models.models.ex_skill_2.Car, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Mic};
+                    models = {models.models.ex_skill_2.Car};
 
                     animations = {"main", "costume_swimsuit", "ex_skill_2"};
 
@@ -626,9 +626,15 @@ BlueArchiveCharacter = {
                                 self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 19, true)
                             elseif tick == 175 then
                                 self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", 10, true)
+                            elseif tick == 179 then
+                                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Mic:setVisible(true)
                             elseif tick == 185 then
                                 self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "ANXIOUS", 40, true)
                             end
+                        end;
+
+                        onPostAnimation = function ()
+                            models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Mic:setVisible(false)
                         end;
                     };
                 };
