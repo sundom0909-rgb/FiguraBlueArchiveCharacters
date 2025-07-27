@@ -612,6 +612,12 @@ BlueArchiveCharacter = {
 
                     callbacks = {
                         onPreAnimation = function (self)
+                            events.RENDER:register(function ()
+                                local wheelEffectOpacity = models.models.ex_skill_2.Car.CarWheelEffectOpacity:getAnimScale().x
+                                for _, modelPart in ipairs({models.models.ex_skill_2.Car.CarWheelFR.WheelFREffect, models.models.ex_skill_2.Car.CarWheelFL.WheelFLEffect, models.models.ex_skill_2.Car.CarWheelRR.WheelRREffect, models.models.ex_skill_2.Car.CarWheelRL.WheelRLEffect}) do
+                                    modelPart:setOpacity(wheelEffectOpacity)
+                                end
+                            end, "ex_skill_2_render")
                             for _, modelPart in ipairs(models.models.main.Avatar.Head.Ears:getChildren()) do
                                 modelPart:setOffsetPivot(0, 0, -2)
                             end
@@ -619,12 +625,20 @@ BlueArchiveCharacter = {
                         end;
 
                         onAnimationTick = function (self, tick)
-                            if tick == 73 then
+                            if tick == 70 then
+                                for _, modelPart in ipairs({models.models.ex_skill_2.Car.CarWheelFR.WheelFREffect, models.models.ex_skill_2.Car.CarWheelFL.WheelFLEffect, models.models.ex_skill_2.Car.CarWheelRR.WheelRREffect, models.models.ex_skill_2.Car.CarWheelRL.WheelRLEffect}) do
+                                    modelPart:setVisible(true)
+                                end
+                            elseif tick == 73 then
                                 for _, modelPart in ipairs(models.models.main.Avatar.Head.Ears:getChildren()) do
                                     modelPart:setOffsetPivot()
                                 end
                             elseif tick == 107 then
                                 self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED", 12, true)
+                            elseif tick == 110 then
+                                for _, modelPart in ipairs({models.models.ex_skill_2.Car.CarWheelFR.WheelFREffect, models.models.ex_skill_2.Car.CarWheelFL.WheelFLEffect, models.models.ex_skill_2.Car.CarWheelRR.WheelRREffect, models.models.ex_skill_2.Car.CarWheelRL.WheelRLEffect}) do
+                                    modelPart:setVisible(false)
+                                end
                             elseif tick == 119 then
                                 self.parent.faceParts:setEmotion("NARROW", "NARROW", "CLOSED", 25, true)
                             elseif tick == 144 then
@@ -638,17 +652,46 @@ BlueArchiveCharacter = {
                             elseif tick == 185 then
                                 self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "ANXIOUS", 40, true)
                             end
+
+                            if tick <= 95 then
+                                local carPos = models.models.ex_skill_2.Car:getAnimPos()
+                                local particleScale = tick >= 68 and 5 or 2
+                                for _, modelPart in ipairs({models.models.ex_skill_2.Car.WheelFRAnchor, models.models.ex_skill_2.Car.WheelFLAnchor, models.models.ex_skill_2.Car.WheelRRAnchor, models.models.ex_skill_2.Car.WheelRLAnchor}) do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), self.parent.modelUtils.getModelWorldPos(modelPart)):setScale(particleScale):setVelocity(self.exSkill.exSkills[2].carPosPrev:copy():sub(carPos):normalized():scale(0.5)):setGravity(math.random() * -0.03):setLifetime(math.random(8, 16))
+                                end
+
+                                self.exSkill.exSkills[2].carPosPrev = carPos
+                            end
+                            if tick >= 72 and tick <= 95 then
+                                local particleDir = player:getBodyYaw() * -1 - 60
+                                for _, modelPart in ipairs({models.models.ex_skill_2.Car.WheelFRAnchor, models.models.ex_skill_2.Car.WheelFLAnchor, models.models.ex_skill_2.Car.WheelRRAnchor, models.models.ex_skill_2.Car.WheelRLAnchor}) do
+                                    local partName = modelPart:getName()
+                                    local isRightWheel = partName:find("Wheel%wRAnchor$") ~= nil
+                                    if tick < 78 or isRightWheel then
+                                        local pos = self.parent.modelUtils.getModelWorldPos(modelPart):add(vectors.rotateAroundAxis(particleDir, 0, 0, 0.8, 0, 1, 0))
+                                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), pos):setColor(1, 0.953, 0.408):setScale(1.2):setVelocity(vectors.rotateAroundAxis(particleDir, 0, math.random() * 0.15, 0.5, 0, 1, 0))
+                                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), pos):setScale(isRightWheel and 4 or 2):setVelocity(vectors.rotateAroundAxis(particleDir, 0, 0, 1, 0, 1, 0)):setGravity(math.random() * -0.15):setLifetime(math.random(2, 4))
+                                    end
+                                end
+                            end
                         end;
 
                         onPostAnimation = function (_, forcedStop)
+                            events.RENDER:remove("ex_skill_2_render")
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Mic:setVisible(false)
                             if forcedStop then
+                                for _, modelPart in ipairs({models.models.ex_skill_2.Car.CarWheelFR.WheelFREffect, models.models.ex_skill_2.Car.CarWheelFL.WheelFLEffect, models.models.ex_skill_2.Car.CarWheelRR.WheelRREffect, models.models.ex_skill_2.Car.CarWheelRL.WheelRLEffect}) do
+                                    modelPart:setVisible(false)
+                                end
                                 for _, modelPart in ipairs(models.models.main.Avatar.Head.Ears:getChildren()) do
                                     modelPart:setOffsetPivot()
                                 end
                             end
                         end;
                     };
+
+                    ---前ティックの車の位置
+                    carPosPrev = vectors.vec3(0, 0, 0);
                 };
             };
         }

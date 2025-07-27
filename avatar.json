@@ -177,6 +177,18 @@
 		"models.models.ex_skill_2.Car": {
 			"visible": false
 		},
+		"models.models.ex_skill_2.Car.CarWheelFR.WheelFREffect": {
+			"visible": false
+		},
+		"models.models.ex_skill_2.Car.CarWheelFL.WheelFLEffect": {
+			"visible": false
+		},
+		"models.models.ex_skill_2.Car.CarWheelRR.WheelRREffect": {
+			"visible": false
+		},
+		"models.models.ex_skill_2.Car.CarWheelRL.WheelRLEffect": {
+			"visible": false
+		},
 		"models.models.ex_skill_2.Mic": {
 			"moveTo": "models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom",
 			"visible": false
