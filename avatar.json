@@ -193,6 +193,10 @@
 			"moveTo": "models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom",
 			"visible": false
 		},
+		"models.models.ex_skill_2.Mic.MicShineEffect": {
+			"parentType": "Camera",
+			"primaryRenderType": "EMISSIVE_SOLID"
+		},
 		"models.models.ex_skill_2.Gui": {
 			"visible": false
 		},
