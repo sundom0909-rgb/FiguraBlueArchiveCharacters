@@ -6,6 +6,7 @@
 ---| "CENTER" # 少し反対側を見る目
 ---| "NARROW" # 少し閉じた目
 ---| "CLOSED2" # 閉じた目2
+---| "ANGRY" # 怒った目
 
 ---@alias BlueArchiveCharacter.LeftEyeTextures
 ---| "NORMAL" # 通常
@@ -15,6 +16,8 @@
 ---| "CENTER" # 少し反対側を見る目
 ---| "NARROW_CENTER" # 少し閉じつつ反対側を見る目
 ---| "CLOSED2" # 閉じた目2
+---| "NARROW" # 少し閉じた目
+---| "ANGRY" # 怒った目
 
 ---@alias BlueArchiveCharacter.MouthTextures
 ---| "NORMAL" # 通常
@@ -311,6 +314,7 @@ BlueArchiveCharacter = {
                 CENTER = vectors.vec2(5, 0);
                 NARROW = vectors.vec2(7, 0);
                 CLOSED2 = vectors.vec2(9, 0);
+                ANGRY = vectors.vec2(1, 1);
             };
 
             leftEye = {
@@ -321,6 +325,8 @@ BlueArchiveCharacter = {
                 CENTER = vectors.vec2(5, 0);
                 NARROW_CENTER = vectors.vec2(7, 0);
                 CLOSED2 = vectors.vec2(8, 0);
+                NARROW = vectors.vec2(1, -1);
+                ANGRY = vectors.vec2(1, 1);
             };
 
             mouth = {
@@ -605,11 +611,23 @@ BlueArchiveCharacter = {
                     };
 
                     callbacks = {
+                        onPreAnimation = function (self)
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 107, true)
+                        end;
+
                         onAnimationTick = function (self, tick)
-                            if tick == 2150 then
-                                for _, modelName in ipairs(self.exSkill.exSkills[2].animations) do
-                                    animations["models."..modelName]["ex_skill_2"]:pause()
-                                end
+                            if tick == 107 then
+                                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED", 12, true)
+                            elseif tick == 119 then
+                                self.parent.faceParts:setEmotion("NARROW", "NARROW", "CLOSED", 25, true)
+                            elseif tick == 144 then
+                                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED", 12, true)
+                            elseif tick == 156 then
+                                self.parent.faceParts:setEmotion("CENTER", "NORMAL", "CLOSED", 19, true)
+                            elseif tick == 175 then
+                                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", 10, true)
+                            elseif tick == 185 then
+                                self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "ANXIOUS", 40, true)
                             end
                         end;
                     };
