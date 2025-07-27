@@ -14241,7 +14241,7 @@
 			"uuid": "e38e8c0d-f06d-5ccd-b11b-7dae53fcea75",
 			"export": true,
 			"mirror_uv": false,
-			"isOpen": false,
+			"isOpen": true,
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
@@ -14444,7 +14444,7 @@
 					"uuid": "774a0876-6b80-6193-06e8-58b202b18d14",
 					"export": true,
 					"mirror_uv": false,
-					"isOpen": false,
+					"isOpen": true,
 					"locked": false,
 					"visibility": true,
 					"autouv": 0,
@@ -14695,7 +14695,63 @@
 						"b57d77ac-0bb7-2bd8-a7e3-179a1274dda6",
 						"a9751580-bbc8-c3ab-5e4f-acbdf2e2808a",
 						"8e0ce34f-71fc-41bc-7a88-eae63364eec1",
-						"65abb54a-656e-6878-e5a8-2c0270344d37"
+						"65abb54a-656e-6878-e5a8-2c0270344d37",
+						{
+							"name": "ExhaustAnchor1",
+							"origin": [-4.5, 6, 46.5],
+							"color": 0,
+							"uuid": "9def2a29-d500-3302-afb8-e7e819c040b8",
+							"export": true,
+							"mirror_uv": false,
+							"isOpen": true,
+							"locked": false,
+							"visibility": true,
+							"autouv": 0,
+							"selected": false,
+							"children": []
+						},
+						{
+							"name": "ExhaustAnchor2",
+							"origin": [-1.5, 6, 46.5],
+							"color": 0,
+							"uuid": "d8eefc3f-e042-48d3-8096-175179cd8994",
+							"export": true,
+							"mirror_uv": false,
+							"isOpen": true,
+							"locked": false,
+							"visibility": true,
+							"autouv": 0,
+							"selected": false,
+							"children": []
+						},
+						{
+							"name": "ExhaustAnchor3",
+							"origin": [1.5, 6, 46.5],
+							"color": 0,
+							"uuid": "d2867369-28d9-ae52-b8ba-97c2a4008d50",
+							"export": true,
+							"mirror_uv": false,
+							"isOpen": true,
+							"locked": false,
+							"visibility": true,
+							"autouv": 0,
+							"selected": false,
+							"children": []
+						},
+						{
+							"name": "ExhaustAnchor4",
+							"origin": [4.5, 6, 46.5],
+							"color": 0,
+							"uuid": "3f547673-02d3-97e1-e442-4ed6688a73d4",
+							"export": true,
+							"mirror_uv": false,
+							"isOpen": true,
+							"locked": false,
+							"visibility": true,
+							"autouv": 0,
+							"selected": true,
+							"children": []
+						}
 					]
 				},
 				{
@@ -14870,7 +14926,7 @@
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
-							"selected": true,
+							"selected": false,
 							"children": [
 								"d1dca7fc-74b8-27f9-cc8f-9745beddfee0",
 								"442ff0ea-a088-5f18-5dca-e4a6e22b5230",
@@ -14982,6 +15038,20 @@
 					]
 				}
 			]
+		},
+		{
+			"name": "CarCameraAnchor",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"uuid": "c3ce6171-a617-ecfd-f233-a8499e0b6817",
+			"export": true,
+			"mirror_uv": false,
+			"isOpen": true,
+			"locked": false,
+			"visibility": true,
+			"autouv": 0,
+			"selected": false,
+			"children": []
 		}
 	],
 	"textures": [
@@ -15081,7 +15151,7 @@
 			"override": true,
 			"length": 11.25,
 			"snapping": 20,
-			"selected": true,
+			"selected": false,
 			"anim_time_update": "",
 			"blend_weight": "",
 			"start_delay": "",
@@ -16654,6 +16724,323 @@
 							"color": -1,
 							"uniform": true,
 							"interpolation": "catmullrom"
+						}
+					]
+				}
+			}
+		},
+		{
+			"uuid": "52c3759c-e4d4-0d7f-65d4-1d49c5555be3",
+			"name": "car_idle",
+			"loop": "hold",
+			"override": true,
+			"length": 0,
+			"snapping": 20,
+			"selected": false,
+			"anim_time_update": "",
+			"blend_weight": "",
+			"start_delay": "",
+			"loop_delay": "",
+			"animators": {
+				"e38e8c0d-f06d-5ccd-b11b-7dae53fcea75": {
+					"name": "Car",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "-14.5",
+									"z": "0"
+								}
+							],
+							"uuid": "dee28c81-91ca-94ff-74e1-92f940c56557",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"c3ce6171-a617-ecfd-f233-a8499e0b6817": {
+					"name": "CarCameraAnchor",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "-14.5",
+									"z": "0"
+								}
+							],
+							"uuid": "c52ab6c4-cc36-a951-5c28-ff9f0f9595af",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				}
+			}
+		},
+		{
+			"uuid": "bf397c00-45da-6a96-d3fb-1aa9c5d058c6",
+			"name": "car_engine",
+			"loop": "loop",
+			"override": false,
+			"length": 0.2,
+			"snapping": 20,
+			"selected": true,
+			"anim_time_update": "",
+			"blend_weight": "",
+			"start_delay": "",
+			"loop_delay": "",
+			"animators": {
+				"774a0876-6b80-6193-06e8-58b202b18d14": {
+					"name": "CarBody",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0.25",
+									"z": "0"
+								}
+							],
+							"uuid": "9c9359af-a1c7-6c8a-efb0-f49050962be9",
+							"time": 0,
+							"color": -1,
+							"interpolation": "catmullrom"
+						},
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "7df4bbb2-37fd-e4d4-1aee-ebe0b6dbaf0a",
+							"time": 0.1,
+							"color": -1,
+							"interpolation": "catmullrom"
+						},
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0.25",
+									"z": "0"
+								}
+							],
+							"uuid": "d5edc01f-97e0-9b61-2dac-f0572c65d250",
+							"time": 0.2,
+							"color": -1,
+							"interpolation": "catmullrom"
+						}
+					]
+				},
+				"c3ce6171-a617-ecfd-f233-a8499e0b6817": {
+					"name": "CarCameraAnchor",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0.25",
+									"z": "0"
+								}
+							],
+							"uuid": "26adf8de-6cb4-a918-e58a-32729d435454",
+							"time": 0,
+							"color": -1,
+							"interpolation": "catmullrom"
+						},
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "9dce2deb-9bbf-5f61-ceb0-fef57856d7c6",
+							"time": 0.1,
+							"color": -1,
+							"interpolation": "catmullrom"
+						},
+						{
+							"channel": "position",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0.25",
+									"z": "0"
+								}
+							],
+							"uuid": "d6102b59-a28a-7838-92cd-11c02aabb3bc",
+							"time": 0.2,
+							"color": -1,
+							"interpolation": "catmullrom"
+						}
+					]
+				}
+			}
+		},
+		{
+			"uuid": "d44e37d7-fc91-7b53-d748-dc67932e6719",
+			"name": "car_move",
+			"loop": "loop",
+			"override": false,
+			"length": 1,
+			"snapping": 20,
+			"selected": false,
+			"anim_time_update": "",
+			"blend_weight": "",
+			"start_delay": "",
+			"loop_delay": "",
+			"animators": {
+				"3ce104e9-1399-cd8f-18b9-0c85ff0dcfcc": {
+					"name": "CarWheelFR",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "ee7c0c6e-0637-5839-0922-3b31262719a2",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "180",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "ecb1c363-b538-65ef-077c-407f79d4f059",
+							"time": 1,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"7c6df2ad-0315-809b-76f4-a1f6eaa9ecb3": {
+					"name": "CarWheelFL",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "3eaa6875-221c-a469-43ff-3b9d72eed516",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "180",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "605168d7-401d-0ae7-7620-4dd4268b5fcd",
+							"time": 1,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"a6cfc499-0d4e-155b-efd7-2092a08a047c": {
+					"name": "CarWheelRR",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "0c4f5bd9-9a22-7dc9-0326-b8f8b88c588f",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "180",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "50f71256-5519-9181-4d19-fc67ed345161",
+							"time": 1,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"25963230-3a91-5a25-ae62-136b3b6b8e1c": {
+					"name": "CarWheelRL",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "0",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "162d7016-d92c-b2f0-c4e7-f7b53b009f16",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "180",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "9bb62f1d-ec87-b8d2-26a0-fbc3b8d59097",
+							"time": 1,
+							"color": -1,
+							"interpolation": "linear"
 						}
 					]
 				}

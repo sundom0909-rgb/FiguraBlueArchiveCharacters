@@ -340,7 +340,101 @@ BlueArchiveCharacter = {
         }
 
         instance.arms = {
+            callbacks = {
+                onArmStateChanged = function (self, right, left)
+                    if left == 2 and right == 1 then
+                        if self.parent.car.isRidingCar then
+                            return {right = 5, left = 4}
+                        end
+                    elseif left == 1 and right == 2 then
+                        if self.parent.car.isRidingCar then
+                            return {right = 4, left = 5}
+                        end
+                    elseif left == 0 and right == 0 then
+                        if self.parent.car ~= nil and self.parent.car.isRidingCar then
+                            return {right = 4, left = 4}
+                        end
+                    end
+                end;
 
+                onAdditionalRightArmProcess = function (self, state)
+                    if state == 4 then
+                        --乗車中
+                        events.TICK:remove("right_arm_tick")
+                        events.TICK:register(function ()
+                            self.parent.arms:processArmWingCount()
+                        end, "right_arm_tick")
+                        events.RENDER:remove("right_arm_render")
+                        events.RENDER:register(function (delta, context)
+                            local isLeftHanded = player:isLeftHanded()
+                            local activeHand = player:getActiveHand()
+                            local isUsingSpyglass = player:getActiveItem().id == "minecraft:spyglass" and ((activeHand == "MAIN_HAND" and not isLeftHanded) or (activeHand == "OFF_HAND" and isLeftHanded))
+                            local isSwingingArm = (player:isSwingingArm() and not isLeftHanded) or isUsingSpyglass
+                            models.models.main.Avatar.UpperBody.Arms.RightArm:setParentType((context == "FIRST_PERSON" or isSwingingArm) and "RightArm" or "Body")
+                            local handleRot = (self.parent.car.handleRot - self.parent.car.handleRotPrev) * delta + self.parent.car.handleRot
+                            models.models.main.Avatar.UpperBody.Arms.RightArm:setRot(isSwingingArm and vectors.vec3(isUsingSpyglass and -10 or 0, 0, 0) or vectors.vec3(55 + handleRot * 0.25, 0, -15))
+                        end, "right_arm_render")
+                    elseif state == 5 then
+                        --乗車中に銃を持っているとき
+                        events.TICK:remove("right_arm_tick")
+                        events.TICK:register(function ()
+                            self.parent.arms:processArmWingCount()
+                            if player:isSwingingArm() and not player:isLeftHanded() then
+                                models.models.main.Avatar.UpperBody.Arms.RightArm:setParentType("RightArm")
+                            else
+                                models.models.main.Avatar.UpperBody.Arms.RightArm:setParentType("Body")
+                            end
+                            if player:getActiveItem().id == "minecraft:crossbow" then
+                                self.parent.arms:setArmState(3, 3)
+                            end
+                        end, "right_arm_tick")
+                        events.RENDER:remove("right_arm_render")
+                        events.RENDER:register(function (delta)
+                            local headRot = vanilla_model.HEAD:getOriginRot()
+                            models.models.main.Avatar.UpperBody.Arms.RightArm:setRot(player:isSwingingArm() and not player:isLeftHanded() and vectors.vec3(60, 0, 0) or vectors.vec3(headRot.x + math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * 2.5 + 80, headRot.y, 0))
+                        end, "right_arm_render")
+                    end
+                end;
+
+                onAdditionalLeftArmProcess = function (self, state)
+                    if state == 4 then
+                        --乗車中
+                        events.TICK:remove("left_arm_tick")
+                        events.TICK:register(function ()
+                            self.parent.arms:processArmWingCount()
+                        end, "left_arm_tick")
+                        events.RENDER:remove("left_arm_render")
+                        events.RENDER:register(function (delta, context)
+                            local isLeftHanded = player:isLeftHanded()
+                            local activeHand = player:getActiveHand()
+                            local isUsingSpyglass = player:getActiveItem().id == "minecraft:spyglass" and ((activeHand == "MAIN_HAND" and isLeftHanded) or (activeHand == "OFF_HAND" and not isLeftHanded))
+                            local isSwingingArm = (player:isSwingingArm() and isLeftHanded) or isUsingSpyglass
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm:setParentType((context == "FIRST_PERSON" or isSwingingArm) and "LeftArm" or "Body")
+                            local handleRot = (self.parent.car.handleRot - self.parent.car.handleRotPrev) * delta + self.parent.car.handleRot
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm:setRot(isSwingingArm and vectors.vec3(isUsingSpyglass and -10 or 0, 0, 0) or vectors.vec3(55 + handleRot * -0.25, 0, 15))
+                        end, "left_arm_render")
+                    elseif state == 5 then
+                        --乗車中に銃を持っているとき
+                        events.TICK:remove("left_arm_tick")
+                        events.TICK:register(function ()
+                            self.parent.arms:processArmWingCount()
+                            if player:isSwingingArm() and player:isLeftHanded() then
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm:setParentType("LeftArm")
+                            else
+                                models.models.main.Avatar.UpperBody.Arms.LeftArm:setParentType("Body")
+                            end
+                            if player:getActiveItem().id == "minecraft:crossbow" then
+                                self.parent.arms:setArmState(3, 3)
+                            end
+                        end, "left_arm_tick")
+                        events.RENDER:remove("left_arm_render")
+                        events.RENDER:register(function (delta)
+                            local headRot = vanilla_model.HEAD:getOriginRot()
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm:setRot(player:isSwingingArm() and player:isLeftHanded() and vectors.vec3(60, 0, 0) or vectors.vec3(headRot.x + math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * -2.5 + 80, headRot.y, 0))
+                        end, "left_arm_render")
+                    end
+                end;
+            };
         }
 
         instance.skirt = {
@@ -623,7 +717,7 @@ BlueArchiveCharacter = {
                                 modelPart:setOffsetPivot(0, 0, -2)
                             end
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 107, true)
-                            self.costume.costumes[2].engineSound = sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.bee.loop_aggressive"), player:getPos(), 0.5, 1, true)
+                            self.exSkill.exSkills[2].engineSound = sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.bee.loop_aggressive"), player:getPos(), 0.5, 1, true)
                         end;
 
                         onAnimationTick = function (self, tick)
@@ -656,8 +750,8 @@ BlueArchiveCharacter = {
                             elseif tick == 125 then
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.spyglass.use"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head), 0.5, 1.5)
                             elseif tick == 142 then
-                                self.costume.costumes[2].engineSound:stop()
-                                self.costume.costumes[2].engineSound = nil
+                                self.exSkill.exSkills[2].engineSound:stop()
+                                self.exSkill.exSkills[2].engineSound = nil
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.iron_door.open"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Car), 0.5, 0.75)
                             elseif tick == 144 then
                                 self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED", 12, true)
@@ -691,8 +785,8 @@ BlueArchiveCharacter = {
                                         particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), self.parent.modelUtils.getModelWorldPos(modelPart)):setScale(particleScale):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1 + 180, self.exSkill.exSkills[2].carPosPrev:copy():sub(carPos):normalized():scale(0.5), 0, 1, 0)):setGravity(math.random() * -0.03):setLifetime(math.random(8, 16))
                                     end
                                 end
-                                self.costume.costumes[2].engineSound:setPos(self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Car))
-                                self.costume.costumes[2].engineSound:setPitch(0.2 + carPos:copy():sub(self.exSkill.exSkills[2].carPosPrev):length() * 0.01)
+                                self.exSkill.exSkills[2].engineSound:setPos(self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Car))
+                                self.exSkill.exSkills[2].engineSound:setPitch(0.2 + carPos:copy():sub(self.exSkill.exSkills[2].carPosPrev):length() * 0.01)
                                 self.exSkill.exSkills[2].carPosPrev = carPos
                             end
                             if tick >= 72 and tick <= 95 then
@@ -708,7 +802,7 @@ BlueArchiveCharacter = {
                                 end
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.gravel.hit"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Car), 0.3, 0.5)
                             elseif tick >= 122 and tick < 142 then
-                                self.costume.costumes[2].engineSound:setVolume(tick * -0.025 + 3.55)
+                                self.exSkill.exSkills[2].engineSound:setVolume(tick * -0.025 + 3.55)
                             end
                         end;
 
@@ -727,9 +821,9 @@ BlueArchiveCharacter = {
                                 for _, modelPart in ipairs(models.models.main.Avatar.Head.Ears:getChildren()) do
                                     modelPart:setOffsetPivot()
                                 end
-                                if self.costume.costumes[2].engineSound ~= nil then
-                                    self.costume.costumes[2].engineSound:stop()
-                                    self.costume.costumes[2].engineSound = nil
+                                if self.exSkill.exSkills[2].engineSound ~= nil then
+                                    self.exSkill.exSkills[2].engineSound:stop()
+                                    self.exSkill.exSkills[2].engineSound = nil
                                 end
                             end
                         end;
@@ -737,6 +831,10 @@ BlueArchiveCharacter = {
 
                     ---前ティックの車の位置
                     carPosPrev = vectors.vec3();
+
+                    ---車のエンジン音のインスタンス
+                    ---@type Sound|nil
+                    engineSound = nil;
                 };
             };
         }
@@ -767,10 +865,6 @@ BlueArchiveCharacter = {
                     ---この衣装が初期化されたかどうか
                     ---@type boolean
                     isInitialized = false;
-
-                    ---車のエンジン音のインスタンス
-                    ---@type Sound|nil
-                    engineSound = nil;
                 };
             };
 
@@ -906,7 +1000,11 @@ BlueArchiveCharacter = {
                         elseif type == "QUESTION" then
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "ANXIOUS", duration, true)
                         elseif type == "SWEAT" then
-                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", duration, true)
+                            if models.models.ex_skill_2.Car:getColor().x == 1 then
+                                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "ANXIOUS", duration, true)
+                            else
+                                self.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "SMALL", duration, true)
+                            end
                         end
                     end
                 end;
@@ -929,10 +1027,11 @@ BlueArchiveCharacter = {
                     end
                 end;
 
-                onAfterModelCopy = function (self)
+                onAfterModelCopy = function ()
                     if models.models.main.Avatar.Head.Allay ~= nil then
                         models.models.main.Avatar.Head.Allay:setVisible(true)
                     end
+                    models.script_head_block.Head:setRot()
                     models.script_head_block.Head:setPrimaryRenderType("CUTOUT")
                 end;
             };
@@ -990,7 +1089,7 @@ BlueArchiveCharacter = {
         }
 
         instance.actionWheel = {
-            isVehicleOptionEnabled = false;
+            isVehicleOptionEnabled = true;
         }
 
         instance.physics = {

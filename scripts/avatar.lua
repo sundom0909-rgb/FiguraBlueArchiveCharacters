@@ -32,6 +32,7 @@
 ---@field public hypixelZombies HypixelZombies
 ---@field public updateChecker UpdateChecker
 ---@field public allay Allay
+---@field public car Car
 ---@field public instantiate fun(class: table, super: table, ...: any) クラスをインスタンス化する
 
 Avatar = {
@@ -191,6 +192,10 @@ Avatar = {
 			require("scripts.character_scripts.allay")
 			instance.allay = Allay.new(instance)
 			instance.allay:init()
+
+			require("scripts.character_scripts.car")
+			instance.car = Car.new(instance)
+			instance.car:init()
 
 			--SCRIPT_INITイベントを実行
 			instance.avatarEvents.SCRIPT_INIT:fire()
