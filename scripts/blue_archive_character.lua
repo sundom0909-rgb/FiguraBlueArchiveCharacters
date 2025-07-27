@@ -788,6 +788,14 @@ BlueArchiveCharacter = {
                     for _, modelPart in ipairs({models.models.main.Avatar.Head.CSwimsuitH, models.models.main.Avatar.UpperBody.Body.Tail.Tail4.CSwimsuitT2}) do
                         modelPart:setVisible(true)
                     end
+                    self.physics.physicData[2].x.vertical.min = 0
+                    self.physics.physicData[2].x.vertical.neutral = 0
+                    self.physics.physicData[2].x.vertical.bodyX.min = 0
+                    self.physics.physicData[2].x.vertical.bodyY.min = 0
+                    self.physics.physicData[2].x.vertical.bodyRot.min = 0
+                    self.physics.physicData[2].x.horizontal.min = 0
+                    self.physics.physicData[2].x.horizontal.neutral = 0
+                    self.physics.physicData[2].x.horizontal.bodyX.min = 0
                     if not self.costume.costumes[2].isInitialized then
                         models.models.main.Avatar.Head.CSwimsuitH.SunVisor.AllayPin:setPrimaryTexture("RESOURCE", "minecraft:textures/entity/allay/allay.png")
                         self.costume.costumes[2].isInitialized = true
@@ -808,11 +816,24 @@ BlueArchiveCharacter = {
                     for _, modelPart in ipairs({models.models.main.Avatar.Head.CSwimsuitH, models.models.main.Avatar.UpperBody.Body.Tail.Tail4.CSwimsuitT2}) do
                         modelPart:setVisible(false)
                     end
+                    self.physics.physicData[2].x.vertical.min = 5
+                    self.physics.physicData[2].x.vertical.neutral = 5
+                    self.physics.physicData[2].x.vertical.bodyX.min = 5
+                    self.physics.physicData[2].x.vertical.bodyY.min = 5
+                    self.physics.physicData[2].x.vertical.bodyRot.min = 5
+                    self.physics.physicData[2].x.horizontal.min = 5
+                    self.physics.physicData[2].x.horizontal.neutral = 5
+                    self.physics.physicData[2].x.horizontal.bodyX.min = 5
                 end;
 
                 onArmorChange = function (self, parts, isVisible)
-                    if parts == "HELMET" and self.parent.allay.perchCount <= 0 and models.models.main.Avatar.Head.Allay ~= nil then
-                        models.models.main.Avatar.Head.Allay:setPos(0, isVisible and 33 or 32, 3)
+                    if parts == "HELMET" then
+                        if self.parent.allay.perchCount <= 0 and models.models.main.Avatar.Head.Allay ~= nil then
+                            models.models.main.Avatar.Head.Allay:setPos(0, isVisible and 33 or 32, 3)
+                        end
+                        if self.parent.costume.currentCostume == 2 then
+                            models.models.main.Avatar.Head.CSwimsuitH.SunVisor:setVisible(not isVisible)
+                        end
                     elseif parts == "CHEST_PLATE" then
                         if isVisible then
                             models.models.main.Avatar.UpperBody.Body.Hairs.FrontHair:setPos(0, 0, -1)
@@ -823,7 +844,7 @@ BlueArchiveCharacter = {
                             end
                         end
                     elseif parts == "LEGGINGS" then
-                        if isVisible then
+                        if isVisible or self.parent.costume.currentCostume == 2 then
                             models.models.main.Avatar.UpperBody.Body.Skirt:setVisible(false)
                             self.physics.physicData[1].x.vertical.neutral = 0
                             self.physics.physicData[1].x.vertical.max = 0
@@ -844,7 +865,7 @@ BlueArchiveCharacter = {
                         end
                     end
 
-                    if self.parent.armor.isArmorVisible.chestplate or self.parent.armor.isArmorVisible.leggings then
+                    if self.parent.armor.isArmorVisible.chestplate or self.parent.armor.isArmorVisible.leggings or self.parent.costume.currentCostume == 2 then
                         self.physics.physicData[2].x.vertical.min = 0
                         self.physics.physicData[2].x.vertical.neutral = 0
                         self.physics.physicData[2].x.vertical.bodyX.min = 0
@@ -853,7 +874,6 @@ BlueArchiveCharacter = {
                         self.physics.physicData[2].x.horizontal.min = 0
                         self.physics.physicData[2].x.horizontal.neutral = 0
                         self.physics.physicData[2].x.horizontal.bodyX.min = 0
-
                     else
                         self.physics.physicData[2].x.vertical.min = 5
                         self.physics.physicData[2].x.vertical.neutral = 5
