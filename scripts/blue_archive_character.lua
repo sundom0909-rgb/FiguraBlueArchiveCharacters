@@ -612,11 +612,18 @@ BlueArchiveCharacter = {
 
                     callbacks = {
                         onPreAnimation = function (self)
+                            for _, modelPart in ipairs(models.models.main.Avatar.Head.Ears:getChildren()) do
+                                modelPart:setOffsetPivot(0, 0, -2)
+                            end
                             self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 107, true)
                         end;
 
                         onAnimationTick = function (self, tick)
-                            if tick == 107 then
+                            if tick == 73 then
+                                for _, modelPart in ipairs(models.models.main.Avatar.Head.Ears:getChildren()) do
+                                    modelPart:setOffsetPivot()
+                                end
+                            elseif tick == 107 then
                                 self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "CLOSED", 12, true)
                             elseif tick == 119 then
                                 self.parent.faceParts:setEmotion("NARROW", "NARROW", "CLOSED", 25, true)
@@ -633,8 +640,13 @@ BlueArchiveCharacter = {
                             end
                         end;
 
-                        onPostAnimation = function ()
+                        onPostAnimation = function (_, forcedStop)
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Mic:setVisible(false)
+                            if forcedStop then
+                                for _, modelPart in ipairs(models.models.main.Avatar.Head.Ears:getChildren()) do
+                                    modelPart:setOffsetPivot()
+                                end
+                            end
                         end;
                     };
                 };
