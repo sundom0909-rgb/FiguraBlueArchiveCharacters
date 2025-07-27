@@ -594,7 +594,7 @@ BlueArchiveCharacter = {
 
                     formationType = "STRIKER";
 
-                    models = {models.models.ex_skill_2.Car, };
+                    models = {models.models.ex_skill_2.Car, models.models.main.Avatar.Head.Background};
 
                     animations = {"main", "costume_swimsuit", "ex_skill_2"};
 
