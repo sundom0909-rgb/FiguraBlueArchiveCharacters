@@ -37,6 +37,7 @@
 
 ---@alias BlueArchiveCharacter.Costumes
 ---| "DEFAULT" # デフォルト衣装
+---| "SWIMSUIT" # 水着衣装
 
 --[[ ******************************** ]]
 
@@ -950,25 +951,35 @@ BlueArchiveCharacter = {
                     end
                 end;
 
-                onPhase1 = function (_, dummyAvatar)
+                onPhase1 = function (_, dummyAvatar, costume)
                     dummyAvatar.Head.Ears.RightEar:setRot(-60, -20, 0)
                     dummyAvatar.Head.Ears.LeftEar:setRot(-60, 20, 0)
                     dummyAvatar.UpperBody.Body.Hairs.FrontHair:setRot(35, 0, 0)
-                    dummyAvatar.UpperBody.Body.Hairs.BackHair:setRot()
-                    dummyAvatar.UpperBody.Body.Skirt:setRot(45, 0, 0)
                     dummyAvatar.UpperBody.Body.Tail:setRot(10, 0, 0)
-                    for _, modelPart in ipairs({dummyAvatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve, dummyAvatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve}) do
-                        modelPart:setRot()
-                        modelPart:setOffsetPivot()
+                    if costume == "DEFAULT" then
+                        dummyAvatar.UpperBody.Body.Hairs.BackHair:setRot()
+                        dummyAvatar.UpperBody.Body.Skirt:setRot(45, 0, 0)
+                        for _, modelPart in ipairs({dummyAvatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve, dummyAvatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftSleeve}) do
+                            modelPart:setRot()
+                            modelPart:setOffsetPivot()
+                        end
+                    elseif costume == "SWIMSUIT" then
+                        dummyAvatar.Head:setPrimaryRenderType("CUTOUT")
+                        dummyAvatar.Head.CSwimsuitH.HairTail:setRot(30, 0, -10)
                     end
                 end;
 
                 onPhase2 = function (_, dummyAvatar, costume)
-                    dummyAvatar.UpperBody.Body.Hairs.FrontHair:setRot(15, 0, 0)
-                    dummyAvatar.UpperBody.Body.Hairs.BackHair:setRot(-20, 0, 0)
-                    dummyAvatar.UpperBody.Body.Skirt:setRot(25, 0, 0)
                     dummyAvatar.UpperBody.Body.Tail:setRot(80, 0, -10)
-                    dummyAvatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve:setRot(-40, 0, 0)
+                    if costume == "DEFAULT" then
+                        dummyAvatar.UpperBody.Body.Hairs.FrontHair:setRot(15, 0, 0)
+                        dummyAvatar.UpperBody.Body.Hairs.BackHair:setRot(-20, 0, 0)
+                        dummyAvatar.UpperBody.Body.Skirt:setRot(25, 0, 0)
+                        dummyAvatar.UpperBody.Arms.RightArm.RightArmBottom.RightSleeve:setRot(-40, 0, 0)
+                    elseif costume == "SWIMSUIT" then
+                        dummyAvatar.UpperBody.Body.Hairs.FrontHair:setRot(0, 0, 0)
+                        dummyAvatar.Head.CSwimsuitH.HairTail:setRot(-20, 0, -5)
+                    end
                 end;
             };
         }
