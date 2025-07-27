@@ -594,7 +594,7 @@ BlueArchiveCharacter = {
 
                     formationType = "STRIKER";
 
-                    models = {models.models.ex_skill_2.Car};
+                    models = {models.models.ex_skill_2.Car, };
 
                     animations = {"main", "costume_swimsuit", "ex_skill_2"};
 
@@ -625,7 +625,16 @@ BlueArchiveCharacter = {
                         end;
 
                         onAnimationTick = function (self, tick)
-                            if tick == 70 then
+                            if tick == 50 and host:isHost() then
+                                events.RENDER:register(function ()
+                                    models.models.ex_skill_2.Gui.TransitionFilter:setOpacity(models.models.ex_skill_2.Gui.TransitionFilterOpacity:getAnimScale().x)
+                                end, "ex_skill_2_transition_render")
+                                models.models.ex_skill_2.Gui.TransitionFilter:setScale(client:getScaledWindowSize():augmented(1))
+                                models.models.ex_skill_2.Gui:setVisible(true)
+                            elseif tick == 62 and host:isHost() then
+                                events.RENDER:remove("ex_skill_2_transition_render")
+                                models.models.ex_skill_2.Gui:setVisible(false)
+                            elseif tick == 70 then
                                 for _, modelPart in ipairs({models.models.ex_skill_2.Car.CarWheelFR.WheelFREffect, models.models.ex_skill_2.Car.CarWheelFL.WheelFLEffect, models.models.ex_skill_2.Car.CarWheelRR.WheelRREffect, models.models.ex_skill_2.Car.CarWheelRL.WheelRLEffect}) do
                                     modelPart:setVisible(true)
                                 end
@@ -688,6 +697,10 @@ BlueArchiveCharacter = {
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Mic:setVisible(false)
                             self.exSkill.exSkills[2].carPosPrev = vectors.vec3()
                             if forcedStop then
+                                if host:isHost() then
+                                    events.RENDER:remove("ex_skill_2_transition_render")
+                                    models.models.ex_skill_2.Gui:setVisible(false)
+                                end
                                 for _, modelPart in ipairs({models.models.ex_skill_2.Car.CarWheelFR.WheelFREffect, models.models.ex_skill_2.Car.CarWheelFL.WheelFLEffect, models.models.ex_skill_2.Car.CarWheelRR.WheelRREffect, models.models.ex_skill_2.Car.CarWheelRL.WheelRLEffect}) do
                                     modelPart:setVisible(false)
                                 end
