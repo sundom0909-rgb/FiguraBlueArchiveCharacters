@@ -5671,7 +5671,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
-									"selected": false,
+									"selected": true,
 									"children": [
 										"8831734e-ce90-e6bb-8368-e011a468277d",
 										"cea7603d-ae80-e4e7-6f93-905551a79117",
@@ -6049,11 +6049,11 @@
 			"uuid": "4ad021e9-2857-4e55-337b-f61da0762800",
 			"export": true,
 			"mirror_uv": false,
-			"isOpen": true,
+			"isOpen": false,
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
-			"selected": true,
+			"selected": false,
 			"children": [
 				"8b47234a-9700-3da5-47db-8f75a6aab837",
 				"c2175bbe-2cfe-5bd6-da67-98c3b6cd21ee",
@@ -9941,7 +9941,7 @@
 								}
 							],
 							"uuid": "86710082-70b7-5b81-8315-fe0f15d2b16d",
-							"time": 8.95,
+							"time": 9.1,
 							"color": -1,
 							"interpolation": "catmullrom"
 						},
@@ -10045,7 +10045,7 @@
 								}
 							],
 							"uuid": "484fdc8e-d459-3df3-ba6b-4d55091ff4b0",
-							"time": 8.95,
+							"time": 9.1,
 							"color": -1,
 							"interpolation": "catmullrom"
 						},
