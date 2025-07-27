@@ -653,6 +653,13 @@ BlueArchiveCharacter = {
                                 self.parent.faceParts:setEmotion("ANGRY", "ANGRY", "ANXIOUS", 40, true)
                             end
 
+                            if tick <= 54 then
+                                local bodyYaw = player:getBodyYaw()
+                                local avatarPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar)
+                                local velocity = vectors.rotateAroundAxis(bodyYaw * -1, 0, 0, -0.5, 0, 1, 0)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:cloud"), vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 8 - 4, math.random() * 4, 10, 0, 1, 0):add(avatarPos)):setColor(1, 1, 1, 0.25):setVelocity(velocity)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:end_rod"), vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 1 - 0.5, math.random() * 1 + 1, math.random() * 1 + 1, 0, 1, 0):add(avatarPos)):setScale(0.25):setVelocity(velocity:copy():scale(-1.5)):setColor(0.988, 1, 0.824)
+                            end
                             if tick <= 95 then
                                 local carPos = models.models.ex_skill_2.Car:getAnimPos()
                                 local particleScale = tick >= 68 and 5 or 2
@@ -676,9 +683,10 @@ BlueArchiveCharacter = {
                             end
                         end;
 
-                        onPostAnimation = function (_, forcedStop)
+                        onPostAnimation = function (self, forcedStop)
                             events.RENDER:remove("ex_skill_2_render")
                             models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.Mic:setVisible(false)
+                            self.exSkill.exSkills[2].carPosPrev = vectors.vec3()
                             if forcedStop then
                                 for _, modelPart in ipairs({models.models.ex_skill_2.Car.CarWheelFR.WheelFREffect, models.models.ex_skill_2.Car.CarWheelFL.WheelFLEffect, models.models.ex_skill_2.Car.CarWheelRR.WheelRREffect, models.models.ex_skill_2.Car.CarWheelRL.WheelRLEffect}) do
                                     modelPart:setVisible(false)
@@ -691,7 +699,7 @@ BlueArchiveCharacter = {
                     };
 
                     ---前ティックの車の位置
-                    carPosPrev = vectors.vec3(0, 0, 0);
+                    carPosPrev = vectors.vec3();
                 };
             };
         }

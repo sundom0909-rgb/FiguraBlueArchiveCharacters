@@ -6053,7 +6053,7 @@
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
-			"selected": false,
+			"selected": true,
 			"children": [
 				"8b47234a-9700-3da5-47db-8f75a6aab837",
 				"c2175bbe-2cfe-5bd6-da67-98c3b6cd21ee",
@@ -10754,7 +10754,7 @@
 							"data_points": [
 								{
 									"x": "0",
-									"y": "130",
+									"y": "110",
 									"z": "0"
 								}
 							],
@@ -10926,9 +10926,9 @@
 									"z": "-311"
 								},
 								{
-									"x": "3",
+									"x": "6",
 									"y": "29.1",
-									"z": "-363"
+									"z": "-358"
 								}
 							],
 							"uuid": "e48979a5-8e8f-dc27-fcd5-3c0cc48a04bf",
@@ -10940,14 +10940,14 @@
 							"channel": "position",
 							"data_points": [
 								{
-									"x": "3",
+									"x": "6",
 									"y": "29.1",
-									"z": "-724"
+									"z": "-719"
 								},
 								{
 									"x": "-142.5",
 									"y": "20",
-									"z": "-896"
+									"z": "-894"
 								}
 							],
 							"uuid": "bb7eafdf-05a4-ba51-62b9-9a30d0cd4b93",
