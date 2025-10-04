@@ -10,7 +10,7 @@
 
 ![サムネイル](../README_images/thumbnail.jpg)
 
-（上記画像をクリックすると紹介映像が見れます。）
+https://youtu.be/JrPhLR34mLA
 
 こちらもどうぞ：
 - [FBAC動画 再生リスト](https://youtube.com/playlist?list=PLTN-ereqPxq9N_3SI0zvIE-f6MhBpZ52U&si=AOZ1et55lUzqA-lm)
@@ -19,10 +19,9 @@
 <!-- $inject(creation_status) -->
 
 ## お知らせ
-現在FBACの作成を一時停止し、FBAC生徒を用いた動画作成に注力しています。作業量が多いので公開までお時間をいただきますがよろしくお願いします。
+マインクラフトの世界のシャーレの日常を再現した動画を公開しました！
 
-![FBAC動画プロジェクト](../README_images/fbac_video_project.jpg)
-
+https://www.youtube.com/watch?v=GfJJ7iNA_Bs
 
 ## 特徴
 - Exスキルのカットインを再現しています。
