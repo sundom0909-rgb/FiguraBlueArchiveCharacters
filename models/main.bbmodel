@@ -2833,8 +2833,8 @@
 					"texture": 0
 				},
 				"down": {
-					"uv": [0, 0, 0, 0],
-					"texture": null
+					"uv": [22, 30, 23, 31],
+					"texture": 0
 				}
 			},
 			"type": "cube",
@@ -3306,7 +3306,7 @@
 			"uuid": "8dfd1710-a556-c0cd-3991-08891579d7f2"
 		},
 		{
-			"name": "PeroroRghtFoot",
+			"name": "PeroroRightFoot",
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
@@ -3317,7 +3317,7 @@
 			"to": [-1, 13, 4.25],
 			"autouv": 0,
 			"color": 5,
-			"origin": [-3, 11, 3.75],
+			"origin": [-2, 13, 4],
 			"faces": {
 				"north": {
 					"uv": [22, 30, 23, 31],
@@ -3336,8 +3336,8 @@
 					"texture": 0
 				},
 				"up": {
-					"uv": [0, 0, 0, 0],
-					"texture": null
+					"uv": [22, 30, 23, 31],
+					"texture": 0
 				},
 				"down": {
 					"uv": [22, 30, 23, 31],
@@ -3348,7 +3348,7 @@
 			"uuid": "0993d39d-ebcd-dc50-b62a-fcbb8ec0274f"
 		},
 		{
-			"name": "PeroroRghtFoot",
+			"name": "PeroroLeftFoot",
 			"box_uv": false,
 			"rescale": false,
 			"locked": false,
@@ -3359,7 +3359,7 @@
 			"to": [3, 13, 4.25],
 			"autouv": 0,
 			"color": 5,
-			"origin": [3, 11, 3.75],
+			"origin": [2, 13, 4],
 			"faces": {
 				"north": {
 					"uv": [23, 30, 22, 31],
@@ -3378,8 +3378,8 @@
 					"texture": 0
 				},
 				"up": {
-					"uv": [0, 0, 0, 0],
-					"texture": null
+					"uv": [22, 30, 23, 31],
+					"texture": 0
 				},
 				"down": {
 					"uv": [23, 30, 22, 31],
@@ -4928,7 +4928,7 @@
 									"uuid": "4e8bd970-99ba-84c1-7b9b-edd7983d0021",
 									"export": true,
 									"mirror_uv": false,
-									"isOpen": false,
+									"isOpen": true,
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
@@ -4936,18 +4936,32 @@
 									"children": [
 										"9713d783-e18a-ff20-bb74-8be37b812139",
 										{
-											"name": "PeroroTips",
-											"origin": [-0.75, 22, 4.5],
+											"name": "PeroroTip1",
+											"origin": [-0.25, 22, 4.625],
 											"color": 0,
 											"uuid": "8c50f2d9-bd32-15f0-378b-203054a5f2ca",
 											"export": true,
 											"mirror_uv": false,
-											"isOpen": true,
+											"isOpen": false,
 											"locked": false,
 											"visibility": true,
 											"autouv": 0,
 											"selected": false,
-											"children": ["49933157-7141-fcd4-83ad-60b032e405dd", "ede595ae-fa90-12a1-954c-3f3aa7fb1d90"]
+											"children": ["49933157-7141-fcd4-83ad-60b032e405dd"]
+										},
+										{
+											"name": "PeroroTip2",
+											"origin": [0.5, 22, 4.375],
+											"color": 0,
+											"uuid": "a972be9e-1c5e-557d-b617-874c9aab431b",
+											"export": true,
+											"mirror_uv": false,
+											"isOpen": false,
+											"locked": false,
+											"visibility": true,
+											"autouv": 0,
+											"selected": false,
+											"children": ["ede595ae-fa90-12a1-954c-3f3aa7fb1d90"]
 										},
 										{
 											"name": "PeroroFace",
@@ -4973,12 +4987,12 @@
 										},
 										{
 											"name": "PeroroRightWing",
-											"origin": [-4.75, 18.5, 2.5],
+											"origin": [-3.5, 19, 2.75],
 											"color": 0,
 											"uuid": "ddcd063d-dd88-d789-b2c6-acd7fecfc25e",
 											"export": true,
 											"mirror_uv": false,
-											"isOpen": false,
+											"isOpen": true,
 											"locked": false,
 											"visibility": true,
 											"autouv": 0,
@@ -4987,7 +5001,7 @@
 										},
 										{
 											"name": "PeroroLeftWing",
-											"origin": [4.75, 18.5, 2.5],
+											"origin": [3.75, 19, 2.75],
 											"color": 0,
 											"uuid": "8a6616e4-3200-976d-d09e-9e7006b71393",
 											"export": true,
@@ -5068,7 +5082,7 @@
 													"locked": false,
 													"visibility": true,
 													"autouv": 0,
-													"selected": false,
+													"selected": true,
 													"children": [
 														"9ed00586-3228-d720-12b0-e27f0a962bfc",
 														"d04567bb-c723-dfa6-8e44-d0c54c6e39c4",
@@ -5225,7 +5239,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
-									"selected": true,
+									"selected": false,
 									"children": ["57623405-a975-538d-2b89-089ea7ea6c94", "cf66c9af-7593-7efe-c6f6-ea0a47fbf233", "f88ae293-fc58-5a27-04ad-4d76b16c402d"]
 								},
 								{

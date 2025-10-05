@@ -427,7 +427,380 @@ BlueArchiveCharacter = {
 
         instance.physics = {
             physicData = {
+                {
+                    models = {models.models.main.Avatar.Head.HairTails.RightHairTail, models.models.main.Avatar.Head.HairTails.LeftHairTail};
 
+                    x = {
+                        vertical = {
+                            min = -180;
+                            neutral = -5;
+                            max = 90;
+                            headRotMultiplayer = -1;
+                            sneakOffset = -30;
+
+                            headX = {
+                                multiplayer = -80;
+                                min = -90;
+                                max = 90;
+                            };
+
+                            headRot = {
+                                multiplayer = 0.05;
+                                min = -90;
+                                max = 0;
+                            };
+
+                            bodyY = {
+                                multiplayer = 80;
+                                min = -180;
+                                max = 0;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -45;
+                            neutral = 45;
+                            max = 45;
+
+                            bodyX = {
+                                multiplayer = -80;
+                                min = -45;
+                                max = 45;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.Head.HairTails.RightHairTail.RightHairTailZPivot};
+
+                    z = {
+                        vertical = {
+                            min = -32.5;
+                            neutral = 20;
+                            max = 90;
+
+                            headX = {
+                                multiplayer = -20;
+                                min = 0;
+                                max = 20;
+                            };
+
+                            headZ = {
+                                multiplayer = -80;
+                                min = -32.5;
+                                max = 90;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -32.5;
+                            neutral = 10;
+                            max = 90;
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.Head.HairTails.LeftHairTail.LeftHairTailZPivot};
+
+                    z = {
+                        vertical = {
+                            min = -90;
+                            neutral = -20;
+                            max = 32.5;
+
+                            headX = {
+                                multiplayer = 20;
+                                min = -20;
+                                max = 0;
+                            };
+
+                            headZ = {
+                                multiplayer = -80;
+                                min = -90;
+                                max = 32.5;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -90;
+                            neutral = -20;
+                            max = 32.5;
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.Backpack.PeroroTip1, models.models.main.Avatar.UpperBody.Body.Backpack.PeroroTip2};
+
+                    x = {
+                        vertical = {
+                            min = -85;
+                            neutral = 0;
+                            max = 157.5;
+
+                            bodyX = {
+                                multiplayer = 40;
+                                min = -85;
+                                max = 85;
+                            };
+
+                            bodyY = {
+                                multiplayer = 80;
+                                min = 0;
+                                max = 157.5;
+                            };
+
+                            bodyRot = {
+                                multiplayer = -0.05;
+                                min = 0;
+                                max = 90;
+                            };
+
+                        };
+
+                        horizontal = {
+                            min = 0;
+                            neutral = 0;
+                            max = 157.5;
+
+                            bodyX = {
+                                multiplayer = 80;
+                                min = 0;
+                                max = 157.5;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.Backpack.PeroroFace.PeroroTongue};
+
+                    x = {
+                        vertical = {
+                            min = 12.5;
+                            neutral = 30;
+                            max = 30;
+
+                            bodyX = {
+                                multiplayer = -40;
+                                min = 12.5;
+                                max = 30;
+                            };
+
+                            bodyY = {
+                                multiplayer = 40;
+                                min = 12.5;
+                                max = 30;
+                            };
+
+                            bodyRot = {
+                                multiplayer = 0.025;
+                                min = 12.5;
+                                max = 30;
+                            };
+                        };
+
+                        horizontal = {
+                            min = 12.5;
+                            neutral = 30;
+                            max = 30;
+                        };
+                    };
+
+                    y = {
+                        vertical = {
+                            min = -30;
+                            neutral = -30;
+                            max = -30;
+                        };
+
+                        horizontal = {
+                            min = -30;
+                            neutral = -30;
+                            max = -30;
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.Backpack.PeroroRightWing};
+
+                    y = {
+                        vertical = {
+                            min = -15;
+                            neutral = 0;
+                            max = 52.5;
+
+                            bodyX = {
+                                multiplayer = 80;
+                                min = -15;
+                                max = 52.5;
+                            };
+
+                            bodyRot = {
+                                multiplayer = -0.05;
+                                min = 0;
+                                max = 52.5;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -15;
+                            neutral = 0;
+                            max = 52.5;
+
+                            bodyY = {
+                                multiplayer = -80;
+                                min = -15;
+                                max = 52.5;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.Backpack.PeroroLeftWing};
+
+                    y = {
+                        vertical = {
+                            min = -52.5;
+                            neutral = 0;
+                            max = 15;
+
+                            bodyX = {
+                                multiplayer = -80;
+                                min = -52.5;
+                                max = 15;
+                            };
+
+                            bodyRot = {
+                                multiplayer = 0.05;
+                                min = -52.5;
+                                max = 0;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -52.5;
+                            neutral = 0;
+                            max = 15;
+
+                            bodyY = {
+                                multiplayer = 80;
+                                min = -52.5;
+                                max = 15;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.Backpack.PeroroRightFoot, models.models.main.Avatar.UpperBody.Body.Backpack.PeroroLeftFoot};
+
+                    x = {
+                        vertical = {
+                            min = -90;
+                            neutral = 0;
+                            max = 47.5;
+
+                            bodyX = {
+                                multiplayer = -80;
+                                min = -90;
+                                max = 47.5;
+                            };
+
+                            bodyY = {
+                                multiplayer = 80;
+                                min = -90;
+                                max = 0;
+                            };
+
+                            bodyRot = {
+                                multiplayer = 0.05;
+                                min = -90;
+                                max = 0;
+                            };
+
+                        };
+
+                        horizontal = {
+                            min = -90;
+                            neutral = 0;
+                            max = 47.5;
+
+                            bodyY = {
+                                multiplayer = 80;
+                                min = -90;
+                                max = 47.5;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.Backpack.BackpackBackPocket.BackpackKeyRing};
+
+                    x = {
+                        vertical = {
+                            min = -147.5;
+                            neutral = -25;
+                            max = -25;
+
+                            bodyX = {
+                                multiplayer = -80;
+                                min = -90;
+                                max = -25;
+                            };
+
+                            bodyY = {
+                                multiplayer = 80;
+                                min = -147.5;
+                                max = -25;
+                            };
+
+                            bodyRot = {
+                                multiplayer = 0.05;
+                                min = -90;
+                                max = -25;
+                            };
+
+                        };
+
+                        horizontal = {
+                            min = -147.5;
+                            neutral = -25;
+                            max = -25;
+
+                            bodyY = {
+                                multiplayer = 80;
+                                min = -90;
+                                max = -25;
+                            };
+                        };
+                    };
+
+                    z = {
+                        vertical = {
+                            min = -90;
+                            neutral = 0;
+                            max = 90;
+
+                            bodyZ = {
+                                multiplayer = -160;
+                                min = -90;
+                                max = 90;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -90;
+                            neutral = 0;
+                            max = 90;
+                        };
+                    }
+                };
             };
         }
 
