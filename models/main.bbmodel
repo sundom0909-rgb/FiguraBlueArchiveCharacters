@@ -4345,11 +4345,11 @@
 			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
-			"from": [-7.025, 19.25, -1.75],
-			"to": [-7.025, 23.157, 1.75],
+			"from": [-7.025, 19.83605, -1.225],
+			"to": [-7.025, 22.57095, 1.225],
 			"autouv": 0,
 			"color": 1,
-			"origin": [-7, 19.25, -1.75],
+			"origin": [-7.025, 21.2035, 0],
 			"faces": {
 				"north": {
 					"uv": [0, 0, 0, 0],
@@ -4387,11 +4387,11 @@
 			"light_emission": 0,
 			"render_order": "default",
 			"allow_mirror_modeling": true,
-			"from": [7.025, 19.25, -1.75],
-			"to": [7.025, 23.157, 1.75],
+			"from": [7.025, 19.83605, -1.225],
+			"to": [7.025, 22.57095, 1.225],
 			"autouv": 0,
 			"color": 1,
-			"origin": [7, 19.25, -1.75],
+			"origin": [7.025, 21.2035, 0],
 			"faces": {
 				"north": {
 					"uv": [0, 0, 0, 0],
@@ -5082,7 +5082,7 @@
 													"locked": false,
 													"visibility": true,
 													"autouv": 0,
-													"selected": true,
+													"selected": false,
 													"children": [
 														"9ed00586-3228-d720-12b0-e27f0a962bfc",
 														"d04567bb-c723-dfa6-8e44-d0c54c6e39c4",
