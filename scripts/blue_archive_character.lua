@@ -530,7 +530,7 @@ BlueArchiveCharacter = {
                 };
 
                 {
-                    models = {models.models.main.Avatar.UpperBody.Body.Backpack.PeroroTip1, models.models.main.Avatar.UpperBody.Body.Backpack.PeroroTip2};
+                    models = {models.models.main.Avatar.UpperBody.Body.Backpack.OpenableBackpackBase.PeroroTip1, models.models.main.Avatar.UpperBody.Body.Backpack.OpenableBackpackBase.PeroroTip2};
 
                     x = {
                         vertical = {
@@ -573,7 +573,7 @@ BlueArchiveCharacter = {
                 };
 
                 {
-                    models = {models.models.main.Avatar.UpperBody.Body.Backpack.PeroroFace.PeroroTongue};
+                    models = {models.models.main.Avatar.UpperBody.Body.Backpack.OpenableBackpackBase.PeroroFace.PeroroTongue};
 
                     x = {
                         vertical = {
@@ -623,7 +623,7 @@ BlueArchiveCharacter = {
                 };
 
                 {
-                    models = {models.models.main.Avatar.UpperBody.Body.Backpack.PeroroRightWing};
+                    models = {models.models.main.Avatar.UpperBody.Body.Backpack.OpenableBackpackBase.PeroroRightWing};
 
                     y = {
                         vertical = {
@@ -659,7 +659,7 @@ BlueArchiveCharacter = {
                 };
 
                 {
-                    models = {models.models.main.Avatar.UpperBody.Body.Backpack.PeroroLeftWing};
+                    models = {models.models.main.Avatar.UpperBody.Body.Backpack.OpenableBackpackBase.PeroroLeftWing};
 
                     y = {
                         vertical = {
