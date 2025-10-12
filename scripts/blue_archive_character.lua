@@ -428,6 +428,12 @@ BlueArchiveCharacter = {
                             elseif tick == 68 then
                                 self.parent.faceParts:setEmotion("WORRY", "WORRY", "O", 54, true)
                             end
+
+                            if tick >= 26 and tick <= 43 and (tick - 26) % 3 == 0 then
+                                local bodyYaw = player:getBodyYaw()
+                                ---@diagnostic disable-next-line: invisible
+                                self.parent.itemLauncher:launch(self.parent.compatibilityUtils.registries.item[math.random(#self.parent.compatibilityUtils.registries.item)], self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Backpack.ExSkill1ItemAnchor), bodyYaw * -1, vectors.rotateAroundAxis(bodyYaw * -1, (((tick - 26) % 6 == 0) and 1 or -1) * (math.random() + 2), 4, 0, 0, 1, 0), 30)
+                            end
                         end;
                     }
                 };
