@@ -362,15 +362,15 @@ BlueArchiveCharacter = {
             exSkills = {
                 {
                     name = {
-                        en_us = "Ex Skill name";
-                        ja_jp = "Exスキル名";
+                        en_us = "Help me, Peroro-sama!";
+                        ja_jp = "助けて、ペロロ様！";
                     };
 
                     formationType = "STRIKER";
 
-                    models = {};
+                    models = {models.models.ex_skill_1.PeroroDisc};
 
-                    animations = {"main"};
+                    animations = {"main", "ex_skill_1"};
 
                     camera = {
                         start = {

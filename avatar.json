@@ -150,6 +150,12 @@
 		"models.models.ex_skill_frame.Particles": {
 			"visible": false
 		},
+		"models.models.ex_skill_1.PeroroDisc": {
+			"visible": false
+		},
+		"models.models.ex_skill_1.PeroroDisc.PeroroDiscEmissive": {
+			"parentType": "CUTOUT_EMISSIVE_SOLID"
+		},
 		"models.models.bubble.Camera.AvatarBubble": {
 			"visible": false
 		},
