@@ -3,15 +3,25 @@
 ---| "SURPRISED" # 驚いた目（ダメージを受けたときなど）
 ---| "TIRED" # 疲れた目（死亡アニメーションなど）
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
+---| "INVERTED" # 反対側を見る目
+---| "WORRY" # 困った目
+---| "WORRY_CENTER" # 困りつつ少し反対側を見る目
+---| "UNEQUAL" # 不等号目
 
 ---@alias BlueArchiveCharacter.LeftEyeTextures
 ---| "NORMAL" # 通常
 ---| "SURPRISED" # 驚いた目（ダメージを受けたときなど）
 ---| "TIRED" # 疲れた目（死亡アニメーションなど）
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
+---| "WORRY" # 困った目
+---| "WORRY_CENTER" # 困りつつ少し反対側を見る目
+---| "UNEQUAL" # 不等号目
 
 ---@alias BlueArchiveCharacter.MouthTextures
 ---| "NORMAL" # 通常
+---| "ANXIOUS" # への口
+---| "O" # オーの形の口
+---| "SURPRISED" # あんぐり口
 
 ---@alias BlueArchiveCharacter.GunPutType
 ---| "BODY" # アバターのBodyに銃を移動させる
@@ -297,6 +307,10 @@ BlueArchiveCharacter = {
                 SURPRISED = vectors.vec2(2, 0); --必須
                 TIRED = vectors.vec2(3, 0); --必須
                 CLOSED = vectors.vec2(4, 0); --必須
+                INVERTED = vectors.vec2(5, 0);
+                WORRY = vectors.vec2(6, 0);
+                WORRY_CENTER = vectors.vec2(8, 0);
+                UNEQUAL = vectors.vec2(0, 1);
             };
 
             leftEye = {
@@ -304,10 +318,15 @@ BlueArchiveCharacter = {
                 SURPRISED = vectors.vec2(1, 0); --必須
                 TIRED = vectors.vec2(2, 0); --必須
                 CLOSED = vectors.vec2(3, 0); --必須
+                WORRY = vectors.vec2(6, 0);
+                WORRY_CENTER = vectors.vec2(8, 0);
+                UNEQUAL = vectors.vec2(-1, 1);
             };
 
             mouth = {
-
+                ANXIOUS = vectors.vec2(0, 0);
+                O = vectors.vec2(1, 0);
+                SURPRISED = vectors.vec2(2, 0);
             };
         }
 
@@ -383,6 +402,34 @@ BlueArchiveCharacter = {
                             pos = vectors.vec3(-4.5, 2, -74);
                         };
                     };
+
+                    callbacks = {
+                        onPreAnimation = function (self)
+                            self.parent.faceParts:setEmotion("INVERTED", "NORMAL", "ANXIOUS", 8, true)
+                        end;
+
+                        onAnimationTick = function (self, tick)
+                            if tick == 8 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "ANXIOUS", 19, true)
+                            elseif tick == 27 then
+                                self.parent.faceParts:setEmotion("WORRY_CENTER", "WORRY", "ANXIOUS", 3, true)
+                            elseif tick == 30 then
+                                self.parent.faceParts:setEmotion("WORRY", "WORRY", "ANXIOUS", 3, true)
+                            elseif tick == 33 then
+                                self.parent.faceParts:setEmotion("WORRY", "WORRY_CENTER", "ANXIOUS", 3, true)
+                            elseif tick == 36 then
+                                self.parent.faceParts:setEmotion("WORRY_CENTER", "WORRY", "O", 3, true)
+                            elseif tick == 39 then
+                                self.parent.faceParts:setEmotion("WORRY", "WORRY", "O", 6, true)
+                            elseif tick == 45 then
+                                self.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "SURPRISED", 13, true)
+                            elseif tick == 58 then
+                                self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "ANXIOUS", 10, true)
+                            elseif tick == 68 then
+                                self.parent.faceParts:setEmotion("WORRY", "WORRY", "O", 54, true)
+                            end
+                        end;
+                    }
                 };
             };
         }
