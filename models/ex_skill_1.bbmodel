@@ -948,11 +948,11 @@
 			"uuid": "e4231fa2-41ad-f5c6-83b9-86424d46b1d7",
 			"export": true,
 			"mirror_uv": false,
-			"isOpen": false,
+			"isOpen": true,
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
-			"selected": false,
+			"selected": true,
 			"children": [
 				"32bdcd77-792b-fc8d-e0b9-763ed66af72b",
 				"dceac83f-92ba-ffe8-657f-57d389be2a11",
@@ -983,7 +983,7 @@
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
-			"selected": true,
+			"selected": false,
 			"children": [
 				"c12a8d0a-276a-faa7-9f60-38628e3917de",
 				"9a0b0893-8c3a-c0b6-70db-58c413b01508",
@@ -1133,9 +1133,9 @@
 							"channel": "rotation",
 							"data_points": [
 								{
-									"x": "-645.0866692415",
-									"y": "-59.1545636041",
-									"z": "-72.7473633999"
+									"x": "-641.8392692838",
+									"y": "-49.4241330009",
+									"z": "-76.7317981255"
 								}
 							],
 							"uuid": "2ce2dbfe-2b57-3016-b4c0-a8edb998a72f",
