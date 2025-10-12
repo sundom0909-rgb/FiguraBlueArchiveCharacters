@@ -406,6 +406,7 @@ BlueArchiveCharacter = {
                     callbacks = {
                         onPreAnimation = function (self)
                             self.parent.faceParts:setEmotion("INVERTED", "NORMAL", "ANXIOUS", 8, true)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.armor.equip_leather"), player:getPos(), 1, 1)
                         end;
 
                         onAnimationTick = function (self, tick)
@@ -416,6 +417,7 @@ BlueArchiveCharacter = {
                                     local offset = vectors.rotateAroundAxis(i * 30, 0, 0, 0.25, 0, 1, 0)
                                     particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Backpack.ExSkill1ParticleAnchor1):copy():add(offset)):setScale(1):setVelocity(offset:copy():scale(0.05):add(0, 0.025, 0)):setLifetime(12)
                                 end
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.chiseled_bookshelf.insert"), player:getPos(), 1, 1)
                             elseif tick == 27 then
                                 self.parent.faceParts:setEmotion("WORRY_CENTER", "WORRY", "ANXIOUS", 3, true)
                             elseif tick == 30 then
@@ -426,8 +428,12 @@ BlueArchiveCharacter = {
                                 self.parent.faceParts:setEmotion("WORRY_CENTER", "WORRY", "O", 3, true)
                             elseif tick == 39 then
                                 self.parent.faceParts:setEmotion("WORRY", "WORRY", "O", 6, true)
+                            elseif tick == 44 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), player:getPos(), 1, 1.5)
                             elseif tick == 45 then
                                 self.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "SURPRISED", 13, true)
+                            elseif tick == 54 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 1, 1.5)
                             elseif tick == 58 then
                                 self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "ANXIOUS", 10, true)
                             elseif tick == 62 then
@@ -436,6 +442,8 @@ BlueArchiveCharacter = {
                                 for i = 0, 11 do
                                     particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setVelocity(vectors.rotateAroundAxis(i * 30, 0, math.random() * 0.05 - 0.025 + 0.05, 0.1, 0, 1, 0)):setColor(colors[math.random(#colors)]):setGravity(0.1):setLifetime(16)
                                 end
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.small_fall"), anchorPos, 0.5, 1.2)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.dispenser.dispense"), anchorPos, 1, 1.5)
                             elseif tick == 68 then
                                 self.parent.faceParts:setEmotion("WORRY", "WORRY", "O", 54, true)
                             end
@@ -454,10 +462,17 @@ BlueArchiveCharacter = {
                                 if (tick - 26) % 3 == 0 then
                                     ---@diagnostic disable-next-line: invisible
                                     self.parent.itemLauncher:launch(self.parent.compatibilityUtils.registries.item[math.random(#self.parent.compatibilityUtils.registries.item)], anchorPos, bodyYaw * -1, vectors.rotateAroundAxis(bodyYaw * -1, (((tick - 26) % 6 == 0) and 1 or -1) * (math.random() + 2), 4, 0, 0, 1, 0), 30)
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), anchorPos, 0.75, math.random() * 0.4 + 0.8)
                                 end
                             end
                         end;
-                    }
+
+                        onPostAnimation = function (self, forcedStop)
+                            if forcedStop then
+                                self.parent.itemLauncher:removeAll()
+                            end
+                        end;
+                    };
                 };
             };
         }

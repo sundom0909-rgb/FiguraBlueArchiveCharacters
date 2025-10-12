@@ -103,4 +103,14 @@ function ItemLauncher:launch(item, pos, rot, velocity, lifetime)
 	end
 end
 
+---表示中のアイテムをすべて削除する。
+function ItemLauncher:removeAll()
+	while #self.itemObjects > 0 do
+		self.itemObjects[1].item:remove()
+		table.remove(self.itemObjects, 1)
+	end
+	events.TICK:remove("item_launcher_tick")
+	events.RENDER:remove("item_launcher_render")
+end
+
 return ItemLauncher
