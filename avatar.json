@@ -153,8 +153,12 @@
 		"models.models.ex_skill_1.PeroroDisc": {
 			"visible": false
 		},
+		"models.models.ex_skill_1.GlowEffect": {
+			"visible": false,
+			"primaryRenderType": "EMISSIVE_SOLID"
+		},
 		"models.models.ex_skill_1.PeroroDisc.PeroroDiscEmissive": {
-			"parentType": "CUTOUT_EMISSIVE_SOLID"
+			"primaryRenderType": "CUTOUT_EMISSIVE_SOLID"
 		},
 		"models.models.bubble.Camera.AvatarBubble": {
 			"visible": false

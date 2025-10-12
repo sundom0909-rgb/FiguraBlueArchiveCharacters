@@ -387,7 +387,7 @@ BlueArchiveCharacter = {
 
                     formationType = "STRIKER";
 
-                    models = {models.models.ex_skill_1.PeroroDisc};
+                    models = {models.models.ex_skill_1.PeroroDisc, models.models.ex_skill_1.GlowEffect};
 
                     animations = {"main", "ex_skill_1"};
 
@@ -411,6 +411,11 @@ BlueArchiveCharacter = {
                         onAnimationTick = function (self, tick)
                             if tick == 8 then
                                 self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "ANXIOUS", 19, true)
+                            elseif tick == 18 then
+                                for i = 0, 11 do
+                                    local offset = vectors.rotateAroundAxis(i * 30, 0, 0, 0.25, 0, 1, 0)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Backpack.ExSkill1ParticleAnchor1):copy():add(offset)):setScale(1):setVelocity(offset:copy():scale(0.05):add(0, 0.025, 0)):setLifetime(12)
+                                end
                             elseif tick == 27 then
                                 self.parent.faceParts:setEmotion("WORRY_CENTER", "WORRY", "ANXIOUS", 3, true)
                             elseif tick == 30 then
@@ -425,14 +430,31 @@ BlueArchiveCharacter = {
                                 self.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "SURPRISED", 13, true)
                             elseif tick == 58 then
                                 self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "ANXIOUS", 10, true)
+                            elseif tick == 62 then
+                                local colors = {vectors.vec3(1, 1, 0), vectors.vec3(0.52, 1, 1), vectors.vec3(0.96, 0.38, 1)}
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.PeroroDisc)
+                                for i = 0, 11 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos):setVelocity(vectors.rotateAroundAxis(i * 30, 0, math.random() * 0.05 - 0.025 + 0.05, 0.1, 0, 1, 0)):setColor(colors[math.random(#colors)]):setGravity(0.1):setLifetime(16)
+                                end
                             elseif tick == 68 then
                                 self.parent.faceParts:setEmotion("WORRY", "WORRY", "O", 54, true)
                             end
 
-                            if tick >= 26 and tick <= 43 and (tick - 26) % 3 == 0 then
+                            if tick >= 26 and tick <= 43 then
                                 local bodyYaw = player:getBodyYaw()
-                                ---@diagnostic disable-next-line: invisible
-                                self.parent.itemLauncher:launch(self.parent.compatibilityUtils.registries.item[math.random(#self.parent.compatibilityUtils.registries.item)], self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Backpack.ExSkill1ItemAnchor), bodyYaw * -1, vectors.rotateAroundAxis(bodyYaw * -1, (((tick - 26) % 6 == 0) and 1 or -1) * (math.random() + 2), 4, 0, 0, 1, 0), 30)
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.Backpack.ExSkill1ItemAnchor)
+                                for _ = 1, 4 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:campfire_cosy_smoke"), anchorPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 0.6 - 0.3, math.random() * 0.2 - 0.1, math.random() * 0.2 - 0.1, 0, 1, 0))):setScale(1):setLifetime(8)
+                                end
+                                local colors = {vectors.vec3(1, 1, 0), vectors.vec3(0.52, 1, 1), vectors.vec3(0.96, 0.38, 1)}
+                                if (tick - 26) % 2 == 0 then
+                                    local offsetX = math.random() * 0.6 - 0.3
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), anchorPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, offsetX, 0, math.random() * 0.2 - 0.1, 0, 1, 0))):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, offsetX * 0.1, 0.1, 0.05, 0, 1, 0)):setColor(colors[math.random(#colors)]):setLifetime(12)
+                                end
+                                if (tick - 26) % 3 == 0 then
+                                    ---@diagnostic disable-next-line: invisible
+                                    self.parent.itemLauncher:launch(self.parent.compatibilityUtils.registries.item[math.random(#self.parent.compatibilityUtils.registries.item)], anchorPos, bodyYaw * -1, vectors.rotateAroundAxis(bodyYaw * -1, (((tick - 26) % 6 == 0) and 1 or -1) * (math.random() + 2), 4, 0, 0, 1, 0), 30)
+                                end
                             end
                         end;
                     }
