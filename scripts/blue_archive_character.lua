@@ -559,9 +559,29 @@ BlueArchiveCharacter = {
 
                     exSkill = 1;
                 };
+
+                {
+                    name = "masked";
+
+                    displayName = {
+                        en_us = "Masked Swimsuit Group";
+                        ja_jp = "覆面水着団";
+                    };
+
+                    exSkill = 1;
+                };
             };
 
             callbacks = {
+                onChange = function ()
+                    --覆面水着団
+                    models.models.main.Avatar.Head.CMaskedH:setVisible(true)
+                end;
+
+                onReset = function ()
+                    models.models.main.Avatar.Head.CMaskedH:setVisible(false)
+                end;
+
                 onArmorChange = function (_, parts, isVisible)
                     if parts == "LEGGINGS" then
                         models.models.main.Avatar.UpperBody.Body.Skirt:setVisible(not isVisible)
