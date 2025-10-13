@@ -442,7 +442,7 @@ BlueArchiveCharacter = {
 
                     models = {models.models.ex_skill_1.GlowEffect};
 
-                    animations = {"main", "ex_skill_1"};
+                    animations = {"main", "gun", "ex_skill_1"};
 
                     camera = {
                         start = {
@@ -468,7 +468,12 @@ BlueArchiveCharacter = {
                         end;
 
                         onAnimationTick = function (self, tick)
-                            if tick == 8 then
+                            if tick == 0 then
+                                models.models.main.Avatar.UpperBody.Body.Gun:setPos()
+                                models.models.main.Avatar.UpperBody.Body.Gun:setRot()
+                                models.models.main.Avatar.UpperBody.Body.Gun:setVisible(true)
+                                models.models.main.Avatar.UpperBody.Body.Gun:moveTo(models.models.main)
+                            elseif tick == 8 then
                                 self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "ANXIOUS", 19, true)
                             elseif tick == 18 then
                                 for i = 0, 11 do
@@ -528,6 +533,8 @@ BlueArchiveCharacter = {
                         onPostAnimation = function (self, forcedStop)
                             models.models.ex_skill_1.PeroroDisc:setVisible(false)
                             models.models.ex_skill_1.PeroroDisc:moveTo(models.script_placement_object)
+                            models.models.main.Gun:moveTo(models.models.main.Avatar.UpperBody.Body)
+                            models.models.main.Avatar.UpperBody.Body.Gun:setVisible(false)
                             if not forcedStop then
                                 local bodyYaw = player:getBodyYaw()
                                 self.parent.placementObjectManager:spawn(1, player:getPos():copy():add(vectors.rotateAroundAxis(bodyYaw * -1, 0, 1, 4.3594, 0, 1, 0)), bodyYaw * -1 + 180)
