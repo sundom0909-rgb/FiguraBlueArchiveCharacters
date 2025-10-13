@@ -597,6 +597,10 @@ BlueArchiveCharacter = {
                         for _, modelPart in ipairs({models.models.main.Avatar.Head.HairTails.RightHairTail.RightHairTailZPivot.RightHairTailAccessories.RightHairTailAccessory2, models.models.main.Avatar.Head.HairTails.RightHairTail.RightHairTailZPivot.RightHairTailAccessories.RightHairTailAccessory3, models.models.main.Avatar.Head.HairTails.LeftHairTail.LeftHairTailZPivot.LeftHairTailAccessories.LeftHairTailAccessory2, models.models.main.Avatar.Head.HairTails.LeftHairTail.LeftHairTailZPivot.LeftHairTailAccessories.LeftHairTailAccessory3, models.models.main.Avatar.UpperBody.Body.Backpack, models.models.main.Avatar.UpperBody.Body.Skirt, models.models.main.Avatar.UpperBody.Arms.RightArm.RightTrinityLogo, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftTrinityLogo}) do
                             modelPart:setVisible(false)
                         end
+                        self.physics.physicData[2].z.vertical.neutral = 5
+                        self.physics.physicData[2].z.vertical.headX.max = 5
+                        self.physics.physicData[3].z.vertical.neutral = -5
+                        self.physics.physicData[3].z.vertical.headX.min = -5
                     end
                 end;
 
@@ -608,6 +612,10 @@ BlueArchiveCharacter = {
                     for _, modelPart in ipairs({models.models.main.Avatar.Head.HairTails.RightHairTail.RightHairTailZPivot.RightHairTailAccessories.RightHairTailAccessory2, models.models.main.Avatar.Head.HairTails.RightHairTail.RightHairTailZPivot.RightHairTailAccessories.RightHairTailAccessory3, models.models.main.Avatar.Head.HairTails.LeftHairTail.LeftHairTailZPivot.LeftHairTailAccessories.LeftHairTailAccessory2, models.models.main.Avatar.Head.HairTails.LeftHairTail.LeftHairTailZPivot.LeftHairTailAccessories.LeftHairTailAccessory3, models.models.main.Avatar.UpperBody.Body.Backpack, models.models.main.Avatar.UpperBody.Body.Skirt, models.models.main.Avatar.UpperBody.Arms.RightArm.RightTrinityLogo, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftTrinityLogo}) do
                         modelPart:setVisible(true)
                     end
+                        self.physics.physicData[2].z.vertical.neutral = 20
+                        self.physics.physicData[2].z.vertical.headX.max = 20
+                        self.physics.physicData[3].z.vertical.neutral = -20
+                        self.physics.physicData[3].z.vertical.headX.min = -20
                 end;
 
                 onArmorChange = function (self, parts, isVisible)
