@@ -562,7 +562,7 @@ BlueArchiveCharacter = {
             };
 
             callbacks = {
-                onArmorChange = function (self, parts, isVisible)
+                onArmorChange = function (_, parts, isVisible)
                     if parts == "LEGGINGS" then
                         models.models.main.Avatar.UpperBody.Body.Skirt:setVisible(not isVisible)
                     end
@@ -583,7 +583,30 @@ BlueArchiveCharacter = {
         }
 
         instance.deathAnimation = {
+            callbacks = {
+                onPhase1 = function (_, dummyAvatar)
+                    dummyAvatar.Head.HairTails.RightHairTail:setRot(30, 0, 0)
+                    dummyAvatar.Head.HairTails.RightHairTail.RightHairTailZPivot:setRot(0, 0, 10)
+                    dummyAvatar.Head.HairTails.LeftHairTail:setRot(30, 0, 0)
+                    dummyAvatar.Head.HairTails.LeftHairTail.LeftHairTailZPivot:setRot(0, 0, -10)
+                    dummyAvatar.UpperBody.Body.Skirt:setRot(55, 0, 0)
+                end;
 
+                onPhase2 = function (_, dummyAvatar)
+                    dummyAvatar.Head.HairTails.RightHairTail:setRot(-20, 0, 0)
+                    dummyAvatar.Head.HairTails.RightHairTail.RightHairTailZPivot:setRot(0, 0, 10)
+                    dummyAvatar.Head.HairTails.LeftHairTail:setRot(-30, 0, 0)
+                    dummyAvatar.Head.HairTails.LeftHairTail.LeftHairTailZPivot:setRot(0, 0, -20)
+                    dummyAvatar.UpperBody.Body.Backpack.OpenableBackpackBase.PeroroTip1:setRot(120, 0, 0)
+                    dummyAvatar.UpperBody.Body.Backpack.OpenableBackpackBase.PeroroTip2:setRot(120, 0, 0)
+                    dummyAvatar.UpperBody.Body.Backpack.OpenableBackpackBase.PeroroRightWing:setRot(0, 40, 0)
+                    dummyAvatar.UpperBody.Body.Backpack.OpenableBackpackBase.PeroroLeftWing:setRot(0, -60, 0)
+                    dummyAvatar.UpperBody.Body.Backpack.PeroroRightFoot:setRot(-10, 0, -10)
+                    dummyAvatar.UpperBody.Body.Backpack.PeroroLeftFoot:setRot(-10, 0, -10)
+                    dummyAvatar.UpperBody.Body.Backpack.BackpackBackPocket.BackpackKeyRing:setRot(-30, 0, 0)
+                    dummyAvatar.UpperBody.Body.Skirt:setRot(12, 0, 0)
+                end;
+            }
         }
 
         instance.actionWheel = {
