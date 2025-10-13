@@ -33,6 +33,8 @@
 
 ---@alias BlueArchiveCharacter.Costumes
 ---| "DEFAULT" # デフォルト衣装
+---| "MASKED" # 覆面水着団
+---| "SWIMSUIT" # 水着
 
 --[[ ******************************** ]]
 
@@ -570,21 +572,47 @@ BlueArchiveCharacter = {
 
                     exSkill = 1;
                 };
+
+                {
+                    name = "swimsuit";
+
+                    displayName = {
+                        en_us = "Swimsuit";
+                        ja_jp = "水着";
+                    };
+
+                    exSkill = 1;
+                };
             };
 
             callbacks = {
-                onChange = function ()
-                    --覆面水着団
-                    models.models.main.Avatar.Head.CMaskedH:setVisible(true)
+                onChange = function (self, costumeId)
+                    if costumeId == "MASKED" then
+                        --覆面水着団
+                        models.models.main.Avatar.Head.CMaskedH:setVisible(true)
+                    elseif costumeId == "SWIMSUIT" then
+                        --水着
+                        self.parent.costume.setCostumeTextureOffset(1)
+                        models.models.main.Avatar.Head.CSwimsuitH:setVisible(true)
+                        for _, modelPart in ipairs({models.models.main.Avatar.Head.HairTails.RightHairTail.RightHairTailZPivot.RightHairTailAccessories.RightHairTailAccessory2, models.models.main.Avatar.Head.HairTails.RightHairTail.RightHairTailZPivot.RightHairTailAccessories.RightHairTailAccessory3, models.models.main.Avatar.Head.HairTails.LeftHairTail.LeftHairTailZPivot.LeftHairTailAccessories.LeftHairTailAccessory2, models.models.main.Avatar.Head.HairTails.LeftHairTail.LeftHairTailZPivot.LeftHairTailAccessories.LeftHairTailAccessory3, models.models.main.Avatar.UpperBody.Body.Backpack, models.models.main.Avatar.UpperBody.Body.Skirt, models.models.main.Avatar.UpperBody.Arms.RightArm.RightTrinityLogo, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftTrinityLogo}) do
+                            modelPart:setVisible(false)
+                        end
+                    end
                 end;
 
-                onReset = function ()
-                    models.models.main.Avatar.Head.CMaskedH:setVisible(false)
+                onReset = function (self)
+                    self.parent.costume.setCostumeTextureOffset(0)
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.CMaskedH, models.models.main.Avatar.Head.CSwimsuitH}) do
+                        modelPart:setVisible(false)
+                    end
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.HairTails.RightHairTail.RightHairTailZPivot.RightHairTailAccessories.RightHairTailAccessory2, models.models.main.Avatar.Head.HairTails.RightHairTail.RightHairTailZPivot.RightHairTailAccessories.RightHairTailAccessory3, models.models.main.Avatar.Head.HairTails.LeftHairTail.LeftHairTailZPivot.LeftHairTailAccessories.LeftHairTailAccessory2, models.models.main.Avatar.Head.HairTails.LeftHairTail.LeftHairTailZPivot.LeftHairTailAccessories.LeftHairTailAccessory3, models.models.main.Avatar.UpperBody.Body.Backpack, models.models.main.Avatar.UpperBody.Body.Skirt, models.models.main.Avatar.UpperBody.Arms.RightArm.RightTrinityLogo, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftTrinityLogo}) do
+                        modelPart:setVisible(true)
+                    end
                 end;
 
-                onArmorChange = function (_, parts, isVisible)
+                onArmorChange = function (self, parts, isVisible)
                     if parts == "LEGGINGS" then
-                        models.models.main.Avatar.UpperBody.Body.Skirt:setVisible(not isVisible)
+                        models.models.main.Avatar.UpperBody.Body.Skirt:setVisible(self.parent.costume.currentCostume <= 2 and not isVisible)
                     end
                 end;
             };
@@ -604,27 +632,31 @@ BlueArchiveCharacter = {
 
         instance.deathAnimation = {
             callbacks = {
-                onPhase1 = function (_, dummyAvatar)
-                    dummyAvatar.Head.HairTails.RightHairTail:setRot(30, 0, 0)
-                    dummyAvatar.Head.HairTails.RightHairTail.RightHairTailZPivot:setRot(0, 0, 10)
-                    dummyAvatar.Head.HairTails.LeftHairTail:setRot(30, 0, 0)
-                    dummyAvatar.Head.HairTails.LeftHairTail.LeftHairTailZPivot:setRot(0, 0, -10)
-                    dummyAvatar.UpperBody.Body.Skirt:setRot(55, 0, 0)
+                onPhase1 = function (_, dummyAvatar, costume)
+                    if costume == "DEFAULT" or costume == "MASKED" then
+                        dummyAvatar.Head.HairTails.RightHairTail:setRot(30, 0, 0)
+                        dummyAvatar.Head.HairTails.RightHairTail.RightHairTailZPivot:setRot(0, 0, 10)
+                        dummyAvatar.Head.HairTails.LeftHairTail:setRot(30, 0, 0)
+                        dummyAvatar.Head.HairTails.LeftHairTail.LeftHairTailZPivot:setRot(0, 0, -10)
+                        dummyAvatar.UpperBody.Body.Skirt:setRot(55, 0, 0)
+                    end
                 end;
 
-                onPhase2 = function (_, dummyAvatar)
-                    dummyAvatar.Head.HairTails.RightHairTail:setRot(-20, 0, 0)
-                    dummyAvatar.Head.HairTails.RightHairTail.RightHairTailZPivot:setRot(0, 0, 10)
-                    dummyAvatar.Head.HairTails.LeftHairTail:setRot(-30, 0, 0)
-                    dummyAvatar.Head.HairTails.LeftHairTail.LeftHairTailZPivot:setRot(0, 0, -20)
-                    dummyAvatar.UpperBody.Body.Backpack.OpenableBackpackBase.PeroroTip1:setRot(120, 0, 0)
-                    dummyAvatar.UpperBody.Body.Backpack.OpenableBackpackBase.PeroroTip2:setRot(120, 0, 0)
-                    dummyAvatar.UpperBody.Body.Backpack.OpenableBackpackBase.PeroroRightWing:setRot(0, 40, 0)
-                    dummyAvatar.UpperBody.Body.Backpack.OpenableBackpackBase.PeroroLeftWing:setRot(0, -60, 0)
-                    dummyAvatar.UpperBody.Body.Backpack.PeroroRightFoot:setRot(-10, 0, -10)
-                    dummyAvatar.UpperBody.Body.Backpack.PeroroLeftFoot:setRot(-10, 0, -10)
-                    dummyAvatar.UpperBody.Body.Backpack.BackpackBackPocket.BackpackKeyRing:setRot(-30, 0, 0)
-                    dummyAvatar.UpperBody.Body.Skirt:setRot(12, 0, 0)
+                onPhase2 = function (_, dummyAvatar, costume)
+                    if costume == "DEFAULT" or costume == "MASKED" then
+                        dummyAvatar.Head.HairTails.RightHairTail:setRot(-20, 0, 0)
+                        dummyAvatar.Head.HairTails.RightHairTail.RightHairTailZPivot:setRot(0, 0, 10)
+                        dummyAvatar.Head.HairTails.LeftHairTail:setRot(-30, 0, 0)
+                        dummyAvatar.Head.HairTails.LeftHairTail.LeftHairTailZPivot:setRot(0, 0, -20)
+                        dummyAvatar.UpperBody.Body.Backpack.OpenableBackpackBase.PeroroTip1:setRot(120, 0, 0)
+                        dummyAvatar.UpperBody.Body.Backpack.OpenableBackpackBase.PeroroTip2:setRot(120, 0, 0)
+                        dummyAvatar.UpperBody.Body.Backpack.OpenableBackpackBase.PeroroRightWing:setRot(0, 40, 0)
+                        dummyAvatar.UpperBody.Body.Backpack.OpenableBackpackBase.PeroroLeftWing:setRot(0, -60, 0)
+                        dummyAvatar.UpperBody.Body.Backpack.PeroroRightFoot:setRot(-10, 0, -10)
+                        dummyAvatar.UpperBody.Body.Backpack.PeroroLeftFoot:setRot(-10, 0, -10)
+                        dummyAvatar.UpperBody.Body.Backpack.BackpackBackPocket.BackpackKeyRing:setRot(-30, 0, 0)
+                        dummyAvatar.UpperBody.Body.Skirt:setRot(12, 0, 0)
+                    end
                 end;
             }
         }
