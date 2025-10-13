@@ -561,6 +561,13 @@ BlueArchiveCharacter = {
                 };
             };
 
+            callbacks = {
+                onArmorChange = function (self, parts, isVisible)
+                    if parts == "LEGGINGS" then
+                        models.models.main.Avatar.UpperBody.Body.Skirt:setVisible(not isVisible)
+                    end
+                end;
+            };
         }
 
         instance.bubble = {
