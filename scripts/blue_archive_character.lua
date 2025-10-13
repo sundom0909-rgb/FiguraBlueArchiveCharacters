@@ -367,13 +367,66 @@ BlueArchiveCharacter = {
 
         instance.placementObjects = {
             {
-                model = models.models.placement_object.PlacementObject;
+                model = models.models.ex_skill_1.PeroroDisc;
 
                 boundingBox = {
-                    size = vectors.vec3(8, 8, 8)
+                    size = vectors.vec3(8, 42, 8);
                 };
 
-                placementMode = "COPY";
+                placementMode = "MOVE";
+
+                ---デコイペロロのアニメーションカウンター。-1はアニメーション停止を示す。
+                ---@type integer
+                animationTick = -1;
+
+                callbacks = {
+                    onDeinit = function (self, placementObject)
+                        placementObject.object.Peroro:setVisible(false)
+                        for _, animName in ipairs({"peroro_start", "peroro_loop"}) do
+                            animations["models.ex_skill_1"][animName]:stop()
+                        end
+                        self.placementObjects[1].animationTick = -1
+                    end;
+
+                    onTick = function (self, placementObject)
+                        if self.placementObjects[1].animationTick >= 0 then
+                            if self.placementObjects[1].animationTick == 8 then
+                                animations["models.ex_skill_1"]["peroro_loop"]:play()
+                            end
+                            if self.placementObjects[1].animationTick > 0 and self.placementObjects[1].animationTick % 12 == 0 then
+                                local colors = {vectors.vec3(1, 1, 0), vectors.vec3(0.52, 1, 1), vectors.vec3(0.96, 0.38, 1)}
+                                for _ = 1, 4 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:note"), placementObject.currentPos:copy():add(math.random() * 3 - 1.5, math.random() * 2, math.random() * 3 - 1.5)):setColor(colors[math.random(#colors)])
+                                end
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.experience_orb.pickup"), placementObject.currentPos, 0.25, math.random() * 0.5 + 1.5)
+                            end
+                            if self.placementObjects[1].animationTick >= 21 and (self.placementObjects[1].animationTick - 8) % 19 == 0 then
+                                local colors = {vectors.vec3(1, 1, 0), vectors.vec3(0.52, 1, 1), vectors.vec3(0.96, 0.38, 1)}
+                                local color = colors[math.random(#colors)]
+                                for i = 0, 12 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), placementObject.currentPos):setScale(1):setVelocity(vectors.rotateAroundAxis(i * 30, 0, 0, math.random() * 0.05 + 0.05, 0, 1, 0)):setColor(color):setLifetime(math.random(12, 16))
+                                end
+                            end
+                            self.placementObjects[1].animationTick = self.placementObjects[1].animationTick + 1
+                        end
+                    end;
+
+                    onGround = function (self, placementObject)
+                        if self.placementObjects[1].animationTick == -1 then
+                            placementObject.object.Peroro:setVisible(true)
+                            animations["models.ex_skill_1"]["peroro_start"]:play()
+                            local colors = {vectors.vec3(1, 1, 0), vectors.vec3(0.52, 1, 1), vectors.vec3(0.96, 0.38, 1)}
+                            for _ = 1, 20 do
+                                local offset = vectors.vec3(math.random() * 3 - 1.5, math.random() * 2, math.random() * 3 - 1.5)
+                                local velocityOffset = offset:copy():scale(0.025)
+                                velocityOffset.y = 0.2
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:electric_spark"), placementObject.currentPos:copy():add(offset)):setScale(1.5):setVelocity(velocityOffset):setColor(colors[math.random(#colors)]):setLifetime(math.random(8, 12))
+                            end
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), placementObject.currentPos, 1, 1)
+                            self.placementObjects[1].animationTick = 0
+                        end
+                    end;
+                };
             };
         }
 
@@ -387,7 +440,7 @@ BlueArchiveCharacter = {
 
                     formationType = "STRIKER";
 
-                    models = {models.models.ex_skill_1.PeroroDisc, models.models.ex_skill_1.GlowEffect};
+                    models = {models.models.ex_skill_1.GlowEffect};
 
                     animations = {"main", "ex_skill_1"};
 
@@ -405,6 +458,11 @@ BlueArchiveCharacter = {
 
                     callbacks = {
                         onPreAnimation = function (self)
+                            self.parent.placementObjectManager:removeAll()
+                            models.script_placement_object.PeroroDisc:moveTo(models.models.ex_skill_1)
+                            models.models.ex_skill_1.PeroroDisc:setPos()
+                            models.models.ex_skill_1.PeroroDisc:setRot()
+                            models.models.ex_skill_1.PeroroDisc:setVisible(true)
                             self.parent.faceParts:setEmotion("INVERTED", "NORMAL", "ANXIOUS", 8, true)
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:item.armor.equip_leather"), player:getPos(), 1, 1)
                         end;
@@ -468,7 +526,12 @@ BlueArchiveCharacter = {
                         end;
 
                         onPostAnimation = function (self, forcedStop)
-                            if forcedStop then
+                            models.models.ex_skill_1.PeroroDisc:setVisible(false)
+                            models.models.ex_skill_1.PeroroDisc:moveTo(models.script_placement_object)
+                            if not forcedStop then
+                                local bodyYaw = player:getBodyYaw()
+                                self.parent.placementObjectManager:spawn(1, player:getPos():copy():add(vectors.rotateAroundAxis(bodyYaw * -1, 0, 1, 4.3594, 0, 1, 0)), bodyYaw * -1 + 180)
+                            else
                                 self.parent.itemLauncher:removeAll()
                             end
                         end;

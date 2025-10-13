@@ -144,13 +144,13 @@
 		"models.models.gun.Gun": {
 			"moveTo": "models.models.main.Avatar.UpperBody.Body"
 		},
-		"models.models.placement_object.PlacementObject": {
-			"visible": false
-		},
 		"models.models.ex_skill_frame.Particles": {
 			"visible": false
 		},
 		"models.models.ex_skill_1.PeroroDisc": {
+			"visible": false
+		},
+		"models.models.ex_skill_1.PeroroDisc.Peroro": {
 			"visible": false
 		},
 		"models.models.ex_skill_1.GlowEffect": {
@@ -158,7 +158,7 @@
 			"primaryRenderType": "EMISSIVE_SOLID"
 		},
 		"models.models.ex_skill_1.PeroroDisc.PeroroDiscEmissive": {
-			"primaryRenderType": "CUTOUT_EMISSIVE_SOLID"
+			"primaryRenderType": "EMISSIVE_SOLID"
 		},
 		"models.models.bubble.Camera.AvatarBubble": {
 			"visible": false
