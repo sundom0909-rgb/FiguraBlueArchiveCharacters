@@ -643,6 +643,9 @@ BlueArchiveCharacter = {
                                     sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.piston.extend"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Tank), 0.5, 0.2 + (tick - 52) / 520)
                                     sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.piston.contract"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Tank), 0.5, 0.2 + (tick - 52) / 520)
                                 end
+                                for _, modelPart in ipairs({models.models.ex_skill_2.Tank.RightCrawler.RightCrawlerBelt, models.models.ex_skill_2.Tank.LeftCrawler.LeftCrawlerBelt}) do
+                                    modelPart:setUVPixels(0, (tick % 2))
+                                end
                                 local bodyYaw = player:getBodyYaw()
                                 for _, anchor in ipairs({models.models.ex_skill_2.Tank.LeftCrawler.ExSkill2ParticleAnchor2, models.models.ex_skill_2.Tank.RightCrawler.ExSkill2ParticleAnchor3}) do
                                     local anchorPos = self.parent.modelUtils.getModelWorldPos(anchor)

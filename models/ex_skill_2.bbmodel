@@ -23985,12 +23985,27 @@
 					"autouv": 0,
 					"selected": false,
 					"children": [
-						"00648c98-947f-3928-2bb4-07a64d9632e0",
-						"593d1571-b271-91ac-665f-7bd5b60be1dc",
-						"cbeb0e8a-75ee-54f2-59a9-bdbb04f093ae",
-						"fb80028d-d6e0-5332-93ff-6b460105138d",
-						"adbb0a7b-a32f-f27d-ee3f-a4a336f18840",
-						"8b37bd76-6236-387f-7bc9-992eeef41330",
+						{
+							"name": "RightCrawlerBelt",
+							"origin": [0, 0, 0],
+							"color": 0,
+							"uuid": "cbe67a28-b291-2c41-140c-5aefc3835b52",
+							"export": true,
+							"mirror_uv": false,
+							"isOpen": true,
+							"locked": false,
+							"visibility": true,
+							"autouv": 0,
+							"selected": false,
+							"children": [
+								"00648c98-947f-3928-2bb4-07a64d9632e0",
+								"593d1571-b271-91ac-665f-7bd5b60be1dc",
+								"cbeb0e8a-75ee-54f2-59a9-bdbb04f093ae",
+								"fb80028d-d6e0-5332-93ff-6b460105138d",
+								"adbb0a7b-a32f-f27d-ee3f-a4a336f18840",
+								"8b37bd76-6236-387f-7bc9-992eeef41330"
+							]
+						},
 						{
 							"name": "RightCrawlerWheel1",
 							"origin": [32, 9, -34],
@@ -24215,7 +24230,7 @@
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
-							"selected": true,
+							"selected": false,
 							"children": []
 						}
 					]
@@ -24233,12 +24248,27 @@
 					"autouv": 0,
 					"selected": false,
 					"children": [
-						"fd893d7d-e4bf-ea22-fc29-77454fe24888",
-						"e7b2c157-ca97-c28c-7506-15f4b56d39d9",
-						"0fdcdc21-d92d-1422-93ba-c8fbbd8c3a8f",
-						"5d0e5944-254a-5b50-f62b-89ba02d522dc",
-						"9cee26bc-b405-c1da-5b8f-b639c84481b9",
-						"67c253d7-591a-56c8-4ec1-a40a73b3dd47",
+						{
+							"name": "LeftCrawlerBelt",
+							"origin": [0, 0, 0],
+							"color": 0,
+							"uuid": "8a61a3de-75a7-9c00-06f3-9f2c6cf789fe",
+							"export": true,
+							"mirror_uv": false,
+							"isOpen": false,
+							"locked": false,
+							"visibility": true,
+							"autouv": 0,
+							"selected": false,
+							"children": [
+								"fd893d7d-e4bf-ea22-fc29-77454fe24888",
+								"e7b2c157-ca97-c28c-7506-15f4b56d39d9",
+								"0fdcdc21-d92d-1422-93ba-c8fbbd8c3a8f",
+								"5d0e5944-254a-5b50-f62b-89ba02d522dc",
+								"9cee26bc-b405-c1da-5b8f-b639c84481b9",
+								"67c253d7-591a-56c8-4ec1-a40a73b3dd47"
+							]
+						},
 						{
 							"name": "LeftCrawlerWheel1",
 							"origin": [-32, 9, -34],
