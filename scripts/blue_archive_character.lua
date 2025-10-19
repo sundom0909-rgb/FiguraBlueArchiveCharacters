@@ -565,7 +565,7 @@ BlueArchiveCharacter = {
 
                     formationType = "SPECIAL";
 
-                    models = {models.models.ex_skill_2.Tank, models.models.main.Avatar.UpperBody.Body.SwimRing};
+                    models = {models.models.ex_skill_2.Tank, models.models.main.Avatar.UpperBody.Body.SwimRing, models.models.main.Avatar.Head.NoticeEffect};
 
                     animations = {"main", "ex_skill_2"};
 
@@ -587,18 +587,38 @@ BlueArchiveCharacter = {
                         end;
 
                         onAnimationTick = function (self, tick)
-                            if tick == 20 then
+                            if tick <= 15 and tick % 2 == 0 then
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Tank.TankBody.ExSkill2ParticleAnchor1)
+                                local bodyYaw = player:getBodyYaw()
+                                local colorTable = {vectors.vec3(0.96, 0.92, 0.98), vectors.vec3(0.75, 1, 1), vectors.vec3(0.93, 1, 0.64)}
+                                for _ = 1, 2 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:end_rod"), anchorPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, 0.05, math.random() * 0.8 - 0.4, math.random() * 1.8 - 0.9, 0, 1, 0))):setScale(math.random() * 0.25 + 0.25):setColor(colorTable[math.random(#colorTable)]):setLifetime(4)
+                                end
+                            elseif tick == 20 then
                                 self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 4, true)
+                            elseif tick == 25 then
+                                local bodyYaw = player:getBodyYaw()
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head):add(vectors.rotateAroundAxis(bodyYaw * -1, 0, 0, 0.1, 0, 1, 0))
+                                for i = 0, 11 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:end_rod"), anchorPos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, vectors.rotateAroundAxis(i * 30, 0, 0, math.random() * 0.05 + 0.1, 1, 0, 0), 0, 1, 0)):setColor(1, 1, 0.22):setLifetime(12)
+                                end
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), anchorPos, 1, 3)
                             elseif tick == 24 then
                                 self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", 11, true)
                             elseif tick == 35 then
                                 self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 1, true)
                             elseif tick == 36 then
                                 self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED_SMALL", 8, true)
+                            elseif tick == 42 then
+                                self.exSkill.exSkills[2].engineSound = sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.minecart.riding"), player:getPos(), 0.25, 0.5)
                             elseif tick == 44 then
                                 self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED_SMALL", 2, true)
+                            elseif tick == 45 or tick == 48 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.experience_orb.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.5, 1.5)
                             elseif tick == 46 then
                                 self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "ANXIOUS_SMALL", 6, true)
+                            elseif tick == 52 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.firework_rocket.launch"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 2)
                             elseif tick == 53 then
                                 self.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "SURPRISED", 8, true)
                             elseif tick == 61 then
@@ -609,14 +629,45 @@ BlueArchiveCharacter = {
 
                             if tick >= 56 and (tick - 56) % 3 == 0 then
                                 ---@type Minecraft.itemID
-                                local itemTable = {"melon", "potion", "melon_slice", "apple", "milk_bucket", "cookie", "pumpkin_pie", "cake", "tube_coral_block", "brain_coral_block", "bubble_coral_block", "fire_coral_block", "horn_coral_block", "tube_coral", "brain_coral", "fire_coral", "horn_coral", "bubble_coral", "tube_coral_fan", "brain_coral_fan", "bubble_coral_fan", "fire_coral_fan", "horn_coral_fan", "cod", "cod_bucket", "salmon", "salmon_bucket", "tropical_fish", "tropical_fish_bucket", "seagrass", "sea_pickle", "kelp", "ink_sac", "turtle_scute", "sand", "heart_of_the_sea"}
+                                local itemTable = {"melon", "potion", "melon_slice", "apple", "milk_bucket", "tube_coral_block", "brain_coral_block", "bubble_coral_block", "fire_coral_block", "horn_coral_block", "tube_coral", "brain_coral", "fire_coral", "horn_coral", "bubble_coral", "tube_coral_fan", "brain_coral_fan", "bubble_coral_fan", "fire_coral_fan", "horn_coral_fan", "cod", "cod_bucket", "salmon", "salmon_bucket", "tropical_fish", "tropical_fish_bucket", "seagrass", "sea_pickle", "kelp", "ink_sac", "turtle_scute", "sand", "heart_of_the_sea"}
                                 local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Tank.TankBody.CoolerBox.ExSkill2LauncherAnchor)
-                                self.parent.itemLauncher:launch(self.parent.compatibilityUtils:checkItem("minecraft:" .. itemTable[math.random(#itemTable)]), anchorPos, math.random() * 360, 0.75, vectors.rotateAroundAxis(player:getBodyYaw() * -1, math.random() * 4 - 2, -3, math.random() * 10 + 5, 0, 1, 0), 30)
+                                self.parent.itemLauncher:launch(self.parent.compatibilityUtils:checkItem("minecraft:" .. itemTable[math.random(#itemTable)]), anchorPos, math.random() * 360, 0.75, vectors.rotateAroundAxis(player:getBodyYaw() * -1, math.random() * 4 - 2, math.random() * 2 + 1, math.random() * 10 + 5, 0, 1, 0), 30)
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), anchorPos, 1, math.random() * 0.4 + 0.8)
+                            end
+
+                            if tick >= 42 then
+                                self.exSkill.exSkills[2].engineSound:setPos(self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar))
+                            end
+                            if tick >= 52 then
+                                if tick % 2 == 0 then
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.piston.extend"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Tank), 0.5, 0.2 + (tick - 52) / 520)
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.piston.contract"), self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Tank), 0.5, 0.2 + (tick - 52) / 520)
+                                end
+                                local bodyYaw = player:getBodyYaw()
+                                for _, anchor in ipairs({models.models.ex_skill_2.Tank.LeftCrawler.ExSkill2ParticleAnchor2, models.models.ex_skill_2.Tank.RightCrawler.ExSkill2ParticleAnchor3}) do
+                                    local anchorPos = self.parent.modelUtils.getModelWorldPos(anchor)
+                                    local particleBlock = world.getBlockState(anchorPos:copy():add(0, -1, 0)).id
+                                    if particleBlock ~= "minecraft:air" and particleBlock ~= "minecraft:cave_air" and particleBlock ~= "minecraft:void_air" then
+                                        for _ = 1, 10 do
+                                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:block", particleBlock), anchorPos):setScale(1.5):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 2 - 1, math.random() * 0.6, math.random() * 0.5 + 0.5, 0, 1, 0))
+                                        end
+                                    end
+                                end
+                            end
+                        end;
+
+                        onPostAnimation = function (self)
+                            if self.exSkill.exSkills[2].engineSound ~= nil then
+                                self.exSkill.exSkills[2].engineSound:stop()
+                                self.exSkill.exSkills[2].engineSound = nil
                             end
                         end;
                     };
-                }
+
+                    ---戦車のエンジン音のインスタンス
+                    ---@type Sound|nil
+                    engineSound = nil;
+                };
             };
         }
 
