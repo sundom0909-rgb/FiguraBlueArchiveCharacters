@@ -16,12 +16,17 @@
 ---| "WORRY" # 困った目
 ---| "WORRY_CENTER" # 困りつつ少し反対側を見る目
 ---| "UNEQUAL" # 不等号目
+---| "WORRY_INVERTED" # 困りつつ反対側を見る目
 
 ---@alias BlueArchiveCharacter.MouthTextures
 ---| "NORMAL" # 通常
 ---| "ANXIOUS" # への口
 ---| "O" # オーの形の口
 ---| "SURPRISED" # あんぐり口
+---| "SMILE" # にっこり口
+---| "OPENED" # 開いた口
+---| "OPENED_SMALL" # 小さく開いた口
+---| "ANXIOUS_SMALL" # 小さいへの口
 
 ---@alias BlueArchiveCharacter.GunPutType
 ---| "BODY" # アバターのBodyに銃を移動させる
@@ -323,12 +328,17 @@ BlueArchiveCharacter = {
                 WORRY = vectors.vec2(6, 0);
                 WORRY_CENTER = vectors.vec2(8, 0);
                 UNEQUAL = vectors.vec2(-1, 1);
+                WORRY_INVERTED = vectors.vec2(0, 1);
             };
 
             mouth = {
                 ANXIOUS = vectors.vec2(0, 0);
                 O = vectors.vec2(1, 0);
                 SURPRISED = vectors.vec2(2, 0);
+                SMILE = vectors.vec2(3, 0);
+                OPENED = vectors.vec2(0, 1);
+                OPENED_SMALL = vectors.vec2(1, 1);
+                ANXIOUS_SMALL = vectors.vec2(2, 1);
             };
         }
 
@@ -569,7 +579,35 @@ BlueArchiveCharacter = {
                             rot = vectors.vec3(0, 25, 0);
                             pos = vectors.vec3(56.9, 56, -1075.5);
                         };
-                    }
+                    };
+
+                    callbacks = {
+                        onPreAnimation = function (self)
+                            self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE", 20, true)
+                        end;
+
+                        onAnimationTick = function (self, tick)
+                            if tick == 20 then
+                                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "SMILE", 4, true)
+                            elseif tick == 24 then
+                                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED", 11, true)
+                            elseif tick == 35 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 1, true)
+                            elseif tick == 36 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED_SMALL", 8, true)
+                            elseif tick == 44 then
+                                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "OPENED_SMALL", 2, true)
+                            elseif tick == 46 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "ANXIOUS_SMALL", 6, true)
+                            elseif tick == 53 then
+                                self.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "SURPRISED", 8, true)
+                            elseif tick == 61 then
+                                self.parent.faceParts:setEmotion("WORRY", "WORRY_INVERTED", "SURPRISED", 14, true)
+                            elseif tick == 75 then
+                                self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "SURPRISED", 29, true)
+                            end
+                        end;
+                    };
                 }
             };
         }
