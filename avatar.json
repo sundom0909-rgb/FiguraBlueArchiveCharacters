@@ -163,6 +163,10 @@
 		"models.models.ex_skill_2.Tank": {
 			"visible": false
 		},
+		"models.models.ex_skill_2.SwimRing": {
+			"moveTo": "models.models.main.Avatar.UpperBody.Body",
+			"visible": false
+		},
 		"models.models.costume_masked.CMaskedH": {
 			"moveTo": "models.models.main.Avatar.Head",
 			"visible": false
