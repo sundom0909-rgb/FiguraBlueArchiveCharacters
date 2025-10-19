@@ -783,20 +783,16 @@ BlueArchiveCharacter = {
             callbacks = {
                 onPhase1 = function (_, dummyAvatar, costume)
                     if costume == "DEFAULT" or costume == "MASKED" then
-                        dummyAvatar.Head.HairTails.RightHairTail:setRot(30, 0, 0)
                         dummyAvatar.Head.HairTails.RightHairTail.RightHairTailZPivot:setRot(0, 0, 10)
-                        dummyAvatar.Head.HairTails.LeftHairTail:setRot(30, 0, 0)
                         dummyAvatar.Head.HairTails.LeftHairTail.LeftHairTailZPivot:setRot(0, 0, -10)
                         dummyAvatar.UpperBody.Body.Skirt:setRot(55, 0, 0)
                     end
+                    dummyAvatar.Head.HairTails.RightHairTail:setRot(30, 0, 0)
+                    dummyAvatar.Head.HairTails.LeftHairTail:setRot(30, 0, 0)
                 end;
 
                 onPhase2 = function (_, dummyAvatar, costume)
                     if costume == "DEFAULT" or costume == "MASKED" then
-                        dummyAvatar.Head.HairTails.RightHairTail:setRot(-20, 0, 0)
-                        dummyAvatar.Head.HairTails.RightHairTail.RightHairTailZPivot:setRot(0, 0, 10)
-                        dummyAvatar.Head.HairTails.LeftHairTail:setRot(-30, 0, 0)
-                        dummyAvatar.Head.HairTails.LeftHairTail.LeftHairTailZPivot:setRot(0, 0, -20)
                         dummyAvatar.UpperBody.Body.Backpack.OpenableBackpackBase.PeroroTip1:setRot(120, 0, 0)
                         dummyAvatar.UpperBody.Body.Backpack.OpenableBackpackBase.PeroroTip2:setRot(120, 0, 0)
                         dummyAvatar.UpperBody.Body.Backpack.OpenableBackpackBase.PeroroRightWing:setRot(0, 40, 0)
@@ -806,6 +802,10 @@ BlueArchiveCharacter = {
                         dummyAvatar.UpperBody.Body.Backpack.BackpackBackPocket.BackpackKeyRing:setRot(-30, 0, 0)
                         dummyAvatar.UpperBody.Body.Skirt:setRot(12, 0, 0)
                     end
+                    dummyAvatar.Head.HairTails.RightHairTail:setRot(-20, 0, 0)
+                    dummyAvatar.Head.HairTails.RightHairTail.RightHairTailZPivot:setRot(0, 0, 10)
+                    dummyAvatar.Head.HairTails.LeftHairTail:setRot(-30, 0, 0)
+                    dummyAvatar.Head.HairTails.LeftHairTail.LeftHairTailZPivot:setRot(0, 0, -20)
                 end;
             }
         }

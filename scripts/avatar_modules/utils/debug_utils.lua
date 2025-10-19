@@ -18,7 +18,7 @@ DebugUtils = {
         local instance = Avatar.instantiate(DebugUtils, AvatarModule, parent)
 
         instance.EX_SKILL_AUTO_PLAY_MODE = "NONE"
-        instance.DEATH_ANIMATION_DEBUG_MODE = false
+        instance.DEATH_ANIMATION_DEBUG_MODE = true
 
         return instance
     end;
