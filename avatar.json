@@ -160,6 +160,9 @@
 		"models.models.ex_skill_1.PeroroDisc.PeroroDiscEmissive": {
 			"primaryRenderType": "EMISSIVE_SOLID"
 		},
+		"models.models.ex_skill_2.Tank": {
+			"visible": false
+		},
 		"models.models.costume_masked.CMaskedH": {
 			"moveTo": "models.models.main.Avatar.Head",
 			"visible": false

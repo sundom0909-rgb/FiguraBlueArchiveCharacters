@@ -582,6 +582,10 @@ BlueArchiveCharacter = {
                     };
 
                     exSkill = 1;
+
+                    ---この衣装が初期化されているかどうか。
+                    ---@type boolean
+                    isInitialized = false;
                 };
             };
 
@@ -601,6 +605,18 @@ BlueArchiveCharacter = {
                         self.physics.physicData[2].z.vertical.headX.max = 5
                         self.physics.physicData[3].z.vertical.neutral = -5
                         self.physics.physicData[3].z.vertical.headX.min = -5
+
+                        if not self.costume.costumes[3].isInitialized then
+                            models.models.ex_skill_2.Tank.TankBody.BaseLeftSide4:newText("ex_skill_2_tank_text_1"):setText("§02年3組 備品"):setPos(0, 7, 14):setRot(0, 90, 0):setScale(0.55):setAlignment("CENTER")
+                            models.models.ex_skill_2.Tank.TankBody.BaseLeftSide4:newText("ex_skill_2_tank_text_2"):setText("§0使用後、元の位置に！"):setPos(0, 2.25, 20):setRot(0, 90, 0):setScale(0.15):setAlignment("CENTER")
+                            models.models.ex_skill_2.Tank.TankBody.CoolerBox:newItem("ex_skill_2_tank_item_1"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:melon")):setPos(7, 5.6, 0):setScale(0.7)
+                            models.models.ex_skill_2.Tank.TankBody.CoolerBox:newItem("ex_skill_2_tank_item_2"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:potion")):setPos(-11, 5.6, -2):setRot(0, -150, 0):setScale(0.7)
+                            models.models.ex_skill_2.Tank.TankBody.CoolerBox:newItem("ex_skill_2_tank_item_3"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:potion")):setPos(-7, 5.6, 0):setRot(0, 180, 0):setScale(0.7)
+                            models.models.ex_skill_2.Tank.TankBody.CoolerBox:newItem("ex_skill_2_tank_item_4"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:potion")):setPos(-4, 5.6, -2):setRot(0, 140, 0):setScale(0.7)
+                            models.models.ex_skill_2.Tank.TankBody.CoolerBox:newItem("ex_skill_2_tank_item_5"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:apple")):setPos(-7, 5.6, 3):setRot(0, 180, 0):setScale(0.7)
+                            models.models.ex_skill_2.Tank.TankBody.Turret.TurretTank:newItem("ex_skill_2_tank_item_6"):setItem("minecraft:iron_shovel"):setPos(0, 0, 0.5):setRot(0, 0, 45)
+                            self.costume.costumes[3].isInitialized = true
+                        end
                     end
                 end;
 
