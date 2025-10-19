@@ -536,7 +536,7 @@ BlueArchiveCharacter = {
                                 end
                                 if (tick - 26) % 3 == 0 then
                                     ---@diagnostic disable-next-line: invisible
-                                    self.parent.itemLauncher:launch(self.parent.compatibilityUtils.registries.item[math.random(#self.parent.compatibilityUtils.registries.item)], anchorPos, bodyYaw * -1, vectors.rotateAroundAxis(bodyYaw * -1, (((tick - 26) % 6 == 0) and 1 or -1) * (math.random() + 2), 4, 0, 0, 1, 0), 30)
+                                    self.parent.itemLauncher:launch(self.parent.compatibilityUtils.registries.item[math.random(#self.parent.compatibilityUtils.registries.item)], anchorPos, bodyYaw * -1, 0.25, vectors.rotateAroundAxis(bodyYaw * -1, (((tick - 26) % 6 == 0) and 1 or -1) * (math.random() + 2), 4, 0, 0, 1, 0), 30)
                                     sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), anchorPos, 0.75, math.random() * 0.4 + 0.8)
                                 end
                             end
@@ -605,6 +605,14 @@ BlueArchiveCharacter = {
                                 self.parent.faceParts:setEmotion("WORRY", "WORRY_INVERTED", "SURPRISED", 14, true)
                             elseif tick == 75 then
                                 self.parent.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "SURPRISED", 29, true)
+                            end
+
+                            if tick >= 56 and (tick - 56) % 3 == 0 then
+                                ---@type Minecraft.itemID
+                                local itemTable = {"melon", "potion", "melon_slice", "apple", "milk_bucket", "cookie", "pumpkin_pie", "cake", "tube_coral_block", "brain_coral_block", "bubble_coral_block", "fire_coral_block", "horn_coral_block", "tube_coral", "brain_coral", "fire_coral", "horn_coral", "bubble_coral", "tube_coral_fan", "brain_coral_fan", "bubble_coral_fan", "fire_coral_fan", "horn_coral_fan", "cod", "cod_bucket", "salmon", "salmon_bucket", "tropical_fish", "tropical_fish_bucket", "seagrass", "sea_pickle", "kelp", "ink_sac", "turtle_scute", "sand", "heart_of_the_sea"}
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Tank.TankBody.CoolerBox.ExSkill2LauncherAnchor)
+                                self.parent.itemLauncher:launch(self.parent.compatibilityUtils:checkItem("minecraft:" .. itemTable[math.random(#itemTable)]), anchorPos, math.random() * 360, 0.75, vectors.rotateAroundAxis(player:getBodyYaw() * -1, math.random() * 4 - 2, -3, math.random() * 10 + 5, 0, 1, 0), 30)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), anchorPos, 1, math.random() * 0.4 + 0.8)
                             end
                         end;
                     };

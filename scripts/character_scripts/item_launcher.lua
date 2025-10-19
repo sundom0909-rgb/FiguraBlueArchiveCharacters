@@ -2,6 +2,7 @@
 ---@field package item ItemTask 発射したアイテムのレンダータスク
 ---@field package currentPos Vector3 アイテムの現在のワールド位置
 ---@field package nextPos Vector3 アイテムの次ティックのワールド位置
+---@field package baseScale number アイテムモデルの基本スケール
 ---@field package velocity Vector3 アイテムの現在の速度
 ---@field package lifetime integer アイテムを消すまでの残り時間（ティック単位）
 
@@ -66,7 +67,7 @@ end
 function ItemLauncher:onRender(delta)
 	for _, object in ipairs(self.itemObjects) do
 		object.item:setPos(object.currentPos:copy():add(object.nextPos:copy():sub(object.currentPos):scale(delta)):scale(16):add(0, 2, 0))
-		object.item:setScale(vectors.vec3(1, 1, 1):scale(math.min(0.1 * (object.lifetime + (1 - delta)), 0.25)))
+		object.item:setScale(vectors.vec3(1, 1, 1):scale(math.min(0.4 * object.baseScale * (object.lifetime + (1 - delta)), object.baseScale)))
 	end
 end
 
@@ -74,14 +75,16 @@ end
 ---@param item Minecraft.itemID 発射するアイテム
 ---@param pos Vector3 ワールド座標での発射位置
 ---@param rot number アイテムの角度（度単位）
+---@param scale number アイテムモデルの大きさ倍率
 ---@param velocity Vector3 発射の初速
 ---@param lifetime integer 発射したアイテムが存在する時間（ティック単位）
-function ItemLauncher:launch(item, pos, rot, velocity, lifetime)
+function ItemLauncher:launch(item, pos, rot, scale, velocity, lifetime)
 	---@type ItemLauncher.LaunchedItemObject
 	local object = {
 		item = models.script_item_launcher:newItem(client.intUUIDToString(client.generateUUID())),
 		currentPos = pos:copy(),
 		nextPos = pos:copy(),
+		baseScale = scale,
 		velocity = velocity,
 		lifetime = lifetime
 	}
@@ -89,7 +92,7 @@ function ItemLauncher:launch(item, pos, rot, velocity, lifetime)
 	object.item:setItem(self.parent.compatibilityUtils:checkItem(item))
 	object.item:setPos(pos:copy():scale(16):add(0, 2, 0))
 	object.item:setRot(0, rot, 0)
-	object.item:setScale(0.25, 0.25, 0.25)
+	object.item:setScale(vectors.vec3(1, 1, 1):scale(object.baseScale))
 
 	table.insert(self.itemObjects, object)
 
