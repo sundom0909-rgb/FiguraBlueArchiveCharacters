@@ -546,6 +546,31 @@ BlueArchiveCharacter = {
                         end;
                     };
                 };
+
+                {
+                    name = {
+                        en_us = "Crusader-chan, please!";
+                        ja_jp = "クルセイダーちゃん、お願いします！";
+                    };
+
+                    formationType = "SPECIAL";
+
+                    models = {models.models.ex_skill_2.Tank, models.models.main.Avatar.UpperBody.Body.SwimRing};
+
+                    animations = {"main", "ex_skill_2"};
+
+                    camera = {
+                        start = {
+                            rot = vectors.vec3();
+                            pos = vectors.vec3(0);
+                        };
+
+                        fin = {
+                            rot = vectors.vec3(0);
+                            pos = vectors.vec3(0);
+                        };
+                    }
+                }
             };
         }
 
@@ -581,7 +606,7 @@ BlueArchiveCharacter = {
                         ja_jp = "水着";
                     };
 
-                    exSkill = 1;
+                    exSkill = 2;
 
                     ---この衣装が初期化されているかどうか。
                     ---@type boolean
