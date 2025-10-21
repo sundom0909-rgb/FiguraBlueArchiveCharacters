@@ -618,9 +618,8 @@ BlueArchiveCharacter = {
                             elseif tick == 46 then
                                 self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "ANXIOUS_SMALL", 6, true)
                             elseif tick == 52 then
+                                self.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "SURPRISED", 9, true)
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.firework_rocket.launch"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 2)
-                            elseif tick == 53 then
-                                self.parent.faceParts:setEmotion("SURPRISED", "SURPRISED", "SURPRISED", 8, true)
                             elseif tick == 61 then
                                 self.parent.faceParts:setEmotion("WORRY", "WORRY_INVERTED", "SURPRISED", 14, true)
                             elseif tick == 75 then
