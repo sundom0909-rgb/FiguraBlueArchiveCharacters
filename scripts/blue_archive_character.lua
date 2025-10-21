@@ -700,6 +700,8 @@ BlueArchiveCharacter = {
                                 for i = 1, 3 do
                                     models.models.ex_skill_2.Pillagers["Pillager"..i]["Pillager"..i.."RightArm"]:newItem("ex_skill_2_pillager_"..i.."_crossbow"):setItem(self.parent.compatibilityUtils:checkItem("minecraft:crossbow")):setPos(0, -12, -2):setRot(0, 0, -135)
                                 end
+                                ---@diagnostic disable-next-line: discard-returns
+                                models.models.ex_skill_2.Wall.SpecialItemGroup.SpecialItem:newItem("special_item")
                                 if host:isHost() then
                                     models.models.ex_skill_2.Gui.UI.MomoiUI:addChild(models.models.ex_skill_2.Gui.UI.MomoiUI.UI1:copy("UI1Shadow"))
                                     models.models.ex_skill_2.Gui.UI.MomoiUI.UI1Shadow:setPos(-1, -1, 1)
@@ -780,12 +782,10 @@ BlueArchiveCharacter = {
                             models.models.main.Avatar.UpperBody.Arms.RightArm.Gun:setRot()
                             models.models.main.Avatar.UpperBody.Arms.RightArm.Gun:setVisible(true)
                             local specialItemValue = math.random() --0.80未満で「金のマガジン」、0.80~0.90未満で「エメラルド」、0.90~1.00未満で「ダイヤモンド」
-                            if specialItemValue >= 0.8 then
-                                models.models.ex_skill_2.Wall.SpecialItemGroup.SpecialItem.GoldenMagazine:setVisible(false)
-                                models.models.ex_skill_2.Wall.SpecialItemGroup.SpecialItem:newItem("special_item"):setItem(self.parent.compatibilityUtils:checkItem(specialItemValue < 0.9 and "minecraft:emerald" or "minecraft:diamond"))
-                            else
-                                models.models.ex_skill_2.Wall.SpecialItemGroup.SpecialItem.GoldenMagazine:setVisible(true)
-                            end
+                            local specialItemTask = models.models.ex_skill_2.Wall.SpecialItemGroup.SpecialItem:getTask("special_item")
+                            ---@cast specialItemTask ItemTask
+                            specialItemTask:setItem(self.parent.compatibilityUtils:checkItem(specialItemValue < 0.8 and "minecraft:spectral_arrow" or (specialItemValue < 0.9 and "minecraft:emerald" or "minecraft:diamond")))
+                            specialItemTask:setVisible(true)
                             self.exSkill.exSkills[2].glowColor = specialItemValue < 0.8 and vectors.vec3(1, 0.984, 0.4) or (specialItemValue < 0.9 and vectors.vec3(0.686, 0.992, 0.804) or vectors.vec3(0.631, 0.984, 0.91))
                             models.models.ex_skill_2.Wall.SpecialItemGroup.GlowEffects:setColor(self.exSkill.exSkills[2].glowColor)
                             local paintingResources = {"minecraft:textures/painting/pointer.png", "minecraft:textures/painting/pigscene.png", "minecraft:textures/painting/burning_skull.png"}
@@ -1061,7 +1061,7 @@ BlueArchiveCharacter = {
                             if models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SpecialItemGroup ~= nil then
                                 models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.SpecialItemGroup:moveTo(models.models.ex_skill_2.Wall)
                             end
-                            models.models.ex_skill_2.Wall.SpecialItemGroup.SpecialItem:removeTask("special_item")
+                            models.models.ex_skill_2.Wall.SpecialItemGroup.SpecialItem:getTask("special_item"):setVisible(false)
                             if host:isHost() then
                                 for _, modelPart in ipairs({models.models.ex_skill_2.Gui, models.models.ex_skill_2.Gui.Reticule}) do
                                     modelPart:setVisible(false)
