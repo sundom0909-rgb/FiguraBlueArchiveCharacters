@@ -41,11 +41,11 @@ CameraManager = {
                     if not self.COLLISION_DENIAL_DISABLED then
                         for i = 0, 3 do
                             local startPos = vectors.rotateAroundAxis(i * 90 + 45, baseVector:copy(), cameraDir):add(cameraPivot)
-                            local _, collisionPos, _ = raycast:block(startPos, startPos:copy():add(cameraDir:copy():scale(-4)), "VISUAL", "NONE")
+                            local _, collisionPos, _ = raycast:block(startPos, startPos:copy():add(cameraDir:copy():scale(minDistance * -1)), "VISUAL", "NONE")
                             minDistance = math.min(collisionPos:copy():sub(startPos):length(), minDistance)
                         end
                     end
-                    renderer:setCameraPos(0, 0, (minDistance > self.thirdPersonCameraDistance or self.isCameraCollisionDenialEnabled) and self.thirdPersonCameraDistance - minDistance or 0)
+                    renderer:setCameraPos(0, 0, (minDistance > self.thirdPersonCameraDistance or self.isCameraCollisionDenialEnabled) and self.thirdPersonCameraDistance - minDistance or minDistance - 4)
                 end
             end, "camera_manager_render")
         elseif not enabled then
