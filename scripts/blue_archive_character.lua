@@ -7,6 +7,8 @@
 ---| "WORRY" # 困った目
 ---| "WORRY_CENTER" # 困りつつ少し反対側を見る目
 ---| "UNEQUAL" # 不等号目
+---| "SURPRISED_INVERTED" # 驚きつつ反対側を見る目
+---| "NORMAL_CENTER" # 少し反対側を見る目
 
 ---@alias BlueArchiveCharacter.LeftEyeTextures
 ---| "NORMAL" # 通常
@@ -318,6 +320,8 @@ BlueArchiveCharacter = {
                 WORRY = vectors.vec2(6, 0);
                 WORRY_CENTER = vectors.vec2(8, 0);
                 UNEQUAL = vectors.vec2(0, 1);
+                SURPRISED_INVERTED = vectors.vec2(2, 1);
+                NORMAL_CENTER = vectors.vec2(3, 1);
             };
 
             leftEye = {
@@ -343,7 +347,13 @@ BlueArchiveCharacter = {
         }
 
         instance.arms = {
-
+            callbacks = {
+                onArmStateChanged = function (self, right, left)
+                    if self.costume.costumes[3].isRidingTank and self.costume.costumes[3].tankTick < 40 then
+                        return {right = 0, left = 0}
+                    end
+                end;
+            }
         }
 
         instance.skirt = {
@@ -1306,8 +1316,8 @@ BlueArchiveCharacter = {
                         models.models.main.Avatar.LowerBody:setVisible(false)
                         models.models.ex_skill_2.Tank:setOffsetPivot(0, 0, 8)
                         self.parent.cameraManager:setThirdPersonCameraDistance(8)
-                        self.parent.arms:setArmState(0, 0)
                         animations["models.main"]["tank_start"]:play()
+                        animations["models.ex_skill_2"]["tank_start"]:play()
                         animations["models.ex_skill_2"]["tank_move"]:play()
 
                         events.TICK:register(function ()
@@ -1336,8 +1346,25 @@ BlueArchiveCharacter = {
                             else
                                 self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "ANXIOUS", 1)
                             end
-                            if self.costume.costumes[3].tankTick == 36 then
-                                --//TODO: 開始アニメーション終了後の処理
+                            if self.costume.costumes[3].isRidingTank and self.costume.costumes[3].tankTick == 0 then
+                                self.parent.arms:setArmState(0, 0)
+                                self.parent.faceParts:setEmotion("WORRY", "WORRY", "ANXIOUS_SMALL", 15, true)
+                                models.models.main.Avatar.Head.NoticeEffect:setVisible(true)
+                            elseif self.costume.costumes[3].tankTick == 15 then
+                                self.parent.faceParts:setEmotion("CLOSED", "CLOSED", "ANXIOUS", 2, true)
+                            elseif self.costume.costumes[3].tankTick == 17 then
+                                self.parent.faceParts:setEmotion("SURPRISED_INVERTED", "SURPRISED", "SURPRISED", 12, true)
+                            elseif self.costume.costumes[3].tankTick == 21 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.experience_orb.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 2)
+                            elseif self.costume.costumes[3].tankTick == 29 then
+                                self.parent.faceParts:setEmotion("NORMAL_CENTER", "NORMAL", "ANXIOUS", 7, true)
+                                models.models.main.Avatar.Head.NoticeEffect:setVisible(false)
+                            elseif self.costume.costumes[3].tankTick == 40 then
+                                if self.parent.gun.currentGunPosition == "RIGHT" then
+                                    self.parent.arms:setArmState(1, 2)
+                                elseif self.parent.gun.currentGunPosition == "LEFT" then
+                                    self.parent.arms:setArmState(2, 1)
+                                end
                                 if host:isHost() and not self.costume.costumes[3].isTipShowed then
                                     print(self.parent.locale:getLocale("tank_shoot.tip_pre")..self.parent.keyManager.keyMappings["tank_shoot"].keybind:getKeyName()..self.parent.locale:getLocale("tank_shoot.tip_post"))
                                     self.costume.costumes[3].isTipShowed = true
@@ -1436,7 +1463,7 @@ BlueArchiveCharacter = {
                         events.RENDER:remove("tank_render")
                         events.ON_PLAY_SOUND:remove("tank_on_play_sound")
                         renderer:setRenderVehicle(true)
-                        for _, modelPart in ipairs({models.models.ex_skill_2.Tank, models.models.main.Avatar.UpperBody.Body.SwimRing}) do
+                        for _, modelPart in ipairs({models.models.ex_skill_2.Tank, models.models.main.Avatar.UpperBody.Body.SwimRing, models.models.main.Avatar.Head.NoticeEffect}) do
                             modelPart:setVisible(false)
                         end
                         for _, modelPart in ipairs({models.models.ex_skill_2.Tank, models.models.ex_skill_2.Tank.TankBody.Turret, models.models.ex_skill_2.Tank.TankBody.Turret.CannonBase}) do
@@ -1449,6 +1476,12 @@ BlueArchiveCharacter = {
                         self.parent.cameraManager:setThirdPersonCameraDistance(4)
                         self.parent.cameraManager.setCameraPivot()
                         renderer:setEyeOffset()
+                        for _, animationName in ipairs({"tank_start", "tank_idle_powered"}) do
+                            animations["models.main"][animationName]:stop()
+                        end
+                        for _, animationName in ipairs({"tank_start", "tank_idle", "tank_move"}) do
+                            animations["models.ex_skill_2"][animationName]:stop()
+                        end
                         self.costume.costumes[3].tankTick = 0
                         self.costume.costumes[3].shootTick = -1
                         self.costume.costumes[3].isEngineActivePrev = false
