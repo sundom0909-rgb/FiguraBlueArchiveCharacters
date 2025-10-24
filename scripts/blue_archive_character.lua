@@ -1010,6 +1010,17 @@ BlueArchiveCharacter = {
                                 if self.costume.costumes[1].tankTick % 2 == 0 and isEngineActive then
                                     sounds:playSound(self.parent.compatibilityUtils:checkSound(self.costume.costumes[1].tankTick % 4 == 0 and "minecraft:block.piston.extend" or "minecraft:block.piston.contract"), vehicle:getPos(), 0.02, 0.5)
                                 end
+                                if self.costume.costumes[1].tankTick % 2 == 0 and isEngineActive then
+                                    local anchorPos = vehicle:getPos()
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound(self.costume.costumes[1].tankTick % 4 == 0 and "minecraft:block.piston.extend" or "minecraft:block.piston.contract"), vehicle:getPos(), 0.02, 0.5)
+                                    local velocity = vehicle:getVelocity():mul(1, 0, 1):length()
+                                    if velocity >= 0.1 then
+                                        local volume = math.min(0.67 * velocity - 0.06, 0.2)
+                                        local pitch = 0.25 * velocity + 0.175 + math.random() * 0.02 - 0.01
+                                        sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.piston.extend"), anchorPos, volume, pitch)
+                                        sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.piston.contract"), anchorPos, volume, pitch)
+                                    end
+                                end
                                 local health = vehicle:getNbt().Health
                                 if health < 16 then
                                     local playerPos = player:getPos()
