@@ -32,6 +32,7 @@
 ---@field public hypixelZombies HypixelZombies
 ---@field public updateChecker UpdateChecker
 ---@field public itemLauncher ItemLauncher
+---@field public shellManager TankShellManager
 ---@field public instantiate fun(class: table, super: table, ...: any) クラスをインスタンス化する
 
 Avatar = {
@@ -191,6 +192,11 @@ Avatar = {
 			require("scripts.character_scripts.item_launcher")
 			instance.itemLauncher = ItemLauncher.new(instance)
 			instance.itemLauncher:init()
+
+			require("scripts.character_scripts.tank_shell_manager")
+			require("scripts.character_scripts.tank_shell")
+			instance.shellManager = TankShellManager.new(instance)
+			instance.shellManager:init()
 
 			--SCRIPT_INITイベントを実行
 			instance.avatarEvents.SCRIPT_INIT:fire()

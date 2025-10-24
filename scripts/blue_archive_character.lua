@@ -1389,6 +1389,20 @@ BlueArchiveCharacter = {
                                 end
                                 particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:large_smoke"), playerPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1 , math.random() * 5 - 2.5, math.random() * 3 - 1.5, math.random() * 7 - 3.5, 0, 1, 0)))
                             end
+
+                            if self.costume.costumes[3].shootTick >= 0 then
+                                self.costume.costumes[3].shootTick = self.costume.costumes[3].shootTick + 1
+                                if self.costume.costumes[3].shootTick == 13 then
+                                    local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Tank.TankBody.Turret.CannonBase.Cannon.MuzzleAnchor)
+                                    self.parent.shellManager:spawn(anchorPos, vectors.vec3(models.models.ex_skill_2.Tank.TankBody.Turret.CannonBase:getRot().x * -1, player:getBodyYaw() * -1, 0))
+                                    for _ = 1, 10 do
+                                        particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:large_smoke"), anchorPos:copy():add(math.random() - 0.5, math.random() - 0.5, math.random() - 0.5)):setScale(2)
+                                    end
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.firework_rocket.large_blast"), player:getPos(), 1, 1)
+                                elseif self.costume.costumes[3].shootTick == 38 then
+                                    self.costume.costumes[3].shootTick = -1
+                                end
+                            end
                             self.costume.costumes[3].tankTick = self.costume.costumes[3].isRidingTank and self.costume.costumes[3].tankTick + 1 or 0
                             self.costume.costumes[3].isEngineActivePrev = isEngineActive
                             self.costume.costumes[3].bodyYawPrev = bodyYaw
@@ -1487,10 +1501,19 @@ BlueArchiveCharacter = {
                         self.costume.costumes[3].isEngineActivePrev = false
                     end
                     self.costume.costumes[3].isRidingTankPrev = self.costume.costumes[3].isRidingTank
-                    self.costume.costumes[3].shootCoolDown = math.max(self.costume.costumes[3].shootCoolDown - 1, 0)
                 end
+                self.costume.costumes[3].shootCoolDown = math.max(self.costume.costumes[3].shootCoolDown - 1, 0)
             end
         end)
 
     end;
 }
+
+---クルセイダーちゃんの弾を発射する。
+function pings.tankShoot()
+    animations["models.main"]["tank_shoot"]:play()
+    animations["models.ex_skill_2"]["tank_shoot"]:play()
+    AvatarInstance.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "ANXIOUS", 38, true)
+    AvatarInstance.characterData.costume.costumes[3].shootTick = 0
+    AvatarInstance.characterData.costume.costumes[3].shootCoolDown = 100
+end
