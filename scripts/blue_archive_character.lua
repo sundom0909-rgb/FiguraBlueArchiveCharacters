@@ -1337,7 +1337,7 @@ BlueArchiveCharacter = {
                                 animations["models.ex_skill_2"]["tank_idle"]:stop()
                             end
                             animations["models.ex_skill_2"]["tank_move"]:setSpeed(self.parent.physics.velocityAverage[5][2] * 2.5)
-                            local beltOffset = math.floor(animations["models.ex_skill_2"]["tank_move"]:getTime() * 32) % 2
+                            local beltOffset = math.floor(models.models.ex_skill_2.Tank.RightCrawler.RightCrawlerWheel1:getTrueRot().x / 20) % 2
                             for _, modelPart in ipairs({models.models.ex_skill_2.Tank.RightCrawler.RightCrawlerBelt, models.models.ex_skill_2.Tank.LeftCrawler.LeftCrawlerBelt}) do
                                 modelPart:setUVPixels(0, beltOffset)
                             end
