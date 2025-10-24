@@ -531,7 +531,7 @@ BlueArchiveCharacter = {
                                 for i = 0, 7 do
                                     particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:wax_off"), anchorPos):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, vectors.rotateAroundAxis(i * 45 + 0.1, 0, -0.015, 0, 0, 0, 1), 0, 1, 0)):setScale(0.25):setColor(1, 1, 0.71):setLifetime(20)
                                 end
-                                self.parent.bubble:play("GOOD", 20, vectors.vec2(), 0, false)
+                                self.parent.bubble:play("GOOD", 20, false)
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.egg.throw"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 0.5, 2)
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.experience_orb.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 1.5)
                             elseif tick == 40 then
