@@ -143,8 +143,11 @@ Bubble = {
         animations["models.bubble"].bubble_show:setSpeed(1)
         models.models.main.Avatar.UpperBody.Body.Bubble:setVisible(true)
         if self.shouldShowInHud then
-            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar))
-            models.models.bubble.Gui.FirstPersonBubble:setVisible(true)
+            if self.emoji == "NOTE" then
+                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.experience_orb.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, 1.5)
+            else
+                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar), 1, self.emoji == "GOOD" and 1.2 or (self.emoji == "HEART" and 1.5 or (self.emoji == "SWEAT" and 0.75 or 1)))
+            end
         end
 
         if events.TICK:getRegisteredCount("bubble_tick") == 0 then
@@ -153,7 +156,7 @@ Bubble = {
                     models.models.bubble.Gui.FirstPersonBubble:setVisible(self.shouldShowInHud and renderer:isFirstPerson())
                     self.bubbleCount = self.bubbleCount + 1
                     if self.bubbleCount == 0 then
-                        for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.Bubble.BubbleInner, models.models.bubble.Gui.FirstPersonBubble, models.models.main.Avatar.UpperBody.Body.Bubble.BubbleInner.Bullets, models.models.bubble.Gui.FirstPersonBubble.Bullets}) do
+                        for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.Bubble, models.models.bubble.Gui.FirstPersonBubble, models.models.main.Avatar.UpperBody.Body.Bubble.BubbleInner.Bullets, models.models.bubble.Gui.FirstPersonBubble.BubbleInner.Bullets}) do
                             modelPart:setVisible(false)
                         end
                         events.TICK:remove("bubble_tick")
