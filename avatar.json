@@ -186,6 +186,7 @@
 		},
 		"models.models.bubble.Bubble": {
 			"moveTo": "models.models.main.Avatar.UpperBody.Body",
+			"primaryRenderType": "TRANSLUCENT",
 			"parentType": "Camera",
 			"visible": false
 		},
