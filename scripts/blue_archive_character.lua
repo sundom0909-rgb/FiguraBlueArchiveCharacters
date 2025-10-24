@@ -739,7 +739,6 @@ BlueArchiveCharacter = {
                     ---@type integer
                     tankTick = 0;
 
-                    --[[ 改善点 ]]
                     ---ラクダが座っているかどうか
                     ---@type boolean
                     isCamelSitting = true;
@@ -755,10 +754,6 @@ BlueArchiveCharacter = {
                     ---戦車の車体の向きを更新すべきかどうか
                     ---@type boolean
                     shouldUpdateBaseRot = true;
-
-                    ---現ティックの戦車の移動ベクトル
-                    ---@type Vector3
-                    tankVelocity = vectors.vec3();
 
                     ---砲弾を撃つ際のティックカウンター
                     ---@type integer
@@ -982,7 +977,6 @@ BlueArchiveCharacter = {
                                                     self.parent.cameraManager.setCameraPivot(vectors.vec3(0, heightOffset + 0.78, 0))
                                                     renderer:setEyeOffset(0, heightOffset + 0.78, 0)
                                                 end
-                                                self.costume.costumes[3].baseRotPrev = baseRot
                                             end
                                         end, "tank_render")
 
