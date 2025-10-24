@@ -1400,6 +1400,11 @@ BlueArchiveCharacter = {
                                     end
                                     sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.firework_rocket.large_blast"), player:getPos(), 1, 1)
                                 elseif self.costume.costumes[3].shootTick == 38 then
+                                    if self.parent.gun.currentGunPosition == "RIGHT" then
+                                        self.parent.arms:setArmState(1, 2)
+                                    elseif self.parent.gun.currentGunPosition == "LEFT" then
+                                        self.parent.arms:setArmState(2, 1)
+                                    end
                                     self.costume.costumes[3].shootTick = -1
                                 end
                             end
@@ -1513,6 +1518,7 @@ BlueArchiveCharacter = {
 function pings.tankShoot()
     animations["models.main"]["tank_shoot"]:play()
     animations["models.ex_skill_2"]["tank_shoot"]:play()
+    AvatarInstance.arms:setArmState(0, 0)
     AvatarInstance.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "ANXIOUS", 38, true)
     AvatarInstance.characterData.costume.costumes[3].shootTick = 0
     AvatarInstance.characterData.costume.costumes[3].shootCoolDown = 100
