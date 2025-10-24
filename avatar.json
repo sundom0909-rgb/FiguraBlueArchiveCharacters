@@ -220,13 +220,16 @@
 			"moveTo": "models.models.main.Avatar.UpperBody.Body.Tail.Tail4",
 			"visible": false
 		},
-		"models.models.bubble.Camera.AvatarBubble": {
+		"models.models.bubble.Bubble": {
+			"moveTo": "models.models.main.Avatar.UpperBody.Body",
+			"primaryRenderType": "TRANSLUCENT",
+			"parentType": "Camera",
 			"visible": false
 		},
-		"models.models.bubble.Camera.AvatarBubble.Bullets": {
+		"models.models.bubble.Bubble.BubbleInner.Bullets": {
 			"visible": false
 		},
-		"models.models.bubble.Camera.AvatarBubble.Dots": {
+		"models.models.bubble.Bubble.BubbleInner.Dots": {
 			"visible": false
 		},
 		"models.models.action_wheel_gui.Gui": {
