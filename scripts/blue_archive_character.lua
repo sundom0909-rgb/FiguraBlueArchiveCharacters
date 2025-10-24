@@ -1039,6 +1039,23 @@ BlueArchiveCharacter = {
                                         sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.iron_trapdoor.close"), player:getPos(), 1, 1.5)
                                     end
                                 end
+
+                                if self.costume.costumes[1].shootTick >= 0 then
+                                    self.costume.costumes[1].shootTick = self.costume.costumes[1].shootTick + 1
+                                    if self.costume.costumes[1].shootTick == 2 then
+                                        avatar:store("shootingStart", false)
+                                    elseif self.costume.costumes[1].shootTick == 13 then
+                                        local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Tank.TankBody.Turret.Cannon.MuzzleAnchor1)
+                                        self.parent.shellManager:spawn(anchorPos, vectors.vec3(models.models.ex_skill_1.Tank.TankBody.Turret.Cannon:getRot().x * -1, player:getBodyYaw() * -1, 0))
+                                        for _ = 1, 10 do
+                                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:large_smoke"), anchorPos:copy():add(math.random() - 0.5, math.random() - 0.5, math.random() - 0.5)):setScale(2)
+                                        end
+                                        sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.firework_rocket.large_blast"), player:getPos(), 1, 1)
+                                    elseif self.costume.costumes[1].shootTick == 38 then
+                                        self.costume.costumes[1].shootTick = -1
+                                    end
+                                end
+
                                 self.costume.costumes[1].tankTick = self.costume.costumes[1].isRidingTank and self.costume.costumes[1].tankTick + 1 or 0
                                 self.costume.costumes[1].isEngineActivePrev = isEngineActive
                                 self.costume.costumes[1].bodyYawPrev = bodyYaw
@@ -1163,21 +1180,6 @@ BlueArchiveCharacter = {
                     end
                 end
 
-                if self.costume.costumes[1].shootTick >= 0 then
-                    self.costume.costumes[1].shootTick = self.costume.costumes[1].shootTick + 1
-                    if self.costume.costumes[1].shootTick == 2 then
-                        avatar:store("shootingStart", false)
-                    elseif self.costume.costumes[1].shootTick == 13 then
-                        local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_1.Tank.TankBody.Turret.Cannon.MuzzleAnchor1)
-                        self.parent.shellManager:spawn(anchorPos, vectors.vec3(models.models.ex_skill_1.Tank.TankBody.Turret.Cannon:getRot().x * -1, player:getBodyYaw() * -1, 0))
-                        for _ = 1, 10 do
-                            particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:large_smoke"), anchorPos:copy():add(math.random() - 0.5, math.random() - 0.5, math.random() - 0.5)):setScale(2)
-                        end
-                        sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.firework_rocket.large_blast"), player:getPos(), 1, 1)
-                    elseif self.costume.costumes[1].shootTick == 38 then
-                        self.costume.costumes[1].shootTick = -1
-                    end
-                end
                 self.costume.costumes[1].isRidingTankPrev = self.costume.costumes[1].isRidingTank
                 self.costume.costumes[1].shootCoolDown = math.max(self.costume.costumes[1].shootCoolDown - 1, 0)
             end
