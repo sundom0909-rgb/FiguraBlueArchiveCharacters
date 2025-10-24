@@ -611,13 +611,21 @@ BlueArchiveCharacter = {
                     ---@type integer
                     tankTick = 0;
 
-                    ---ラクダの向きのデータ
-                    ---@type number[]
-                    camelRotData = {0, 0};
+                    ---ラクダが座っているかどうか
+                    ---@type boolean
+                    isCamelSitting = true;
 
-                    ---現ティックの戦車の移動ベクトル
-                    ---@type Vector3
-                    tankVelocity = vectors.vec3();
+                    ---ラクダのY軸の向き
+                    ---@type number
+                    camelRot = 0;
+
+                    ---前ティックの体の向き
+                    ---@type number
+                    bodyYawPrev = 0;
+
+                    ---戦車の車体の向きを更新すべきかどうか
+                    ---@type boolean
+                    shouldUpdateBaseRot = true;
 
                     ---砲弾を撃つ際のティックカウンター
                     ---@type integer
@@ -625,7 +633,7 @@ BlueArchiveCharacter = {
 
                     ---次の砲弾を撃つまでのクールダウン
                     ---@type integer
-                    shootCooldown = 0;
+                    shootCoolDown = 0;
 
                     ---ヒント表示をしたかどうか。
                     ---@type boolean
@@ -914,11 +922,11 @@ BlueArchiveCharacter = {
 
                 self.parent.keyManager:register("tank_shoot", "key.keyboard.v"):setOnPress(function ()
                     if self.costume.costumes[1].isRidingTank and self.costume.costumes[1].tankTick >= 36 and models.models.ex_skill_1.Tank:getColor() == vectors.vec3(1, 1, 1) then
-                        if self.costume.costumes[1].shootCooldown == 0 then
+                        if self.costume.costumes[1].shootCoolDown == 0 then
                             pings.tankShoot()
                         else
                             sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.note_block.bass"), player:getPos(), 1, 0.5)
-                            print(self.parent.locale:getLocale("tank_shoot.in_cool_down_pre")..math.ceil(self.costume.costumes[1].shootCooldown / 20)..self.parent.locale:getLocale("tank_shoot.in_cool_down_post"))
+                            print(self.parent.locale:getLocale("tank_shoot.in_cool_down_pre")..math.ceil(self.costume.costumes[1].shootCoolDown / 20)..self.parent.locale:getLocale("tank_shoot.in_cool_down_post"))
                         end
                     end
                 end)
@@ -952,21 +960,19 @@ BlueArchiveCharacter = {
                         end
                         self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 35, true)
                         sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.iron_trapdoor.open"), player:getPos(), 1, 0.5)
-                        self.costume.costumes[1].tankVelocity = vectors.rotateAroundAxis(vehicle:getRot().y * -1, 0, 0, 1, 0, 1, 0)
                         avatar:store("isEngineActive", false)
                         avatar:store("engineAnimTime", 0)
                         avatar:store("shootingStart", false)
                         avatar:store("isTankDied", false)
                         events.TICK:register(function ()
                             if not client:isPaused() then
-                                local camelRot = vehicle:getRot().y % 360
-                                table.insert(self.costume.costumes[1].camelRotData, camelRot)
-                                table.remove(self.costume.costumes[1].camelRotData, 1)
-                                local velocity = vehicle:getVelocity():mul(1, 0, 1)
-                                local camelVelocity = velocity:length()
-                                if camelVelocity > 0.01 then
-                                    self.costume.costumes[1].tankVelocity = vectors.rotateAroundAxis(camelRot * -1, 0, 0, 1, 0, 1, 0)
+                                local camelRot = vehicle:getRot().y
+                                self.costume.costumes[1].isCamelSitting = (player:getPos():sub(vehicle:getPos()):length() - 1.51017) * -1.35 >= 0.04
+                                if vehicle:isMoving(true) then
+                                    self.costume.costumes[1].camelRot = camelRot
                                 end
+                                local bodyYaw = player:getBodyYaw()
+                                self.costume.costumes[1].shouldUpdateBaseRot = math.abs(bodyYaw - self.costume.costumes[1].bodyYawPrev) < 330
                                 local isEngineActive = self.costume.costumes[1].isRidingTank and (player:getPos():sub(vehicle:getPos()):length() - 1.51017) * -1.35 < 1 and models.models.ex_skill_1.Tank:getColor() == vectors.vec3(1, 1, 1)
                                 if isEngineActive and not self.costume.costumes[1].isEngineActivePrev then
                                     animations["models.main"]["tank_idle_powered"]:play()
@@ -1007,7 +1013,6 @@ BlueArchiveCharacter = {
                                 local health = vehicle:getNbt().Health
                                 if health < 16 then
                                     local playerPos = player:getPos()
-                                    local bodyYaw = player:getBodyYaw()
                                     if health < 8 then
                                         particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:flame"), playerPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1 , math.random() * 5 - 2.5, math.random() * 3 - 1.5, math.random() * 7 - 3.5, 0, 1, 0)))
                                     end
@@ -1025,14 +1030,14 @@ BlueArchiveCharacter = {
                                 end
                                 self.costume.costumes[1].tankTick = self.costume.costumes[1].isRidingTank and self.costume.costumes[1].tankTick + 1 or 0
                                 self.costume.costumes[1].isEngineActivePrev = isEngineActive
+                                self.costume.costumes[1].bodyYawPrev = bodyYaw
                                 self.costume.costumes[1].hadIbukiPrev = self.costume.costumes[1].hasIbuki
                             end
                         end, "tank_tick")
                         events.RENDER:register(function (delta)
                             if not client:isPaused() then
-                                local camelRot = math.abs(self.costume.costumes[1].camelRotData[1] - self.costume.costumes[1].camelRotData[2]) <= 180 and self.costume.costumes[1].camelRotData[2] + ((self.costume.costumes[1].camelRotData[2] - self.costume.costumes[1].camelRotData[1]) * delta) or self.costume.costumes[1].camelRotData[2]
-                                local camelVelocity = vehicle:getVelocity():mul(1, 0, 1):length()
-                                local baseRot = camelRot - (math.deg(math.atan2(self.costume.costumes[1].tankVelocity.z, self.costume.costumes[1].tankVelocity.x)) - 90) % 360
+                                local bodyYaw = player:getBodyYaw(delta)
+                                local baseRot = bodyYaw - self.costume.costumes[1].camelRot
                                 local lookDir = player:getLookDir()
                                 local turretRot = math.clamp(math.deg(math.asin(lookDir.y)), -15, 25)
                                 local heightOffset = (player:getPos(delta):sub(vehicle:getPos(delta)):length() - 1.51017) * -1.35
@@ -1040,16 +1045,18 @@ BlueArchiveCharacter = {
                                 models.models.ex_skill_1.Tank:setPos(0, -24.5 + heightOffset * 16, models.models.ex_skill_1.ShootAnimAnchor:getAnimPos().z)
                                 models.models.ex_skill_1.Tank.TankBody.Turret.Cannon:setRot(turretRot, 0, 0)
                                 models.models.ex_skill_1.Tank.TankBody.Turret.Cannon.HangingSign:setRot(turretRot * -1, 0, 0)
-                                if camelVelocity > 0.01 then
+                                if vehicle:isMoving(true) then
                                     for _, modelPart in ipairs({models.models.ex_skill_1.Tank, models.models.ex_skill_1.Tank.TankBody.Turret}) do
                                         modelPart:setRot()
                                     end
-                                else
+                                elseif self.costume.costumes[1].isCamelSitting then
+                                    models.models.ex_skill_1.Tank:setRot()
+                                    models.models.ex_skill_1.Tank.TankBody.Turret:setRot()
+                                elseif self.costume.costumes[1].shouldUpdateBaseRot then
                                     models.models.ex_skill_1.Tank:setRot(0, baseRot, 0)
                                     models.models.ex_skill_1.Tank.TankBody.Turret:setRot(0, baseRot * -1, 0)
                                 end
 
-                                local bodyYaw = player:getBodyYaw(delta)
                                 if renderer:isFirstPerson() then
                                     renderer:setCameraPos(0.75, 0, 0)
                                     local animOffset = vectors.rotateAroundAxis(bodyYaw * -1, 0, models.models.ex_skill_1.IdleAnimAnchor:getAnimPos().y, models.models.ex_skill_1.ShootAnimAnchor:getAnimPos().z * -1, 0, 1, 0):scale(0.0625)
@@ -1161,7 +1168,7 @@ BlueArchiveCharacter = {
                     end
                 end
                 self.costume.costumes[1].isRidingTankPrev = self.costume.costumes[1].isRidingTank
-                self.costume.costumes[1].shootCooldown = math.max(self.costume.costumes[1].shootCooldown - 1, 0)
+                self.costume.costumes[1].shootCoolDown = math.max(self.costume.costumes[1].shootCoolDown - 1, 0)
             end
         end)
 
@@ -1177,5 +1184,5 @@ function pings.tankShoot()
     AvatarInstance.faceParts:setEmotion("ANGRY", "ANGRY_INVERTED", "CLOSED", 38, true)
     avatar:store("shootingStart", true)
     AvatarInstance.characterData.costume.costumes[1].shootTick = 0
-    AvatarInstance.characterData.costume.costumes[1].shootCooldown = 100
+    AvatarInstance.characterData.costume.costumes[1].shootCoolDown = 100
 end
