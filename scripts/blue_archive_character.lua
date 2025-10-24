@@ -1054,7 +1054,7 @@ BlueArchiveCharacter = {
                             elseif tick == 178 then
                                 models.models.main.Avatar.UpperBody.Body.GlowEffects:setVisible(true)
                                 self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "SMILE_SMALL", 25, true)
-                                self.parent.bubble:play("V", 24, vectors.vec2(0, -4), -45, false)
+                                self.parent.bubble:play("V", 24, false)
                                 local playerPos = player:getPos()
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), playerPos, 1, 1.5)
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.item.pickup"), player:getPos(), 1, 1)
