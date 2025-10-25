@@ -793,6 +793,11 @@ BlueArchiveCharacter = {
                         for _, animationName in ipairs({"tank_start", "tank_idle", "tank_move", "tank_shoot"}) do
                             animations["models.ex_skill_2"][animationName]:stop()
                         end
+                        if self.parent.gun.currentGunPosition == "RIGHT" then
+                            self.parent.arms:setArmState(1, 2)
+                        elseif self.parent.gun.currentGunPosition == "LEFT" then
+                            self.parent.arms:setArmState(2, 1)
+                        end
                         self.costume.costumes[3].tankTick = 0
                         self.costume.costumes[3].shootTick = -1
                         self.costume.costumes[3].isEngineActivePrev = false
