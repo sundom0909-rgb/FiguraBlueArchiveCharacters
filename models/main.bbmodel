@@ -4649,7 +4649,7 @@
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
-			"selected": true,
+			"selected": false,
 			"children": [
 				{
 					"name": "Head",
@@ -13615,7 +13615,7 @@
 			"uuid": "c01a4069-92ac-774a-711b-a7467e259a45",
 			"name": "tank_shoot",
 			"loop": "once",
-			"override": false,
+			"override": true,
 			"length": 2.7,
 			"snapping": 20,
 			"selected": true,
@@ -13807,11 +13807,11 @@
 							"data_points": [
 								{
 									"x": "0",
-									"y": "0",
-									"z": "-2"
+									"y": "1",
+									"z": "0"
 								}
 							],
-							"uuid": "df6cbb71-ef19-ae65-ec74-854933151e55",
+							"uuid": "3852a230-ab8c-bc3d-810d-417e1c34b1f1",
 							"time": 2.2,
 							"color": -1,
 							"interpolation": "linear"
