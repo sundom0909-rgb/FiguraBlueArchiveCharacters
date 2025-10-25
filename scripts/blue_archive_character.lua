@@ -925,14 +925,14 @@ BlueArchiveCharacter = {
 
                                             if self.costume.costumes[3].shootTick >= 0 then
                                                 self.costume.costumes[3].shootTick = self.costume.costumes[3].shootTick + 1
-                                                if self.costume.costumes[3].shootTick == 13 then
+                                                if self.costume.costumes[3].shootTick == 19 then
                                                     local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.ex_skill_2.Tank.TankBody.Turret.CannonBase.Cannon.MuzzleAnchor)
                                                     self.parent.shellManager:spawn(anchorPos, vectors.vec3(models.models.ex_skill_2.Tank.TankBody.Turret.CannonBase:getRot().x * -1, player:getBodyYaw() * -1, 0))
                                                     for _ = 1, 10 do
                                                         particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:large_smoke"), anchorPos:copy():add(math.random() - 0.5, math.random() - 0.5, math.random() - 0.5)):setScale(2)
                                                     end
                                                     sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.firework_rocket.large_blast"), player:getPos(), 1, 1)
-                                                elseif self.costume.costumes[3].shootTick == 38 then
+                                                elseif self.costume.costumes[3].shootTick == 54 then
                                                     if self.parent.gun.currentGunPosition == "RIGHT" then
                                                         self.parent.arms:setArmState(1, 2)
                                                     elseif self.parent.gun.currentGunPosition == "LEFT" then
@@ -1548,7 +1548,7 @@ function pings.tankShoot()
     animations["models.main"]["tank_shoot"]:play()
     animations["models.ex_skill_2"]["tank_shoot"]:play()
     AvatarInstance.arms:setArmState(0, 0)
-    AvatarInstance.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "ANXIOUS", 38, true)
+    AvatarInstance.faceParts:setEmotion("UNEQUAL", "UNEQUAL", "ANXIOUS", 44, true)
     AvatarInstance.characterData.costume.costumes[3].shootTick = 0
     AvatarInstance.characterData.costume.costumes[3].shootCoolDown = 100
 end
