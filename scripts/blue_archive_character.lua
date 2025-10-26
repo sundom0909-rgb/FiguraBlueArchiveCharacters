@@ -693,9 +693,46 @@ BlueArchiveCharacter = {
                         };
                     };
                 };
+
+                {
+                    name = "magical";
+
+                    displayName = {
+                        en_us = "Magical";
+                        ja_jp = "マジカル";
+                    };
+
+                    exSkill = 1;
+                }
             };
 
             callbacks = {
+                onChange = function (self)
+                    self.parent.costume.setCostumeTextureOffset(1)
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer}) do
+                        modelPart:setUVPixels(0, 16)
+                    end
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.CMagicalH, models.models.main.Avatar.UpperBody.Body.CMagicalB, models.models.main.Avatar.UpperBody.Arms.RightArm.CMagicalRAB, models.models.main.Avatar.UpperBody.Arms.LeftArm.CMagicalLAB, models.models.main.Avatar.LowerBody.Legs.RightLeg.CMagicalRLB, models.models.main.Avatar.LowerBody.Legs.LeftLeg.CMagicalLLB}) do
+                        modelPart:setVisible(true)
+                    end
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.HairPin, models.models.main.Avatar.Head.HairTails, models.models.main.Avatar.UpperBody.Body.Backpack, models.models.main.Avatar.UpperBody.Body.Skirt}) do
+                        modelPart:setVisible(false)
+                    end
+                end;
+
+                onReset = function (self)
+                    self.parent.costume.setCostumeTextureOffset(0)
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer}) do
+                        modelPart:setUVPixels()
+                    end
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.CMagicalH, models.models.main.Avatar.UpperBody.Body.CMagicalB, models.models.main.Avatar.UpperBody.Arms.RightArm.CMagicalRAB, models.models.main.Avatar.UpperBody.Arms.LeftArm.CMagicalLAB, models.models.main.Avatar.LowerBody.Legs.RightLeg.CMagicalRLB, models.models.main.Avatar.LowerBody.Legs.LeftLeg.CMagicalLLB}) do
+                        modelPart:setVisible(false)
+                    end
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.HairPin, models.models.main.Avatar.Head.HairTails, models.models.main.Avatar.UpperBody.Body.Backpack, models.models.main.Avatar.UpperBody.Body.Skirt}) do
+                        modelPart:setVisible(true)
+                    end
+                end;
+
                 onArmorChange = function (_, parts, isVisible)
                     if parts == "LEGGINGS" then
                         models.models.main.Avatar.UpperBody.Body.Skirt:setVisible(not isVisible)
