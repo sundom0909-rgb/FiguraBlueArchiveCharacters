@@ -356,14 +356,9 @@ BlueArchiveCharacter = {
 
             gunPosition = {
                 hold = {
-                    firstPersonPos = {
-                        right = vectors.vec3(-1.5, 1, 0);
-                        left = vectors.vec3(1.5, 1, 0);
-                    };
-
                     thirdPersonPos = {
-                        right = vectors.vec3(-1.5, 0, 0);
-                        left = vectors.vec3(1.5, 0, 0);
+                        right = vectors.vec3(-1.5, 0, -4.5);
+                        left = vectors.vec3(1.5, 0, -4.5);
                     };
                 };
 
@@ -713,12 +708,13 @@ BlueArchiveCharacter = {
                         modelPart:setUVPixels(0, 16)
                     end
                     models.models.main.Avatar.Head.Cowlick:setUVPixels(0, 1)
-                    for _, modelPart in ipairs({models.models.main.Avatar.Head.CMagicalH, models.models.main.Avatar.UpperBody.Body.CMagicalB, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.CMagicalRAB, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.CMagicalLAB, models.models.main.Avatar.LowerBody.Legs.RightLeg.RightLegBottom.CMagicalRLB, models.models.main.Avatar.LowerBody.Legs.LeftLeg.LeftLegBottom.CMagicalLLB}) do
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.CMagicalH, models.models.main.Avatar.UpperBody.Body.CMagicalB, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.CMagicalRAB, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.CMagicalLAB, models.models.main.Avatar.LowerBody.Legs.RightLeg.RightLegBottom.CMagicalRLB, models.models.main.Avatar.LowerBody.Legs.LeftLeg.LeftLegBottom.CMagicalLLB, models.models.main.Avatar.UpperBody.Body.Gun.StartAccessories}) do
                         modelPart:setVisible(true)
                     end
                     for _, modelPart in ipairs({models.models.main.Avatar.Head.HairPin, models.models.main.Avatar.Head.HairTails, models.models.main.Avatar.UpperBody.Body.Backpack, models.models.main.Avatar.UpperBody.Body.Skirt}) do
                         modelPart:setVisible(false)
                     end
+                    models.models.main.Avatar.UpperBody.Body.Gun:setUVPixels(0, 85)
                 end;
 
                 onReset = function (self)
@@ -726,12 +722,13 @@ BlueArchiveCharacter = {
                     for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer, models.models.main.Avatar.Head.Cowlick}) do
                         modelPart:setUVPixels()
                     end
-                    for _, modelPart in ipairs({models.models.main.Avatar.Head.CMagicalH, models.models.main.Avatar.UpperBody.Body.CMagicalB, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.CMagicalRAB, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.CMagicalLAB, models.models.main.Avatar.LowerBody.Legs.RightLeg.RightLegBottom.CMagicalRLB, models.models.main.Avatar.LowerBody.Legs.LeftLeg.LeftLegBottom.CMagicalLLB}) do
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.CMagicalH, models.models.main.Avatar.UpperBody.Body.CMagicalB, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.CMagicalRAB, models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.CMagicalLAB, models.models.main.Avatar.LowerBody.Legs.RightLeg.RightLegBottom.CMagicalRLB, models.models.main.Avatar.LowerBody.Legs.LeftLeg.LeftLegBottom.CMagicalLLB, models.models.main.Avatar.UpperBody.Body.Gun.StartAccessories}) do
                         modelPart:setVisible(false)
                     end
                     for _, modelPart in ipairs({models.models.main.Avatar.Head.HairPin, models.models.main.Avatar.Head.HairTails, models.models.main.Avatar.UpperBody.Body.Backpack, models.models.main.Avatar.UpperBody.Body.Skirt}) do
                         modelPart:setVisible(true)
                     end
+                    models.models.main.Avatar.UpperBody.Body.Gun:setUVPixels()
                 end;
 
                 onArmorChange = function (_, parts, isVisible)
