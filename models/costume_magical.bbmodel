@@ -3326,7 +3326,7 @@
 			"uuid": "34d2517d-fa77-8197-aa27-21c94bca2893",
 			"export": true,
 			"mirror_uv": false,
-			"isOpen": false,
+			"isOpen": true,
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
@@ -3334,7 +3334,7 @@
 			"children": [
 				{
 					"name": "Skirt",
-					"origin": [0, 24, 0],
+					"origin": [0, 14, 0],
 					"color": 0,
 					"uuid": "960bfb89-4f74-edc7-5d21-02613bf4fb5a",
 					"export": true,
@@ -3343,7 +3343,7 @@
 					"locked": false,
 					"visibility": true,
 					"autouv": 0,
-					"selected": false,
+					"selected": true,
 					"children": [
 						"16c7b8ad-f9e5-8af0-80bc-02b41732440d",
 						"ddb61a13-25be-b95d-ce17-e7539f69d187",
