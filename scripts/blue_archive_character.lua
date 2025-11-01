@@ -7,6 +7,8 @@
 ---| "UNEQUAL" # 不等号目
 ---| "SHOCKED" # 丸い目
 ---| "CLOSED2" # 閉じた目2
+---| "ANGRY_INVERTED" # 反対側を見る目
+---| "CENTER" # 少し反対側を見る目
 
 ---@alias BlueArchiveCharacter.LeftEyeTextures
 ---| "NORMAL" # 通常
@@ -17,12 +19,17 @@
 ---| "UNEQUAL" # 不等号目
 ---| "SHOCKED" # 丸い目
 ---| "CLOSED2" # 閉じた目2
+---| "CENTER" # 少し反対側を見る目
+---| "INVERTED" # 怒りつつ反対側を見る目
 
 ---@alias BlueArchiveCharacter.MouthTextures
 ---| "NORMAL" # 通常
 ---| "OPENED" # 開いた口
 ---| "NARROW" # 細長い口
 ---| "FRUST" # ぐじゅぐじゅ口
+---| "O" # 細く丸い口
+---| "W" # W口
+---| "TONGUE" # 舌を出した口
 
 ---@alias BlueArchiveCharacter.GunPutType
 ---| "BODY" # アバターのBodyに銃を移動させる
@@ -34,6 +41,7 @@
 
 ---@alias BlueArchiveCharacter.Costumes
 ---| "DEFAULT" # デフォルト衣装
+---| "MAGICAL" # マジカル衣装
 
 --[[ ******************************** ]]
 
@@ -312,6 +320,8 @@ BlueArchiveCharacter = {
                 UNEQUAL = vectors.vec2(7, 0);
                 SHOCKED = vectors.vec2(8, 0);
                 CLOSED2 = vectors.vec2(9, 0);
+                ANGRY_INVERTED = vectors.vec2(2, 1);
+                CENTER = vectors.vec2(3, 1);
             };
 
             leftEye = {
@@ -323,12 +333,17 @@ BlueArchiveCharacter = {
                 UNEQUAL = vectors.vec2(6, 0);
                 SHOCKED = vectors.vec2(7, 0);
                 CLOSED2 = vectors.vec2(8, 0);
+                CENTER = vectors.vec2(-1, 1);
+                INVERTED = vectors.vec2(0, 1);
             };
 
             mouth = {
                 OPENED = vectors.vec2(0, 0);
                 NARROW = vectors.vec2(1, 0);
                 FRUST = vectors.vec2(2, 0);
+                O = vectors.vec2(3, 0);
+                W = vectors.vec2(0, 1);
+                TONGUE = vectors.vec2(1, 1);
             };
 
             callbacks = {
@@ -676,6 +691,34 @@ BlueArchiveCharacter = {
                             pos = vectors.vec3(-3.5, 20, -33.5);
                         };
                     };
+
+                    callbacks = {
+                        onPreAnimation = function (self)
+                            self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "O", 43, true)
+                        end;
+
+                        onAnimationTick = function (self, tick)
+                            if tick == 43 then
+                                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "W", 5, true)
+                            elseif tick == 48 then
+                                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "NARROW", 16, true)
+                            elseif tick == 64 then
+                                self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "W", 12, true)
+                            elseif tick == 76 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 2, true)
+                            elseif tick == 78 then
+                                self.parent.faceParts:setEmotion("NORMAL", "CENTER", "OPENED", 2, true)
+                            elseif tick == 80 then
+                                self.parent.faceParts:setEmotion("NORMAL", "INVERTED", "OPENED", 8, true)
+                            elseif tick == 88 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 34, true)
+                            elseif tick == 122 then
+                                self.parent.faceParts:setEmotion("ANGRY_INVERTED", "ANGRY", "TONGUE", 38, true)
+                            elseif tick == 160 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 52, true)
+                            end
+                        end;
+                    }
                 };
             };
         }
