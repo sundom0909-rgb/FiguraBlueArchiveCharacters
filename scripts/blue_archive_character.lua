@@ -667,13 +667,13 @@ BlueArchiveCharacter = {
 
                     camera = {
                         start = {
-                            rot = vectors.vec3();
-                            pos = vectors.vec3();
+                            rot = vectors.vec3(0, 180, 0);
+                            pos = vectors.vec3(0, 21.5, -10);
                         };
 
                         fin = {
-                            rot = vectors.vec3();
-                            pos = vectors.vec3();
+                            rot = vectors.vec3(0, -180, 0);
+                            pos = vectors.vec3(-3.5, 20, -33.5);
                         };
                     };
                 };
