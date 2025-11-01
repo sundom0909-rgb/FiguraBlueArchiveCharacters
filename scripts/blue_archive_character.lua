@@ -652,6 +652,31 @@ BlueArchiveCharacter = {
                     ---@type boolean
                     initialized = false;
                 };
+
+                {
+                    name = {
+                        en_us = "Thermite Pink, here we go!";
+                        ja_jp = "テルミットピンク、参上！";
+                    };
+
+                    formationType = "SPECIAL";
+
+                    models = {models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RocketLauncher};
+
+                    animations = {"main", "costume_magical", "ex_skill_2"};
+
+                    camera = {
+                        start = {
+                            rot = vectors.vec3();
+                            pos = vectors.vec3();
+                        };
+
+                        fin = {
+                            rot = vectors.vec3();
+                            pos = vectors.vec3();
+                        };
+                    };
+                };
             };
         }
 
@@ -697,7 +722,7 @@ BlueArchiveCharacter = {
                         ja_jp = "マジカル";
                     };
 
-                    exSkill = 1;
+                    exSkill = 2;
                 }
             };
 

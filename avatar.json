@@ -188,6 +188,10 @@
 		"models.models.ex_skill_1.StarScale": {
 			"visible": false
 		},
+		"models.models.ex_skill_2.RocketLauncher": {
+			"visible": false,
+			"moveTo": "models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom"
+		},
 		"models.models.costume_magical.CMagicalH": {
 			"moveTo": "models.models.main.Avatar.Head",
 			"visible": false
