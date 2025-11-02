@@ -126,7 +126,7 @@ DeathAnimation = {
         for _, modelPart in ipairs({parent.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RightItemPivot, parent.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.LeftItemPivot}) do
             modelPart:remove()
         end
-        local unsafeModels = {parent.Avatar.Head.FaceParts.Mouth, parent.Avatar.Head.ArmorH, parent.Avatar.UpperBody.Body.ArmorB, parent.Avatar.UpperBody.Arms.RightArm.ArmorRA, parent.Avatar.UpperBody.Arms.RightArm.RightArmBottom.ArmorRAB, parent.Avatar.UpperBody.Arms.LeftArm.ArmorLA, parent.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.ArmorLAB, parent.Avatar.LowerBody.Legs.RightLeg.ArmorRL, parent.Avatar.LowerBody.Legs.RightLeg.RightLegBottom.ArmorRLB, parent.Avatar.LowerBody.Legs.LeftLeg.ArmorLL, parent.Avatar.LowerBody.Legs.LeftLeg.LeftLegBottom.ArmorLLB}
+        local unsafeModels = {parent.Avatar.Head.FaceParts.Mouth, parent.Avatar.Head.ArmorH, parent.Avatar.UpperBody.Body.Bubble, parent.Avatar.UpperBody.Body.ArmorB, parent.Avatar.UpperBody.Arms.RightArm.ArmorRA, parent.Avatar.UpperBody.Arms.RightArm.RightArmBottom.ArmorRAB, parent.Avatar.UpperBody.Arms.LeftArm.ArmorLA, parent.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom.ArmorLAB, parent.Avatar.LowerBody.Legs.RightLeg.ArmorRL, parent.Avatar.LowerBody.Legs.RightLeg.RightLegBottom.ArmorRLB, parent.Avatar.LowerBody.Legs.LeftLeg.ArmorLL, parent.Avatar.LowerBody.Legs.LeftLeg.LeftLegBottom.ArmorLLB}
         for i = 1, 11 do
             self.removeUnsafeModel(unsafeModels[i])
         end
@@ -233,7 +233,7 @@ DeathAnimation = {
                         sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:block.bamboo_wood_door.close"), self.parent.modelUtils.getModelWorldPos(models.models.death_animation.Helicopter.DeathAnimationSoundAnchor1), 1, 0.5):setAttenuation(2)
                     end
                     if self.animationCount < 120 then
-                        models.models.death_animation.Avatar:setLight(world.getLightLevel(self.animationPos))
+                        models.models.death_animation.Avatar:setLight(world.getBlockLightLevel(self.animationPos), world.getSkyLightLevel(self.animationPos))
                     end
                     if self.animationCount == 1 then
                         self:spawnHelicopterParticles()
