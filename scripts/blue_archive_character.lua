@@ -769,9 +769,13 @@ BlueArchiveCharacter = {
                             elseif tick == 80 then
                                 self.parent.faceParts:setEmotion("NORMAL", "INVERTED", "OPENED", 8, true)
                             elseif tick == 88 then
-                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 34, true)
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 17, true)
+                            elseif tick == 105 then
+                                self.parent.faceParts:setEmotion("CENTER", "NORMAL", "OPENED", 4, true)
                             elseif tick == 106 then
                                 models.models.main.Avatar.Head.CMagicalH.HairPin.HairPinBase.HairPinBaseEmissive:setPrimaryRenderType("EMISSIVE_SOLID")
+                            elseif tick == 109 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 13, true)
                             elseif tick == 113 then
                                 local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head.CMagicalH.HairPin)
                                 local bodyYaw = player:getBodyYaw()
