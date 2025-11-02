@@ -3,7 +3,7 @@
 ---@field package subObject ModelPart インスタンスで制御するサブオブジェクト
 ---@field package sprite SpriteTask インスタンスで制御するメインのスプライト
 ---@field package target ModelPart インスタンスオブジェクトをアタッチする親モデル
----@field package index integer テクスチャの種類を決めるインデックス番号
+---@field package index Vector2 テクスチャの種類を決めるインデックス番号
 ---@field package color? Vector3 スプライトの色
 ---@field package currentPos Vector3 オブジェクトの現在位置
 ---@field package nextPos Vector3 次ティックのオブジェクトの位置
@@ -15,13 +15,13 @@
 ---@field package scaleTracker? ModelPart スプライトの大きさの参照元のモデルパーツ
 ---@field package speedFactor number 速度の変化係数
 ---@field package lifetimeCount integer オブジェクトの残り時間を計るカウンター
----@field public new fun(parent: Avatar, target: ModelPart, index: integer, color?: Vector3, pos: Vector3, velocity: Vector3, rotVelocity: Vector3, size: number, scaleTracker?: ModelPart, lifetime: integer, shouldSeeCamera: boolean, speedFactor: number): ExSkillSprite コンストラクター
+---@field public new fun(parent: Avatar, target: ModelPart, index: Vector2, color?: Vector3, pos: Vector3, velocity: Vector3, rotVelocity: Vector3, size: number, scaleTracker?: ModelPart, lifetime: integer, shouldSeeCamera: boolean, speedFactor: number): ExSkillSprite コンストラクター
 
 ExSkillSprite = {
     ---コンストラクタ
     ---@param parent Avatar アバターのメインクラスへの参照
     ---@param target ModelPart インスタンスオブジェクトをアタッチする親モデル
-    ---@param index integer テクスチャの種類を決めるインデックス番号
+    ---@param index Vector2 テクスチャの種類を決めるインデックス番号
     ---@param color? Vector3 スプライトの色
     ---@param pos Vector3 オブジェクトをスポーンさせる位置
     ---@param velocity Vector3 オブジェクトの移動速度
@@ -59,7 +59,7 @@ ExSkillSprite = {
                 self.sprite:setTexture(textures["textures.ex_skill_1"])
                 self.sprite:setDimensions(textures["textures.ex_skill_1"]:getDimensions())
                 self.sprite:setRegion(15, 15)
-                self.sprite:setUVPixels(83, 15 * (self.index - 1))
+                self.sprite:setUVPixels(15 * (self.index.x - 1) + 83, 15 * (self.index.y - 1))
                 self.sprite:setSize(vectors.vec2(1, 1):scale(self.size))
                 self.object:setPos(self.currentPos:copy())
                 self.sprite:setPos(vectors.vec2(1, 1):scale(self.size * 0.5):augmented(1))

@@ -564,7 +564,7 @@ BlueArchiveCharacter = {
                                     particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:block", self.parent.compatibilityUtils:checkBlock("minecraft:dark_oak_planks")), anchorPos:copy():add(offset))
                                 end
                                 for _, pos in ipairs({vectors.vec3(-5, 3, 0), vectors.vec3(4, 0, 0), vectors.vec3(8, 8, 0)}) do
-                                    self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.ExSkill1ParticleAnchor1, 1, vectors.vec3(0.294, 1, 1), pos, vectors.vec3(0, 0, 0), math.random() * -30 - 15, 3, models.models.ex_skill_1.StarScale, 33, true, 1)
+                                    self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.ExSkill1ParticleAnchor1, vectors.vec2(1, 1), vectors.vec3(0.294, 1, 1), pos, vectors.vec3(0, 0, 0), math.random() * -30 - 15, 3, models.models.ex_skill_1.StarScale, 33, true, 1)
                                 end
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.generic.explode"), anchorPos, 0.5, 1)
                                 for _, soundName in ipairs({"minecraft:entity.pillager.hurt", "minecraft:entity.vindicator.hurt"}) do
@@ -578,7 +578,7 @@ BlueArchiveCharacter = {
                             elseif tick == 97 then
                                 models.models.main.Avatar.UpperBody.Body.Gun.MuzzleEffect.MuzzleEffect1:setColor(1, 0.659, 0.698)
                                 for _ = 1, 8 do
-                                    self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.ExSkill1ParticleAnchor2, math.random(2, 5), vectors.vec3(0.294, 1, 1), vectors.vec3(0, 0, 0), vectors.rotateAroundAxis(math.random() * 360, 50, 0, 0, 0, 0, 1), 0, 2, nil, 8, true, 0.80)
+                                    self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.ExSkill1ParticleAnchor2, vectors.vec2(1, math.random(2, 5)), vectors.vec3(0.294, 1, 1), vectors.vec3(0, 0, 0), vectors.rotateAroundAxis(math.random() * 360, 50, 0, 0, 0, 0, 1), 0, 2, nil, 8, true, 0.80)
                                 end
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.arrow.shoot"), player:getPos(), 1, 2)
                             elseif tick == 105 then
@@ -613,7 +613,7 @@ BlueArchiveCharacter = {
                                     end
                                 end
                                 for _ = 1, 8 do
-                                    self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.ExSkill1ParticleAnchor2, math.random(2, 5), vectors.vec3(1, 1, 0.443), vectors.vec3(0, 0, 0), vectors.rotateAroundAxis(math.random() * 360, 40, 0, 0, 0, 0, 1), 0, 2, nil, 33, true, 0.80)
+                                    self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_1.ExSkill1ParticleAnchor2, vectors.vec2(1, math.random(2, 5)), vectors.vec3(1, 1, 0.443), vectors.vec3(0, 0, 0), vectors.rotateAroundAxis(math.random() * 360, 40, 0, 0, 0, 0, 1), 0, 2, nil, 33, true, 0.80)
                                 end
                             elseif tick == 106 then
                                 models.models.main.Avatar.UpperBody.Body.Gun.MuzzleEffect.MuzzleEffect1:setColor(0.557, 0.655, 0.976)
@@ -676,7 +676,7 @@ BlueArchiveCharacter = {
 
                     formationType = "SPECIAL";
 
-                    models = {models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RocketLauncher};
+                    models = {models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RocketLauncher, models.models.main.Avatar.UpperBody.Body.CMagicalB.ChestRibbonBadge, models.models.ex_skill_2.Gui};
 
                     animations = {"main", "costume_magical", "ex_skill_2"};
 
@@ -694,16 +694,73 @@ BlueArchiveCharacter = {
 
                     callbacks = {
                         onPreAnimation = function (self)
+                            if not self.exSkill.exSkills[2].isInitialized then
+                                if host:isHost() then
+                                    for _, modelPart in ipairs(models.models.ex_skill_2.Gui.StarTransitions.Star1:getChildren()) do
+                                        models.models.ex_skill_2.Gui.StarTransitions.Star2:addChild(modelPart:copy(modelPart:getName():gsub("1", "2")))
+                                    end
+                                end
+                                for _, modelPart in ipairs(models.models.main.Avatar.UpperBody.Body.CMagicalB.ChestRibbonBadge.ChestBadgeShineEffect2:getChildren()) do
+                                    for i = 3, 4 do
+                                        models.models.main.Avatar.UpperBody.Body.CMagicalB.ChestRibbonBadge["ChestBadgeShineEffect" .. i]:addChild(modelPart:copy(client.intUUIDToString(client.generateUUID())))
+                                    end
+                                end
+                                for _, modelPart in ipairs(models.models.main.Avatar.UpperBody.Body.CMagicalB.ChestRibbonBadge.ChestBadgeShineEffect5:getChildren()) do
+                                    for i = 6, 8 do
+                                        models.models.main.Avatar.UpperBody.Body.CMagicalB.ChestRibbonBadge["ChestBadgeShineEffect" .. i]:addChild(modelPart:copy(client.intUUIDToString(client.generateUUID())))
+                                    end
+                                end
+                                models.models.main.Avatar.UpperBody.Body.CMagicalB.ChestRibbonBadge.ChestBadgeShineEffect2:setColor(0.94, 1, 1)
+                                models.models.main.Avatar.UpperBody.Body.CMagicalB.ChestRibbonBadge.ChestBadgeShineEffect3:setColor(1, 0.54, 1)
+                                models.models.main.Avatar.UpperBody.Body.CMagicalB.ChestRibbonBadge.ChestBadgeShineEffect4:setColor(1, 1, 0.51)
+                                models.models.main.Avatar.UpperBody.Body.CMagicalB.ChestRibbonBadge.ChestBadgeShineEffect5:setColor(0.94, 1, 1)
+                                models.models.main.Avatar.UpperBody.Body.CMagicalB.ChestRibbonBadge.ChestBadgeShineEffect6:setColor(1, 1, 0.51)
+                                models.models.main.Avatar.UpperBody.Body.CMagicalB.ChestRibbonBadge.ChestBadgeShineEffect7:setColor(0.94, 1, 1)
+                                models.models.main.Avatar.UpperBody.Body.CMagicalB.ChestRibbonBadge.ChestBadgeShineEffect8:setColor(1, 1, 0.51)
+                                self.exSkill.exSkills[2].isInitialized = true
+                            end
+                            events.TICK:remove("costume_magical_badge_shine")
+                            for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.CMagicalB.ChestRibbon.RibbonBadgeEmissive, models.models.main.Avatar.Head.CMagicalH.HairPin.HairPinBase.HairPinBaseEmissive}) do
+                                modelPart:setPrimaryRenderType("CUTOUT")
+                            end
                             self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "O", 43, true)
                         end;
 
                         onAnimationTick = function (self, tick)
-                            if tick == 43 then
+                            if tick == 23 then
+                                models.models.main.Avatar.UpperBody.Body.CMagicalB.ChestRibbon.RibbonBadgeEmissive:setPrimaryRenderType("EMISSIVE_SOLID")
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.CMagicalB.ChestRibbon.RibbonBadge)
+                                local bodyYaw = player:getBodyYaw()
+                                local colorTable = {vectors.vec3(0.94, 1, 1), vectors.vec3(1, 0.54, 1), vectors.vec3(1, 1, 0.51)}
+                                for _ = 1, 24 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), anchorPos):setScale(0.1):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, vectors.rotateAroundAxis(math.random() * 360, 0, math.random() * 0.02 + 0.01, 0.02, 0, 0, 1), 0, 1, 0)):setColor(colorTable[math.random(#colorTable)]):setGravity(0):setLifetime(15)
+                                end
+                            elseif tick == 35 and host:isHost() then
+                                models.models.ex_skill_2.Gui.StarTransitions:setVisible(true)
+                                local windowSize = client:getScaledWindowSize():copy():augmented(0)
+                                local baseStarScale = math.max(windowSize.x, windowSize.y) / 16
+                                models.models.ex_skill_2.Gui.StarTransitions.Star1:setScale(vectors.vec3(1, 1, 1):scale(baseStarScale))
+                                models.models.ex_skill_2.Gui.StarTransitions.Star2:setScale(vectors.vec3(1, 1, 1):scale(baseStarScale * 0.75))
+                                models.models.ex_skill_2.Gui.StarTransitions.Star1.Star1Outer:setColor(1, 0.76, 1)
+                                models.models.ex_skill_2.Gui.StarTransitions.Star2.Star2Outer:setColor(0.85, 0.8, 1)
+                                events.RENDER:register(function ()
+                                    for i = 1, 2 do
+                                        models.models.ex_skill_2.Gui.StarTransitions["Star" .. i]:setPos(models.models.ex_skill_2.Gui.StarTransitions["Star" .. i .. "PosAnchor"]:getAnimPos():copy():mul(windowSize))
+                                    end
+                                end, "ex_skill_2_transition_1")
+                            elseif tick == 43 then
                                 self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "W", 5, true)
                             elseif tick == 48 then
                                 self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "NARROW", 16, true)
+                            elseif tick == 50 and host:isHost() then
+                                models.models.ex_skill_2.Gui.StarTransitions:setVisible(false)
+                                events.RENDER:remove("ex_skill_2_transition_1")
                             elseif tick == 64 then
                                 self.parent.faceParts:setEmotion("CLOSED2", "CLOSED2", "W", 12, true)
+                            elseif tick == 72 then
+                                for _ = 1, 8 do
+                                    table.insert(self.exSkill.exSkills[2].particleCircleTable, {math.random() * 2 + 0.5, math.random() * 360, math.random(3)}) --1. パーティクルの輪の高さ, 2. パーティクルの輪の開始角, 3. パーティクルの輪の色のインデックス番号
+                                end
                             elseif tick == 76 then
                                 self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 2, true)
                             elseif tick == 78 then
@@ -712,13 +769,122 @@ BlueArchiveCharacter = {
                                 self.parent.faceParts:setEmotion("NORMAL", "INVERTED", "OPENED", 8, true)
                             elseif tick == 88 then
                                 self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 34, true)
+                            elseif tick == 106 then
+                                models.models.main.Avatar.Head.CMagicalH.HairPin.HairPinBase.HairPinBaseEmissive:setPrimaryRenderType("EMISSIVE_SOLID")
+                            elseif tick == 113 then
+                                local anchorPos = self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head.CMagicalH.HairPin)
+                                local bodyYaw = player:getBodyYaw()
+                                for _ = 1, 24 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), anchorPos):setScale(0.025):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, vectors.rotateAroundAxis(math.random() * 360, 0, math.random() * 0.01 + 0.005, 0.005, 0, 0, 1), 0, 1, 0)):setColor(1, 0.87, 1):setGravity(0):setLifetime(15)
+                                end
+                            elseif tick == 119 and host:isHost() then
+                                models.models.ex_skill_2.Gui.TransitionBackground:setVisible(true)
+                                models.models.ex_skill_2.Gui.TransitionBackground.Background:setScale(client:getScaledWindowSize():copy():augmented(1))
+                                events.RENDER:register(function ()
+                                    models.models.ex_skill_2.Gui.TransitionBackground.Background:setOpacity(models.models.ex_skill_2.Gui.TransitionBackground.BackgroundOpacity:getAnimScale().x)
+                                end, "ex_skill_2_transition_2")
                             elseif tick == 122 then
                                 self.parent.faceParts:setEmotion("ANGRY_INVERTED", "ANGRY", "TONGUE", 38, true)
+                            elseif tick == 123 then
+                                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RocketLauncher:setPrimaryRenderType("EMISSIVE_SOLID")
+                            elseif tick == 134 and host:isHost() then
+                                events.RENDER:remove("ex_skill_2_transition_2")
+                            elseif tick == 139 then
+                                models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RocketLauncher:setPrimaryRenderType("CUTOUT")
+                            elseif tick == 155 and host:isHost() then
+                                models.models.main.Avatar:setPrimaryRenderType("CUTOUT_EMISSIVE_SOLID")
+                                models.models.ex_skill_2.CameraBackground:setVisible(true)
+                                local windowSize = client:getWindowSize()
+                                models.models.ex_skill_2.CameraBackground.Background:setScale(vectors.vec3(windowSize.x / windowSize.y, 1, 1):scale(40))
+                                events.RENDER:register(function (delta, ctx, matrix)
+                                    local backgroundPos = vectors.rotateAroundAxis(player:getBodyYaw(delta) + 180, renderer:getCameraOffsetPivot():copy():add(0, 1.62, 0):add(client:getCameraDir():copy():scale(1.65)), 0, 1, 0):scale(16 / 0.9375)
+                                    models.models.ex_skill_2.CameraBackground:setOffsetPivot(backgroundPos)
+                                    models.models.ex_skill_2.CameraBackground.Background:setPos(backgroundPos)
+                                end, "ex_skill_2_transition_3")
+                            elseif tick == 159 then
+                                if host:isHost() then
+                                    models.models.main.Avatar:setPrimaryRenderType("CUTOUT")
+                                    models.models.ex_skill_2.CameraBackground:setVisible(false)
+                                    events.RENDER:remove("ex_skill_2_transition_3")
+                                end
+                                models.models.main.Avatar.Head.HeadRing:setPrimaryRenderType("CUTOUT_EMISSIVE_SOLID")
+                                models.models.ex_skill_2.CameraStarEffect:setVisible(true)
+                                local windowSize = client:getScaledWindowSize()
+                                for i = 0, 5 do
+                                    local starType = math.random(5)
+                                    local rot = i * 60 + 10
+                                    self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_2.CameraStarEffect, starType <= 3 and vectors.vec2(1, 1) or vectors.vec2(0, 4), starType >= 4 and vectors.vec3(0.42, 1, 1) or (starType >= 2 and vectors.vec3(1, 0.47, 1) or vectors.vec3(1, 1, 0.6)), vectors.vec3(0, 0, 0), vectors.rotateAroundAxis(rot, 0, (math.random() * 60 + 40) * math.sqrt(math.pow(math.sin(math.rad(rot)) * (windowSize.x / windowSize.y), 2) + math.pow(math.cos(math.rad(rot)), 2)), -5, 0, 0, 1), math.random() * 50 + 10, math.random() * 20 + 10, nil, 53, false, 0.8)
+                                end
                             elseif tick == 160 then
-                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "OPENED", 52, true)
+                                self.parent.faceParts:setEmotion("CENTER", "NORMAL", "OPENED", 52, true)
+                            end
+
+                            if tick >= 45 then
+                                local colorTable = {vectors.vec3(0.94, 1, 1), vectors.vec3(1, 0.54, 1), vectors.vec3(1, 1, 0.51)}
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.CMagicalB.ChestRibbon.RibbonBadge)):setScale(0.1):setVelocity(math.random() * 0.06 - 0.03, math.random() * 0.06 - 0.03, math.random() * 0.06 - 0.03):setColor(colorTable[math.random(#colorTable)]):setGravity(0):setLifetime(15)
+                            end
+                            if tick >= 127 then
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head.CMagicalH.HairPin)):setScale(0.1):setVelocity(math.random() * 0.06 - 0.03, math.random() * 0.06 - 0.03, math.random() * 0.06 - 0.03):setColor(1, 0.87, 1):setGravity(0):setLifetime(15)
+                                particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RocketLauncher.Camera)):setScale(0.25):setVelocity(math.random() * 0.12 - 0.06, math.random() * 0.12 - 0.06, math.random() * 0.12 - 0.06):setColor(1, 0.65, 0.96):setGravity(0):setLifetime(15)
+                            end
+                            if tick >= 36 and tick <= 42 and host:isHost() then
+                                local windowSize = client:getScaledWindowSize():augmented(0)
+                                local starScale = math.max(windowSize.x, windowSize.y)
+                                for _ = 1, 4 do
+                                    self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_2.Gui.StarTransitions, vectors.vec2(1, 1), vectors.vec3(1, 0.88, 1), models.models.ex_skill_2.Gui.StarTransitions.Star1:getPos():copy():add(vectors.vec3(1, 1, 0):mul(math.random() * starScale - starScale / 2, math.random() * starScale - starScale / 2, 1)), windowSize:copy():normalize():scale(-1500), math.random() * 180 + 180, 20, nil, 8, false, 1)
+                                end
+                            end
+                            if tick >= 45 and tick <= 47 and host:isHost() then
+                                local windowSize = client:getScaledWindowSize():augmented(0)
+                                local starScale = math.max(windowSize.x, windowSize.y) * 0.75
+                                for _ = 1, 4 do
+                                    self.parent.exSkillSpriteManager:spawn(models.models.ex_skill_2.Gui.StarTransitions, vectors.vec2(1, 1), vectors.vec3(0.93, 0.9, 1), models.models.ex_skill_2.Gui.StarTransitions.Star2:getPos():copy():add(vectors.vec3(1, 1, 0):mul(math.random() * starScale - starScale / 2, math.random() * starScale - starScale / 2, 1)), windowSize:copy():normalize():scale(-1500), math.random() * 180 + 180, 20, nil, 8, false, 1)
+                                end
+                            end
+                            if tick >= 72 and tick <= 108 then
+                                local playerPos = player:getPos()
+                                local colorTable = {vectors.vec3(0.94, 1, 1), vectors.vec3(1, 0.54, 1), vectors.vec3(1, 1, 0.51)}
+                                for _, particleData in ipairs(self.exSkill.exSkills[2].particleCircleTable) do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), playerPos:copy():add(vectors.rotateAroundAxis(tick * 10 + particleData[2], 0, 0, 2, 0, 1, 0):add(0, particleData[1], 0))):setScale(math.random() * 0.25 + 0.25):setColor(colorTable[particleData[3]]):setGravity(0.25):setLifetime(25)
+                                end
                             end
                         end;
-                    }
+
+                        onPostAnimation = function (self, forcedStop)
+                            models.models.main.Avatar.Head.HeadRing:setPrimaryRenderType("CUTOUT")
+                            self.exSkill.exSkills[2].particleCircleTable = {}
+                            if forcedStop then
+                                for _, modelPart in ipairs({models.models.ex_skill_2.Gui.StarTransitions, models.models.ex_skill_2.Gui.TransitionBackground}) do
+                                    modelPart:setVisible(false)
+                                end
+                                for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.CMagicalB.ChestRibbon.RibbonBadgeEmissive, models.models.main.Avatar.Head.CMagicalH.HairPin.HairPinBase.HairPinBaseEmissive, models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RocketLauncher, models.models.main.Avatar}) do
+                                    modelPart:setPrimaryRenderType("CUTOUT")
+                                end
+                                self.parent.exSkillSpriteManager:removeAll()
+                                if host:isHost() then
+                                    for i = 1, 3 do
+                                        events.RENDER:remove("ex_skill_2_transition_" .. i)
+                                    end
+                                end
+                            else
+                                events.TICK:register(function ()
+                                if not renderer:isFirstPerson() then
+                                    local colorTable = {vectors.vec3(0.94, 1, 1), vectors.vec3(1, 0.54, 1), vectors.vec3(1, 1, 0.51)}
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.UpperBody.Body.CMagicalB.ChestRibbon.RibbonBadge)):setScale(0.1):setVelocity(math.random() * 0.06 - 0.03, math.random() * 0.06 - 0.03, math.random() * 0.06 - 0.03):setColor(colorTable[math.random(#colorTable)]):setGravity(0):setLifetime(15)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), self.parent.modelUtils.getModelWorldPos(models.models.main.Avatar.Head.CMagicalH.HairPin)):setScale(0.1):setVelocity(math.random() * 0.06 - 0.03, math.random() * 0.06 - 0.03, math.random() * 0.06 - 0.03):setColor(0.73, 0.47, 1):setGravity(0):setLifetime(15)
+                                end
+                                end, "costume_magical_badge_shine")
+                            end
+                        end;
+                    };
+
+                    ---このExスキルが初期化されたかどうか。
+                    ---@type boolean
+                    isInitialized = false;
+
+                    ---パーティクルの輪の情報を保持するテーブル
+                    ---@type number[][]
+                    particleCircleTable = {};
                 };
             };
         }
@@ -786,6 +952,10 @@ BlueArchiveCharacter = {
                 end;
 
                 onReset = function (self)
+                    events.TICK:remove("costume_magical_badge_shine")
+                    for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.CMagicalB.ChestRibbon.RibbonBadgeEmissive, models.models.main.Avatar.Head.CMagicalH.HairPin.HairPinBase.HairPinBaseEmissive}) do
+                        modelPart:setPrimaryRenderType("CUTOUT")
+                    end
                     self.parent.costume.setCostumeTextureOffset(0)
                     for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer, models.models.main.Avatar.Head.Cowlick}) do
                         modelPart:setUVPixels()
@@ -849,6 +1019,13 @@ BlueArchiveCharacter = {
 
         instance.deathAnimation = {
             callbacks = {
+                onBeforeModelCopy = function ()
+                    events.TICK:remove("costume_magical_badge_shine")
+                    for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.CMagicalB.ChestRibbon.RibbonBadgeEmissive, models.models.main.Avatar.Head.CMagicalH.HairPin.HairPinBase.HairPinBaseEmissive}) do
+                        modelPart:setPrimaryRenderType("CUTOUT")
+                    end
+                end;
+
                 onPhase1 = function (_, dummyAvatar)
                     dummyAvatar.Head.HairTails.HairRight:setRot(15, 0, 0)
                     dummyAvatar.Head.HairTails.HairLeft:setRot(15, 0, 0)

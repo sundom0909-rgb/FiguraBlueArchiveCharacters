@@ -192,6 +192,26 @@
 			"visible": false,
 			"moveTo": "models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom"
 		},
+		"models.models.ex_skill_2.ChestRibbonBadge": {
+			"visible": false,
+			"primaryRenderType": "EMISSIVE_SOLID",
+			"moveTo": "models.models.main.Avatar.UpperBody.Body.CMagicalB"
+		},
+		"models.models.ex_skill_2.Gui": {
+			"visible": false
+		},
+		"models.models.ex_skill_2.Gui.StarTransitions": {
+			"visible": false
+		},
+		"models.models.ex_skill_2.Gui.TransitionBackground": {
+			"visible": false
+		},
+		"models.models.ex_skill_2.CameraBackground": {
+			"visible": false
+		},
+		"models.models.ex_skill_2.CameraStarEffect": {
+			"visible": false
+		},
 		"models.models.costume_magical.CMagicalH": {
 			"moveTo": "models.models.main.Avatar.Head",
 			"visible": false

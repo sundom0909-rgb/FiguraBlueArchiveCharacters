@@ -1,7 +1,7 @@
 ---@class (exact) ExSkillSpriteManager : SpawnObjectManager Exスキル内で使用するスプライトのオブジェクトのマネージャークラス
 ---@field public objects ExSkillSprite[] インスタンスで制御するオブジェクト
----@field public getObject fun(self: ExSkillSpriteManager, target: ModelPart, index: integer, color?: Vector3, pos: Vector3, velocity: Vector3, rotVelocity: integer, size: number, scaleTracker?: ModelPart, lifetime: integer, shouldSeeCamera: boolean, speedFactor: number): ExSkillSprite Exスキルフレームのパーティクルのインスタンスを生成して返す
----@field public spawn fun(self: ExSkillSpriteManager, target: ModelPart, index: integer, color?: Vector3, pos: Vector3, velocity: Vector3, rotVelocity: integer, size: number, scaleTracker?: ModelPart, lifetime: integer, shouldSeeCamera: boolean, speedFactor: number) Exスキルフレームのパーティクルをスポーンさせる
+---@field public getObject fun(self: ExSkillSpriteManager, target: ModelPart, index: Vector2, color?: Vector3, pos: Vector3, velocity: Vector3, rotVelocity: integer, size: number, scaleTracker?: ModelPart, lifetime: integer, shouldSeeCamera: boolean, speedFactor: number): ExSkillSprite Exスキルフレームのパーティクルのインスタンスを生成して返す
+---@field public spawn fun(self: ExSkillSpriteManager, target: ModelPart, index: Vector2, color?: Vector3, pos: Vector3, velocity: Vector3, rotVelocity: integer, size: number, scaleTracker?: ModelPart, lifetime: integer, shouldSeeCamera: boolean, speedFactor: number) Exスキルフレームのパーティクルをスポーンさせる
 
 ExSkillSpriteManager = {
     ---コンストラクタ
@@ -19,7 +19,7 @@ ExSkillSpriteManager = {
     ---Exスキルフレームのパーティクルのインスタンスを生成して返す。
     ---@param self ExSkillSpriteManager
     ---@param target ModelPart インスタンスオブジェクトをアタッチする親モデル
-    ---@param index integer テクスチャの種類を決めるインデックス番号
+    ---@param index Vector2 テクスチャの種類を決めるインデックス番号
     ---@param color? Vector3 スプライトの色
     ---@param pos Vector3 オブジェクトをスポーンさせる位置
     ---@param velocity Vector3 オブジェクトの移動速度
@@ -37,7 +37,7 @@ ExSkillSpriteManager = {
     ---Exスキルフレームのパーティクルをスポーンさせる。
     ---@param self ExSkillSpriteManager
     ---@param target ModelPart インスタンスオブジェクトをアタッチする親モデル
-    ---@param index integer テクスチャの種類を決めるインデックス番号
+    ---@param index Vector2 テクスチャの種類を決めるインデックス番号
     ---@param color? Vector3 スプライトの色
     ---@param pos Vector3 オブジェクトをスポーンさせる位置
     ---@param velocity Vector3 オブジェクトの移動速度
