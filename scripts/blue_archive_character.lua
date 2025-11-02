@@ -735,6 +735,7 @@ BlueArchiveCharacter = {
                                 for _ = 1, 24 do
                                     particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), anchorPos):setScale(0.1):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, vectors.rotateAroundAxis(math.random() * 360, 0, math.random() * 0.02 + 0.01, 0.02, 0, 0, 1), 0, 1, 0)):setColor(colorTable[math.random(#colorTable)]):setGravity(0):setLifetime(15)
                                 end
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), anchorPos, 1, 3)
                             elseif tick == 35 and host:isHost() then
                                 models.models.ex_skill_2.Gui.StarTransitions:setVisible(true)
                                 local windowSize = client:getScaledWindowSize():copy():augmented(0)
@@ -777,6 +778,7 @@ BlueArchiveCharacter = {
                                 for _ = 1, 24 do
                                     particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), anchorPos):setScale(0.025):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1, vectors.rotateAroundAxis(math.random() * 360, 0, math.random() * 0.01 + 0.005, 0.005, 0, 0, 1), 0, 1, 0)):setColor(1, 0.87, 1):setGravity(0):setLifetime(15)
                                 end
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), anchorPos, 1, 1)
                             elseif tick == 119 and host:isHost() then
                                 models.models.ex_skill_2.Gui.TransitionBackground:setVisible(true)
                                 models.models.ex_skill_2.Gui.TransitionBackground.Background:setScale(client:getScaledWindowSize():copy():augmented(1))
@@ -789,6 +791,8 @@ BlueArchiveCharacter = {
                                 models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RocketLauncher:setPrimaryRenderType("EMISSIVE_SOLID")
                             elseif tick == 134 and host:isHost() then
                                 events.RENDER:remove("ex_skill_2_transition_2")
+                            elseif tick == 138 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.attack.sweep"), player:getPos(), 0.5, 2)
                             elseif tick == 139 then
                                 models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom.RocketLauncher:setPrimaryRenderType("CUTOUT")
                             elseif tick == 155 and host:isHost() then
@@ -817,6 +821,7 @@ BlueArchiveCharacter = {
                                 end
                             elseif tick == 160 then
                                 self.parent.faceParts:setEmotion("CENTER", "NORMAL", "OPENED", 52, true)
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.player.levelup"), player:getPos(), 1, 1.5)
                             end
 
                             if tick >= 45 then
@@ -847,6 +852,7 @@ BlueArchiveCharacter = {
                                 for _, particleData in ipairs(self.exSkill.exSkills[2].particleCircleTable) do
                                     particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:firework"), playerPos:copy():add(vectors.rotateAroundAxis(tick * 10 + particleData[2], 0, 0, 2, 0, 1, 0):add(0, particleData[1], 0))):setScale(math.random() * 0.25 + 0.25):setColor(colorTable[particleData[3]]):setGravity(0.25):setLifetime(25)
                                 end
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.experience_orb.pickup"), playerPos:copy():add(0, 2, 0), 0.25, 1 + ((tick - 72) / 36))
                             end
                         end;
 
