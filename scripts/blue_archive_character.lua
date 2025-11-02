@@ -1049,19 +1049,41 @@ BlueArchiveCharacter = {
                     end
                 end;
 
-                onPhase1 = function (_, dummyAvatar)
-                    dummyAvatar.Head.HairTails.HairRight:setRot(15, 0, 0)
-                    dummyAvatar.Head.HairTails.HairLeft:setRot(15, 0, 0)
-                    dummyAvatar.UpperBody.Body.Skirt:setRot(32.5, 0, 0)
+                onPhase1 = function (_, dummyAvatar, costume)
+                    if costume == "DEFAULT" then
+                        for _, modelPart in ipairs({dummyAvatar.Head.HairTails.HairRight, dummyAvatar.Head.HairTails.HairLeft}) do
+                            modelPart:setRot(15, 0, 0)
+                        end
+                        dummyAvatar.UpperBody.Body.Skirt:setRot(32.5, 0, 0)
+                    else
+                        dummyAvatar.Head.CMagicalH.HairTails.RightHairTail:setRot(30, 0, 20)
+                        dummyAvatar.Head.CMagicalH.HairTails.LeftHairTail:setRot(30, 0, -20)
+                        dummyAvatar.UpperBody.Body.CMagicalB.Skirt:setRot(60, 0, 0)
+                        for _, modelPart in ipairs({dummyAvatar.UpperBody.Body.CMagicalB.Skirt.BackRibbon.RibbonBottomRight, dummyAvatar.UpperBody.Body.CMagicalB.Skirt.BackRibbon.RibbonBottomLeft}) do
+                            modelPart:setPos(0, 2, 0)
+                            modelPart:setRot(-120, 0, 0)
+                        end
+                    end
                 end;
 
-                onPhase2 = function (_, dummyAvatar)
-                    dummyAvatar.Head.HairTails.HairRight:setRot(-22.5, 0, 0)
-                    dummyAvatar.Head.HairTails.HairLeft:setRot(-60, 0, 0)
-                    dummyAvatar.UpperBody.Body.Backpack.BackPackMascot1:setRot(-17.5, 0, 0)
-                    dummyAvatar.UpperBody.Body.Backpack.BackPackMascot2:setRot(-17.5, 0, 0)
-                    dummyAvatar.UpperBody.Body.Backpack.BackPackMascot3:setRot(-17.5, 0, 20)
-                    dummyAvatar.UpperBody.Body.Skirt:setRot(15, 0, 0)
+                onPhase2 = function (_, dummyAvatar, costume)
+                    if costume == "DEFAULT" then
+                        dummyAvatar.Head.HairTails.HairRight:setRot(-22.5, 0, 0)
+                        dummyAvatar.Head.HairTails.HairLeft:setRot(-60, 0, 0)
+                        for i = 1, 2 do
+                            dummyAvatar.UpperBody.Body.Backpack["BackPackMascot" .. i]:setRot(-17.5, 0, 0)
+                        end
+                        dummyAvatar.UpperBody.Body.Backpack.BackPackMascot3:setRot(-17.5, 0, 20)
+                        dummyAvatar.UpperBody.Body.Skirt:setRot(15, 0, 0)
+                    else
+                        dummyAvatar.Head.CMagicalH.HairTails.RightHairTail:setRot(-20, 0, 20)
+                        dummyAvatar.Head.CMagicalH.HairTails.LeftHairTail:setRot(-20, 0, -20)
+                        dummyAvatar.UpperBody.Body.CMagicalB.Skirt:setRot(30, 0, 0)
+                        dummyAvatar.UpperBody.Body.CMagicalB.Skirt.BackRibbon.RibbonBottomRight:setPos()
+                        dummyAvatar.UpperBody.Body.CMagicalB.Skirt.BackRibbon.RibbonBottomRight:setRot(-15, 0, 5)
+                        dummyAvatar.UpperBody.Body.CMagicalB.Skirt.BackRibbon.RibbonBottomLeft:setPos()
+                        dummyAvatar.UpperBody.Body.CMagicalB.Skirt.BackRibbon.RibbonBottomLeft:setRot(-15, 0, -25)
+                    end
                 end;
             };
         }
