@@ -979,9 +979,22 @@ BlueArchiveCharacter = {
                     models.models.main.Avatar.UpperBody.Body.Gun:setUVPixels()
                 end;
 
-                onArmorChange = function (_, parts, isVisible)
-                    if parts == "LEGGINGS" then
-                        models.models.main.Avatar.UpperBody.Body.Skirt:setVisible(not isVisible)
+                onArmorChange = function (self, parts, isVisible)
+                    if parts == "HELMET" then
+                        models.models.main.Avatar.Head.CMagicalH.HairPin:setPos(0, 0, isVisible and -0.5 or 0)
+                    elseif parts == "CHEST_PLATE" then
+                        if isVisible then
+                            for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.CMagicalB.ChestRibbon, models.models.main.Avatar.UpperBody.Body.CMagicalB.ChestRibbonBadge}) do
+                                modelPart:setPos(0, 0, -1)
+                            end
+                        else
+                            for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.CMagicalB.ChestRibbon, models.models.main.Avatar.UpperBody.Body.CMagicalB.ChestRibbonBadge}) do
+                                modelPart:setPos()
+                            end
+                        end
+                    elseif parts == "LEGGINGS" then
+                        models.models.main.Avatar.UpperBody.Body.Skirt:setVisible(self.parent.costume.currentCostume == 1 and not isVisible)
+                        models.models.main.Avatar.UpperBody.Body.CMagicalB.Skirt:setVisible(not isVisible)
                     end
                 end;
             };
