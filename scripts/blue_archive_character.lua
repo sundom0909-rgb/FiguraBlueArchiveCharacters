@@ -700,9 +700,9 @@ BlueArchiveCharacter = {
                         };
 
                         horizontal = {
-                            min = -30;
-                            neutral = 75;
-                            max = 75;
+                            min = -5;
+                            neutral = -5;
+                            max = -5;
                         };
                     };
                 };
