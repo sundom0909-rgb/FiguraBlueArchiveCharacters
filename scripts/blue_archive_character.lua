@@ -801,6 +801,8 @@ BlueArchiveCharacter = {
                         else
                             models.models.main.Avatar.Head.BackHairs.BottomBackHair:setOffsetPivot()
                         end
+                    elseif model == models.models.main.Avatar.Head.BackHairs.TopBackHair then
+                        model:setRot(math.min(model:getRot().x, 20), 0, 0)
                     elseif model == models.models.main.Avatar.Head.Horns.HornBL.LeftHornRibbon or model == models.models.main.Avatar.Head.Horns.HornBR.RightHornRibbon then
                         model:setRot(math.min(model:getRot().x, 0), 0, 0)
                     end
