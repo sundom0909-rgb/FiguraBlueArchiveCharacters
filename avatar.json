@@ -150,6 +150,12 @@
 		"models.models.ex_skill_frame.Particles": {
 			"visible": false
 		},
+		"models.models.main.Avatar.UpperBody.Body.Wings.RightWing.RightWingZPivot.RightWingTips": {
+			"primaryRenderType": "EMISSIVE_SOLID"
+		},
+		"models.models.main.Avatar.UpperBody.Body.Wings.LeftWing.LeftWingZPivot.LeftWingTips": {
+			"primaryRenderType": "EMISSIVE_SOLID"
+		},
 		"models.models.bubble.Bubble": {
 			"moveTo": "models.models.main.Avatar.UpperBody.Body",
 			"primaryRenderType": "TRANSLUCENT",

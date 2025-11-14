@@ -452,5 +452,6 @@ BlueArchiveCharacter = {
         --生徒固有初期化処理
         --Player APIにアクセスする場合は、ENTITY_INIT後に実行されるようにする必要がある。
 
+        models.models.main.Avatar.UpperBody.Body.Jacket.LeftJacketArm.LeftJacketArmZPivot.Armband:newText("costume_default_text_1"):setText("§l風紀"):setScale(0.18):setRot(0, 180, 0):setAlignment("CENTER")
     end;
 }
