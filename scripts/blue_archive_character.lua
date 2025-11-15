@@ -407,13 +407,8 @@ BlueArchiveCharacter = {
             gunPosition = {
                 hold = {
                     firstPersonPos = {
-                        right = vectors.vec3(6, 0, 0);
-                        left = vectors.vec3(-6, 0, 0);
-                    };
-
-                    firstPersonRot = {
-                        right = vectors.vec3(0, 2, 0);
-                        left = vectors.vec3(0, -2, 0);
+                        right = vectors.vec3(6, -3, -15);
+                        left = vectors.vec3(-6, -3, -15);
                     };
 
                     thirdPersonPos = {
