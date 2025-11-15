@@ -312,7 +312,57 @@ BlueArchiveCharacter = {
         }
 
         instance.arms = {
+            callbacks = {
+                onArmStateChanged = function (self, right, left)
+                    if right == 3 and self.parent.gun.currentGunPosition == "RIGHT" then
+                        return {right = 1}
+                    elseif left == 3 and self.parent.gun.currentGunPosition == "LEFT" then
+                        return {left = 1}
+                    end
+                end;
 
+                onAdditionalRightArmProcess = function (self, state)
+                    if state == 1 then
+                        events.RENDER:remove("right_arm_render")
+                        events.RENDER:register(function (delta)
+                            local headRot = vanilla_model.HEAD:getOriginRot()
+                            local rotY = headRot.y % 360
+                            rotY = rotY > 180 and 0 or rotY
+                            models.models.main.Avatar.UpperBody.Arms.RightArm:setRot(player:isSwingingArm() and not player:isLeftHanded() and vectors.vec3() or vectors.vec3(math.max(headRot.x - 15 + (player:isCrouching() and 30 or 0), -15) + math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * 2.5, rotY, 10))
+                        end, "right_arm_render")
+                    elseif state == 2 then
+                        events.RENDER:remove("right_arm_render")
+                        events.RENDER:register(function (delta, context)
+                            local headRot = vanilla_model.HEAD:getOriginRot()
+                            local isSwingingArm = player:isSwingingArm() and not player:isLeftHanded()
+                            models.models.main.Avatar.UpperBody.Arms.RightArm:setParentType((isSwingingArm or context == "FIRST_PERSON") and "RightArm" or "Body")
+                            models.models.main.Avatar.UpperBody.Arms.RightArm:setRot(isSwingingArm and vectors.vec3() or vectors.vec3(math.max(headRot.x + 55 + (player:isCrouching() and 30 or 0), 55), math.min(math.map((headRot.y + 180) % 360 - 180, -50, 50, -21, 78) + 30, 65) + math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * 2.5, 0))
+                        end, "right_arm_render")
+                    end
+                    models.models.main.Avatar.UpperBody.Arms.RightArm.RightArmBottom:setRot(state == 1 and 40 or 0, 0, 0)
+                end;
+
+                onAdditionalLeftArmProcess = function (self, state)
+                    if state == 1 then
+                        events.RENDER:remove("left_arm_render")
+                        events.RENDER:register(function (delta)
+                            local headRot = vanilla_model.HEAD:getOriginRot()
+                            local rotY = headRot.y % 360
+                            rotY = rotY < 180 and 0 or rotY
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm:setRot(player:isSwingingArm() and player:isLeftHanded() and vectors.vec3() or vectors.vec3(math.max(headRot.x - 15 + (player:isCrouching() and 30 or 0), -15) + math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * -2.5, rotY, -10))
+                        end, "left_arm_render")
+                    elseif state == 2 then
+                        events.RENDER:remove("left_arm_render")
+                        events.RENDER:register(function (delta, context)
+                            local headRot = vanilla_model.HEAD:getOriginRot()
+                            local isSwingingArm = player:isSwingingArm() and player:isLeftHanded()
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm:setParentType((isSwingingArm or context == "FIRST_PERSON") and "LeftArm" or "Body")
+                            models.models.main.Avatar.UpperBody.Arms.LeftArm:setRot(isSwingingArm and vectors.vec3() or vectors.vec3(math.max(headRot.x + 55 + (player:isCrouching() and 30 or 0), 55), math.max(math.map((headRot.y + 180) % 360 - 180, -50, 50, -78, 21) - 30, -65) + math.sin((self.parent.arms.swingCount + delta) / 100 * math.pi * 2) * -2.5, 0))
+                        end, "left_arm_render")
+                    end
+                    models.models.main.Avatar.UpperBody.Arms.LeftArm.LeftArmBottom:setRot(state == 1 and 40 or 0, 0, 0)
+                end;
+            }
         }
 
         instance.skirt = {
@@ -320,31 +370,42 @@ BlueArchiveCharacter = {
         }
 
         instance.gun = {
-            scale = 1.2;
+            scale = 2.5;
 
             gunPosition = {
                 hold = {
-
+                    firstPersonPos = {
+                        right = vectors.vec3(0, 2, -15);
+                        left = vectors.vec3(0, 2, -15);
+                    };
+                    thirdPersonPos = {
+                        right = vectors.vec3(-2, 10, -5);
+                        left = vectors.vec3(2, 10, -5);
+                    };
+                    thirdPersonRot = {
+                        right = vectors.vec3(70, 10, 0);
+                        left = vectors.vec3(70, -10, 0);
+                    }
                 };
 
                 put = {
                     type = "BODY";
 
                     pos = {
-                        right = vectors.vec3(4.5, -3, 4);
-                        left = vectors.vec3(-4.5, -3, 4);
+                        right = vectors.vec3(0, 4, 2);
+                        left = vectors.vec3(0, 4, 2);
                     };
 
                     rot = {
-                        right = vectors.vec3(-90, 0, 0);
-                        left = vectors.vec3(-90, 0, 0);
+                        right = vectors.vec3(0, -90, 45);
+                        left = vectors.vec3(0, 90, -45);
                     };
                 };
             };
 
             sound = {
-                name = "minecraft:entity.iron_golem.hurt";
-                pitch = 2;
+                name = "minecraft:entity.firework_rocket.blast";
+                pitch = 0.5;
             };
         }
 
