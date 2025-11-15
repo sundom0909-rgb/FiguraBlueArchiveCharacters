@@ -425,8 +425,8 @@ BlueArchiveCharacter = {
             exSkills = {
                 {
                     name = {
-                        en_us = "Ex Skill name";
-                        ja_jp = "Exスキル名";
+                        en_us = "Ending scene: Ishbóshet";
+                        ja_jp = "終幕：イシュ・ボシェテ";
                     };
 
                     formationType = "STRIKER";
