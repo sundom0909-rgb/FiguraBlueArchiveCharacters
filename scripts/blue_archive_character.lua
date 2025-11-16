@@ -9,9 +9,12 @@
 ---| "SURPRISED" # 驚いた目（ダメージを受けたときなど）
 ---| "TIRED" # 疲れた目（死亡アニメーションなど）
 ---| "CLOSED" # 閉じた目（瞬き、睡眠中など）
+---| "CENTER" # 少し反対側を見る目
 
 ---@alias BlueArchiveCharacter.MouthTextures
 ---| "NORMAL" # 通常
+---| "TEETH" # 歯が見える口
+---| "CLOSED" # ハイフンみたいな口
 
 ---@alias BlueArchiveCharacter.GunPutType
 ---| "BODY" # アバターのBodyに銃を移動させる
@@ -304,10 +307,12 @@ BlueArchiveCharacter = {
                 SURPRISED = vectors.vec2(1, 0); --必須
                 TIRED = vectors.vec2(2, 0); --必須
                 CLOSED = vectors.vec2(3, 0); --必須
+                CENTER = vectors.vec2(4, 0);
             };
 
             mouth = {
-
+                TEETH = vectors.vec2(0, 0);
+                CLOSED = vectors.vec2(1, 0);
             };
         }
 
@@ -446,6 +451,18 @@ BlueArchiveCharacter = {
                             pos = vectors.vec3(0, 6.25, -71);
                         };
                     };
+
+                    callbacks = {
+                        onPreAnimation = function (self)
+                            self.parent.faceParts:setEmotion("NORMAL", "CENTER", "TEETH", 20, true)
+                        end;
+
+                        onAnimationTick = function (self, tick)
+                            if tick == 20 then
+                                self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 63, true)
+                            end
+                        end;
+                    }
                 };
             };
         }
