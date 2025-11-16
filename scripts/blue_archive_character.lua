@@ -26,6 +26,7 @@
 
 ---@alias BlueArchiveCharacter.Costumes
 ---| "DEFAULT" # デフォルト衣装
+---| "SWIMSUIT" # 水着衣装
 
 --[[ ******************************** ]]
 
@@ -527,9 +528,87 @@ BlueArchiveCharacter = {
 
                     exSkill = 1;
                 };
+
+                {
+                    name = "swimsuit";
+
+                    displayName = {
+                        en_us = "Swimsuit";
+                        ja_jp = "水着";
+                    };
+
+                    exSkill = 1;
+
+                    ---この衣装が初期化されたかどうか
+                    ---@type boolean
+                    isInitialized = false;
+                }
             };
 
             callbacks = {
+                onChange = function (self)
+                    self.parent.costume.setCostumeTextureOffset(1)
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer}) do
+                        modelPart:setUVPixels(0, 16)
+                    end
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.CSwimsuitH, models.models.main.Avatar.UpperBody.Body.CSwimsuitB}) do
+                        modelPart:setVisible(true)
+                    end
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.Horns, models.models.main.Avatar.Head.BackHairs.TopBackHair, models.models.main.Avatar.UpperBody.Body.Jacket, models.models.main.Avatar.UpperBody.Body.Wings}) do
+                        modelPart:setVisible(false)
+                    end
+                    self.physics.physicData[2].x.vertical.neutral = -5
+                    self.physics.physicData[2].x.vertical.max = -5
+                    self.physics.physicData[2].x.vertical.headX.max = -5
+                    self.physics.physicData[2].x.vertical.headRot.max = -5
+                    self.physics.physicData[2].x.vertical.bodyY.max = -5
+                    self.physics.physicData[2].x.horizontal.max = -5
+                    self.physics.physicData[2].x.horizontal.headX.max = -5
+                    self.faceParts.rightEye.NORMAL = vectors.vec2(6, 0)
+                    self.faceParts.leftEye.NORMAL = vectors.vec2(6, 0)
+                    if events.TICK:getRegisteredCount("costume_swimsuit_head_generation_delay_tick") == 0 then
+                        local delayCount = 0
+                        events.TICK:register(function ()
+                            if delayCount == 1 then
+                                for _, modelPart in ipairs({models.script_head_block.Head.FaceParts.Eyes.EyeLeft, models.script_head_block.Head.FaceParts.Eyes.EyeRight, models.script_portrait.Head.FaceParts.Eyes.EyeLeft, models.script_portrait.Head.FaceParts.Eyes.EyeRight}) do
+                                    modelPart:setUVPixels(36, 0)
+                                end
+                                events.TICK:remove("costume_swimsuit_head_generation_delay_tick")
+                            end
+                            delayCount = delayCount + 1
+                        end, "costume_swimsuit_head_generation_delay_tick")
+                    end
+                    if not self.costume.costumes[2].isInitialized then
+                        models.models.main.Avatar.UpperBody.Body.CSwimsuitB:newText("costume_swimsuit_text_1"):setText("§05-A"):setPos(0, -3, -2):setScale(0.05):setAlignment("CENTER")
+                        models.models.main.Avatar.UpperBody.Body.CSwimsuitB:newText("costume_swimsuit_text_2"):setText("§0ひな"):setPos(0, -3.35, -2):setScale(0.2):setAlignment("CENTER")
+                        self.costume.costumes[2].isInitialized = true
+                    end
+                    self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "NORMAL", 1)
+                end;
+
+                onReset = function (self)
+                    self.parent.costume.setCostumeTextureOffset(0)
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.Head, models.models.main.Avatar.Head.HatLayer}) do
+                        modelPart:setUVPixels()
+                    end
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.CSwimsuitH, models.models.main.Avatar.UpperBody.Body.CSwimsuitB}) do
+                        modelPart:setVisible(false)
+                    end
+                    for _, modelPart in ipairs({models.models.main.Avatar.Head.Horns, models.models.main.Avatar.Head.BackHairs.TopBackHair, models.models.main.Avatar.UpperBody.Body.Jacket, models.models.main.Avatar.UpperBody.Body.Wings}) do
+                        modelPart:setVisible(true)
+                    end
+                    self.physics.physicData[2].x.vertical.neutral = -15
+                    self.physics.physicData[2].x.vertical.max = -15
+                    self.physics.physicData[2].x.vertical.headX.max = -15
+                    self.physics.physicData[2].x.vertical.headRot.max = -15
+                    self.physics.physicData[2].x.vertical.bodyY.max = -15
+                    self.physics.physicData[2].x.horizontal.max = -15
+                    self.physics.physicData[2].x.horizontal.headX.max = -15
+                    self.faceParts.rightEye.NORMAL = vectors.vec2(0, 0)
+                    self.faceParts.leftEye.NORMAL = vectors.vec2(0, 0)
+                    self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "NORMAL", 1)
+                end;
+
                 onArmorChange = function (_, parts, isVisible)
                     if parts == "CHEST_PLATE" then
                         models.models.main.Avatar.UpperBody.Body.FrontHair:setPos(0, 0, isVisible and -1 or 0)
@@ -642,19 +721,19 @@ BlueArchiveCharacter = {
                             headX = {
                                 multiplayer = -40;
                                 min = -90;
-                                max = 0;
+                                max = -15;
                             };
 
                             headRot = {
                                 multiplayer = 0.025;
                                 min = -90;
-                                max = 0;
+                                max = -15;
                             };
 
                             bodyY = {
                                 multiplayer = 40;
                                 min = -130;
-                                max = 0;
+                                max = -15;
                             };
                         };
 
@@ -984,8 +1063,12 @@ BlueArchiveCharacter = {
 
         events.RENDER:register(function ()
             local wingRotOffset = math.map(vanilla_model.RIGHT_LEG:getOriginRot().x, -90, 90, 20, 0)
-            models.models.main.Avatar.UpperBody.Body.Wings.RightWing:setRot(0, wingRotOffset * -1, 0)
-            models.models.main.Avatar.UpperBody.Body.Wings.LeftWing:setRot(0, wingRotOffset, 0)
+            for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.Wings.RightWing, models.models.main.Avatar.UpperBody.Body.CSwimsuitB.Wings.RightWing}) do
+                modelPart:setRot(0, wingRotOffset * -1, 0)
+            end
+            for _, modelPart in ipairs({models.models.main.Avatar.UpperBody.Body.Wings.LeftWing, models.models.main.Avatar.UpperBody.Body.CSwimsuitB.Wings.LeftWing}) do
+                modelPart:setRot(0, wingRotOffset, 0)
+            end
         end)
     end;
 }

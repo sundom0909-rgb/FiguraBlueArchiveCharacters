@@ -178,6 +178,14 @@
 		"models.models.main.Avatar.UpperBody.Body.Wings.LeftWing.LeftWingZPivot.LeftWingBone1.LeftWingBone2.LeftWingBone3.LeftWingBone4.LeftWingBone5.LeftWingBone6.LeftWingBone7.LeftWingBone8.LeftWingFinger4.LeftWingFinger4_2.LeftWingFinger4_3.LeftWingTip4": {
 			"primaryRenderType": "EMISSIVE_SOLID"
 		},
+		"models.models.costume_swimsuit.CSwimsuitH": {
+			"moveTo": "models.models.main.Avatar.Head",
+			"visible": false
+		},
+		"models.models.costume_swimsuit.CSwimsuitB": {
+			"moveTo": "models.models.main.Avatar.UpperBody.Body",
+			"visible": false
+		},
 		"models.models.bubble.Bubble": {
 			"moveTo": "models.models.main.Avatar.UpperBody.Body",
 			"primaryRenderType": "TRANSLUCENT",
