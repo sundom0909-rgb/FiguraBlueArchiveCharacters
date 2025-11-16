@@ -562,7 +562,9 @@ BlueArchiveCharacter = {
                     self.physics.physicData[2].x.vertical.headX.max = -5
                     self.physics.physicData[2].x.vertical.headRot.max = -5
                     self.physics.physicData[2].x.vertical.bodyY.max = -5
+                    self.physics.physicData[2].x.horizontal.neutral = -30
                     self.physics.physicData[2].x.horizontal.max = -5
+                    self.physics.physicData[2].x.horizontal.headX.min = -45
                     self.physics.physicData[2].x.horizontal.headX.max = -5
                     self.faceParts.rightEye.NORMAL = vectors.vec2(6, 0)
                     self.faceParts.leftEye.NORMAL = vectors.vec2(6, 0)
@@ -602,7 +604,9 @@ BlueArchiveCharacter = {
                     self.physics.physicData[2].x.vertical.headX.max = -15
                     self.physics.physicData[2].x.vertical.headRot.max = -15
                     self.physics.physicData[2].x.vertical.bodyY.max = -15
-                    self.physics.physicData[2].x.horizontal.max = -15
+                    self.physics.physicData[2].x.horizontal.neutral = -45
+                    self.physics.physicData[2].x.horizontal.max = -5
+                    self.physics.physicData[2].x.horizontal.headX.min = -60
                     self.physics.physicData[2].x.horizontal.headX.max = -15
                     self.faceParts.rightEye.NORMAL = vectors.vec2(0, 0)
                     self.faceParts.leftEye.NORMAL = vectors.vec2(0, 0)
@@ -1015,6 +1019,68 @@ BlueArchiveCharacter = {
                                 multiplayer = 10;
                                 min = 0;
                                 max = -12.5;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.Head.CSwimsuitH.SideHairTail};
+
+                    x = {
+                        vertical = {
+                            min = -90;
+                            neutral = 0;
+                            max = 90;
+
+                            headRotMultiplayer = -1;
+
+                            headX = {
+                                multiplayer = -60;
+                                min = -90;
+                                max = 90;
+                            };
+                        };
+
+                        horizontal = {
+                            min = -45;
+                            neutral = 45;
+                            max = 45;
+
+                            headX = {
+                                multiplayer = -120;
+                                min = -45;
+                                max = 45;
+                            };
+                        };
+                    };
+                };
+
+                {
+                    models = {models.models.main.Avatar.Head.CSwimsuitH.SideHairTail.SideHairTailZPivot};
+
+                    z = {
+                        vertical = {
+                            min = -170;
+                            neutral = -7.5;
+                            max = -7.5;
+
+                            headZ = {
+                                multiplayer = -40;
+                                min = -60;
+                                max = -7.5;
+                            };
+
+                            headRot = {
+                                multiplayer = 0.025;
+                                min = -60;
+                                max = -7.5;
+                            };
+
+                            bodyY = {
+                                multiplayer = 60;
+                                min = -170;
+                                max = -7.5;
                             };
                         };
                     };
