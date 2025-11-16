@@ -147,6 +147,10 @@
 		"models.models.placement_object.PlacementObject": {
 			"visible": false
 		},
+		"models.models.ex_skill_1.CameraBackground": {
+			"visible": false,
+			"primaryRenderType": "EMISSIVE_SOLID"
+		},
 		"models.models.ex_skill_frame.Particles": {
 			"visible": false
 		},

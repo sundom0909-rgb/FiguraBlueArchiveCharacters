@@ -436,9 +436,9 @@ BlueArchiveCharacter = {
 
                     formationType = "STRIKER";
 
-                    models = {};
+                    models = {models.models.ex_skill_1.CameraBackground};
 
-                    animations = {"main"};
+                    animations = {"main", "ex_skill_1"};
 
                     camera = {
                         start = {
@@ -455,11 +455,57 @@ BlueArchiveCharacter = {
                     callbacks = {
                         onPreAnimation = function (self)
                             self.parent.faceParts:setEmotion("NORMAL", "CENTER", "TEETH", 20, true)
+                            sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.blaze.shoot"), player:getPos(), 1, 0.5)
                         end;
 
                         onAnimationTick = function (self, tick)
                             if tick == 20 then
                                 self.parent.faceParts:setEmotion("NORMAL", "NORMAL", "CLOSED", 63, true)
+                            elseif tick == 37 and host:isHost() then
+                                models.models.ex_skill_1.CameraBackground:setVisible(true)
+                                local windowSize = client:getWindowSize()
+                                events.RENDER:register(function ()
+                                    local backgroundPos = vectors.rotateAroundAxis(player:getBodyYaw() + 180, renderer:getCameraOffsetPivot():copy():add(0, 1.62, 0):add(client:getCameraDir():copy():scale(5)), 0, 1, 0):scale(16 / 0.9375)
+                                    models.models.ex_skill_1.CameraBackground:setOffsetPivot(backgroundPos)
+                                    models.models.ex_skill_1.CameraBackground.Background:setPos(backgroundPos)
+                                    models.models.ex_skill_1.CameraBackground.Background:setScale(windowSize.x / windowSize.y * 130 * models.models.ex_skill_1.CameraBackground.BackgroundScale:getAnimScale().x)
+                                end, "ex_skill_1_transition_1")
+                                models.models.main.Avatar:setColor(0, 0, 0)
+                            elseif tick == 27 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.bat.takeoff"), player:getPos(), 1, 0.5)
+                            elseif tick == 42 then
+                                for _, soundData in ipairs({{"minecraft:entity.firework_rocket.large_blast", 1}, {"minecraft:entity.player.levelup", 1.5}}) do
+                                    sounds:playSound(self.parent.compatibilityUtils:checkSound(soundData[1]), player:getPos(), 1, soundData[2])
+                                end
+                            elseif tick == 45 and host:isHost() then
+                                events.RENDER:remove("ex_skill_1_transition_1")
+                                models.models.main.Avatar:setColor()
+                            elseif tick == 56 then
+                                sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.lightning_bolt.thunder"), player:getPos(), 1, 2)
+                            end
+
+                            if tick < 28 then
+                                local playerPos = player:getPos()
+                                for _ = 1, 15 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), playerPos:copy():add(math.random() * 3 - 1.5, math.random() * 1, math.random() * 3 - 1.5)):setScale(1):setVelocity(0, 0.1, 0):setColor(vectors.vec3(1, 0, 1):add(vectors.vec3(0.38, 0, 0.81):sub(1, 0, 1):scale(math.random())))
+                                end
+                            elseif tick >= 40 and tick % 2 == 0 then
+                                local playerPos = player:getPos()
+                                local bodyYaw = player:getBodyYaw()
+                                local anchorPos = playerPos:copy():add(vectors.rotateAroundAxis(bodyYaw * -1, math.random() * 1 - 0.5, math.random() * 1.5, 0, 0, 1, 0))
+                                local colorOffset = math.random()
+                                local rotZ = math.random() * 60 - 30
+                                rotZ = rotZ >= 0 and (rotZ + 10) or (rotZ - 25)
+                                for i = 0, 35 do
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), anchorPos):setScale(1):setVelocity(vectors.rotateAroundAxis(rotZ, vectors.rotateAroundAxis(math.random() * 60 - 30, vectors.rotateAroundAxis(i * 10 + 1, 0, 0, 0.3, 0, 1, 0), 1, 0, 0), 0, 0, 1)):setColor(vectors.vec3(1, 0, 1):add(vectors.vec3(0, 0, 0):sub(1, 0, 1):scale(colorOffset))):setLifetime(20 + math.random() * 20)
+                                end
+                            end
+                        end;
+
+                        onPostAnimation = function (self, forcedStop)
+                            if forcedStop and host:isHost() then
+                                events.RENDER:remove("ex_skill_1_transition_1")
+                                models.models.main.Avatar:setColor()
                             end
                         end;
                     }
