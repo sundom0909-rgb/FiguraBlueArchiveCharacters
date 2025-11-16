@@ -498,7 +498,7 @@ BlueArchiveCharacter = {
                                 local rotZ = math.random() * 60 - 30
                                 rotZ = rotZ >= 0 and (rotZ + 10) or (rotZ - 25)
                                 for i = 0, 35 do
-                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), anchorPos):setScale(1):setVelocity(vectors.rotateAroundAxis(rotZ, vectors.rotateAroundAxis(math.random() * 60 - 30, vectors.rotateAroundAxis(i * 10 + 1, 0, 0, 0.3, 0, 1, 0), 1, 0, 0), 0, 0, 1)):setColor(vectors.vec3(1, 0, 1):add(vectors.vec3(0, 0, 0):sub(1, 0, 1):scale(colorOffset))):setLifetime(20 + math.random() * 20)
+                                    particles:newParticle(self.parent.compatibilityUtils:checkParticle("minecraft:dust", "1 1 1 1"), anchorPos):setScale(1):setVelocity(vectors.rotateAroundAxis(bodyYaw * -1 + 90, vectors.rotateAroundAxis(rotZ, vectors.rotateAroundAxis(math.random() * 60 - 30, vectors.rotateAroundAxis(i * 10 + 1, 0, 0, 0.3, 0, 1, 0), 1, 0, 0), 0, 0, 1), 0, 1, 0)):setColor(vectors.vec3(1, 0, 1):add(vectors.vec3(0.38, 0, 0.81):sub(1, 0, 1):scale(colorOffset))):setLifetime(20 + math.random() * 20)
                                 end
                             end
                         end;
