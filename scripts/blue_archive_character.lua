@@ -530,7 +530,7 @@ BlueArchiveCharacter = {
             };
 
             callbacks = {
-                onArmorChange = function (self, parts, isVisible)
+                onArmorChange = function (_, parts, isVisible)
                     if parts == "CHEST_PLATE" then
                         models.models.main.Avatar.UpperBody.Body.FrontHair:setPos(0, 0, isVisible and -1 or 0)
                     elseif parts == "LEGGINGS" then
@@ -553,7 +553,22 @@ BlueArchiveCharacter = {
         }
 
         instance.deathAnimation = {
+            callbacks = {
+                onPhase1 = function (_, dummyAvatar)
+                    dummyAvatar.Head.BackHairs.BottomBackHair:setRot(12.5, 0, 0)
+                    dummyAvatar.Head.BackHairs.TopBackHair:setRot(5, 0, 0)
+                    for _, modelPart in ipairs({dummyAvatar.UpperBody.Body.Wings.RightWing.RightWingZPivot.RightWingBone1.RightWingBone2.RightWingFinger1.RightWingTip1, dummyAvatar.UpperBody.Body.Wings.RightWing.RightWingZPivot.RightWingBone1.RightWingBone2.RightWingBone3.RightWingFinger2.RightWingTip2, dummyAvatar.UpperBody.Body.Wings.RightWing.RightWingZPivot.RightWingBone1.RightWingBone2.RightWingBone3.RightWingBone4.RightWingFinger3.RightWingTip3, dummyAvatar.UpperBody.Body.Wings.RightWing.RightWingZPivot.RightWingBone1.RightWingBone2.RightWingBone3.RightWingBone4.RightWingBone5.RightWingBone6.RightWingBone7.RightWingBone8.RightWingFinger4.RightWingFinger4_2.RightWingFinger4_3.RightWingTip4, dummyAvatar.UpperBody.Body.Wings.LeftWing.LeftWingZPivot.LeftWingBone1.LeftWingBone2.LeftWingFinger1.LeftWingTip1, dummyAvatar.UpperBody.Body.Wings.LeftWing.LeftWingZPivot.LeftWingBone1.LeftWingBone2.LeftWingBone3.LeftWingFinger2.LeftWingTip2, dummyAvatar.UpperBody.Body.Wings.LeftWing.LeftWingZPivot.LeftWingBone1.LeftWingBone2.LeftWingBone3.LeftWingBone4.LeftWingFinger3.LeftWingTip3, dummyAvatar.UpperBody.Body.Wings.LeftWing.LeftWingZPivot.LeftWingBone1.LeftWingBone2.LeftWingBone3.LeftWingBone4.LeftWingBone5.LeftWingBone6.LeftWingBone7.LeftWingBone8.LeftWingFinger4.LeftWingFinger4_2.LeftWingFinger4_3.LeftWingTip4}) do
+                        modelPart:setPrimaryRenderType("CUTOUT")
+                    end
+                end;
 
+                onPhase2 = function (_, dummyAvatar)
+                    dummyAvatar.Head.BackHairs.BottomBackHair:setRot(-20, 0, 0)
+                    dummyAvatar.Head.BackHairs.TopBackHair:setRot(-20, 0, 0)
+                    dummyAvatar.UpperBody.Body.Wings.RightWing:setRot(0, -120, 0)
+                    dummyAvatar.UpperBody.Body.Wings.LeftWing:setRot(0, 40, 0)
+                end
+            };
         }
 
         instance.actionWheel = {
