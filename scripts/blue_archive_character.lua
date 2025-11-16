@@ -436,7 +436,7 @@ BlueArchiveCharacter = {
 
                     formationType = "STRIKER";
 
-                    models = {models.models.ex_skill_1.CameraBackground};
+                    models = {};
 
                     animations = {"main", "ex_skill_1"};
 
@@ -479,6 +479,7 @@ BlueArchiveCharacter = {
                                 end
                             elseif tick == 45 and host:isHost() then
                                 events.RENDER:remove("ex_skill_1_transition_1")
+                                models.models.ex_skill_1.CameraBackground:setVisible(false)
                                 models.models.main.Avatar:setColor()
                             elseif tick == 56 then
                                 sounds:playSound(self.parent.compatibilityUtils:checkSound("minecraft:entity.lightning_bolt.thunder"), player:getPos(), 1, 2)
@@ -505,6 +506,7 @@ BlueArchiveCharacter = {
                         onPostAnimation = function (self, forcedStop)
                             if forcedStop and host:isHost() then
                                 events.RENDER:remove("ex_skill_1_transition_1")
+                                models.models.ex_skill_1.CameraBackground:setVisible(false)
                                 models.models.main.Avatar:setColor()
                             end
                         end;
