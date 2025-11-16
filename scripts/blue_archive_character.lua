@@ -1085,6 +1085,49 @@ BlueArchiveCharacter = {
                         };
                     };
                 };
+
+                {
+                    models = {models.models.main.Avatar.UpperBody.Body.CSwimsuitB.Whistle.WhistleFront};
+
+                    x = {
+                        vertical = {
+                            min = 0;
+                            neutral = 0;
+                            max = 75;
+                            sneakOffset = 30;
+
+                            bodyX = {
+                                multiplayer = -120;
+                                min = 0;
+                                max = 75;
+                            };
+
+                            bodyY = {
+                                multiplayer = -120;
+                                min = 0;
+                                max = 75;
+                            };
+
+                            bodyRot = {
+                                multiplayer = -0.1;
+                                min = 0;
+                                max = 75;
+                            };
+                        };
+
+                        horizontal = {
+                            min = 0;
+                            neutral = 75;
+                            max = 75;
+
+                            bodyX = {
+                                multiplayer = -120;
+                                min = 0;
+                                max = 75;
+                            };
+                        };
+                    };
+                };
             };
 
             callbacks = {

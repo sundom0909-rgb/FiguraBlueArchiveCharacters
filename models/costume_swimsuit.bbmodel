@@ -1373,6 +1373,303 @@
 			},
 			"type": "cube",
 			"uuid": "c115ae90-b85f-f750-27eb-3d27860ba351"
+		},
+		{
+			"name": "WhistleLine1",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"light_emission": 0,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [2, 24.01, -2],
+			"to": [2.25, 24.01, 0],
+			"autouv": 0,
+			"color": 8,
+			"origin": [2, 24, -2],
+			"faces": {
+				"north": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [4, 0, 5, 1],
+					"texture": 0
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "8efad482-7ad5-cadd-87ee-e0c2d110b322"
+		},
+		{
+			"name": "WhistleLine2",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"light_emission": 0,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [-2, 24.01, 0],
+			"to": [2, 24.01, 0.25],
+			"autouv": 0,
+			"color": 8,
+			"origin": [-2, 24, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [4, 0, 5, 1],
+					"texture": 0
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "92cf6b4b-0817-e247-448d-7fd40b01cd8c"
+		},
+		{
+			"name": "WhistleLine3",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"light_emission": 0,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [-2.25, 24.01, -2],
+			"to": [-2, 24.01, 0],
+			"autouv": 0,
+			"color": 8,
+			"origin": [-2.25, 24, -2],
+			"faces": {
+				"north": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [4, 0, 5, 1],
+					"texture": 0
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "b9a2fdd4-be6f-501b-4d66-9581c0c245b6"
+		},
+		{
+			"name": "WhistleLine4",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"light_emission": 0,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [2, 21, -2.01],
+			"to": [2.25, 24, -2.01],
+			"autouv": 0,
+			"color": 8,
+			"rotation": [5, 0, -50],
+			"origin": [2.125, 24, -2],
+			"faces": {
+				"north": {
+					"uv": [4, 0, 5, 1],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "0f2c3531-430d-df4b-c06f-37d16ce75529"
+		},
+		{
+			"name": "WhistleLine5",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"light_emission": 0,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [-2.25, 21, -2.01],
+			"to": [-2, 24, -2.01],
+			"autouv": 0,
+			"color": 8,
+			"rotation": [5, 0, 50],
+			"origin": [-2.125, 24, -2],
+			"faces": {
+				"north": {
+					"uv": [4, 0, 5, 1],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"south": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"west": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "d95358b4-4e96-4690-be83-5538dc862366"
+		},
+		{
+			"name": "WhistleMain1",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"light_emission": 0,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [-0.25, 21.75, -2.5],
+			"to": [0.25, 22.25, -2],
+			"autouv": 0,
+			"color": 3,
+			"origin": [-0.25, 21.75, -2.5],
+			"faces": {
+				"north": {
+					"uv": [6, 0, 7, 1],
+					"texture": 0
+				},
+				"east": {
+					"uv": [6, 0, 7, 1],
+					"texture": 0
+				},
+				"south": {
+					"uv": [6, 0, 7, 1],
+					"texture": 0
+				},
+				"west": {
+					"uv": [6, 0, 7, 1],
+					"texture": 0
+				},
+				"up": {
+					"uv": [6, 0, 7, 1],
+					"texture": 0
+				},
+				"down": {
+					"uv": [6, 0, 7, 2],
+					"texture": 0
+				}
+			},
+			"type": "cube",
+			"uuid": "380d001a-51e8-23a9-9527-785e3645b384"
+		},
+		{
+			"name": "WhistleMain2",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"light_emission": 0,
+			"render_order": "default",
+			"allow_mirror_modeling": true,
+			"from": [-0.25, 21, -2.5],
+			"to": [0.25, 21.75, -2.25],
+			"autouv": 0,
+			"color": 3,
+			"origin": [-0.25, 21, -2.5],
+			"faces": {
+				"north": {
+					"uv": [5, 0, 8, 1],
+					"rotation": 90,
+					"texture": 0
+				},
+				"east": {
+					"uv": [6, 0, 7, 1],
+					"texture": 0
+				},
+				"south": {
+					"uv": [6, 0, 7, 1],
+					"texture": 0
+				},
+				"west": {
+					"uv": [6, 0, 7, 1],
+					"texture": 0
+				},
+				"up": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				},
+				"down": {
+					"uv": [0, 0, 0, 0],
+					"texture": null
+				}
+			},
+			"type": "cube",
+			"uuid": "0bc08d08-1aa5-095d-3892-2eaa323bce92"
 		}
 	],
 	"outliner": [
@@ -1396,7 +1693,7 @@
 					"uuid": "fb8cf929-9337-3d65-708f-d0a9c7d90002",
 					"export": true,
 					"mirror_uv": false,
-					"isOpen": true,
+					"isOpen": false,
 					"locked": false,
 					"visibility": true,
 					"autouv": 0,
@@ -1659,11 +1956,11 @@
 					"uuid": "732a4762-7088-39be-0e22-3f1dbae39fbf",
 					"export": true,
 					"mirror_uv": false,
-					"isOpen": true,
+					"isOpen": false,
 					"locked": false,
 					"visibility": true,
 					"autouv": 0,
-					"selected": false,
+					"selected": true,
 					"children": [
 						{
 							"name": "RightWing",
@@ -1766,6 +2063,55 @@
 							]
 						}
 					]
+				},
+				{
+					"name": "Whistle",
+					"origin": [0, 24, 0],
+					"color": 0,
+					"uuid": "65231828-c574-c0b7-2a84-b9887a34503d",
+					"export": true,
+					"mirror_uv": false,
+					"isOpen": false,
+					"locked": false,
+					"visibility": true,
+					"autouv": 0,
+					"selected": false,
+					"children": [
+						"8efad482-7ad5-cadd-87ee-e0c2d110b322",
+						"92cf6b4b-0817-e247-448d-7fd40b01cd8c",
+						"b9a2fdd4-be6f-501b-4d66-9581c0c245b6",
+						{
+							"name": "WhistleFront",
+							"origin": [0, 24, -2],
+							"color": 0,
+							"uuid": "182f6f27-a013-cda1-0ff5-8c3d511339ef",
+							"export": true,
+							"mirror_uv": false,
+							"isOpen": false,
+							"locked": false,
+							"visibility": true,
+							"autouv": 0,
+							"selected": false,
+							"children": [
+								"0f2c3531-430d-df4b-c06f-37d16ce75529",
+								"d95358b4-4e96-4690-be83-5538dc862366",
+								{
+									"name": "WhistleMain",
+									"origin": [0, 24, -2],
+									"color": 0,
+									"uuid": "316d8d7e-7227-9659-95b1-93f055565cfd",
+									"export": true,
+									"mirror_uv": false,
+									"isOpen": false,
+									"locked": false,
+									"visibility": true,
+									"autouv": 0,
+									"selected": false,
+									"children": ["380d001a-51e8-23a9-9527-785e3645b384", "0bc08d08-1aa5-095d-3892-2eaa323bce92"]
+								}
+							]
+						}
+					]
 				}
 			]
 		}
@@ -1798,7 +2144,7 @@
 			"saved": true,
 			"uuid": "996e4ec3-0a4b-1a96-d548-dd4fcf529cab",
 			"relative_path": "../textures/costume_swimsuit.png",
-			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAiCAYAAACA5IOiAAAAAXNSR0IArs4c6QAAAPNJREFUSEtjlJfV+H/rziUGVlYWBnExcYbXb14zMhAJGI9VdP23aCth+P37D0OZXyHDxJ1TidcMskRURPQ/kZahKMOwhRSDCDoRl2GgsCGoGeZOdENI0oweNiRrhhkAi06inY3sfLI1I8cVIylRg6wR7GdSNKMnXbCfsRlATBrHqpkYjSBL4aENs51YjdTTTJVcRYohjJ3xDWTl5fKFDYwkaQZpQElhIA4u29EVo3sJbBK6ZkKaYIZgaCZWI0o8g2wnRSP1NJMSvzj9TIohGMUQKYmGqDIMm4HgFEasM7GlBaI1IycmWJTSTzPWtE2sv9HVAQBQdHBreYSbGAAAAABJRU5ErkJggg=="
+			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAiCAYAAACA5IOiAAAAAXNSR0IArs4c6QAAAQRJREFUSEtjlJfV+H/rziUGVlYWBnExcYbWtlaGjvw+hhOlfgwgINbUxQhmYAGMxyq6/lu0lTD8/v2HocyvkKHanBuvBmQzwKaKioj+x2U6PnEMJ5FiEE7/wGzEZdjrN68ZCWrGZQhJmtHDhmTNMANAGkFsop2N7HyyNaPEMylRg6wR7GdSNMOcCzMEZwpDV4g1bWNLnsRoRAltmPOJ1Ug9zVTJVaQYwtgZ30BWXi5f2MBIkmaQBoySBJft6IrRvQQ2CV0zIU0oKQxZM7EaUeIZZAApGqmnmZT4xelnUgzBKIZISTRElWHYDASnMGKdiS0tEK0ZOTHBopR+mrGmbWL9ja4OAEC0c2uTwzQvAAAAAElFTkSuQmCC"
 		}
 	],
 	"reference_images": [
