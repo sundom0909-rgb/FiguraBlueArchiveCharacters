@@ -503,7 +503,7 @@ BlueArchiveCharacter = {
                             end
                         end;
 
-                        onPostAnimation = function (self, forcedStop)
+                        onPostAnimation = function (_, forcedStop)
                             if forcedStop and host:isHost() then
                                 events.RENDER:remove("ex_skill_1_transition_1")
                                 models.models.ex_skill_1.CameraBackground:setVisible(false)
@@ -529,6 +529,15 @@ BlueArchiveCharacter = {
                 };
             };
 
+            callbacks = {
+                onArmorChange = function (self, parts, isVisible)
+                    if parts == "CHEST_PLATE" then
+                        models.models.main.Avatar.UpperBody.Body.FrontHair:setPos(0, 0, isVisible and -1 or 0)
+                    elseif parts == "LEGGINGS" then
+                        models.models.main.Avatar.UpperBody.Body.Jacket.JacketMain:setVisible(not isVisible)
+                    end
+                end;
+            };
         }
 
         instance.bubble = {
